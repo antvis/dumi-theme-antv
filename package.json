@@ -1,0 +1,55 @@
+{
+  "name": "@antv/dumi-theme-antv",
+  "version": "0.1.0",
+  "description": "The official antv site theme of dumi",
+  "files": [
+    "es",
+    "src"
+  ],
+  "sideEffects": [
+    "*.less"
+  ],
+  "scripts": {
+    "start": "father build --watch",
+    "build": "father build"
+  },
+  "homepage": "https://github.com/antvis/dumi-theme-antv",
+  "authors": [],
+  "dependencies": {
+    "@ant-design/icons": "^4.7.0",
+    "@umijs/preset-dumi": "latest",
+    "antd": "^4.19.5",
+    "dumi": "^1.1.40",
+    "i18next": "^21.6.14",
+    "lodash": "^4.17.21",
+    "lodash.throttle": "^4.1.1",
+    "parse-github-url": "^1.0.2",
+    "prism-react-renderer": "^1.1.1",
+    "prismjs": "^1.21.0",
+    "rc-footer": "^0.6.6",
+    "rc-motion": "^2.4.1",
+    "rc-tabs": "^11.7.1",
+    "rc-tree": "^5.2.0",
+    "react": "^17.0.1",
+    "react-github-button": "^0.1.11",
+    "react-i18next": "^11.16.2",
+    "react-use": "^17.3.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/antvis/dumi-theme-antv.git",
+    "directory": "src"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.11.3",
+    "@testing-library/react": "^10.4.8",
+    "@types/react": "^17.0.43",
+    "father": "^2.30.17",
+    "react-test-renderer": "^16.13.1"
+  },
+  "peerDependencies": {
+    "react": "^17.x",
+    "react-dom": "^17.x"
+  },
+  "license": "MIT"
+}

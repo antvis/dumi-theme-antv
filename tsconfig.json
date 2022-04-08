@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "target": "esnext",
+    "moduleResolution": "node",
+    "jsx": "preserve",
+    "esModuleInterop": true
+  }
+}
