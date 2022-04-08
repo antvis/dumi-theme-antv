@@ -1,7 +1,7 @@
 const isProduction = process.env.NODE_ENV === "production";
 
 export default {
-  title: "Graphin",
+  title: "AntV SubProduct",
   mode: "site",
   base: "/",
   publicPath: "/",
@@ -11,7 +11,7 @@ export default {
   //   hostname: 'graphin.antv.vision',
   // },
   resolve: {
-    includes: ["docs/"],
+    includes: ["docs"],
   },
 
   extraBabelPlugins: [
@@ -39,7 +39,7 @@ export default {
     },
   ],
 
-  analytics: isProduction ? { ga: "UA-148148901-8" } : false,
+  analytics: isProduction ? { ga: "" } : false,
   hash: true,
   ssr: {
     devServerRender: false,
