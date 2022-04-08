@@ -1,16 +1,12 @@
-/* eslint-disable react/no-array-index-key */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useContext } from 'react';
-
-import GitHubButton from 'react-github-button';
-import gh from 'parse-github-url';
-import classNames from 'classnames';
-import { context } from 'dumi/theme';
-// @ts-ignore
-import styles from './Banner.module.less';
-import Notification, { NotificationProps } from './Notification';
-
-type BannerButtonShape = 'round' | 'square';
+import classNames from "classnames";
+import { context } from "dumi/theme";
+import gh from "parse-github-url";
+import React, { useContext } from "react";
+import GitHubButton from "react-github-button";
+//@ts-ignore
+import styles from "./Banner.module.less";
+import Notification, { NotificationProps } from "./Notification";
+type BannerButtonShape = "round" | "square";
 
 interface BannerButton {
   text: string;
@@ -34,7 +30,8 @@ interface BannerProps {
   onPlayVideo?: () => void;
 }
 
-const backLeftBottom = 'https://gw.alipayobjects.com/zos/basement_prod/441d5eaf-e623-47cd-b9b9-2a581d9ce1e3.svg';
+const backLeftBottom =
+  "https://gw.alipayobjects.com/zos/basement_prod/441d5eaf-e623-47cd-b9b9-2a581d9ce1e3.svg";
 
 const Banner: React.FC<BannerProps> = ({
   coverImage,
@@ -54,32 +51,34 @@ const Banner: React.FC<BannerProps> = ({
 
   const notificationsNode = notifications
     .slice(0, 2)
-    .map((notification, i) => <Notification index={i} key={i} {...notification} />);
+    .map((notification, i) => (
+      <Notification index={i} key={i} {...notification} />
+    ));
 
   const renderButtons = buttons.map((button: BannerButton, i) => {
-    const ButtonLink = 'a';
+    const ButtonLink = "a";
     const buttonProps = {} as any;
-    if (button.link.startsWith('http')) {
-      buttonProps.target = '_blank';
-      buttonProps.rel = 'noopener noreferrer';
+    if (button.link.startsWith("http")) {
+      buttonProps.target = "_blank";
+      buttonProps.rel = "noopener noreferrer";
     }
-    if (ButtonLink === 'a') {
+    if (ButtonLink === "a") {
       buttonProps.href = button.link;
     } else {
       buttonProps.to = button.link;
     }
-    const { shape = 'round' } = button;
+    const { shape = "round" } = button;
     return (
       <ButtonLink
         {...buttonProps}
         className={classNames(
           styles.buttonLink,
-          styles[button.type || ''],
-          button.type === 'primary' ? 'primary-button' : 'common-button',
+          styles[button.type || ""],
+          button.type === "primary" ? "primary-button" : "common-button"
         )}
         key={i}
         style={{
-          borderRadius: shape === 'round' ? '1000px' : '4px',
+          borderRadius: shape === "round" ? "1000px" : "4px",
           ...button.style,
         }}
       >
@@ -94,8 +93,13 @@ const Banner: React.FC<BannerProps> = ({
     if (githubObj && githubObj.owner && githubObj.name) {
       renderButtons.push(
         <div key="github" className={styles.githubWrapper}>
-          <GitHubButton type="stargazers" size="large" namespace={githubObj.owner} repo={githubObj.name} />
-        </div>,
+          <GitHubButton
+            type="stargazers"
+            size="large"
+            namespace={githubObj.owner}
+            repo={githubObj.name}
+          />
+        </div>
       );
     }
   }
@@ -104,15 +108,29 @@ const Banner: React.FC<BannerProps> = ({
     <section className={classNames(styles.wrapper, className)} style={style}>
       <div className={styles.content}>
         <div className={styles.text}>
-          <div className={classNames(styles.title, 'banner-title')}>{title}</div>
-          <div className={classNames(styles.description, 'banner-description')}>{description}</div>
-          <div className={classNames(styles.buttons, 'banner-buttons')}>{renderButtons}</div>
+          <div className={classNames(styles.title, "banner-title")}>
+            {title}
+          </div>
+          <div className={classNames(styles.description, "banner-description")}>
+            {description}
+          </div>
+          <div className={classNames(styles.buttons, "banner-buttons")}>
+            {renderButtons}
+          </div>
         </div>
-        <div className={classNames(styles.notifications, 'notifications')}>{notificationsNode}</div>
-        <div className={classNames(styles.teaser, 'teaser')}>
-          <div className={classNames(styles.teaserimg, 'teaser-img')}>{coverImage}</div>
+        <div className={classNames(styles.notifications, "notifications")}>
+          {notificationsNode}
         </div>
-        <img className={styles.backLeftBottom} src={backLeftBottom} alt="back" />
+        <div className={classNames(styles.teaser, "teaser")}>
+          <div className={classNames(styles.teaserimg, "teaser-img")}>
+            {coverImage}
+          </div>
+        </div>
+        <img
+          className={styles.backLeftBottom}
+          src={backLeftBottom}
+          alt="back"
+        />
       </div>
     </section>
   );

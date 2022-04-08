@@ -7,7 +7,9 @@
     "src"
   ],
   "sideEffects": [
-    "*.less"
+    "*.less",
+    "*.module.less",
+    "*.css"
   ],
   "scripts": {
     "start": "father build --watch",
@@ -33,7 +35,9 @@
     "react": "^17.0.1",
     "react-github-button": "^0.1.11",
     "react-i18next": "^11.16.2",
-    "react-use": "^17.3.2"
+    "react-slick": "^0.28.1",
+    "react-use": "^17.3.2",
+    "slick-carousel": "^1.8.1"
   },
   "repository": {
     "type": "git",
@@ -51,5 +55,8 @@
     "react": "^17.x",
     "react-dom": "^17.x"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  }
 }

@@ -1,8 +1,8 @@
-import React from 'react';
+import { useCopy } from 'dumi/theme';
 import type { Language } from 'prism-react-renderer';
 import Highlight, { defaultProps } from 'prism-react-renderer';
-import { useCopy } from 'dumi/theme';
 import 'prismjs/themes/prism.css';
+import React from 'react';
 import './SourceCode.less';
 
 /**
@@ -24,6 +24,7 @@ export default ({ code, lang, showCopy = true }: ICodeBlockProps) => {
 
   return (
     <div className="__dumi-default-code-block">
+      {/** @ts-ignore */}
       <Highlight
         {...defaultProps}
         code={code}

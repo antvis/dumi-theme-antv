@@ -15,6 +15,7 @@ import SearchBar from './components/SearchBar';
 import SideMenu from './components/SideMenu';
 import SlugList from './components/SlugList';
 import './style/layout.less';
+
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
   .init({
