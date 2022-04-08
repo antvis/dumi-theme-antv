@@ -2,10 +2,26 @@
 
 dumi theme for antv site
 
-## install
+## Install
 
 ```
 yarn add @antv/dumi-theme-antv --save-dev
+
+```
+
+## Usage
+
+> Refer to the documentation for the [Dumi theme](https://d.umijs.org/zh-CN/config#themeconfig)
+
+<strong >note ⚠️<strong>
+Since `*.module.less` is used in `@antv/dumi-theme-antv`, extraBabelIncludes needs to be configured:
+
+```tsx
+export default {
+  //...
+  mode: "site",
+  extraBabelIncludes: ["@antv/dumi-theme-antv"],
+};
 ```
 
 ## Contributing
