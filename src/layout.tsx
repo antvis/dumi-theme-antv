@@ -121,7 +121,6 @@ const Layout: React.FC<IRouteComponentProps> = ({ children, location }) => {
   } = Context;
 
   const { meta, isDirect } = processRedirect(Context, location);
-  console.log('Context', Context, 'calculate meta', meta);
   const { url: repoUrl, branch, platform } = repository;
   const [menuCollapsed, setMenuCollapsed] = useState<boolean>(true);
   const isSiteMode = mode === 'site';
