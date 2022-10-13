@@ -14,7 +14,7 @@ import { Footer } from '../../slots/Footer';
  */
 export const Index = () => {
   const { themeConfig } = useSiteData();
-  const { githubUrl, showGithubStars, detail, news, } = themeConfig;
+  const { githubUrl, showGithubStars, detail, news, companies } = themeConfig;
 
   const detailProps = {
     githubUrl,
@@ -29,7 +29,7 @@ export const Index = () => {
       <Detail { ...detailProps } />
       <Features />
       <Cases />
-      <Companies />
+      <Companies title="感谢信赖" companies={companies} />
       <Footer />
     </>
   );
