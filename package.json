@@ -4,7 +4,8 @@
   "description": "AntV 官网模板，基于最新的 dumi2。",
   "scripts": {
     "dev": "dumi dev",
-    "start": "dumi dev"
+    "start": "dumi dev",
+    "clean": "rm -rf node_modules/.cache .umi src/.umi"
   },
   "keywords": [],
   "author": "AntV+dumi",

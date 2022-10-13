@@ -1,10 +1,10 @@
 import React from 'react';
+import { useSiteData } from 'dumi';
 import { Header } from '../../slots/Header';
-import { Description } from '../../slots/Description';
-import { News } from '../../slots/News';
+import { Detail } from '../../slots/Detail';
 import { Features } from '../../slots/Features';
 import { Cases } from '../../slots/Cases';
-import { Cooperation } from '../../slots/Cooperation';
+import { Companies } from '../../slots/Companies';
 import { Footer } from '../../slots/Footer';
 
 /**
@@ -13,14 +13,23 @@ import { Footer } from '../../slots/Footer';
  * - 组合 slots 下的木偶组件
  */
 export const Index = () => {
+  const { themeConfig } = useSiteData();
+  const { githubUrl, showGithubStars, detail, news, } = themeConfig;
+
+  const detailProps = {
+    githubUrl,
+    showGithubStars,
+    news,
+    ...detail,
+  }
+
   return (
     <>
       <Header />
-      <Description />
-      <News />
+      <Detail { ...detailProps } />
       <Features />
       <Cases />
-      <Cooperation />
+      <Companies />
       <Footer />
     </>
   );

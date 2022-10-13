@@ -14,13 +14,11 @@ export default () => {
   const { pathname } = location;
   const p = pathname.toLowerCase();
 
-  console.log(useSiteData());
-
   if (p === '/') return <Index />;
   if (p === '/api') return <API />;
-  if (p === '/examples') return <Example />;
-  if (p === '/examples/gallery') return <ExampleGallery />;
-  if (p === '/tutorials') return <Tutorial />;
+  if (p === '/example') return <Example />;
+  if (p === '/example/gallery') return <ExampleGallery />;
+  if (p === '/tutorial') return <Tutorial />;
   // More router, add here...
 
   return <NotFound />;
