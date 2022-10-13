@@ -3,7 +3,7 @@ import React from 'react';
 /**
  * Header.LOGO
  */
-export default ({ style }) => {
+export const Logo = ({ style }) => {
   return (
     <svg width="94" height="28" version="1.1" viewBox="0 0 94 28" style={style}>
       <title>logo</title>

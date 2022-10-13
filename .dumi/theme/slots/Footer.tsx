@@ -1,4 +1,12 @@
+import React from 'react';
+
 /**
- * Content.底部链接和版权
+ * Index.底部链接和版权
  * 从 url 读取
  */
+export const Footer = () => (
+  <>
+    Footer
+  </>
+);
+

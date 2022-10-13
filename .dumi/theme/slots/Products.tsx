@@ -1,4 +1,12 @@
+
+import React from 'react';
+
 /**
- * Header.产品信息
+ * 产品信息
  * 从 url 读取
  */
+export const Products = () => (
+  <>
+    Products
+  </>
+);

@@ -1,3 +1,11 @@
+import React from 'react';
+
 /**
- * Content.一些使用公司
+ * Index.一些使用公司
  */
+export const Cooperation = () => (
+  <>
+    Cooperation
+  </>
+);
+

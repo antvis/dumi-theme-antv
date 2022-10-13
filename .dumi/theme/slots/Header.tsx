@@ -1,11 +1,12 @@
 import React from 'react';
 
 /**
- * Content.新闻
+ * 头部菜单
  * 从 url 读取
  */
-export const News = () => (
+export const Header = () => (
   <>
-    News
+    Header
   </>
 );
+

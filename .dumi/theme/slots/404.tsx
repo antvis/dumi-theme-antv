@@ -3,7 +3,7 @@ import { HomeOutlined } from '@ant-design/icons';
 import { Result, Button } from 'antd';
 import { Link } from 'dumi';
 
-export const NotFoundPage = () => (
+export const NotFound = () => (
   <>
     <Result
       status={'404' as any}

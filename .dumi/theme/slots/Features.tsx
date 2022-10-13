@@ -1,4 +1,13 @@
+
+import React from 'react';
+
 /**
- * Content.技术栈特性
+ * Index.技术栈特性
  * 各自配置
  */
+export const Features = () => (
+  <>
+    Features
+  </>
+);
+
