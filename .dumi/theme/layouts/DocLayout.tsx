@@ -6,7 +6,7 @@ import { Tutorial } from './entry/Tutorial';
 import { ExampleGallery } from './entry/ExampleGallery';
 import { NotFound } from './entry/404';
 
-import './antd.less';
+import '../slots/_.less';
 
 /**
  * DocuLayout 是 dumi2 的内置 layout 入口，在这里使用页面路径进行区分成自己不同的 Layout。

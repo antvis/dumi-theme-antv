@@ -4,20 +4,27 @@ export default {
   themeConfig: {
     title: 'G2',
     description: 'The Grammar of Graphics in JavaScript',
-    siteUrl: 'https://g2.antv.vision',
-    githubUrl: repository.url,
-    versions: {
+    defaultLanguage: 'zh',                                              // 默认语言
+    isAntVSite: false,                                                  // 是否是 AntV 的大官网
+    siteUrl: 'https://g2.antv.vision',                                  // 官网地址
+    githubUrl: repository.url,                                          // GitHub 地址
+    showSearch: true,                                                  // 是否显示搜索框
+    showGithubCorner: true,                                             // 是否显示头部的 GitHub icon
+    showGithubStars: true,                                              // 是否显示 GitHub star 数量
+    showAntVProductsCard: true,                                         // 是否显示 AntV 产品汇总的卡片
+    showLanguageSwitcher: true,                                         // 是否显示官网语言切换
+    showWxQrcode: true,                                                 // 是否显示头部菜单的微信公众号
+    showChartResize: true,                                              // 是否在 demo 页展示图表视图切换
+    showAPIDoc: true,                                                   // 是否在 demo 页展示API文档
+    themeSwitcher: 'g2',
+    versions: {                                                         // 历史版本以及切换下拉菜单
       [version]: 'https://g2.antv.vision/',
       '3.x': 'https://g2-v3.antv.vision/',
       '2.x': 'https://antv.vision/old-site/g2/doc/index.html',
     },
-    showGithubStars: true,
-    showChartResize: true, // 是否在 demo 页展示图表视图切换
-    showAPIDoc: true, // 是否在 demo 页展示API文档
-    themeSwitcher: 'g2',
-    navs: [
+    navs: [                                                             // 头部的菜单列表
       {
-        slug: 'docs/tutorials',
+        slug: 'tutorials',
         title: {
           zh: '教程',
           en: 'Tutorials',
@@ -25,7 +32,7 @@ export default {
         order: 2,
       },
       {
-        slug: 'docs/api',
+        slug: 'api',
         title: {
           zh: 'API',
           en: 'API',
@@ -40,6 +47,15 @@ export default {
         },
         order: 0,
       },
+    ],
+    ecosystems: [                                                       // 头部的菜单中的「周边生态」
+      {
+        name: {
+          zh: 'G2Plot（开箱即用的图表库）',
+          en: 'G2Plot (A charting library)',
+        },
+        url: 'https://g2plot.antv.vision',
+      }
     ],
     tutorials: [
       {
@@ -69,19 +85,6 @@ export default {
         },
       },
     ],
-    ecosystems: [
-      {
-        name: {
-          zh: 'G2Plot（开箱即用的图表库）',
-          en: 'G2Plot (A charting library)',
-        },
-        url: 'https://g2plot.antv.vision',
-      }
-    ],
-    docsearchOptions: {
-      apiKey: '200ec461f4aa0bb4f0e761566f1a1336',
-      indexName: 'antv_g2',
-    },
     playground: {
       devDependencies: {
         typescript: 'latest',
