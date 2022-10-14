@@ -8,7 +8,7 @@ export default {
     isAntVSite: false,                                                  // 是否是 AntV 的大官网
     siteUrl: 'https://g2.antv.vision',                                  // 官网地址
     githubUrl: repository.url,                                          // GitHub 地址
-    showSearch: false,                                                  // 是否显示搜索框
+    showSearch: true,                                                  // 是否显示搜索框
     showGithubCorner: true,                                             // 是否显示头部的 GitHub icon
     showGithubStars: true,                                              // 是否显示 GitHub star 数量
     showAntVProductsCard: true,                                         // 是否显示 AntV 产品汇总的卡片

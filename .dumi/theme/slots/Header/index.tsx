@@ -11,13 +11,11 @@ import {
   WechatOutlined,
   LikeOutlined,
 } from '@ant-design/icons';
-import { Popover, Menu, Dropdown } from 'antd';
-import gh from 'parse-github-url';
+import { Popover, Menu, Dropdown, Select } from 'antd';
 import { map, size } from 'lodash-es';
 import { Search } from './Search';
 import { Products } from './Products';
 import { Navs, INav } from './Navs';
-import { Versions } from './Versions';
 import { Logo } from './Logo';
 import { LogoWhite } from './LogoWhite';
 
@@ -109,6 +107,7 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
   const { t, i18n } = useTranslation();
   const isAntVHome = isAntVSite && isHomePage; // 是否为AntV官网首页
+  console.log(111, showSearch, isAntVHome);
   const lang =
     typeof defaultLanguage !== 'undefined'
       ? defaultLanguage
@@ -261,7 +260,27 @@ export const Header: React.FC<HeaderProps> = ({
         /** 版本列表 */
         versions &&
         <li>
-          <Versions versions={versions} />
+          <Select
+            defaultValue={Object.keys(versions)[0]}
+            className={styles.versions}
+            bordered={false}
+            size="small"
+            onChange={(value: string) => {
+              window.location.href = value;
+            }}
+          >
+            {Object.keys(versions).map((version: string) => {
+              const url = versions[version];
+              if (url.startsWith('http')) {
+                return (
+                  <Select.Option key={url} value={url}>
+                    {version}
+                  </Select.Option>
+                );
+              }
+              return null;
+            })}
+          </Select>
         </li>
       }
 
@@ -277,7 +296,7 @@ export const Header: React.FC<HeaderProps> = ({
             content={
               <img width="100%" height="100%" src="https://gw.alipayobjects.com/zos/antfincdn/ZKlx96dsfs/qrcode_for_gh_f52d8b6aa591_258.jpg" alt="wx-qrcode" />
             }
-            title="微信关注「AntV 数据可视化」"
+            title="微信扫一扫关注"
             overlayClassName="wx-qrcode-popover"
             overlayStyle={{ width: 128, height: 128 }}
             overlayInnerStyle={{ padding: 2 }}
@@ -333,9 +352,10 @@ export const Header: React.FC<HeaderProps> = ({
               </h2>
             </>
           )}
-          {showSearch && !isAntVHome && (
+          {
+            showSearch && !isAntVHome &&
             <Search />
-          )}
+          }
         </div>
         <nav className={styles.nav}>
           {menu}

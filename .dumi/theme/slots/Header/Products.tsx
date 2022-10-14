@@ -7,7 +7,7 @@ export type ProductsProps = any;
  */
 export const Products: React.FC<ProductsProps> = () => (
   <>
-    Products
+    {/* Products */}
   </>
 );
 

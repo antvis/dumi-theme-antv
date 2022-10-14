@@ -18,7 +18,7 @@ export const Index = () => {
     title, siteUrl, githubUrl, isAntVSite,
     showSearch, showGithubCorner, showGithubStars, showLanguageSwitcher, showWxQrcode, defaultLanguage, showAntVProductsCard,
     versions, ecosystems, navs,
-    detail, news, companies
+    detail, news, companies,
   } = themeConfig;
 
   const headerProps = {
@@ -28,6 +28,7 @@ export const Index = () => {
     isAntVSite,
     showSearch, showGithubCorner, showGithubStars, showLanguageSwitcher, showWxQrcode, defaultLanguage, showAntVProductsCard,
     versions, ecosystems, navs,
+    isHomePage: true,
   }
 
   const detailProps = {
