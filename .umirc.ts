@@ -180,12 +180,8 @@ export default {
     ],
   },
   mfsu: false,
-  links: ['http://gw.alipayobjects.com/os/lib/antd/4.23.5/dist/antd.css'],
+  links: [
+  ],
   scripts: [
-    'https://gw.alipayobjects.com/os/lib/react/16.13.1/umd/react.development.js',
-    'https://gw.alipayobjects.com/os/lib/react-dom/16.13.1/umd/react-dom.development.js',
-    'https://gw.alipayobjects.com/os/lib/antd/4.23.5/dist/antd-with-locales.js',
-    /** lodash */
-    'https://gw.alipayobjects.com/os/lib/lodash/4.17.20/lodash.min.js',
   ],
 }
