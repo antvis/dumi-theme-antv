@@ -14,7 +14,21 @@ import { Footer } from '../../slots/Footer';
  */
 export const Index = () => {
   const { themeConfig } = useSiteData();
-  const { githubUrl, showGithubStars, detail, news, companies } = themeConfig;
+  const { 
+    title, siteUrl, githubUrl, isAntVSite,
+    showSearch, showGithubCorner, showGithubStars, showLanguageSwitcher, showWxQrcode, defaultLanguage, showAntVProductsCard,
+    versions, ecosystems, navs,
+    detail, news, companies
+  } = themeConfig;
+
+  const headerProps = {
+    subTitle: title,
+    subTitleHref: siteUrl,
+    githubUrl,
+    isAntVSite,
+    showSearch, showGithubCorner, showGithubStars, showLanguageSwitcher, showWxQrcode, defaultLanguage, showAntVProductsCard,
+    versions, ecosystems, navs,
+  }
 
   const detailProps = {
     githubUrl,
@@ -25,7 +39,7 @@ export const Index = () => {
 
   return (
     <>
-      <Header />
+      <Header { ...headerProps } />
       <Detail { ...detailProps } />
       <Features />
       <Cases />
