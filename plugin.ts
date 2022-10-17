@@ -56,6 +56,9 @@ export default function ThemeAntVContextWrapper() {
       };
     });
 
+    // replace default 404
+    routes['404'].file = require.resolve('./.dumi/theme/pages/404.tsx');
+
     return routes;
   });
 };
