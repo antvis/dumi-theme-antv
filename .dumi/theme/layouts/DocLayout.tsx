@@ -24,17 +24,6 @@ i18n
 
 const lngs = ['zh', 'en'];
 
-// if (!i18n.options.lng || process.env.NODE_ENV === 'production') {
-//   i18n.init({
-//     lng: currentLangKey,
-//   });
-// }
-
-if (!i18n.options.resources) {
-  i18n.init({
-    resources,
-  });
-}
 /**
  * DocuLayout 是 dumi2 的内置 layout 入口，在这里使用页面路径进行区分成自己不同的 Layout。
  */
