@@ -1,19 +1,20 @@
 import React from 'react';
-import { DocumentMenu } from '../../slots/DocumentMenu';
-import { DocumentContent } from '../../slots/DocumentContent';
-import { TOC } from '../../slots/TOC';
+import { Manual } from './Manual';
+
+export type APIProps = {
+  readonly children: any;
+}
+
 
 /**
  * API 路由下的入口
  * - 读取 API markdown 文件
  * - 渲染 UI
  */
-export const API = () => {
+export const API: React.FC<APIProps> = ({ children }) => {
   return (
-    <>
-      <DocumentMenu />
-      <DocumentContent />
-      <TOC />
-    </>
+    <Manual>
+      { children }
+    </Manual>
   );
 }

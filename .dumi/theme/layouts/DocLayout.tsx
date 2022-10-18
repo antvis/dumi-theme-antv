@@ -1,8 +1,9 @@
-import { useOutlet } from 'dumi';
+import { useOutlet, useLocation, useSidebarData  } from 'dumi';
 import { Index } from './entry/Index';
 import { API } from './entry/API';
-import { Tutorial } from './entry/Tutorial';
+import { Manual } from './entry/Manual';
 import { ExampleGallery } from './entry/ExampleGallery';
+import { Header } from '../slots/Header';
 
 import '../slots/_.less';
 
@@ -11,13 +12,22 @@ import '../slots/_.less';
  */
 export default () => {
   const outlet = useOutlet();
-  const { pathname } = location;
+  const { pathname } = useLocation();
   const p = pathname.toLowerCase();
 
+  // // 首页
   if (p === '/') return <Index />;
-  if (p === '/api') return <API />;
-  if (p === '/example/gallery') return <ExampleGallery />;
-  if (p === '/tutorial') return <Tutorial />;
+
+  // // API 页面（docs 是兼容之前的 URL）
+  if (p.startsWith('/api/') || p.startsWith('/docs/api/')) {
+    return <API> { outlet } </API>
+  }
+
+  // 教程页面（docs 是兼容之前的 URL）
+  if (p.startsWith('/manual/') || p.startsWith('/docs/manual/')) {
+    return <Manual> {outlet} </Manual>;
+  }
+  
   // More router, add here...
 
   return outlet;
