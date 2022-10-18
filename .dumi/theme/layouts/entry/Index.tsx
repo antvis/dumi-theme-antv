@@ -1,4 +1,3 @@
-import React from 'react';
 import { useSiteData } from 'dumi';
 import { Header } from '../../slots/Header';
 import { Detail } from '../../slots/Detail';
@@ -15,21 +14,10 @@ import { Footer } from '../../slots/Footer';
 export const Index = () => {
   const { themeConfig } = useSiteData();
   const { 
-    title, siteUrl, githubUrl, isAntVSite,
-    showSearch, showGithubCorner, showGithubStars, showLanguageSwitcher, showWxQrcode, defaultLanguage, showAntVProductsCard,
-    versions, ecosystems, navs,
+    githubUrl,
+    showGithubStars,
     detail, news, companies,
   } = themeConfig;
-
-  const headerProps = {
-    subTitle: title,
-    subTitleHref: siteUrl,
-    githubUrl,
-    isAntVSite,
-    showSearch, showGithubCorner, showGithubStars, showLanguageSwitcher, showWxQrcode, defaultLanguage, showAntVProductsCard,
-    versions, ecosystems, navs,
-    isHomePage: true,
-  }
 
   const detailProps = {
     githubUrl,
@@ -40,7 +28,7 @@ export const Index = () => {
 
   return (
     <>
-      <Header { ...headerProps } />
+      <Header />
       <Detail { ...detailProps } />
       <Features />
       <Cases />

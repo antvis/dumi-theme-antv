@@ -17,7 +17,6 @@ interface FooterProps extends RcFooterProps {
   rootDomain?: string;
   language?: string;
   githubUrl?: string;
-  location: Location;
 }
 
 /**
@@ -30,7 +29,6 @@ export const Footer: React.FC<FooterProps> = ({
   theme = 'dark',
   language,
   rootDomain = '',
-  location,
   ...restProps
 }) => {
   const { t, i18n } = useTranslation();

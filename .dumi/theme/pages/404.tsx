@@ -7,7 +7,7 @@ import { Footer } from '../slots/Footer';
  */
 const NotFound = () => (
   <>
-    <Header />
+    <Header isHomePage={false} />
     <NotFoundPage />
     <Footer />
   </>
