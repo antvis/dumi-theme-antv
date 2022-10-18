@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useMedia } from 'react-use';
 import cx from 'classnames';
+import { useSiteData } from 'dumi';
 import { useTranslation } from 'react-i18next';
 import {
   GithubOutlined,
@@ -21,7 +22,7 @@ import { LogoWhite } from './LogoWhite';
 
 import styles from './index.module.less';
 
-type HeaderProps = {
+export type HeaderProps = {
   pathPrefix?: string;
   path?: string;
   /** 子标题 */
@@ -78,7 +79,7 @@ type HeaderProps = {
 /**
  * 头部菜单
  */
-export const Header: React.FC<HeaderProps> = ({
+const HeaderComponent: React.FC<HeaderProps> = ({
   subTitle = '',
   subTitleHref,
   pathPrefix = '',
@@ -107,12 +108,11 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
   const { t, i18n } = useTranslation();
   const isAntVHome = isAntVSite && isHomePage; // 是否为AntV官网首页
-  console.log(111, showSearch, isAntVHome);
+  
   const lang =
     typeof defaultLanguage !== 'undefined'
       ? defaultLanguage
       : i18n.language || '';
-  const SubTitleLink = (subTitleHref || '').startsWith('http') ? 'a' : Link;
   const [productMenuVisible, setProductMenuVisible] = useState(false);
   let productMenuHovering = false;
   const onProductMouseEnter = (e: React.MouseEvent) => {
@@ -321,6 +321,7 @@ export const Header: React.FC<HeaderProps> = ({
     </ul>
   );
 
+  console.log(111, subTitle, subTitleHref)
   return (
     <header
       className={cx(styles.header, {
@@ -339,16 +340,7 @@ export const Header: React.FC<HeaderProps> = ({
             <>
               <span className={styles.divider} />
               <h2 className={styles.subProduceName}>
-                {React.createElement(
-                  SubTitleLink,
-                  {
-                    [SubTitleLink === 'a' ? 'href' : 'to']:
-                      typeof subTitleHref === 'undefined'
-                        ? `/${lang}`
-                        : subTitleHref,
-                  },
-                  subTitle,
-                )}
+                <a href="/">{ subTitle }</a>
               </h2>
             </>
           )}
@@ -365,3 +357,25 @@ export const Header: React.FC<HeaderProps> = ({
     </header>
   );
 };
+
+export const Header: React.FC<Partial<HeaderProps>>  = (props) => {
+  const { themeConfig } = useSiteData();
+  const { 
+    title, siteUrl, githubUrl, isAntVSite, subTitleHref,
+    showSearch, showGithubCorner, showGithubStars, showLanguageSwitcher, showWxQrcode, defaultLanguage, showAntVProductsCard,
+    versions, ecosystems, navs,
+  } = themeConfig;
+
+  const headerProps = {
+    subTitle: title,
+    subTitleHref,
+    githubUrl,
+    isAntVSite,
+    siteUrl,
+    showSearch, showGithubCorner, showGithubStars, showLanguageSwitcher, showWxQrcode, defaultLanguage, showAntVProductsCard,
+    versions, ecosystems, navs,
+    isHomePage: true,
+  }
+
+  return <HeaderComponent { ...Object.assign({}, headerProps, props) } />;
+}

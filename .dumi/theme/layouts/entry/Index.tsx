@@ -23,16 +23,6 @@ export const Index = () => {
     id,
   } = themeConfig;
 
-  const headerProps = {
-    subTitle: title,
-    subTitleHref: siteUrl,
-    githubUrl,
-    isAntVSite,
-    showSearch, showGithubCorner, showGithubStars, showLanguageSwitcher, showWxQrcode, defaultLanguage, showAntVProductsCard,
-    versions, ecosystems, navs,
-    isHomePage: true,
-  }
-
   const detailProps = {
     githubUrl,
     showGithubStars,
@@ -54,7 +44,7 @@ export const Index = () => {
 
   return (
     <>
-      <Header {...headerProps} />
+      <Header />
       <Detail {...detailProps} />
       <Features {...featuresProps} />
       <Cases {...caseProps} />
