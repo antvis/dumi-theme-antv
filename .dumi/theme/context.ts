@@ -1,9 +1,7 @@
 import { createContext } from 'react';
 
-interface IThemeAntVContext {
+export type IThemeAntVContext = {
   // TODO: add your context type
 }
 
-const ThemeAntVContext = createContext<IThemeAntVContext>({});
-
-export default ThemeAntVContext;
+export const ThemeAntVContext = createContext<IThemeAntVContext>({});
