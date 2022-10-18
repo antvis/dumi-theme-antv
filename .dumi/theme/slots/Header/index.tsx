@@ -227,7 +227,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
       {
         /** 产品列表 */
         showAntVProductsCard &&
-        <li {...productItemProps}>
+        <li { ...productItemProps }>
           <a>
             所有产品
             {!isAntVHome ? (
@@ -377,5 +377,5 @@ export const Header: React.FC<Partial<HeaderProps>> = (props) => {
     isHomePage: true,
   }
 
-  return <HeaderComponent {...Object.assign({}, headerProps, props)} />;
+  return <HeaderComponent { ...Object.assign({} , headerProps, props)} />;
 }

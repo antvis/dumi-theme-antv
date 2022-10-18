@@ -1,5 +1,5 @@
 import React from 'react';
-import classNames from 'classnames';
+import cx from 'classnames';
 import { useTranslation } from 'react-i18next';
 import Product from './Product';
 import { CATEGORIES, getNewProducts, ProductType } from './getProducts';
@@ -30,7 +30,7 @@ export const Products: React.FC<ProductsProps> = ({ show, language, className })
   return (
     <>
       <div
-        className={classNames(styles.products, className, {
+        className={cx(styles.products, className, {
           [styles.show]: !!show,
         })}
       >

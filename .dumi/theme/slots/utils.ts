@@ -22,13 +22,6 @@ export const ping = (callback: (status: Status) => void): NodeJS.Timeout => {
   return setTimeout(() => finish('timeout'), 1500);
 };
 
-export const capitalize = (s: string): string => {
-  if (typeof s !== 'string') {
-    return '';
-  }
-  return s.charAt(0).toUpperCase() + s.slice(1);
-};
-
 export const getChinaMirrorHost = (host?: string): string => {
   const hostString = typeof host === 'undefined' ? window.location.host : host;
   // antv.vision => antv.gitee.io
