@@ -71,7 +71,7 @@ export const Footer: React.FC<FooterProps> = ({
         },
         {
           title: t('国内镜像'),
-          url: 'https://antv.gitee.io/',
+          url: 'https://antv.antgroup.com/',
         },
       ],
     };
