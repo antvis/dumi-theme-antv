@@ -38,16 +38,16 @@ export const Index = () => {
     id,
   }
 
-  const caseProps = {
+  const casesProps = {
     cases, style, className
   }
 
   return (
     <>
       <Header />
-      <Detail {...detailProps} />
-      <Features {...featuresProps} />
-      <Cases {...caseProps} />
+      <Detail { ...detailProps } />
+      <Features { ...featuresProps } />
+      <Cases { ...casesProps } />
       <Companies title="感谢信赖" companies={companies} />
       <Footer />
     </>
