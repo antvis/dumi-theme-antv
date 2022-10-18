@@ -2,25 +2,26 @@ import type { IApi } from 'dumi';
 
 function generateMetaJSON() {
   // TODO: implement
-  return {};
+  return { a: 1 };
 }
 
 export default (api: IApi) => {
   const pages = [{
     id: 'theme-antv-page-example',
     path: '/example',
-    file: require.resolve('./.dumi/theme/pages/Example/index.tsx'),
+    file: require.resolve('./.dumi/theme/pages/example.tsx'),
   }];
   // FIXME: wrap winPath for windows when dumi exported
-  const contextFilePath = require.resolve("./.dumi/theme/context.ts");
+  const contextFilePath = require.resolve('./.dumi/theme/context.ts');
 
   api.onGenerateFiles(() => {
     // write context provider when generate tmp file
     api.writeTmpFile({
       noPluginDir: true,
-      path: "theme-antv/ContextWrapper.tsx",
-      content: `import { useOutlet } from 'dumi';
-import ThemeAntVContext from '${contextFilePath}';
+      path: 'theme-antv/ContextWrapper.tsx',
+      content: `
+import { useOutlet } from 'dumi';
+import { ThemeAntVContext } from '${contextFilePath}';
 
 export default function ThemeAntVContextWrapper() {
   const outlet = useOutlet();
@@ -34,13 +35,14 @@ export default function ThemeAntVContextWrapper() {
       {outlet}
     </ThemeAntVContext.Provider>
   );
-}`,
+}
+      `,
     });
   });
 
   // wrap context for all pages
   api.addLayouts(() => ({
-    id: "theme-antv-context",
+    id: 'theme-antv-context',
     file: `${api.paths.absTmpPath}/theme-antv/ContextWrapper.tsx`,
   }));
 

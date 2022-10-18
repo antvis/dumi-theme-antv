@@ -107,7 +107,7 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
   const { t, i18n } = useTranslation();
   const isAntVHome = isAntVSite && isHomePage; // 是否为AntV官网首页
-  console.log(111, showSearch, isAntVHome);
+  
   const lang =
     typeof defaultLanguage !== 'undefined'
       ? defaultLanguage
