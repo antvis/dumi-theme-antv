@@ -14,11 +14,13 @@ import { Footer } from '../../slots/Footer';
  */
 export const Index = () => {
   const { themeConfig } = useSiteData();
-  const { 
+  const {
     title, siteUrl, githubUrl, isAntVSite,
     showSearch, showGithubCorner, showGithubStars, showLanguageSwitcher, showWxQrcode, defaultLanguage, showAntVProductsCard,
     versions, ecosystems, navs,
-    detail, news, companies,
+    detail, news, companies, features, cases, className,
+    style,
+    id,
   } = themeConfig;
 
   const headerProps = {
@@ -38,12 +40,24 @@ export const Index = () => {
     ...detail,
   }
 
+  const featuresProps = {
+    title,
+    features,
+    className,
+    style,
+    id,
+  }
+
+  const caseProps = {
+    cases, style, className
+  }
+
   return (
     <>
-      <Header { ...headerProps } />
-      <Detail { ...detailProps } />
-      <Features />
-      <Cases />
+      <Header {...headerProps} />
+      <Detail {...detailProps} />
+      <Features {...featuresProps} />
+      <Cases {...caseProps} />
       <Companies title="感谢信赖" companies={companies} />
       <Footer />
     </>
