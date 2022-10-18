@@ -9,7 +9,7 @@ export default (api: IApi) => {
   const pages = [{
     id: 'theme-antv-page-example',
     path: '/example',
-    file: require.resolve('./.dumi/theme/pages/example.tsx'),
+    file: require.resolve('./.dumi/theme/pages/Example.tsx'),
   }];
   // FIXME: wrap winPath for windows when dumi exported
   const contextFilePath = require.resolve('./.dumi/theme/context.ts');
