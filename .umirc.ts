@@ -2,13 +2,13 @@ import { repository, version } from './package.json';
 
 export default {
   themeConfig: {
-    title: 'G2',
-    description: 'The Grammar of Graphics in JavaScript',
+    title: 'dumi-theme-antv',
+    description: '基于 dumi2 的 AntV 官网主题包',
     defaultLanguage: 'zh',                                              // 默认语言
     isAntVSite: false,                                                  // 是否是 AntV 的大官网
-    siteUrl: 'https://g2.antv.vision',                                  // 官网地址
+    siteUrl: 'https://antv.vision',                                  // 官网地址
     githubUrl: repository.url,                                          // GitHub 地址
-    showSearch: true,                                                  // 是否显示搜索框
+    showSearch: true,                                                   // 是否显示搜索框
     showGithubCorner: true,                                             // 是否显示头部的 GitHub icon
     showGithubStars: true,                                              // 是否显示 GitHub star 数量
     showAntVProductsCard: true,                                         // 是否显示 AntV 产品汇总的卡片
@@ -18,9 +18,8 @@ export default {
     showAPIDoc: true,                                                   // 是否在 demo 页展示API文档
     themeSwitcher: 'g2',
     versions: {                                                         // 历史版本以及切换下拉菜单
-      [version]: 'https://g2.antv.vision/',
-      '3.x': 'https://g2-v3.antv.vision/',
-      '2.x': 'https://antv.vision/old-site/g2/doc/index.html',
+      [version]: 'https://antv.vision/',
+      '0.2.x': 'https://antv.vision/',
     },
     navs: [                                                             // 头部的菜单列表
       {
@@ -51,18 +50,25 @@ export default {
     ecosystems: [                                                       // 头部的菜单中的「周边生态」
       {
         name: {
-          zh: 'G2Plot（开箱即用的图表库）',
-          en: 'G2Plot (A charting library)',
+          zh: 'G2 官网',
+          en: 'G2 website',
         },
-        url: 'https://g2plot.antv.vision',
+        url: 'https://g2.antv.vision',
+      },
+      {
+        name: {
+          zh: 'G6 官网',
+          en: 'G6 website',
+        },
+        url: 'https://g6.antv.vision',
       }
     ],
     tutorials: [
       {
         slug: 'tutorials/about',
         title: {
-          zh: '关于 G2',
-          en: 'About G2',
+          zh: '关于',
+          en: 'About',
         },
         order: 1,
       },
@@ -72,16 +78,8 @@ export default {
         slug: 'gallery',
         icon: 'gallery',
         title: {
-          zh: '',
-          en: '',
-        },
-      },
-      {
-        slug: 'case',
-        icon: 'gallery',
-        title: {
-          zh: '场景案例',
-          en: 'Show Case',
+          zh: '技术栈官网',
+          en: 'Sites',
         },
       },
     ],
@@ -112,18 +110,18 @@ export default {
     },
     /** 首页技术栈介绍 */
     detail: {
-      title: 'G2 可视化引擎',
-      description: 'G2 一套面向常规统计图表，以数据驱动的高交互可视化图形语法，具有高度的易用性和扩展性。使用 G2，你可以无需关注图表各种繁琐的实现细节，一条语句即可使用 Canvas 或 SVG 构建出各种各样的可交互的统计图表。',
+      title: 'dumi-theme-antv 主题包',
+      description: '基于 dumi2 封装，提供灵活多变的 slots 插槽，抽取大量配置，一秒搭建 AntV 的各个技术栈官网。',
       image: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*wo_LToatmbwAAAAAAAAAAABkARQnAQ',
       buttons: [
         {
-          text: '图表示例',
-          link: `/examples/gallery`,
-          type: 'primary',
-        },
-        {
           text: '开始使用',
           link: `/tutorials/getting-started`,
+        },
+        {
+          text: '迁移手册',
+          link: `/tutorials/migration`,
+          type: 'primary',
         },
       ],
     },
