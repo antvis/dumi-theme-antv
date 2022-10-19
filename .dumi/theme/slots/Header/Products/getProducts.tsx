@@ -9,7 +9,7 @@ import {
   ReadOutlined,
   YuqueOutlined,
 } from '@ant-design/icons';
-import { each } from 'lodash';
+import { each } from 'lodash-es';
 import { getChinaMirrorHost } from '../../utils';
 
 const tuple = <T extends string[]>(...args: T) => args;
