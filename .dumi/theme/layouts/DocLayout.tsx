@@ -4,8 +4,25 @@ import { API } from './entry/API';
 import { Manual } from './entry/Manual';
 import { ExampleGallery } from './entry/ExampleGallery';
 import { Header } from '../slots/Header';
-
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
 import '../slots/_.less';
+
+
+
+i18n
+  .use(initReactI18next) // passes i18n down to react-i18next
+  .init({
+    initImmediate: false,
+    fallbackLng: 'zh',
+    keySeparator: false,
+    react: {
+      useSuspense: false,
+    },
+  });
+
+
+const lngs = ['zh', 'en'];
 
 /**
  * DocuLayout 是 dumi2 的内置 layout 入口，在这里使用页面路径进行区分成自己不同的 Layout。

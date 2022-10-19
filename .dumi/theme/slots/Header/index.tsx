@@ -108,7 +108,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
 }) => {
   const { t, i18n } = useTranslation();
   const isAntVHome = isAntVSite && isHomePage; // 是否为AntV官网首页
-  
+
   const lang =
     typeof defaultLanguage !== 'undefined'
       ? defaultLanguage
@@ -178,12 +178,12 @@ const HeaderComponent: React.FC<HeaderProps> = ({
 
   const productItemProps = isWide
     ? {
-        onMouseEnter: onProductMouseEnter,
-        onMouseLeave: onProductMouseLeave,
-      }
+      onMouseEnter: onProductMouseEnter,
+      onMouseLeave: onProductMouseLeave,
+    }
     : {
-        onClick: onToggleProductMenuVisible,
-      };
+      onClick: onToggleProductMenuVisible,
+    };
 
   const menu = (
     <ul
@@ -227,7 +227,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
       {
         /** 产品列表 */
         showAntVProductsCard &&
-        <li {...productItemProps}>
+        <li { ...productItemProps }>
           <a>
             所有产品
             {!isAntVHome ? (
@@ -340,7 +340,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
             <>
               <span className={styles.divider} />
               <h2 className={styles.subProduceName}>
-                <a href="/">{ subTitle }</a>
+                <a href="/">{subTitle}</a>
               </h2>
             </>
           )}
@@ -358,9 +358,9 @@ const HeaderComponent: React.FC<HeaderProps> = ({
   );
 };
 
-export const Header: React.FC<Partial<HeaderProps>>  = (props) => {
+export const Header: React.FC<Partial<HeaderProps>> = (props) => {
   const { themeConfig } = useSiteData();
-  const { 
+  const {
     title, siteUrl, githubUrl, isAntVSite, subTitleHref,
     showSearch, showGithubCorner, showGithubStars, showLanguageSwitcher, showWxQrcode, defaultLanguage, showAntVProductsCard,
     versions, ecosystems, navs,
@@ -377,5 +377,5 @@ export const Header: React.FC<Partial<HeaderProps>>  = (props) => {
     isHomePage: true,
   }
 
-  return <HeaderComponent { ...Object.assign({}, headerProps, props) } />;
+  return <HeaderComponent { ...Object.assign({} , headerProps, props)} />;
 }
