@@ -1,5 +1,4 @@
 import React from 'react';
-import { useSidebarData } from 'dumi';
 import { ManualContent } from '../../slots/ManualContent';
 import { Header } from '../../slots/Header';
 import { Footer } from '../../slots/Footer';
@@ -12,6 +11,8 @@ export type ManualProps = {
  * Manual 路由下的入口
  */
 export const Manual: React.FC<ManualProps> = ({ children }) => {
+
+
   return (
     <>
       <Header isHomePage={false} />

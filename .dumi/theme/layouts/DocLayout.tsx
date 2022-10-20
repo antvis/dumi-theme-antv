@@ -1,4 +1,4 @@
-import { useOutlet, useLocation, useSidebarData  } from 'dumi';
+import { useOutlet, useLocation, useSidebarData } from 'dumi';
 import { Index } from './entry/Index';
 import { API } from './entry/API';
 import { Manual } from './entry/Manual';
@@ -36,15 +36,15 @@ export default () => {
   if (p === '/') return <Index />;
 
   // // API 页面（docs 是兼容之前的 URL）
-  if (p.startsWith('/api/') || p.startsWith('/docs/api/')) {
-    return <API> { outlet } </API>
+  if (p.startsWith('/api') || p.startsWith('/docs/api/')) {
+    return <API> {outlet} </API>
   }
 
   // 教程页面（docs 是兼容之前的 URL）
   if (p.startsWith('/manual/') || p.startsWith('/docs/manual/')) {
     return <Manual> {outlet} </Manual>;
   }
-  
+
   // More router, add here...
 
   return outlet;
