@@ -8,8 +8,8 @@ function generateMetaJSON() {
 export default (api: IApi) => {
   const pages = [{
     id: 'theme-antv-page-example',
-    path: '/example',
-    file: require.resolve('./.dumi/theme/pages/Example.tsx'),
+    path: '/examples',
+    file: require.resolve('./.dumi/theme/pages/Examples.tsx'),
   }];
   // FIXME: wrap winPath for windows when dumi exported
   const contextFilePath = require.resolve('./.dumi/theme/context.ts');

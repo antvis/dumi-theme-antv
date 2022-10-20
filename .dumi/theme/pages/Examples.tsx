@@ -2,19 +2,22 @@ import { useContext } from 'react';
 import { Header } from '../slots/Header';
 import { Footer } from '../slots/Footer';
 import { ThemeAntVContext } from '../context';
+import { ExampleList } from '@/.dumi/theme/slots/ExampleList';
 
 /**
- * 404 页面
+ * Examples 页面
+ *
+ * @author YuZhanglong <loveyzl1123@gmail.com>
  */
-export default () => {
-  // 1. 在 plugin.ts 文件中，读取左边菜单列表，放入到 context 中
-  // 2. 拿到数据，渲染页面
+const Example = () => {
   console.log(useContext(ThemeAntVContext));
   return (
     <>
-      <Header />
-      <div>hello world!</div>
+      <Header isHomePage={false} />
+      <ExampleList />
       <Footer />
     </>
   );
 };
+
+export default Example;
