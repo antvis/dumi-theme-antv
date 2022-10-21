@@ -5,7 +5,7 @@ import { Header } from '../../slots/Header';
 import { Footer } from '../../slots/Footer';
 import { LeftMenu } from '@/.dumi/theme/pages/examples/components/LeftMenu';
 import { Article } from '@/.dumi/theme/pages/examples/components/Article';
-import styles from './examples.module.less';
+import styles from './index.less';
 import NavigatorBanner from '../../slots/Header/Products/NavigatorBanner';
 import { VerticalAlignTopOutlined } from '@ant-design/icons';
 import { usePrevAndNext } from '@/.dumi/theme/slots/Header/Products/hooks';

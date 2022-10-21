@@ -14,7 +14,9 @@ export interface AnnouncementProps {
 }
 
 export interface GalleryPageContentProps {
-  // TODO: 优化类型定义
+  /**
+   * 案例节点
+   */
   exampleSections: Record<any, any>;
 
   /**

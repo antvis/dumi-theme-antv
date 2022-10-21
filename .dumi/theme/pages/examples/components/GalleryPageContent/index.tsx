@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import styles from '@/.dumi/theme/pages/examples/examples.module.less';
+import styles from '@/.dumi/theme/pages/examples/index.less';
 import { Announcement } from '@/.dumi/theme/pages/examples/components/Accouncement';
 import i18n, { t } from 'i18next';
 import { Link } from 'dumi';

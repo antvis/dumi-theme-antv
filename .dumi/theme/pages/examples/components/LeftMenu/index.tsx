@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from '@/.dumi/theme/pages/examples/examples.module.less';
+import styles from '@/.dumi/theme/pages/examples/index.less';
 import { Affix, Anchor, Layout as AntLayout, Menu } from 'antd';
 import Drawer from 'rc-drawer';
 import { createFromIconfontCN, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
