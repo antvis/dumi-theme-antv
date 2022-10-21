@@ -3,8 +3,8 @@ import { Alert } from 'antd';
 import { get } from 'lodash-es';
 import { NotificationFilled } from '@ant-design/icons';
 import cx from 'classnames';
-import styles from './style.module.less';
 import { AnnouncementProps } from '../../types';
+import styles from './style.module.less';
 
 
 /**

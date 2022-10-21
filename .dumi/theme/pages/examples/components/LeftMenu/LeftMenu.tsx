@@ -5,8 +5,8 @@ import { createFromIconfontCN, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant
 import { useMedia } from 'react-use';
 import i18n from 'i18next';
 import { debounce, groupBy } from 'lodash-es';
-import styles from '../../index.module.less';
 import { LeftMenuProps } from '../../types';
+import styles from '../../index.module.less';
 
 
 /**
