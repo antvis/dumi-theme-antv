@@ -3,7 +3,7 @@ import i18n, { t } from 'i18next';
 import { Link } from 'dumi';
 import { Badge } from 'antd';
 import { each, filter, groupBy, size } from 'lodash-es';
-import { Announcement } from '../Accouncement';
+import { Announcement } from '../Accouncement/Announcement';
 import { GalleryPageContentProps, NewDemo } from '../../types';
 import styles from '../../index.module.less';
 

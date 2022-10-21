@@ -13,7 +13,7 @@ export default (api: IApi) => {
     {
       id: 'theme-antv-page-example',
       path: '/:language/examples/*',
-      file: require.resolve('./.dumi/theme/pages/examples/index.tsx'),
+      file: require.resolve('./.dumi/theme/pages/examples/GalleryPageContent.tsx'),
     },
   ];
   // FIXME: wrap winPath for windows when dumi exported
