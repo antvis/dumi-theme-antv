@@ -139,6 +139,7 @@ const Example = () => {
         {demosOnTheNew.length > 0 ? (
           <Announcement
             message={
+              // @ts-ignore
               <div>
                 {t('上新啦，点击直达：')}
                 {demosOnTheNew.map((demo, idx) => (

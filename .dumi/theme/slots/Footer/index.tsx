@@ -12,6 +12,7 @@ import { omit } from 'lodash-es';
 
 import 'rc-footer/assets/index.less';
 import styles from './index.module.less';
+import classnames from 'classnames';
 
 interface FooterProps extends RcFooterProps {
   rootDomain?: string;
@@ -21,18 +22,21 @@ interface FooterProps extends RcFooterProps {
 
 /**
  * 底部菜单
- * @returns 
+ * @returns
  */
 export const Footer: React.FC<FooterProps> = ({
-  columns,
-  bottom,
-  theme = 'dark',
-  language,
-  rootDomain = '',
-  ...restProps
-}) => {
+                                                columns,
+                                                bottom,
+                                                theme = 'dark',
+                                                language,
+                                                rootDomain = '',
+                                                ...restProps
+                                              }) => {
   const { t, i18n } = useTranslation();
   const lang = language || i18n.language;
+
+  // TODO: 待迁移
+  const [withMenu, setWithMenu] = useState<boolean>(true);
 
   const getColums = () => {
     // 如果外部没有传入 columns，则默认展示 antv footer
@@ -86,8 +90,8 @@ export const Footer: React.FC<FooterProps> = ({
         {
           icon: (
             <img
-              src="https://gw.alipayobjects.com/zos/rmsportal/mZBWtboYbnMkTBaRIuWQ.png"
-              alt="seeconf"
+              src='https://gw.alipayobjects.com/zos/rmsportal/mZBWtboYbnMkTBaRIuWQ.png'
+              alt='seeconf'
             />
           ),
           title: 'SEE Conf',
@@ -119,8 +123,8 @@ export const Footer: React.FC<FooterProps> = ({
     const more = {
       icon: (
         <img
-          src="https://gw.alipayobjects.com/zos/rmsportal/nBVXkrFdWHxbZlmMbsaH.svg"
-          alt="more products"
+          src='https://gw.alipayobjects.com/zos/rmsportal/nBVXkrFdWHxbZlmMbsaH.svg'
+          alt='more products'
         />
       ),
       title: t('更多产品'),
@@ -128,8 +132,8 @@ export const Footer: React.FC<FooterProps> = ({
         {
           icon: (
             <img
-              src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg"
-              alt="Ant Design"
+              src='https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg'
+              alt='Ant Design'
             />
           ),
           title: 'Ant Design',
@@ -140,8 +144,8 @@ export const Footer: React.FC<FooterProps> = ({
         {
           icon: (
             <img
-              src="https://gw.alipayobjects.com/zos/rmsportal/XuVpGqBFxXplzvLjJBZB.svg"
-              alt="yuque"
+              src='https://gw.alipayobjects.com/zos/rmsportal/XuVpGqBFxXplzvLjJBZB.svg'
+              alt='yuque'
             />
           ),
           title: t('语雀'),
@@ -152,8 +156,8 @@ export const Footer: React.FC<FooterProps> = ({
         {
           icon: (
             <img
-              src="https://gw.alipayobjects.com/zos/antfincdn/v2%24rh7lqpu/82f338dd-b0a6-41bc-9a86-58aaa9df217b.png"
-              alt="Egg"
+              src='https://gw.alipayobjects.com/zos/antfincdn/v2%24rh7lqpu/82f338dd-b0a6-41bc-9a86-58aaa9df217b.png'
+              alt='Egg'
             />
           ),
           title: 'Egg',
@@ -164,8 +168,8 @@ export const Footer: React.FC<FooterProps> = ({
         {
           icon: (
             <img
-              src="https://gw.alipayobjects.com/zos/rmsportal/DMDOlAUhmktLyEODCMBR.ico"
-              alt="kitchen"
+              src='https://gw.alipayobjects.com/zos/rmsportal/DMDOlAUhmktLyEODCMBR.ico'
+              alt='kitchen'
             />
           ),
           title: 'Kitchen',
@@ -176,8 +180,8 @@ export const Footer: React.FC<FooterProps> = ({
         {
           icon: (
             <img
-              src="https://gw.alipayobjects.com/zos/rmsportal/nBVXkrFdWHxbZlmMbsaH.svg"
-              alt="xtech"
+              src='https://gw.alipayobjects.com/zos/rmsportal/nBVXkrFdWHxbZlmMbsaH.svg'
+              alt='xtech'
             />
           ),
           title: t('蚂蚁体验科技'),
@@ -195,7 +199,8 @@ export const Footer: React.FC<FooterProps> = ({
       maxColumnsPerRow={5}
       theme={theme}
       columns={columns || getColums()}
-      className={cx(styles.footer, {
+      className={classnames(styles.footer, {
+        [styles.withMenu]: withMenu,
       })}
       bottom={
         bottom || (
@@ -203,23 +208,23 @@ export const Footer: React.FC<FooterProps> = ({
             <div className={styles.bottom}>
               <div>
                 <a
-                  href="https://weibo.com/antv2017"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href='https://weibo.com/antv2017'
+                  target='_blank'
+                  rel='noopener noreferrer'
                 >
                   <WeiboOutlined />
                 </a>
                 <a
-                  href="https://zhuanlan.zhihu.com/aiux-antv"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href='https://zhuanlan.zhihu.com/aiux-antv'
+                  target='_blank'
+                  rel='noopener noreferrer'
                 >
                   <ZhihuOutlined />
                 </a>
                 <a
-                  href="https://github.com/antvis"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href='https://github.com/antvis'
+                  target='_blank'
+                  rel='noopener noreferrer'
                 >
                   <GithubOutlined />
                 </a>
@@ -227,7 +232,7 @@ export const Footer: React.FC<FooterProps> = ({
               </div>
               <div>
                 © {new Date().getFullYear()} Made with ❤ by{' '}
-                <a href="https://xtech.antfin.com/">AntV</a>
+                <a href='https://xtech.antfin.com/'>AntV</a>
               </div>
             </div>
           </>
