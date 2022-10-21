@@ -1,16 +1,21 @@
 import type { IApi } from 'dumi';
+import * as fs from 'fs-extra';
+import * as path from 'path';
 
 function generateMetaJSON() {
-  // TODO: implement
-  return { a: 1 };
+  // TODO: 先专注于 UI，写死
+  const content = fs.readFileSync(path.resolve(process.cwd(), 'site-config.json')).toString();
+  return JSON.parse(content);
 }
 
 export default (api: IApi) => {
-  const pages = [{
-    id: 'theme-antv-page-example',
-    path: '/example',
-    file: require.resolve('./.dumi/theme/pages/Example.tsx'),
-  }];
+  const pages = [
+    {
+      id: 'theme-antv-page-example',
+      path: '/:language/examples/*',
+      file: require.resolve('./.dumi/theme/pages/examples/GalleryPageContent.tsx'),
+    },
+  ];
   // FIXME: wrap winPath for windows when dumi exported
   const contextFilePath = require.resolve('./.dumi/theme/context.ts');
 
@@ -29,7 +34,7 @@ export default function ThemeAntVContextWrapper() {
   return (
     <ThemeAntVContext.Provider
       value={{
-        meta: ${JSON.stringify(generateMetaJSON())},
+        meta: ${JSON.stringify(generateMetaJSON())}
       }}
     >
       {outlet}
@@ -51,7 +56,7 @@ export default function ThemeAntVContextWrapper() {
     pages.forEach((page) => {
       routes[page.id] = {
         id: page.id,
-        path: page.path.slice(1),
+        path: page.path,
         absPath: page.path,
         file: page.file,
         parentId: 'DocLayout',

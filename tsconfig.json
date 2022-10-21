@@ -1,4 +1,4 @@
 {
   "extends": "./.umi/tsconfig.json",
-  "include": ["./.dumi/**/*", "index.d.ts"]
+  "include": ["./.dumi/**/*", "index.d.ts", "plugin.ts"]
 }

@@ -16,20 +16,22 @@ interface Case {
   link?: string;
   image: string;
 }
+
 interface CasesProps {
   cases: Case[];
   style?: React.CSSProperties;
   className?: string;
 }
+
 export const Cases: React.FC<CasesProps> = ({ cases = [], style = {}, className }) => {
   const { t } = useTranslation();
-  const slider = React.useRef(null)
+  const slider = React.useRef<any>(null);
 
   const clickPrevious = () => {
-    slider.slickPrev();
+    slider.current?.slickPrev();
   };
   const clickNext = () => {
-    slider.slickNext();
+    slider.current?.slickNext();
   };
 
   const getCases = () => {
@@ -66,8 +68,8 @@ export const Cases: React.FC<CasesProps> = ({ cases = [], style = {}, className 
             <a
               className={styles.detail}
               href={app.link}
-              target="_blank"
-              rel="noopener noreferrer"
+              target='_blank'
+              rel='noopener noreferrer'
             >
               {t('查看详情')}
             </a>
@@ -87,7 +89,7 @@ export const Cases: React.FC<CasesProps> = ({ cases = [], style = {}, className 
               <img
                 className={styles.appLogo}
                 src={app.logo}
-                alt="logo"
+                alt='logo'
                 style={{
                   borderRadius: app.isAppLogo ? '15px' : '0px',
                   boxShadow: app.isAppLogo

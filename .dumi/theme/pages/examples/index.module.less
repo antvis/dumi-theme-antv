@@ -1,5 +1,4 @@
-@import '~antd/es/style/themes/default.less';
-@import '../_.less';
+@import 'antd/es/style/themes/default.less';
 
 // 参考 yuque 右侧 tabOfContent 宽度
 @toc-width: 260px;
@@ -106,7 +105,7 @@
     border-left: 2px solid #873bf4;
   }
 
-  description {
+  .description {
     opacity: 0.68;
   }
 
@@ -203,6 +202,7 @@
 }
 
 .main {
+  background-color: #ffffff;
   width: calc(100% - @toc-width);
   padding-left: 48px;
   padding-right: 24px;
@@ -227,26 +227,40 @@
     }
   }
 
+  .content {
+    .contentReset;
 
-}
-
-.tocSider {
-  width: @toc-width ! important;
+    > div {
+      .contentReset;
+    }
+  }
 }
 
 // reference yuque UI
 .toc {
-  :global {
-    .dumi-default-toc {
-      > li {
-        > a {
-          font-size: 12px;
+  width: @toc-width;
+  float: right;
+  font-size: 12px;
+  background: #fff;
+  max-height: 100vh;
+  overflow: scroll;
 
-          &.active {
-            border-left: 1px solid @primary-color !important;
-          }
-        }
-      }
+  position: sticky;
+  top: 0;
+  padding: 8px 0;
+
+  ul > li {
+    list-style: none !important;
+    padding: 0 !important;
+    margin-left: 1em !important;
+
+    // 超出部分省略号显示
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+
+    a {
+      color: @text-color;
     }
   }
 }
@@ -588,68 +602,4 @@
   font-size: 22px;
   border-radius: 50%;
   text-align: center;
-}
-
-.title {
-  width: 100%;
-  margin-top: 8px;
-  margin-bottom: 20px;
-  font-weight: 500;
-  font-size: 30px;
-  font-family: Avenir, -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
-  line-height: 38px;
-}
-
-.content {
-  display: flex;
-  justify-content: center;
-  min-width: 400px;
-
-  .contentMain {
-    width: 90%;
-  }
-}
-
-.menuSwitch {
-  position: absolute;
-  top: 72px;
-  right: -40px;
-  width: 40px;
-  height: 40px;
-  cursor: pointer;
-  z-index: 0;
-  text-align: center;
-  line-height: 40px;
-  font-size: 16px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #fff;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
-  border-radius: 0 4px 4px 0;
-}
-
-
-
-.readtime {
-  margin-bottom: 1.2em;
-  color: #0d1a26;
-  line-height: 1.5715;
-  list-style: none;
-  -webkit-font-feature-settings: "tnum";
-  font-feature-settings: "tnum";
-  display: inline-block;
-  height: auto;
-  margin: 0 8px 0 0;
-  padding: 0 7px;
-  font-size: 12px;
-  line-height: 20px;
-  white-space: nowrap;
-  background: #fafafa;
-  border: 1px solid #d9d9d9;
-  border-radius: 2px;
-  opacity: 1;
-  transition: all .3s;
-  background-color: #fff;
-  font-family: Avenir, -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
 }
