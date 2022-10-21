@@ -3,13 +3,13 @@ import { BackTop, Layout as AntLayout } from 'antd';
 import { ThemeAntVContext } from '@/.dumi/theme/context';
 import { Header } from '../../slots/Header';
 import { Footer } from '../../slots/Footer';
-import { LeftMenu } from '@/.dumi/theme/pages/examples/components/LeftMenu';
-import { Article } from '@/.dumi/theme/pages/examples/components/Article';
-import styles from './index.less';
 import NavigatorBanner from '../../slots/Header/Products/NavigatorBanner';
 import { VerticalAlignTopOutlined } from '@ant-design/icons';
-import { usePrevAndNext } from '@/.dumi/theme/slots/Header/Products/hooks';
-import { GalleryPageContent } from '@/.dumi/theme/pages/examples/components/GalleryPageContent';
+import { Article } from './components/Article';
+import { LeftMenu } from './components/LeftMenu';
+import { GalleryPageContent } from './components/GalleryPageContent';
+import { usePrevAndNext } from '../../slots/hooks';
+import styles from './index.module.less';
 
 
 /**

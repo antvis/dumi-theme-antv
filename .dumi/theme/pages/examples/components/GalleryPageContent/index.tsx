@@ -1,14 +1,13 @@
 import React, { useMemo } from 'react';
-import styles from '@/.dumi/theme/pages/examples/index.less';
-import { Announcement } from '@/.dumi/theme/pages/examples/components/Accouncement';
 import i18n, { t } from 'i18next';
 import { Link } from 'dumi';
 import { Badge } from 'antd';
 import { each, filter, groupBy, size } from 'lodash-es';
-import { GalleryPageContentProps, NewDemo } from '@/.dumi/theme/pages/examples/types';
+import { Announcement } from '../Accouncement';
+import { GalleryPageContentProps, NewDemo } from '../../types';
+import styles from '../../index.module.less';
 
 const BANNER_LOCALSTORAGE_KEY = 'antv_gallery_banner';
-
 
 /**
  * GalleryPageContent

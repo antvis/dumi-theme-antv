@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
-import styles from '@/.dumi/theme/pages/examples/index.less';
 import { Affix, Anchor, Layout as AntLayout, Menu } from 'antd';
 import Drawer from 'rc-drawer';
 import { createFromIconfontCN, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { useMedia } from 'react-use';
-import SubMenu from 'antd/lib/menu/SubMenu';
 import i18n from 'i18next';
 import { debounce, groupBy } from 'lodash-es';
-import AnchorLink from 'antd/es/anchor/AnchorLink';
-import { LeftMenuProps } from '@/.dumi/theme/pages/examples/types';
+import styles from '../../index.module.less';
+import { LeftMenuProps } from '../../types';
 
 
 /**
@@ -153,7 +151,7 @@ export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
         } = edge;
         return (
           <Menu.Item key={slug}>
-            <AnchorLink
+            <Anchor.Link
               href={`#category-${title.replace(/\s/g, '')}`}
               title={
                 <div>
@@ -191,7 +189,7 @@ export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
             const doc =
               examples.find((item: any) => item.slug === menuItemLocaleKey) || {};
             return (
-              <SubMenu
+              <Menu.SubMenu
                 key={slugString}
                 title={
                   <div>
@@ -210,7 +208,7 @@ export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
                 }
               >
                 {renderAnchorItems(groupedEdges[slugString])}
-              </SubMenu>
+              </Menu.SubMenu>
             );
           })}
         </Menu>

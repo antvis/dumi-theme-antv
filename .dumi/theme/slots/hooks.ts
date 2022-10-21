@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { NavigatorBannerProps } from './ManualContent/NavigatorBanner';
 
 export const useChinaMirrorHost = (): [boolean] => {
   const [isChinaMirrorHost, setIsChinaMirrorHost] = useState(false);
@@ -42,4 +43,37 @@ export const useLogoLink = ({
   }, []);
 
   return [giteeLogoLink || defaultLogoLink];
+};
+
+export const usePrevAndNext = (): NavigatorBannerProps['post'][] => {
+  const [prevAndNext, setPrevAndNext] = useState<NavigatorBannerProps['post'][]>([]);
+  useEffect(() => {
+    const menuNodes = document.querySelectorAll('aside .ant-menu-item a');
+    const currentMenuNode = document.querySelector(
+      'aside .ant-menu-item-selected a',
+    );
+    const currentIndex = Array.from(menuNodes).findIndex(
+      (node) => node === currentMenuNode,
+    );
+    const prevNode =
+      currentIndex - 1 >= 0 ? menuNodes[currentIndex - 1] : undefined;
+    const nextNode =
+      currentIndex + 1 < menuNodes.length
+        ? menuNodes[currentIndex + 1]
+        : undefined;
+    const prev = prevNode
+      ? {
+        slug: prevNode.getAttribute('href') || undefined,
+        title: prevNode.textContent || undefined,
+      }
+      : undefined;
+    const next = nextNode
+      ? {
+        slug: nextNode.getAttribute('href') || undefined,
+        title: nextNode.textContent || undefined,
+      }
+      : undefined;
+    setPrevAndNext([prev, next]);
+  }, []);
+  return prevAndNext;
 };
