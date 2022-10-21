@@ -321,7 +321,6 @@ const HeaderComponent: React.FC<HeaderProps> = ({
     </ul>
   );
 
-  console.log(111, subTitle, subTitleHref)
   return (
     <header
       className={cx(styles.header, {

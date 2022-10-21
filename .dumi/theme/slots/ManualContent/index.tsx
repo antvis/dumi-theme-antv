@@ -2,14 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { Layout, Affix, BackTop, Menu } from 'antd';
 import { useMedia } from 'react-use';
 import Drawer from 'rc-drawer';
-
 import { useSidebarData } from 'dumi';
 import { useNavigate } from "react-router-dom";
 import { MenuFoldOutlined, MenuUnfoldOutlined, VerticalAlignTopOutlined } from '@ant-design/icons';
+import { NavigatorBanner } from './NavigatorBanner';
+import { TOC } from '../TOC';
 
 import 'rc-drawer/assets/index.css';
 import styles from './index.module.less';
-import { NavigatorBanner } from './NavigatorBanner';
+
+
 export type ManualContent = {
   readonly children: any;
 };
@@ -62,6 +64,7 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
     const currentMenuNode = document.querySelector(
       'aside .ant-menu-item-selected',
     );
+    // @ts-ignore
     setCurrentMenuItem(currentMenuNode?.textContent)
     const currentIndex = Array.from(menuNodes).findIndex(
       (node) => node === currentMenuNode,
@@ -101,7 +104,6 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
       forceSubMenuRender
     />
   );
-
   return (
     <>
       <Layout
@@ -128,7 +130,7 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
                 )
               }
               wrapperClassName={styles.menuDrawer}
-              onChange={(open?: Boolean) => setDrawOpen(!!open)}
+              onChange={(open?: boolean) => setDrawOpen(!!open)}
               width={280}
             >
               {menu}
@@ -154,7 +156,14 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
             </div>
           </div>
         </Layout.Content>
-        <Layout.Sider theme="light">TOC</Layout.Sider>
+        { /** @toc-width: 260px; */}
+        <Layout.Sider theme="light" width={260} >
+          <Affix
+            className={styles.toc}
+          >
+            <TOC />
+          </Affix>
+        </Layout.Sider>
       </Layout>
     </>
   );

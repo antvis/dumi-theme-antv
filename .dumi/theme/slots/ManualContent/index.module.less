@@ -1,4 +1,5 @@
 @import '~antd/es/style/themes/default.less';
+@import '../_.less';
 
 // 参考 yuque 右侧 tabOfContent 宽度
 @toc-width: 260px;
@@ -230,31 +231,23 @@
 
 }
 
+.tocSider {
+  width: @toc-width! important;
+}
+
 // reference yuque UI
 .toc {
-  width: @toc-width;
-  float: right;
-  font-size: 12px;
-  background: #fff;
-  max-height: 100vh;
-  overflow: scroll;
+  :global {
+    .dumi-default-toc {
+      >li {
+        >a {
+          font-size: 12px;
 
-  position: sticky;
-  top: 0;
-  padding: 8px 0;
-
-  ul>li {
-    list-style: none !important;
-    padding: 0 !important;
-    margin-left: 1em !important;
-
-    // 超出部分省略号显示
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-
-    a {
-      color: @text-color;
+          &.active {
+            border-left: 1px solid @primary-color !important;
+          }
+        }
+      }
     }
   }
 }

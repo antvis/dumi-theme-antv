@@ -23,7 +23,7 @@ export default {
     },
     navs: [                                                             // 头部的菜单列表
       {
-        slug: 'tutorials',
+        slug: 'manual',
         title: {
           zh: '教程',
           en: 'Tutorials',
@@ -65,7 +65,7 @@ export default {
     ],
     tutorials: [
       {
-        slug: 'tutorials/about',
+        slug: 'manual/about',
         title: {
           zh: '关于',
           en: 'About',
