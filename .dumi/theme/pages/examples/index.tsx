@@ -1,6 +1,5 @@
 import { useContext } from 'react';
 import { BackTop, Layout as AntLayout } from 'antd';
-import { ThemeAntVContext } from '@/.dumi/theme/context';
 import { Header } from '../../slots/Header';
 import { Footer } from '../../slots/Footer';
 import NavigatorBanner from '../../slots/Header/Products/NavigatorBanner';
@@ -9,6 +8,7 @@ import { Article } from './components/Article';
 import { LeftMenu } from './components/LeftMenu';
 import { GalleryPageContent } from './components/GalleryPageContent';
 import { usePrevAndNext } from '../../slots/hooks';
+import { ThemeAntVContext } from '../../context';
 import styles from './index.module.less';
 
 
