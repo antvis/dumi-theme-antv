@@ -1,9 +1,14 @@
-import React from 'react';
-import { Layout, Affix, BackTop } from 'antd';
+import React, { useState } from 'react';
+import { Layout, Affix, BackTop, Menu } from 'antd';
 import { useMedia } from 'react-use';
+import Drawer from 'rc-drawer';
 
+import { useSidebarData } from 'dumi';
+import { useNavigate } from "react-router-dom";
+import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
+
+import 'rc-drawer/assets/index.css';
 import styles from './index.module.less';
-import markdown from './markdown.module.less';
 
 export type ManualContent = {
   readonly children: any;
@@ -14,22 +19,74 @@ export type ManualContent = {
  */
 export const ManualContent: React.FC<ManualContent> = ({ children }) => {
   const isWide = useMedia('(min-width: 767.99px)', true);
+  const [drawOpen, setDrawOpen] = useState(false);
+  const sidebar = useSidebarData();
+  //menu渲染
+  const renderSidebar = sidebar[0].children.map(item => {
+    return {
+      ...item,
+      label: item.title,
+      key: item.link
+    }
+  })
+  const navigate = useNavigate();
+
+  const onClick = (e: any) => {
+    navigate(e.key)
+  };
+
+  const menu = (
+    <Menu
+      onClick={onClick}
+      defaultSelectedKeys={['/api']}
+      defaultOpenKeys={['sub1']}
+      mode="inline"
+      items={renderSidebar}
+      inlineIndent={16}
+      style={{ height: '100%' }}
+      forceSubMenuRender
+    />
+  );
   return (
     <>
-      <Layout>
+      <Layout
+        style={{ background: '#fff' }}
+        hasSider
+        className={styles.layout}>
         <Affix
           offsetTop={0}
           className={styles.affix}
           style={{ height: isWide ? '100vh' : 'inherit' }}
         >
-          <Layout.Sider theme="light">Menu</Layout.Sider>
+
+          {isWide ? (
+            <Layout.Sider width="auto" theme="light" className={styles.sider}>
+              {menu}
+            </Layout.Sider>
+          ) : (
+            <Drawer
+              handler={
+                drawOpen ? (
+                  <MenuFoldOutlined className={styles.menuSwitch} />
+                ) : (
+                  <MenuUnfoldOutlined className={styles.menuSwitch} />
+                )
+              }
+              wrapperClassName={styles.menuDrawer}
+              onChange={(open: Boolean) => setDrawOpen(!!open)}
+              width={280}
+            >
+              {menu}
+            </Drawer>
+          )}
+
         </Affix>
-        
-        <Layout.Content>
-          <div className={styles.title}>项目介绍</div>
+
+        <Layout.Content className={styles.content}>
+          <h1 className={styles.title}>项目介绍</h1>
           <div className={styles.readtime}>阅读时间 6 分钟</div>
-          <div className={markdown.markdown}>
-            { children }
+          <div className={styles.markdown}>
+            {children}
           </div>
           <div className={styles.navigator}>
             <div className={styles.prev}>Prev</div>

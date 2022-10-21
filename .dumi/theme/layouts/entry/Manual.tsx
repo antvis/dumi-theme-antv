@@ -1,5 +1,4 @@
 import React from 'react';
-import { useSidebarData } from 'dumi';
 import { ManualContent } from '../../slots/ManualContent';
 import { Header } from '../../slots/Header';
 import { Footer } from '../../slots/Footer';

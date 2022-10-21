@@ -1,8 +1,6 @@
 ---
-title: G2
-order: 0
-redirect_from:
-  - /en/docs/manual
+title: SRC/Chart
+order: 7
 ---
 
 <div align="center">
