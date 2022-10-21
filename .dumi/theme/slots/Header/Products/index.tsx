@@ -3,7 +3,7 @@ import cx from 'classnames';
 import { useTranslation } from 'react-i18next';
 import Product from './Product';
 import { CATEGORIES, getNewProducts, ProductType } from './getProducts';
-import { useChinaMirrorHost } from './hooks';
+import { useChinaMirrorHost } from '../../hooks';
 import styles from './Product.module.less';
 
 interface ProductsProps {
