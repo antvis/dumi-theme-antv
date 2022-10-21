@@ -30,8 +30,9 @@ const Example = () => {
 
   const { edges = [] } = allMarkdownRemark;
 
-  const currentPath = location.pathname.replace(/\/$/, '');
 
+  // Playground 部分，先注释
+  // const currentPath = location.pathname.replace(/\/$/, '');
   // const isGalleryView = currentPath.includes('/examples/gallery');
   //
   // const { node: markdownRemark } =
@@ -59,7 +60,9 @@ const Example = () => {
   return (
     <>
       <Header isHomePage={false} />
-      <AntLayout>
+      <AntLayout
+        hasSider
+        className={styles.layout}>
         <LeftMenu edges={edges} examples={examples} />
         <Article className={styles.markdown}>
           <div className={styles.main} style={{ width: '100%' }}>
