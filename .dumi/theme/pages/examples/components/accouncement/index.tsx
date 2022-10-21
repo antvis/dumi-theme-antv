@@ -3,7 +3,7 @@ import { Alert } from 'antd';
 import { get } from 'lodash-es';
 import { NotificationFilled } from '@ant-design/icons';
 import cx from 'classnames';
-import styles from './Announcement.module.less';
+import styles from './style.less';
 
 type Props = {
   message: React.ReactNode;
@@ -15,12 +15,12 @@ type Props = {
 /**
  * @description 通用公告组件，根据 bannerId 来更新 lcoalStorage
  */
-const Announcement: React.FC<Props> = ({
-  message,
-  bannerId,
-  localStorageId,
-  ...alertProps
-}) => {
+export const Announcement: React.FC<Props> = ({
+                                                message,
+                                                bannerId,
+                                                localStorageId,
+                                                ...alertProps
+                                              }) => {
   const isBrowser = typeof window !== 'undefined';
   /** 公告 id 更新，更新下本地缓存 */
   useEffect(() => {
@@ -43,7 +43,7 @@ const Announcement: React.FC<Props> = ({
   ) ? (
     <Alert
       message={message}
-      type="info"
+      type='info'
       showIcon
       icon={<NotificationFilled style={{ height: '16px', color: '#4776E8' }} />}
       closable
@@ -61,5 +61,3 @@ const Announcement: React.FC<Props> = ({
     />
   ) : null;
 };
-
-export default Announcement;

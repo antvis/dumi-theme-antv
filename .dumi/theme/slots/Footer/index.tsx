@@ -7,7 +7,6 @@ import {
   ZhihuOutlined,
   QuestionCircleOutlined,
 } from '@ant-design/icons';
-import cx from 'classnames';
 import { omit } from 'lodash-es';
 
 import 'rc-footer/assets/index.less';

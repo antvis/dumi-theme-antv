@@ -3,24 +3,20 @@ import { BackTop, Badge, Layout as AntLayout } from 'antd';
 import { ThemeAntVContext } from '@/.dumi/theme/context';
 import { Header } from '../../slots/Header';
 import { Footer } from '../../slots/Footer';
-import { LeftMenu } from '@/.dumi/theme/pages/examples/left-menu';
-import Article from '@/.dumi/theme/pages/examples/components/article/Article';
+import { LeftMenu } from '@/.dumi/theme/pages/examples/components/leftMenu';
+import { Article } from '@/.dumi/theme/pages/examples/components/article';
 import styles from './examples.module.less';
 import NavigatorBanner from '../../slots/Header/Products/NavigatorBanner';
 import { VerticalAlignTopOutlined } from '@ant-design/icons';
 import { each, filter, groupBy, size } from 'lodash-es';
 import i18n, { t } from 'i18next';
 import { Link } from 'dumi';
-import Announcement from '@/.dumi/theme/pages/examples/components/accouncement/Announcement';
+import { Announcement } from '@/.dumi/theme/pages/examples/components/accouncement';
 import { usePrevAndNext } from '@/.dumi/theme/slots/Header/Products/hooks';
+import { NewDemo } from '@/.dumi/theme/pages/examples/types';
 
 const BANNER_LOCALSTORAGE_KEY = 'antv_gallery_banner';
 
-type NewDemo = {
-  title: string;
-  id: string;
-  category: string;
-};
 
 /**
  * Examples 页面
