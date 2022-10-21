@@ -5,19 +5,10 @@ import i18n, { t } from 'i18next';
 import { Link } from 'dumi';
 import { Badge } from 'antd';
 import { each, filter, groupBy, size } from 'lodash-es';
-import { NewDemo } from '@/.dumi/theme/pages/examples/types';
+import { GalleryPageContentProps, NewDemo } from '@/.dumi/theme/pages/examples/types';
 
 const BANNER_LOCALSTORAGE_KEY = 'antv_gallery_banner';
 
-export interface GalleryPageContentProps {
-  // TODO: 优化类型定义
-  exampleSections: Record<any, any>;
-
-  /**
-   * 所有 DEMO
-   */
-  allDemos: any[];
-}
 
 /**
  * GalleryPageContent
@@ -101,7 +92,7 @@ export const GalleryPageContent: React.FC<GalleryPageContentProps> = (props) => 
         }}
       />
       {/* 是否展示上新公告  */}
-      {demosOnTheNew.length > 0 ? (
+      {demosOnTheNew.length > 0 && (
         <Announcement
           message={
             // @ts-ignore
@@ -120,7 +111,7 @@ export const GalleryPageContent: React.FC<GalleryPageContentProps> = (props) => 
           localStorageId={BANNER_LOCALSTORAGE_KEY}
           bannerId={bannerId}
         />
-      ) : null}
+      )}
       {Categories.map((category: string, i) => (
         <div key={i}>
           {category !== 'OTHER' && (

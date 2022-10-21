@@ -4,24 +4,22 @@ import { get } from 'lodash-es';
 import { NotificationFilled } from '@ant-design/icons';
 import cx from 'classnames';
 import styles from './style.less';
+import { AnnouncementProps } from '@/.dumi/theme/pages/examples/types';
 
-type Props = {
-  message: React.ReactNode;
-  localStorageId: string;
-  bannerId: string;
-  style?: React.CSSProperties;
-};
 
 /**
- * @description 通用公告组件，根据 bannerId 来更新 lcoalStorage
+ * 通用公告组件，根据 bannerId 来更新 localStorage
  */
-export const Announcement: React.FC<Props> = ({
-                                                message,
-                                                bannerId,
-                                                localStorageId,
-                                                ...alertProps
-                                              }) => {
+export const Announcement: React.FC<AnnouncementProps> = (props) => {
+  const {
+    message,
+    bannerId,
+    localStorageId,
+    ...alertProps
+  } = props;
+
   const isBrowser = typeof window !== 'undefined';
+
   /** 公告 id 更新，更新下本地缓存 */
   useEffect(() => {
     try {

@@ -75,7 +75,7 @@
     margin: 0.6em 0;
   }
 
-  pre>code[class*='language-'] {
+  pre > code[class*='language-'] {
     line-height: 1.8;
   }
 
@@ -116,7 +116,7 @@
     padding: 0;
   }
 
-  ul:not(:global(.ant-skeleton-paragraph))>li {
+  ul:not(:global(.ant-skeleton-paragraph)) > li {
     margin-left: 20px;
     padding-left: 4px;
     list-style-type: circle;
@@ -126,14 +126,14 @@
     }
   }
 
-  ol>li {
+  ol > li {
     margin-left: 20px;
     padding-left: 4px;
     list-style-type: decimal;
   }
 
-  ul>li>p,
-  ol>li>p {
+  ul > li > p,
+  ol > li > p {
     margin: 0.2em 0;
   }
 
@@ -192,8 +192,8 @@
     margin: 0;
   }
 
-  >br,
-  >p>br {
+  > br,
+  > p > br {
     clear: both;
   }
 }
@@ -215,14 +215,14 @@
   .contentReset() {
     min-height: 400px;
 
-    >img,
-    >p>img {
+    > img,
+    > p > img {
       max-width: 100%;
       margin: 0.5em 0;
     }
 
-    >br,
-    >p>br {
+    > br,
+    > p > br {
       clear: both;
     }
   }
@@ -231,15 +231,15 @@
 }
 
 .tocSider {
-  width: @toc-width! important;
+  width: @toc-width ! important;
 }
 
 // reference yuque UI
 .toc {
   :global {
     .dumi-default-toc {
-      >li {
-        >a {
+      > li {
+        > a {
           font-size: 12px;
 
           &.active {
@@ -268,7 +268,7 @@
 }
 
 .affix {
-  &>div {
+  & > div {
     height: 100%;
   }
 }
@@ -353,7 +353,7 @@
       transition: all 0.3s;
       margin: 12px;
 
-      >div {
+      > div {
         border: 1px solid @border-color-split;
         border-radius: 6px;
         overflow: hidden;
@@ -372,7 +372,7 @@
         }
       }
 
-      &:hover>div {
+      &:hover > div {
         transform: translateY(-4px);
         border-color: transparent;
         box-shadow: 0 6px 16px rgba(107, 147, 224, 0.14);
@@ -580,7 +580,7 @@
   color: #868484;
   background-color: #fff;
   box-shadow: 0 3px 6px -4px rgba(0, 0, 0, 0.12),
-    0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+  0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
   transition: color 0.3s;
   width: 44px;
   height: 44px;
@@ -628,6 +628,8 @@
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
   border-radius: 0 4px 4px 0;
 }
+
+
 
 .readtime {
   margin-bottom: 1.2em;
