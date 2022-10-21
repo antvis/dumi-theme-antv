@@ -11,8 +11,6 @@ export type ManualProps = {
  * Manual 路由下的入口
  */
 export const Manual: React.FC<ManualProps> = ({ children }) => {
-
-
   return (
     <>
       <Header isHomePage={false} />

@@ -18,7 +18,3 @@ export const API: React.FC<APIProps> = ({ children }) => {
     </Manual>
   );
 }
-
-
-
-
