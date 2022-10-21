@@ -50,7 +50,6 @@ export const PlayGround: React.FC<PlayGroundProps> = ({
   replaceId = 'container',
 }) => {
   const splitPaneSize = 0.62;
-  console.log(111, useSiteData());
   const { t, i18n } = useTranslation();
 
   const { extraLib = '' } = useSiteData().themeConfig.playground;
@@ -214,7 +213,6 @@ insertCss(`;
       }}
       onChange={(value: any) => onCodeChange(value)}
       editorWillMount={(monaco: any) => {
-        console.log(111, monaco)
         try {
           monaco.editor.defineTheme('customTheme', {
             base: 'vs',

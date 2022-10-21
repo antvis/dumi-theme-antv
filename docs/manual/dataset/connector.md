@@ -25,7 +25,6 @@ const dv = new DataSet.DataView().source(testCSV, {
   type: 'csv',
 });
 
-console.log(dv.rows);
 /*
  * dv.rows:
  * [
