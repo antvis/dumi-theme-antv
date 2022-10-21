@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import { Layout, Affix, BackTop, Menu } from 'antd';
+import { Layout, Affix, BackTop, Menu, Anchor } from 'antd';
 import { useMedia } from 'react-use';
 import Drawer from 'rc-drawer';
-
 import { useSidebarData } from 'dumi';
 import { useNavigate } from "react-router-dom";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
+import { TOC } from '../TOC';
 
 import 'rc-drawer/assets/index.css';
 import styles from './index.module.less';
+
 
 export type ManualContent = {
   readonly children: any;
@@ -82,7 +83,7 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
 
         </Affix>
 
-        <Layout.Content className={styles.content}>
+        <Layout.Content className={styles.main}>
           <h1 className={styles.title}>项目介绍</h1>
           <div className={styles.readtime}>阅读时间 6 分钟</div>
           <div className={styles.markdown}>
@@ -94,7 +95,14 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
           </div>
           <BackTop />
         </Layout.Content>
-        <Layout.Sider theme="light">TOC</Layout.Sider>
+        { /** @toc-width: 260px; */ }
+        <Layout.Sider theme="light" width={260} >
+          <Affix
+            className={styles.toc}
+          >
+            <TOC />
+          </Affix>
+        </Layout.Sider>
       </Layout>
     </>
   );

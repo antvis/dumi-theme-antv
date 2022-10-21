@@ -3,6 +3,8 @@ title: 快速上手
 order: 1
 ---
 
+<PlayGround path="a"></PlayGround>
+
 ## 安装
 
 ### 通过 npm 安装
