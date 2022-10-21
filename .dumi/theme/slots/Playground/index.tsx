@@ -17,7 +17,7 @@ import styles from './index.module.less';
 
 const MonacoEditor = loadable(() => import('react-monaco-editor'));
 
-type PlayGroundProps = {
+export type PlayGroundProps = {
   source: string;
   babeledSource: string;
   relativePath?: string;
