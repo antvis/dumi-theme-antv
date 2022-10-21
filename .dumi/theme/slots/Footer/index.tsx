@@ -23,14 +23,16 @@ interface FooterProps extends RcFooterProps {
  * 底部菜单
  * @returns
  */
-export const Footer: React.FC<FooterProps> = ({
-                                                columns,
-                                                bottom,
-                                                theme = 'dark',
-                                                language,
-                                                rootDomain = '',
-                                                ...restProps
-                                              }) => {
+export const Footer: React.FC<FooterProps> = (props) => {
+  const {
+    columns,
+    bottom,
+    theme = 'dark',
+    language,
+    rootDomain = '',
+    ...restProps
+  } = props;
+
   const { t, i18n } = useTranslation();
   const lang = language || i18n.language;
 

@@ -83,17 +83,15 @@ export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
   };
 
 
-  const getExampleOrder = ({
-                             groupedEdgeKey = '',
-                             examples = [],
-                             groupedEdges = {},
-                           }: {
+  const getExampleOrder = (options: {
     groupedEdgeKey: string;
     examples: any[];
     groupedEdges: {
       [key: string]: any[];
     };
   }): number => {
+    const { groupedEdgeKey, groupedEdges, examples } = options;
+
     const key = getMenuItemLocaleKey(groupedEdgeKey);
     if (examples.find((item) => item.slug === key)) {
       return (examples.findIndex((item) => item.slug === key) || 0) + 100;
