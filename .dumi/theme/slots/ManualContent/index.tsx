@@ -4,13 +4,12 @@ import { useMedia } from 'react-use';
 import Drawer from 'rc-drawer';
 import { useSidebarData } from 'dumi';
 import { useNavigate } from "react-router-dom";
-import { MenuFoldOutlined, MenuUnfoldOutlined, VerticalAlignTopOutlined } from '@ant-design/icons';
+import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { NavigatorBanner } from './NavigatorBanner';
 import { TOC } from '../TOC';
 
 import 'rc-drawer/assets/index.css';
 import styles from './index.module.less';
-
 
 export type ManualContent = {
   readonly children: any;
