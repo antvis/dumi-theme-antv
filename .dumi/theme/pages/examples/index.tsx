@@ -3,17 +3,17 @@ import { BackTop, Badge, Layout as AntLayout } from 'antd';
 import { ThemeAntVContext } from '@/.dumi/theme/context';
 import { Header } from '../../slots/Header';
 import { Footer } from '../../slots/Footer';
-import { LeftMenu } from '@/.dumi/theme/pages/examples/components/leftMenu';
-import { Article } from '@/.dumi/theme/pages/examples/components/article';
+import { LeftMenu } from '@/.dumi/theme/pages/examples/components/LeftMenu';
+import { Article } from '@/.dumi/theme/pages/examples/components/Article';
 import styles from './examples.module.less';
 import NavigatorBanner from '../../slots/Header/Products/NavigatorBanner';
 import { VerticalAlignTopOutlined } from '@ant-design/icons';
 import { each, filter, groupBy, size } from 'lodash-es';
 import i18n, { t } from 'i18next';
 import { Link } from 'dumi';
-import { Announcement } from '@/.dumi/theme/pages/examples/components/accouncement';
 import { usePrevAndNext } from '@/.dumi/theme/slots/Header/Products/hooks';
 import { NewDemo } from '@/.dumi/theme/pages/examples/types';
+import { Announcement } from './components/Accouncement';
 
 const BANNER_LOCALSTORAGE_KEY = 'antv_gallery_banner';
 
@@ -26,7 +26,6 @@ const BANNER_LOCALSTORAGE_KEY = 'antv_gallery_banner';
 const Example = () => {
   /** 示例页面的元数据信息 */
   const metaData: any = useContext(ThemeAntVContext);
-  console.log(metaData);
 
   const { allMarkdownRemark, site } = metaData.meta.result.data;
   const {
