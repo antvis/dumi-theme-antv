@@ -14,6 +14,10 @@ export const useChinaMirrorHost = (): [boolean] => {
   return [isChinaMirrorHost];
 };
 
+export const useScrollToTop =()=> {
+  document.body.scrollTop = document.documentElement.scrollTop = 0;
+}
+
 export const useLogoLink = ({
   link = '',
   siteUrl = '',
@@ -77,3 +81,4 @@ export const usePrevAndNext = (): NavigatorBannerProps['post'][] => {
   }, []);
   return prevAndNext;
 };
+

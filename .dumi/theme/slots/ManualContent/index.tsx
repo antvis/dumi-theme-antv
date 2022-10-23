@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Layout, Affix, BackTop, Menu } from 'antd';
+import { Layout, Affix, BackTop, Menu, Tooltip } from 'antd';
 import { useMedia } from 'react-use';
 import Drawer from 'rc-drawer';
-import { useSidebarData } from 'dumi';
+import { useSidebarData,useSiteData } from 'dumi';
 import { useNavigate } from "react-router-dom";
-import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
+import { EditOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { NavigatorBanner } from './NavigatorBanner';
 import { TOC } from '../TOC';
 
 import 'rc-drawer/assets/index.css';
 import styles from './index.module.less';
+import { useScrollToTop } from '../hooks';
 
 export type ManualContent = {
   readonly children: any;
@@ -19,32 +20,45 @@ interface PreAndNext {
   slug?: string | undefined,
   title?: string | undefined
 }
+
+interface linkToTitle{
+  [ket:string] :string
+}
 /**
  * 文档的结构
  */
 export const ManualContent: React.FC<ManualContent> = ({ children }) => {
+  
   const isWide = useMedia('(min-width: 767.99px)', true);
   const [drawOpen, setDrawOpen] = useState(false);
   const sidebar = useSidebarData();
+  const { themeConfig: { githubUrl, relativePath } } = useSiteData();
+
   //menu渲染
+  const linkoTitle: linkToTitle={}
   const renderSidebar = sidebar[0].children.map(item => {
+    const key=item.link 
+    linkoTitle[key]=item.title 
     return {
       ...item,
       label: item.title,
       key: item.link,
-      title: item.link
     }
   })
+
+  console.log(linkoTitle);
+  
   const navigate = useNavigate();
 
+  //点击菜单栏
   const onClick = (e: any) => {
     navigate(e.key)
+    // setCurrentTitle(e.item.props.frontmatter.title)
+    useScrollToTop()
   };
-
   const [defaultSelectedKey, setdefaultSelectedKey] = useState([window.location.pathname])
   const [prev, setPrev] = useState<PreAndNext | undefined>(undefined)
   const [next, setNext] = useState<PreAndNext | undefined>(undefined)
-  const [currentMenuItem, setCurrentMenuItem] = useState(undefined)
 
 
   //监听路由去改变selected menu-item
@@ -64,7 +78,6 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
       'aside .ant-menu-item-selected',
     );
     // @ts-ignore
-    setCurrentMenuItem(currentMenuNode?.textContent)
     const currentIndex = Array.from(menuNodes).findIndex(
       (node) => node === currentMenuNode,
     );
@@ -89,7 +102,24 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
       }
       : undefined))
   }
-
+const getGithubSourceUrl = ({
+    githubUrl,
+    relativePath,
+    prefix,
+  }: {
+    githubUrl: string;
+    relativePath: string;
+    prefix: string;
+  }): string => {
+    // https://github.com/antvis/x6/tree/master/packages/x6-sites
+    if (githubUrl.includes('/tree/master/')) {
+      return `${githubUrl.replace(
+        '/tree/master/',
+        '/edit/master/',
+      )}/${prefix}/${relativePath}`;
+    }
+    return `${githubUrl}/edit/master/${prefix}/${relativePath}`;
+  };
   const menu = (
     <Menu
       onClick={onClick}
@@ -140,9 +170,23 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
 
         <Layout.Content className={styles.content}>
           <div className={styles.contentMain}>
-            <h1 className={styles.title}>{currentMenuItem}
+            <h1>
+              {linkoTitle[window.location.pathname]}
+              <Tooltip title={'在 GitHub 上编辑'}>
+                <a
+                  href={getGithubSourceUrl({
+                    githubUrl,
+                    relativePath,
+                    prefix: 'docs',
+                  })}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.editOnGtiHubButton}
+                >
+                  <EditOutlined />
+                </a>
+              </Tooltip>
             </h1>
-
             <div className={styles.readtime}>阅读时间 6 分钟</div>
             <div className={styles.markdown}>
               {children}
