@@ -28,14 +28,17 @@ interface linkToTitle{
  * 文档的结构
  */
 export const ManualContent: React.FC<ManualContent> = ({ children }) => {
-  
+  const { themeConfig: { githubUrl, relativePath } } = useSiteData();
+  const sidebar = useSidebarData();
+
   const isWide = useMedia('(min-width: 767.99px)', true);
   const [drawOpen, setDrawOpen] = useState(false);
-  const sidebar = useSidebarData();
-  const { themeConfig: { githubUrl, relativePath } } = useSiteData();
+  const navigate = useNavigate();
 
   //menu渲染
-  const linkoTitle: linkToTitle={}
+    //linkoTitle用来映射路由和Title
+  const linkoTitle: linkToTitle = {}
+  
   const renderSidebar = sidebar[0].children.map(item => {
     const key=item.link 
     linkoTitle[key]=item.title 
@@ -46,20 +49,15 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
     }
   })
 
-  console.log(linkoTitle);
-  
-  const navigate = useNavigate();
-
   //点击菜单栏
   const onClick = (e: any) => {
     navigate(e.key)
-    // setCurrentTitle(e.item.props.frontmatter.title)
     useScrollToTop()
   };
   const [defaultSelectedKey, setdefaultSelectedKey] = useState([window.location.pathname])
+  //上一夜下一页
   const [prev, setPrev] = useState<PreAndNext | undefined>(undefined)
   const [next, setNext] = useState<PreAndNext | undefined>(undefined)
-
 
   //监听路由去改变selected menu-item
   useEffect(() => {
@@ -70,7 +68,6 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
     //监听选中的menu-item 拿到 prev and next 
     getPreAndNext()
   }, [defaultSelectedKey])
-
 
   function getPreAndNext() {
     const menuNodes = document.querySelectorAll('aside .ant-menu-item');
@@ -144,7 +141,6 @@ const getGithubSourceUrl = ({
           className={styles.affix}
           style={{ height: isWide ? '100vh' : 'inherit' }}
         >
-
           {isWide ? (
             <Layout.Sider width="auto" theme="light" className={styles.sider}>
               {menu}
@@ -167,7 +163,6 @@ const getGithubSourceUrl = ({
           )}
 
         </Affix>
-
         <Layout.Content className={styles.content}>
           <div className={styles.contentMain}>
             <h1>
@@ -211,4 +206,3 @@ const getGithubSourceUrl = ({
     </>
   );
 };
-
