@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Layout, Affix, BackTop, Menu, Tooltip } from 'antd';
 import { useMedia } from 'react-use';
 import Drawer from 'rc-drawer';
-import { useSidebarData,useSiteData } from 'dumi';
+import { useSidebarData, useSiteData, useFullSidebarData } from 'dumi';
 import { useNavigate } from "react-router-dom";
 import { EditOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { NavigatorBanner } from './NavigatorBanner';
@@ -30,6 +30,9 @@ interface linkToTitle{
 export const ManualContent: React.FC<ManualContent> = ({ children }) => {
   const { themeConfig: { githubUrl, relativePath } } = useSiteData();
   const sidebar = useSidebarData();
+
+  console.log(useFullSidebarData());
+
 
   const isWide = useMedia('(min-width: 767.99px)', true);
   const [drawOpen, setDrawOpen] = useState(false);
