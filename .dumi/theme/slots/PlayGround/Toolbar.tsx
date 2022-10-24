@@ -8,13 +8,14 @@ import {
   FullscreenOutlined,
 } from '@ant-design/icons';
 import { Typography, Tooltip, Modal, Button } from 'antd';
-import path from 'path';
 import { getParameters } from 'codesandbox/lib/api/define';
 import stackblitzSdk from '@stackblitz/sdk';
 import { useTranslation } from 'react-i18next';
-import indentString from 'indent-string';
+
 import { Loading } from '../Loading';
 import { ping } from '../utils';
+import { extractImportDeps, getHtmlCodeTemplate, getCodeSandboxConfig, getStackblitzConfig, getRiddleConfig } from './utils';
+
 import styles from './Toolbar.module.less';
 
 const { Paragraph } = Typography;
@@ -26,8 +27,17 @@ export enum EDITOR_TABS {
 }
 
 type ToolbarProps = {
+  /**
+   * 源码文件，用于传入到三方代码平台
+   */
   sourceCode: string;
+  /**
+   * 生成代码文件名后缀，用于传入到三方代码平台
+   */
   fileExtension: string;
+  /**
+   * 项目标题，用于传入到三方代码平台
+   */
   title:
     | {
         zh?: string;
@@ -35,6 +45,9 @@ type ToolbarProps = {
       }
     | string;
   location?: Location;
+  /**
+   * playground 的一些配置项
+   */
   playground: {
     container?: string;
     playgroundDidMount?: string;
@@ -50,11 +63,29 @@ type ToolbarProps = {
       [key: string]: any;
     };
   };
+  /**
+   * 全屏状态，用于显示不同的 icon 
+   */
   isFullScreen?: boolean;
+  /**
+   * Tabs 数据
+   */
   editorTabs: EDITOR_TABS[];
+  /**
+   * 当前编辑哪个 tab
+   */
   currentEditorTab: EDITOR_TABS;
+  /**
+   * 切换 tab
+   */
   onEditorTabChange: (tab: EDITOR_TABS) => void;
+  /**
+   * 进入/退出全屏
+   */
   onToggleFullscreen?: null | (() => void);
+  /**
+   * 执行代码
+   */
   onExecuteCode: () => void;
 }
 
@@ -73,127 +104,21 @@ export const Toolbar: React.FC<ToolbarProps> = ({
 }) => {
   const { t, i18n } = useTranslation();
 
-  const requireMatches = sourceCode.match(/require\(['"](.*)['"]\)/g) || [];
-  const importMatches = sourceCode.match(/from\s+['"](.*)['"]/g) || [];
-  const deps: {
-    [key: string]: string;
-  } = {};
-  [...requireMatches, ...importMatches].forEach((match: string) => {
-    const requireMatch = match.match(/require\(['"](.*)['"]\)/);
-    if (requireMatch && requireMatch[1]) {
-      deps[requireMatch[1]] = 'latest';
-    }
-    const importMatch = match.match(/from\s+['"](.*)['"]/);
-    if (importMatch && importMatch[1]) {
-      deps[importMatch[1]] = 'latest';
-    }
-  });
-
-  const exmapleTitle =
-    typeof title === 'object' ? title[i18n.language as 'zh' | 'en'] : title;
+  const exampleTitle =
+    (typeof title === 'object' ? title[i18n.language as 'zh' | 'en'] : title) as string;
 
   // 使用 playground.dependencies 定义的版本号
-  const dependencies = playground.dependencies || {};
+  const dependencies = {
+    ...extractImportDeps(sourceCode),
+    ...playground.dependencies,
+  };
   const devDependencies = playground.devDependencies || {};
 
-  Object.keys(dependencies).forEach((name) => {
-    deps[name] = dependencies[name];
-  });
+  const codeSandboxConfig = getCodeSandboxConfig(exampleTitle, sourceCode, fileExtension, dependencies, devDependencies, playground);
+  const riddlePrefillConfig = getRiddleConfig(exampleTitle, sourceCode, fileExtension, dependencies, devDependencies, playground);
+  const stackblitzPrefillConfig = getStackblitzConfig(exampleTitle, sourceCode, fileExtension, dependencies, devDependencies, playground);
 
-  const codeSandboxConfig = {
-    files: {
-      'package.json': {
-        content: {
-          main: `index.${fileExtension}`,
-          dependencies: deps,
-          devDependencies,
-        },
-      },
-      [`index.${fileExtension}`]: {
-        content: sourceCode,
-      },
-      'index.html': {
-        content: playground.container || '<div id="container" />',
-      },
-    } as {
-      [key: string]: any;
-    },
-  };
-
-  function replaceFetchUrl(text: string) {
-    const dataFileMatch = sourceCode.match(/fetch\('(.*)'\)/);
-    if (
-      dataFileMatch &&
-      dataFileMatch.length > 0 &&
-      !dataFileMatch[1].startsWith('http')
-    ) {
-      return text.replace(
-        dataFileMatch[1],
-        path.join(
-          location!.origin || '',
-          location!.pathname || '',
-          '..',
-          dataFileMatch[1],
-        ),
-      );
-    }
-    return text;
-  }
-
-  codeSandboxConfig.files[`index.${fileExtension}`].content =
-    replaceFetchUrl(sourceCode);
-
-  function getHtmlCodeTemplate() {
-    const { htmlCodeTemplate = '', container = '' } = playground;
-    const insertCssMatcher = /insertCss\(`\s*(.*)\s*`\);/;
-    const code = replaceFetchUrl(sourceCode)
-      .replace(/import\s+.*\s+from\s+['"].*['"];?/g, '')
-      .replace(insertCssMatcher, '')
-      .replace(/^\s+|\s+$/g, '');
-    let result = htmlCodeTemplate
-      .replace('{{code}}', indentString(code, 4))
-      .replace('{{title}}', exmapleTitle || 'example');
-    const customStyles = sourceCode.match(insertCssMatcher);
-    if (customStyles && customStyles[1]) {
-      result = result.replace(
-        '</head>',
-        `  <style>\n${indentString(
-          customStyles[1],
-          4,
-        )}\n    </style>\n  </head>`,
-      );
-    }
-    if (container) {
-      result = result.replace(
-        '<body>',
-        `<body>\n${indentString(container, 4)}`,
-      );
-    }
-    return result;
-  }
-
-  const riddlePrefillConfig = {
-    title: exmapleTitle,
-    js: sourceCode,
-    html: playground.container || '<div id="container" />',
-    // 预填的 package.json 代码
-    json: JSON.stringify({
-      dependencies: deps,
-      devDependencies,
-      ...playground.json,
-    }),
-  };
-
-  const stackblitzPrefillConfig = {
-    title: exmapleTitle || '',
-    description: '',
-    template: 'create-react-app',
-    dependencies: deps,
-    files: {
-      [`index.${fileExtension.startsWith('ts') ? 'ts' : 'js'}`]: sourceCode,
-      'index.html': playground.container || '<div id="container" />',
-    },
-  };
+  const htmlCode = getHtmlCodeTemplate(exampleTitle, sourceCode, fileExtension, dependencies, devDependencies, playground);
 
   const [riddleVisible, updateRiddleVisible] = useState(false);
   useEffect(() => {
@@ -262,45 +187,6 @@ export const Toolbar: React.FC<ToolbarProps> = ({
         </form>
       </Tooltip>
       <Paragraph copyable={{ text: sourceCode }} style={{ marginLeft: 6 }} />
-      {playground.htmlCodeTemplate && (
-        <>
-          <Tooltip title={t('HTML 代码')}>
-            <Html5Outlined
-              className={styles.html}
-              onClick={() => updateHtmlModalVisible(true)}
-            />
-          </Tooltip>
-          <Modal
-            visible={htmlModalVisible}
-            title={t('HTML 代码')}
-            onCancel={() => updateHtmlModalVisible(false)}
-            width="60vw"
-            footer={
-              <Button onClick={() => updateHtmlModalVisible(false)}>
-                {t('取消')}
-              </Button>
-            }
-          >
-            <div className={styles.editor}>
-              <Suspense fallback={<Loading />}>
-                <MonacoEditor
-                  height="600px"
-                  language="html"
-                  value={getHtmlCodeTemplate()}
-                  options={{
-                    readOnly: true,
-                    automaticLayout: true,
-                    minimap: {
-                      enabled: false,
-                    },
-                    scrollBeyondLastLine: false,
-                  }}
-                />
-              </Suspense>
-            </div>
-          </Modal>
-        </>
-      )}
       {onToggleFullscreen ? (
         <Tooltip title={isFullScreen ? t('离开全屏') : t('进入全屏')}>
           {isFullScreen ? (

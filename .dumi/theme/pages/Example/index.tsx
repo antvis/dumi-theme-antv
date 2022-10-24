@@ -4,6 +4,8 @@ import { Layout, PageHeader } from 'antd';
 import SplitPane from 'react-split-pane';
 import { Header } from '../../slots/Header';
 import { ExampleSider } from '../../slots/ExampleSider';
+import { ExamplePreview } from '../../slots/ExamplePreview';
+import { PlayGround } from '../../slots/PlayGround';
 
 import styles from './index.module.less';
 
@@ -48,17 +50,19 @@ const Example = () => {
         </Sider>
         <Content className={styles.content}>
           {/** @ts-ignore */}
-          <SplitPane split="vertical" defaultSize="50%">
+          <SplitPane split="vertical" defaultSize="50%" minSize={100}>
             <div className={styles.header}>
               <Layout className={styles.headerContainer}>
                 <PageHeader className={styles.title} title="DEMO 标题 @怀策" />
                 <Content className={styles.preview}>
-                  <div className={styles.preview}>preview @逍为</div>
+                  {/** @todo 逍为，获取 error 信息并显示 */}
+                  <ExamplePreview />
                 </Content>
               </Layout>
             </div>
             <div className={styles.editor}>
-              monaco editor @逍为
+              {/** @todo 逍为，获取源码内容和文件 */}
+              <PlayGround source="" babeledSource="" />
             </div>
           </SplitPane>
         </Content>
