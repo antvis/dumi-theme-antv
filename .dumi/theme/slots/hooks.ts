@@ -14,7 +14,7 @@ export const useChinaMirrorHost = (): [boolean] => {
   return [isChinaMirrorHost];
 };
 
-export const useScrollToTop =()=> {
+export const useScrollToTop = () => {
   document.body.scrollTop = document.documentElement.scrollTop = 0;
 }
 
