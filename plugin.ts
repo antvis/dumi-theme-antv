@@ -10,10 +10,17 @@ function generateMetaJSON() {
 
 export default (api: IApi) => {
   const pages = [
+    // examples gallery page.
     {
-      id: 'theme-antv-page-example',
-      path: '/:language/examples/*',
+      id: 'dumi-theme-antv-page-examples',
+      path: '/:language/examples/',
       file: require.resolve('./.dumi/theme/pages/examples/Examples.tsx'),
+    },
+    // single example preview page.
+    {
+      id: 'dumi-theme-antv-page-example',
+      path: '/:language/examples/:category/:name',
+      file: require.resolve('./.dumi/theme/pages/Example/index.tsx'),
     },
   ];
   // FIXME: wrap winPath for windows when dumi exported
