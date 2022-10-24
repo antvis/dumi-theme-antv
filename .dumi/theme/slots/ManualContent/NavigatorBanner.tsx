@@ -1,8 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Link } from 'dumi';
+import { history } from 'umi';
 import { useTranslation } from 'react-i18next';
 import styles from './NavigatorBanner.module.less';
+import { useScrollToTop } from '../hooks';
 
 export interface NavigatorBannerProps {
   post?: {
@@ -21,13 +22,20 @@ export const NavigatorBanner: React.FC<NavigatorBannerProps> = ({ post, type }) 
   if (!slug || !title) {
     return null;
   }
+
+  function go() {
+    history.push(slug as string)
+    useScrollToTop()
+  }
+
+ 
   return (
-    <Link to={slug} className={classNames(styles.button, styles[type])}>
+    <div className={classNames(styles.button, styles[type])} onClick={go}>
       <div className={styles.label}>
         {t(type === 'prev' ? '上一篇' : '下一篇')}
       </div>
       <div className={styles.title}>{title}</div>
-    </Link>
+   </div>
   );
 };
 
