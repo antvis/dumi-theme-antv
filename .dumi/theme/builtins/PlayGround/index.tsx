@@ -5,10 +5,10 @@ import {
   withTranslation,
   WithTranslation,
 } from 'react-i18next';
-import { PlayGround, PlayGroundProps } from '../../slots/PlayGround';
+import { Playground, PlaygroundProps } from '../../slots/Playground';
 
 export type MdPlayGroundProps = {
-  examples: PlayGroundProps[];
+  examples: PlaygroundProps[];
   path: string;
   height?: number;
   rid?: string;
@@ -24,12 +24,8 @@ const MdPlayGround: React.FC<any> = ({
   const example = examples.find((item: any) => item.relativePath === path);
   if (!example) return null;
   return (
-    <PlayGround
-      source={example.source}
-      babeledSource={example.babeledSource}
-      playground={example.playground}
-      height={height}
-      replaceId={rid}
+    <Playground
+      
     />
   );
 };
