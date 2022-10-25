@@ -2,8 +2,6 @@ import { useOutlet, useLocation} from 'dumi';
 import { Index } from './entry/Index';
 import { API } from './entry/API';
 import { Manual } from './entry/Manual';
-import { ExampleGallery } from './entry/ExampleGallery';
-import { Header } from '../slots/Header';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import '../slots/_.less';
