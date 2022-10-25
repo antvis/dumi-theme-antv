@@ -17,6 +17,10 @@ interface FooterProps extends RcFooterProps {
   rootDomain?: string;
   language?: string;
   githubUrl?: string;
+  /**
+   * 是否为动态 footer
+   */
+  isDynamicFooter?: boolean;
 }
 
 /**
@@ -29,6 +33,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
     bottom,
     theme = 'dark',
     language,
+    isDynamicFooter,
     rootDomain = '',
     ...restProps
   } = props;
@@ -36,10 +41,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
   const { t, i18n } = useTranslation();
   const lang = language || i18n.language;
 
-  // TODO: 待迁移
-  const [withMenu, setWithMenu] = useState<boolean>(true);
-
-  const getColums = () => {
+  const getColumns = () => {
     // 如果外部没有传入 columns，则默认展示 antv footer
     const col1 = {
       title: t('Resources'),
@@ -199,9 +201,9 @@ export const Footer: React.FC<FooterProps> = (props) => {
     <RCFooter
       maxColumnsPerRow={5}
       theme={theme}
-      columns={columns || getColums()}
+      columns={columns || getColumns()}
       className={classnames(styles.footer, {
-        [styles.withMenu]: withMenu,
+        [styles.withMenu]: isDynamicFooter,
       })}
       bottom={
         bottom || (
