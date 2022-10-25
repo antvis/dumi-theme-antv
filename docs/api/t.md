@@ -10,3 +10,6 @@ export default () => <h1>Hello dumi!</h1>;
 ```
 
 ## 2231
+
+
+<Playground path="a.ts"></Playground>
