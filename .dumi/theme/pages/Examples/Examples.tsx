@@ -33,7 +33,7 @@ const Example = () => {
 
   // Playground 部分，先注释
   // const currentPath = location.pathname.replace(/\/$/, '');
-  // const isGalleryView = currentPath.includes('/examples/gallery');
+  // const isGalleryView = currentPath.includes('/Examples/gallery');
   //
   // const { node: markdownRemark } =
   // edges.find((edge: any) => {
@@ -42,8 +42,8 @@ const Example = () => {
   //   } = edge.node;
   //
   //   if (
-  //     /\/examples\/.*\/API$/.test(currentPath) ||
-  //     /\/examples\/.*\/design$/.test(currentPath)
+  //     /\/Examples\/.*\/API$/.test(currentPath) ||
+  //     /\/Examples\/.*\/design$/.test(currentPath)
   //   ) {
   //     return currentPath.indexOf(slug) >= 0;
   //   }
