@@ -4,8 +4,9 @@ import { Layout, PageHeader } from 'antd';
 import SplitPane from 'react-split-pane';
 import { Header } from '../../slots/Header';
 import { ExampleSider } from '../../slots/ExampleSider';
-import { ExamplePreview } from '../../slots/ExamplePreview';
+import { CodePreview } from '../../slots/CodePreview';
 import { PlayGround } from '../../slots/PlayGround';
+import { CodeEditor } from '../../slots/CodeEditor';
 
 import styles from './index.module.less';
 
@@ -56,13 +57,13 @@ const Example = () => {
                 <PageHeader className={styles.title} title="DEMO 标题 @怀策" />
                 <Content className={styles.preview}>
                   {/** @todo 逍为，获取 error 信息并显示 */}
-                  <ExamplePreview />
+                  <CodePreview error={new Error('abc')} header={'awfwef'}  />
                 </Content>
               </Layout>
             </div>
             <div className={styles.editor}>
               {/** @todo 逍为，获取源码内容和文件 */}
-              <PlayGround source="" babeledSource="" />
+              <CodeEditor source="" babeledSource="" onError={() => {}} onFullscreen={() => {}} onDestroy={() => {}} onReady={() => {}} />
             </div>
           </SplitPane>
         </Content>
