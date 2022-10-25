@@ -1,6 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Layout } from 'antd';
+import { noop } from 'lodash-es';
 import SplitPane from 'react-split-pane';
 import { Header } from '../../slots/Header';
 import { ExampleSider } from '../../slots/ExampleSider';
@@ -36,7 +37,7 @@ const Example: React.FC<{}> = () => {
   const { language, category, name } = useParams<ExampleParams>();
 
   // @todo 逍为
-  const header = <CodeHeader title="hello world" relativePath="" githubUrl="" />
+  const header = <CodeHeader title="hello world" relativePath="a.ts" githubUrl="" />
 
   return (
     <div className={styles.example}>
@@ -60,7 +61,7 @@ const Example: React.FC<{}> = () => {
             {/** @todo 逍为，和编辑器联动 */}
             <CodePreview error={new Error('abc')} header={header} />
             {/** @todo 逍为，获取源码内容和文件 */}
-            <CodeEditor source="" babeledSource="" onError={() => {}} onFullscreen={() => {}} onDestroy={() => {}} onReady={() => {}} />
+            <CodeEditor source="" babeledSource="" relativePath="a.ts" onError={noop} onFullscreen={noop} onDestroy={noop} onReady={noop} />
           </SplitPane>
         </Content>
       </Layout>

@@ -109,8 +109,6 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
     window.dispatchEvent(e);
   };
 
-  const runCode = useCallback(debounce(execute, 300), []);
-
   const executeCode = useCallback(debounce(() => {
     if (!compiledCode) {
       return;
