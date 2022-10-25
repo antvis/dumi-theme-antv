@@ -11,7 +11,6 @@ import { CodeHeader } from '../../slots/CodePreview/CodeHeader';
 
 import styles from './index.module.less';
 
-
 const { Sider, Content } = Layout;
 
 
