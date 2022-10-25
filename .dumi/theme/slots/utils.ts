@@ -35,3 +35,14 @@ export const getChinaMirrorHost = (host?: string): string => {
   }
   return hostString;
 };
+
+export function getGithubSourceUrl(githubUrl: string, relativePath: string, prefix: string = 'examples'): string {
+  // https://github.com/antvis/x6/tree/master/packages/x6-sites
+  if (githubUrl.includes('/tree/master/')) {
+    return `${githubUrl.replace(
+      '/tree/master/',
+      '/edit/master/',
+    )}/${prefix}/${relativePath}`;
+  }
+  return `${githubUrl}/edit/master/${prefix}/${relativePath}`;
+};
