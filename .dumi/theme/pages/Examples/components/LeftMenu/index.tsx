@@ -5,8 +5,9 @@ import { createFromIconfontCN, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant
 import { useMedia } from 'react-use';
 import { debounce, groupBy } from 'lodash-es';
 import { LeftMenuProps } from '../../types';
-import styles from '../../index.module.less';
 import { useLocale } from 'dumi';
+import { getGroupedEdges, getGroupedEdgesDataEdit } from '@/.dumi/theme/slots/utils';
+import styles from '../../index.module.less';
 
 
 /**
@@ -17,7 +18,7 @@ import { useLocale } from 'dumi';
  */
 export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
   const { edges, examples } = props;
-  const locale = useLocale()
+  const locale = useLocale();
   const isWide = useMedia('(min-width: 767.99px)', true);
   const [drawOpen, setDrawOpen] = useState(false);
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
@@ -56,21 +57,6 @@ export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
     }
   }, 300);
 
-  const groupedEdges = groupBy(
-    edges,
-    ({
-       node: {
-         fields: { slug: slugString },
-       },
-     }: any) => {
-      // API.md and design.md
-      if (slugString.endsWith('/API') || slugString.endsWith('/design')) {
-        return slugString.split('/').slice(0, -2).join('/');
-      }
-      // index.md
-      return slugString.split('/').slice(0, -1).join('/');
-    },
-  );
 
   const getMenuItemLocaleKey = (slug = '') => {
     const slugPieces = slug.split('/');
@@ -80,42 +66,10 @@ export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
       .join('/');
   };
 
-
-  const getExampleOrder = (options: {
-    groupedEdgeKey: string;
-    examples: any[];
-    groupedEdges: {
-      [key: string]: any[];
-    };
-  }): number => {
-    const { groupedEdgeKey, groupedEdges, examples } = options;
-
-    const key = getMenuItemLocaleKey(groupedEdgeKey);
-    if (examples.find((item) => item.slug === key)) {
-      return (examples.findIndex((item) => item.slug === key) || 0) + 100;
-    }
-    if (!groupedEdges[groupedEdgeKey] && !groupedEdges[groupedEdgeKey].length) {
-      return 0;
-    }
-    return groupedEdges[groupedEdgeKey][0].node.frontmatter.order || 0;
-  };
+  const groupedEdges = getGroupedEdges(edges);
 
   // 提取出筛选 和 排序的方法 好在获取treeData 的时候使用
-  const groupedEdgesDataEdit = Object.keys(groupedEdges)
-    .filter((key) => key.startsWith(`/${locale}/`))
-    .sort((a: string, b: string) => {
-      const aOrder = getExampleOrder({
-        groupedEdgeKey: a,
-        examples,
-        groupedEdges,
-      });
-      const bOrder = getExampleOrder({
-        groupedEdgeKey: b,
-        examples,
-        groupedEdges,
-      });
-      return aOrder - bOrder;
-    });
+  const groupedEdgesDataEdit = getGroupedEdgesDataEdit(examples, edges, locale.id);
 
   const renderAnchorItems = (edges: any[]) =>
     edges
@@ -166,7 +120,7 @@ export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
         );
       });
 
-  const menu = () => {
+  const renderMenu = () => {
     return (
       <Anchor className={styles.galleryAnchor} onChange={onAnchorLinkChange}>
         <Menu
@@ -223,7 +177,7 @@ export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
     >
       {isWide ? (
         <AntLayout.Sider width='auto' theme='light' className={styles.sider}>
-          {menu()}
+          {renderMenu()}
         </AntLayout.Sider>
       ) : (
         <Drawer
@@ -238,7 +192,7 @@ export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
           onChange={(open: any) => setDrawOpen(!!open)}
           width={280}
         >
-          {menu()}
+          {renderMenu()}
         </Drawer>
       )}
     </Affix>

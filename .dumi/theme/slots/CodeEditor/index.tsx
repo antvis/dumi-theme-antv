@@ -1,5 +1,6 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react';
 import { useSiteData, useIntl, useLocale } from 'dumi';
+// @ts-ignore
 import loadable from '@loadable/component';
 import { debounce, noop } from 'lodash-es';
 

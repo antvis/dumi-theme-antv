@@ -4,7 +4,7 @@ import { get } from 'lodash-es';
 import { NotificationFilled } from '@ant-design/icons';
 import cx from 'classnames';
 import { AnnouncementProps } from '../../types';
-import styles from './style.module.less';
+import styles from './index.module.less';
 
 
 /**

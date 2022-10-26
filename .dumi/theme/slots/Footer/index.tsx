@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { default as RCFooter, FooterProps as RcFooterProps } from 'rc-footer';
 import {
   GithubOutlined,
@@ -13,6 +13,7 @@ import { useT } from '../hooks';
 
 import 'rc-footer/assets/index.less';
 import styles from './index.module.less';
+
 interface FooterProps extends RcFooterProps {
   rootDomain?: string;
   language?: string;
@@ -37,7 +38,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
     rootDomain = '',
     ...restProps
   } = props;
-  const locale = useLocale()
+  const locale = useLocale();
   const lang = locale.id;
 
   const getColumns = () => {
