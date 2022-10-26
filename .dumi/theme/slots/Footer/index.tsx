@@ -10,8 +10,8 @@ import { omit } from 'lodash-es';
 import classnames from 'classnames';
 import { useLocale } from 'dumi';
 import { useT } from '../hooks';
-import 'rc-footer/assets/index.less
-';
+
+import 'rc-footer/assets/index.less';
 import styles from './index.module.less';
 interface FooterProps extends RcFooterProps {
   rootDomain?: string;
