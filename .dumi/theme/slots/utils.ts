@@ -1,5 +1,4 @@
 import { groupBy } from 'lodash-es';
-import i18n from 'i18next';
 
 type Status = 'responded' | 'error' | 'timeout';
 
@@ -60,7 +59,7 @@ export const getAllDemosInCategory = (allDemos: any[], lang: string) => {
   });
 };
 
-export const getSortedCategories = (allDemosInCategory: any) => {
+export const getSortedCategories = (allDemosInCategory: any, locale: string) => {
   return Object.keys(allDemosInCategory).sort(
     (a: string, b: string) => {
       if (a === 'OTHER') {
@@ -70,8 +69,8 @@ export const getSortedCategories = (allDemosInCategory: any) => {
         return 1;
       }
       return (
-        allDemosInCategory[a][0].postFrontmatter[i18n.language].order -
-        allDemosInCategory[b][0].postFrontmatter[i18n.language].order
+        allDemosInCategory[a][0].postFrontmatter[locale].order -
+        allDemosInCategory[b][0].postFrontmatter[locale].order
       );
     },
   );
@@ -150,7 +149,7 @@ export const getTreeDataByExamplesAndEdges = (examples: any, edges: any, locale:
       examples.find((item: any) => item.slug === menuItemLocaleKey) || {};
 
     return {
-      title: doc && doc.title ? doc.title[i18n.language] : menuItemLocaleKey,
+      title: doc && doc.title ? doc.title[locale] : menuItemLocaleKey,
       value: slugString,
       icon: doc.icon,
       children: getGroupedEdges(edges)[slugString].filter((edge) => {

@@ -92,7 +92,7 @@ const Example: React.FC<{}> = () => {
   }, [examples]);
 
   const allDemosInCategory = getAllDemosInCategory(allDemos, locale.id);
-  const sortedCategories = getSortedCategories(allDemosInCategory);
+  const sortedCategories = getSortedCategories(allDemosInCategory, locale.id);
 
   // 提取出来获取 唯一value值的 方法
   const getPath = (item: PlayGroundItemProps) => {
