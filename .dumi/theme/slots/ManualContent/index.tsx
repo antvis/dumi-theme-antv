@@ -46,8 +46,10 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
   
   let matchRoute = window.location.pathname
   
-  const reg = /(\/[A-z]*\/?\/[A-z]*)\/?/
+  const reg = window.location.pathname.startsWith('/en') ? /(\/[A-z]*\/?\/[A-z]*)\/?/ : /(\/[A-z]*)\/?/
   const mainRoute = matchRoute.match(reg)
+  console.log(mainRoute);
+  
   const currentBaseRoute = mainRoute![1]
 
   const aboutRoutes=[]
