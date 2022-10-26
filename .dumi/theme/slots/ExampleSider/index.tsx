@@ -232,6 +232,7 @@ export const ExampleSider: React.FC<ExampleSiderProps> = (props) => {
           onClick={() => {
             if (item.value?.match(window.location.pathname)) {
               window.history.replaceState({}, '', `${item.value}`);
+              console.log(item);
               updateCurrentExample(item as any);
             } else {
               window.location.href = `${window.location.origin}${item.value}`;

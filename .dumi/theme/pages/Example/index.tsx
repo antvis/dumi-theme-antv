@@ -1,7 +1,7 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Layout } from 'antd';
-import { groupBy, noop } from 'lodash-es';
+import { noop } from 'lodash-es';
 import SplitPane from 'react-split-pane';
 import { Header } from '../../slots/Header';
 import { ExampleSider, PlayGroundItemProps, TreeItem } from '../../slots/ExampleSider';
@@ -12,7 +12,7 @@ import { CodeHeader } from '../../slots/CodePreview/CodeHeader';
 import styles from './index.module.less';
 import { ThemeAntVContext } from '@/.dumi/theme/context';
 import i18n from 'i18next';
-import { getSortedCategories } from '@/.dumi/theme/slots/utils';
+import { getAllDemosInCategory, getSortedCategories, getTreeDataByExamplesAndEdges } from '@/.dumi/theme/slots/utils';
 
 const { Sider, Content } = Layout;
 
@@ -41,7 +41,54 @@ const Example: React.FC<{}> = () => {
   /** 示例页面的元数据信息 */
   const metaData: any = useContext(ThemeAntVContext);
 
-  const { allDemos } = metaData.meta.result.pageContext;
+  const { exampleSections = {}, allDemos = [] } = metaData.meta.result.pageContext;
+
+  const { allMarkdownRemark, site } = metaData.meta.result.data;
+
+  const {
+    siteMetadata: {
+      githubUrl,
+      playground,
+      showExampleDemoTitle,
+      examples = [],
+    },
+  } = site;
+
+  const { edges = [] } = allMarkdownRemark;
+
+  const [currentExample, updateCurrentExample] =
+    useState<PlayGroundItemProps>();
+
+
+  useEffect(() => {
+    if (currentExample || !examples || !exampleSections?.examples?.length) {
+      return;
+    }
+
+    let defaultExample = exampleSections.examples[0];
+    const pathName = location.pathname.split('/');
+    const dirname = pathName.slice(2).join('\\/');
+    const fullName = `${pathName.slice(3).join('\\/')}\\/demo\\/${location.hash?.replace('#', '').replace('/', '\\/')}`;
+    const dirnameReg = new RegExp(`.+\\/${dirname}.+`);
+    const fullNameReg = new RegExp(`${fullName}\\.(jsx|tsx|ts|js)$`);
+
+    debugger
+
+    for (let i = 0; i < allDemos.length; i += 1) {
+      const item = allDemos[i];
+      if (dirnameReg.test(item.absolutePath)) {
+        defaultExample = item;
+
+        if (fullNameReg.test(item.relativePath)) {
+          break;
+        }
+      }
+      if (!location.hash) {
+        break;
+      }
+    }
+    updateCurrentExample(defaultExample);
+  }, [examples]);
 
   // 获取 demo 的 Category 分类
   const getDemoCategory = (demo: any, lang = i18n.language) => {
@@ -51,12 +98,14 @@ const Example: React.FC<{}> = () => {
     return demo.postFrontmatter[lang].title;
   };
 
-  const allDemosInCategory = groupBy(allDemos || [], getDemoCategory);
-
+  const allDemosInCategory = getAllDemosInCategory(allDemos);
   const sortedCategories = getSortedCategories(allDemosInCategory);
 
   // 提取出来获取 唯一value值的 方法
   const getPath = (item: PlayGroundItemProps) => {
+    if (!item) {
+      debugger
+    }
     const demoSlug = item.relativePath?.replace(
       /\/demo\/(.*)\..*/,
       (_: string, filename: string) => {
@@ -91,8 +140,7 @@ const Example: React.FC<{}> = () => {
         value: '',
         children: [],
       };
-
-      allDemos[category].forEach((item: PlayGroundItemProps, index: number) => {
+      allDemosInCategory[category].forEach((item: PlayGroundItemProps, index: number) => {
         const path = getPath(item);
         if (index === 0) {
           root.value = `root::${path}`;
@@ -113,7 +161,7 @@ const Example: React.FC<{}> = () => {
 
     const newTreeData: TreeItem[] = [];
     // 扁平化 一级菜单中的数据， 示例有些并不是在第三层， 也有在第二层
-    treeData.forEach((treeItem) => {
+    getTreeDataByExamplesAndEdges(examples, edges).forEach((treeItem) => {
       const slugPieces = treeItem.value?.split('/');
       if (!slugPieces) return;
       if (slugPieces.length <= 3) {
@@ -127,7 +175,7 @@ const Example: React.FC<{}> = () => {
   };
 
 
-  // @todo 逍为
+  // @TODO 逍为
   const header = <CodeHeader title='hello world' relativePath='a.ts' githubUrl='' />;
 
   return (
@@ -136,20 +184,20 @@ const Example: React.FC<{}> = () => {
       <Layout className={styles.container}>
         <Sider
           collapsedWidth={0}
-          width={250} // 多长好不晓得，250 差不多
+          width={250}
           trigger={null}
           collapsible
           className={styles.sider}
           theme='light'
         >
-          <div className={styles.exampleList}>
+          {currentExample && <div className={styles.exampleList}>
             <ExampleSider
               showExampleDemoTitle={showExampleDemoTitle}
               getPath={getPath}
               currentExample={currentExample}
               updateCurrentExample={updateCurrentExample}
               treeData={getTreeData()} />
-          </div>
+          </div>}
         </Sider>
         <Content className={styles.content}>
           {/** @ts-ignore */}

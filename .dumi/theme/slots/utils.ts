@@ -144,3 +144,27 @@ export const getGroupedEdgesDataEdit = (examples: any, edges: any) => {
       return aOrder - bOrder;
     });
 };
+
+export const getTreeDataByExamplesAndEdges = (examples: any, edges: any) => {
+  return getGroupedEdgesDataEdit(examples, edges).map((slugString) => {
+    const menuItemLocaleKey = getMenuItemLocaleKey(slugString);
+    const doc =
+      examples.find((item: any) => item.slug === menuItemLocaleKey) || {};
+
+    return {
+      title: doc && doc.title ? doc.title[i18n.language] : menuItemLocaleKey,
+      value: slugString,
+      icon: doc.icon,
+      children: getGroupedEdges(edges)[slugString].filter((edge) => {
+        const {
+          node: {
+            fields: { slug },
+          },
+        } = edge;
+        return !(slug.endsWith('/API') ||
+          slug.endsWith('/design') ||
+          slug.endsWith('/gallery'));
+      }),
+    };
+  });
+};
