@@ -4,9 +4,9 @@ import { Header } from '../../slots/Header';
 import { Footer } from '../../slots/Footer';
 import NavigatorBanner from '../../slots/Header/Products/NavigatorBanner';
 import { VerticalAlignTopOutlined } from '@ant-design/icons';
-import { Article } from './components/Article/Article';
-import { LeftMenu } from './components/LeftMenu/LeftMenu';
-import { GalleryPageContent } from './components/GalleryPageContent/GalleryPageContent';
+import { Article } from './components/Article';
+import { LeftMenu } from './components/LeftMenu';
+import { GalleryPageContent } from './components/GalleryPageContent';
 import { usePrevAndNext } from '../../slots/hooks';
 import { ThemeAntVContext } from '../../context';
 import styles from './index.module.less';
@@ -29,30 +29,6 @@ const Example = () => {
   const { exampleSections = {}, allDemos = [] } = metaData.meta.result.pageContext;
 
   const { edges = [] } = allMarkdownRemark;
-
-
-  // Playground 部分，先注释
-  // const currentPath = location.pathname.replace(/\/$/, '');
-  // const isGalleryView = currentPath.includes('/examples/gallery');
-  //
-  // const { node: markdownRemark } =
-  // edges.find((edge: any) => {
-  //   const {
-  //     fields: { slug },
-  //   } = edge.node;
-  //
-  //   if (
-  //     /\/examples\/.*\/API$/.test(currentPath) ||
-  //     /\/examples\/.*\/design$/.test(currentPath)
-  //   ) {
-  //     return currentPath.indexOf(slug) >= 0;
-  //   }
-  //   return (
-  //     currentPath === slug ||
-  //     currentPath.endsWith(slug)
-  //   );
-  // }) || {};
-
 
   const [prev, next] = usePrevAndNext();
 

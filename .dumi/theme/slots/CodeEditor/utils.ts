@@ -1,4 +1,5 @@
 import path from 'path';
+// @ts-ignore
 import { transform } from '@babel/standalone';
 import indentString from 'indent-string';
 
@@ -24,7 +25,7 @@ export function replaceFetchUrl(sourceCode: string) {
 
 /**
  * 通过代码提取代码片段的 pkg 依赖
- * @param sourceCode 
+ * @param sourceCode
  */
 export function extractImportDeps(sourceCode: string) {
   const requireMatches = sourceCode.match(/require\(['"](.*)['"]\)/g) || [];
@@ -143,9 +144,9 @@ insertCss(`;
  * 执行代码
  * @param code 运行的代码
  * @param node 运行的节点
- * @param container 示例最终显示的位置 
- * @param replaceId 
- * @param cb 回调错误 
+ * @param container 示例最终显示的位置
+ * @param replaceId
+ * @param cb 回调错误
  */
 export function execute(code: string, node: HTMLDivElement, exampleContainer: string | undefined, replaceId = 'container') {
   const script = document.createElement('script');
@@ -167,6 +168,10 @@ try {
 
 /**
  * 编译代码
+<<<<<<< HEAD
+=======
+ * @param value
+>>>>>>> v3
  */
 export function compile(value: string, relativePath: string) {
   const { code } = transform(value, {

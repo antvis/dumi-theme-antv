@@ -1,6 +1,6 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react';
-import { useSiteData, useLocale } from 'dumi';
 import MonacoEditor, { loader } from '@monaco-editor/react';
+import { useSiteData, useLocale } from 'dumi';
 import { debounce, noop } from 'lodash-es';
 import { replaceInsertCss, execute, compile } from './utils';
 import { Toolbar, EDITOR_TABS } from './Toolbar';
