@@ -7,13 +7,12 @@ import {
   QuestionCircleOutlined,
 } from '@ant-design/icons';
 import { omit } from 'lodash-es';
-
-import 'rc-footer/assets/index.less';
-import styles from './index.module.less';
 import classnames from 'classnames';
 import { useLocale } from 'dumi';
 import { useT } from '../hooks';
-
+import 'rc-footer/assets/index.less
+';
+import styles from './index.module.less';
 interface FooterProps extends RcFooterProps {
   rootDomain?: string;
   language?: string;
@@ -38,7 +37,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
     rootDomain = '',
     ...restProps
   } = props;
-  const locale=useLocale()
+  const locale = useLocale()
   const lang = locale.id;
 
   const getColumns = () => {

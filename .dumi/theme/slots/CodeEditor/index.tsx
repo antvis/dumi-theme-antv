@@ -4,9 +4,7 @@ import loadable from '@loadable/component';
 import { debounce, noop } from 'lodash-es';
 
 import { replaceInsertCss, execute, compile } from './utils';
-
 import { Toolbar, EDITOR_TABS } from './Toolbar';
-
 import styles from './index.module.less';
 
 const MonacoEditor = loadable(() => import('react-monaco-editor'));
@@ -85,7 +83,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
   onError = noop,
   onFullscreen = noop,
 }) => {
-  const locale=useLocale()
+  const locale = useLocale()
   const { extraLib = '' } = useSiteData().themeConfig.playground;
   const [compiledCode, setCompiledCode] = useState(babeledSource);
   // 编辑器两个 tab，分别是代码和数据

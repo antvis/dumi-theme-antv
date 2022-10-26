@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import cx from 'classnames';
 import gh from 'parse-github-url';
 import GitHubButton from 'react-github-button';
+
+import { useT } from '../hooks';
 import { News, NewsProps } from './News';
 
 import styles from './index.module.less';
-import { useT } from '../hooks';
+
 
 type DetailButtonProps = {
   text: string;

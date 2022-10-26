@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Layout, Affix, BackTop, Menu, Tooltip } from 'antd';
 import { useMedia } from 'react-use';
 import Drawer from 'rc-drawer';
-import { useSiteData, useFullSidebarData} from 'dumi';
+import { useSiteData, useFullSidebarData } from 'dumi';
 import { useNavigate } from "react-router-dom";
 import { EditOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { NavigatorBanner } from './NavigatorBanner';
@@ -25,8 +25,10 @@ interface linkToTitle{
   [ket:string] :string
 }
 
-interface sidebarData{
-  [key:string]: Array<{children:Array<{link:string,title:string}>}>
+type SidebarDataChildren={ link: string, title: string }[]
+
+interface SidebarData{
+  [key:string]: Array<{children:SidebarDataChildren}>
 }
 
 /**
@@ -34,7 +36,7 @@ interface sidebarData{
  */
 export const ManualContent: React.FC<ManualContent> = ({ children }) => {
   const { themeConfig: { githubUrl, relativePath } } = useSiteData();
-  const sidebar = useFullSidebarData() as unknown as sidebarData
+  const sidebar = useFullSidebarData() as unknown as SidebarData
 
   const isWide = useMedia('(min-width: 767.99px)', true);
   const [drawOpen, setDrawOpen] = useState(false);
@@ -74,7 +76,7 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
     navigate(e.key)
     useScrollToTop()
   };
-  const [defaultSelectedKey, setdefaultSelectedKey] = useState<[string]>()
+  const [defaultSelectedKey, setDefaultSelectedKey] = useState<[string]>()
   //上一夜下一页
   const [prev, setPrev] = useState<PreAndNext | undefined>(undefined)
   const [next, setNext] = useState<PreAndNext | undefined>(undefined)
@@ -82,15 +84,15 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
   //监听路由去改变selected menu-item
   useEffect(() => {
     if (window.location.pathname == currentBaseRoute) {
-      setdefaultSelectedKey([renderSidebar[0].key])
+      setDefaultSelectedKey([renderSidebar[0].key])
       navigate(renderSidebar[0].key)
       return;
     }
-    setdefaultSelectedKey([window.location.pathname])
+    setDefaultSelectedKey([window.location.pathname])
   }, [window.location.pathname])
 
   useEffect(() => {
-    //监听选中的menu-item 拿到 prev and next
+    // 监听选中的menu-item 拿到 prev and next
     getPreAndNext()
   }, [defaultSelectedKey])
 

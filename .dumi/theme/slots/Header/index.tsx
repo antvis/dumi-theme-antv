@@ -23,8 +23,9 @@ import { Logo } from './Logo';
 import { LogoWhite } from './LogoWhite';
 import { useLocale } from 'dumi';
 
-import styles from './index.module.less';
 import { useT } from '../hooks';
+
+import styles from './index.module.less';
 
 export type HeaderProps = {
   pathPrefix?: string;
@@ -108,7 +109,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
   versions,
   ecosystems,
 }) => {
-  const locale=useLocale()
+  const locale = useLocale()
   const navigate = useNavigate()
   const isAntVHome = isAntVSite && isHomePage; // 是否为AntV官网首页
 

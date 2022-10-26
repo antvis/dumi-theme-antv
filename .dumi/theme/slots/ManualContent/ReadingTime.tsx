@@ -3,7 +3,7 @@ import { Tag } from 'antd';
 import { useLocale } from 'dumi';
 
 const ReadingTime: React.FC<any> = ({ readingTime }) => {
-  const locale=useLocale()
+  const locale = useLocale()
   const { text = '', time = 0 } = readingTime;
   return (
     <Tag>

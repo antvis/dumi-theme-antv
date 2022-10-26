@@ -17,7 +17,7 @@ import { useLocale } from 'dumi';
  */
 export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
   const { edges, examples } = props;
-  const locale=useLocale()
+  const locale = useLocale()
   const isWide = useMedia('(min-width: 767.99px)', true);
   const [drawOpen, setDrawOpen] = useState(false);
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);

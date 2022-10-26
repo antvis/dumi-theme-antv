@@ -2,10 +2,11 @@ import React from 'react';
 import { PageHeader, Tooltip, Space, Divider } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 
+import { useT } from '../hooks';
 import { getGithubSourceUrl } from '../utils';
 
 import styles from './CodeHeader.module.less';
-import { useT } from '../hooks';
+
 
 export type CodeHeaderProps = {
   /**

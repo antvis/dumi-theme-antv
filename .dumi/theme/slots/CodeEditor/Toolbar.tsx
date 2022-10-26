@@ -101,7 +101,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
   onToggleFullscreen = null,
   onExecuteCode,
 }) => {
-  const locale=useLocale()
+  const locale = useLocale()
   const exampleTitle =
     (typeof title === 'object' ? title[locale.id as 'zh' | 'en'] : title) as string;
 

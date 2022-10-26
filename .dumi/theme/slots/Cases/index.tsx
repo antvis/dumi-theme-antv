@@ -5,8 +5,10 @@ import Slider from 'react-slick';
 import cx from 'classnames';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import styles from './index.module.less';
+
 import { useT } from '../hooks';
+
+import styles from './index.module.less';
 
 interface Case {
   logo?: string;

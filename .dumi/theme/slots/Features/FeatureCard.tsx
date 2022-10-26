@@ -1,7 +1,10 @@
 import React from 'react';
 import cx from 'classnames';
-import styles from './FeatureCard.module.less';
+
 import { useT } from '../hooks';
+
+import styles from './FeatureCard.module.less';
+
 
 interface FeatureProps {
   icon: string;

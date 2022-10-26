@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link } from 'dumi';
 
-import styles from './News.module.less';
 import { useT } from '../hooks';
+
+import styles from './News.module.less';
 
 export interface NewsProps {
   index?: number;

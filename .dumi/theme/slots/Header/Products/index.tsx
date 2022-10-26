@@ -14,7 +14,7 @@ interface ProductsProps {
 }
 
 export const Products: React.FC<ProductsProps> = ({ show, language, className }) => {
-  const locale=useLocale()
+  const locale = useLocale()
   const [isChinaMirrorHost] = useChinaMirrorHost();
   const [products, setProducts] = React.useState<ProductType[]>([]);
   const lang = locale.id === 'zh' ? 'zh' : 'en';

@@ -2,10 +2,9 @@ import React from 'react';
 import cx from 'classnames';
 import { isEqual } from 'lodash-es';
 import { LinkOutlined } from '@ant-design/icons';
-import { Link } from 'dumi';
+import { Link, useLocale } from 'dumi';
 
 import styles from './index.module.less';
-import { useLocale } from 'dumi';
 
 export type INav = {
   slug: string;
@@ -30,7 +29,7 @@ const getDocument = (navs: INav[], slug = '') =>
  * Header 中的导航菜单
  */
 export const Navs: React.FC<NavProps> = ({ navs, path }) => {
-  const locale=useLocale()
+  const locale = useLocale()
   return (
     <>
       {navs.map((nav: INav) => {

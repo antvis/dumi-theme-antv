@@ -1,8 +1,10 @@
 import React from 'react';
 import { Result } from 'antd';
 
-import styles from './index.module.less';
 import { useT } from '../hooks';
+
+import styles from './index.module.less';
+
 
 export type CodePreviewProps = {
   /**

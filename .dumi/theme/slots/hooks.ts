@@ -22,7 +22,7 @@ export const useScrollToTop = () => {
 export const useT = (transformedMessage: string) => {
   const intl = useIntl()
   return intl.formatMessage({
-    id:transformedMessage
+    id: transformedMessage
   })
 }
 

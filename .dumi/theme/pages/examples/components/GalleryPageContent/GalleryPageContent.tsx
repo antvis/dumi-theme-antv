@@ -2,10 +2,12 @@ import React, { useMemo } from 'react';
 import { Link, useLocale } from 'dumi';
 import { Badge } from 'antd';
 import { each, filter, groupBy, size } from 'lodash-es';
+
 import { Announcement } from '../Accouncement/Announcement';
 import { GalleryPageContentProps, NewDemo } from '../../types';
+import { useT } from '../../../../slots/hooks';
+
 import styles from '../../index.module.less';
-import { useT } from '@/.dumi/theme/slots/hooks';
 
 const BANNER_LOCALSTORAGE_KEY = 'antv_gallery_banner';
 
@@ -18,7 +20,7 @@ const BANNER_LOCALSTORAGE_KEY = 'antv_gallery_banner';
  */
 export const GalleryPageContent: React.FC<GalleryPageContentProps> = (props) => {
   const { exampleSections, allDemos } = props;
-  const locale=useLocale()
+  const locale = useLocale()
 
   // 获取 demo 的 Category 分类
   const getDemoCategory = (demo: any, lang = locale.id) => {
