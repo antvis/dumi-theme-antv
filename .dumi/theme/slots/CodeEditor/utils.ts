@@ -1,6 +1,7 @@
 import path from 'path';
 import { transform } from '@babel/standalone';
 import indentString from 'indent-string';
+import { countBy } from 'lodash-es';
 
 export function replaceFetchUrl(sourceCode: string) {
   const dataFileMatch = sourceCode.match(/fetch\('(.*)'\)/);
@@ -147,18 +148,19 @@ insertCss(`;
  * @param replaceId 
  * @param cb 回调错误 
  */
-export function execute(
-  code: string, node: HTMLDivElement, exampleContainer: string | undefined, replaceId = 'container',
-  cb: (e: Error) => void
-) {
+export function execute(code: string, node: HTMLDivElement, exampleContainer: string | undefined, replaceId = 'container') {
   const script = document.createElement('script');
   // replace container id in case of multi demos in document
   const newCode = code.replace(/'container'|"container"/, `'${replaceId}'`);
-  try {
-    script.innerHTML = `${newCode}`;
-  } catch (e) {
-    cb(e as Error);
-  }
+  script.innerHTML = `
+try {
+  ${newCode}
+
+  window.__reportErrorInPlayground && window.__reportErrorInPlayground(null);
+} catch(e) {
+  window.__reportErrorInPlayground && window.__reportErrorInPlayground(e);
+}
+  `;
   // eslint-disable-next-line no-param-reassign
   node.innerHTML = exampleContainer || `<div id=${replaceId} />`;
   node!.appendChild(script);
@@ -166,7 +168,6 @@ export function execute(
 
 /**
  * 编译代码
- * @param value 
  */
 export function compile(value: string, relativePath: string) {
   const { code } = transform(value, {
@@ -174,6 +175,5 @@ export function compile(value: string, relativePath: string) {
     presets: ['react', 'typescript', 'es2015', 'stage-3'],
     plugins: ['transform-modules-umd'],
   });
-
   return code;
 }

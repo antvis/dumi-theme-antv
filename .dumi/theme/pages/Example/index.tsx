@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Layout } from 'antd';
 import { noop } from 'lodash-es';
@@ -8,11 +8,12 @@ import { ExampleSider } from '../../slots/ExampleSider';
 import { CodePreview } from '../../slots/CodePreview';
 import { CodeEditor } from '../../slots/CodeEditor';
 import { CodeHeader } from '../../slots/CodePreview/CodeHeader';
+import { ThemeAntVContext } from '../../context';
+import { getExampleInfo } from './utils';
 
 import styles from './index.module.less';
 
 const { Sider, Content } = Layout;
-
 
 type ExampleParams = {
   /**
@@ -33,10 +34,22 @@ type ExampleParams = {
  * 具体单个案例的页面
  */
 const Example: React.FC<{}> = () => {
+  /** 示例页面的元数据信息 */
+  const metaData: any = useContext(ThemeAntVContext);
+
   const { language, category, name } = useParams<ExampleParams>();
 
+  const {
+    title,
+    relativePath,
+    source,
+  } = getExampleInfo(metaData);
+
+  const [error, setError] = useState<Error>();
+  const [isFullScreen, setFullscreen] = useState<boolean>(false);
+
   // @todo 逍为
-  const header = <CodeHeader title="hello world" relativePath="a.ts" githubUrl="" />
+  const header = <CodeHeader title={title} relativePath={relativePath} githubUrl="" />
 
   return (
     <div className={styles.example}>
@@ -58,9 +71,17 @@ const Example: React.FC<{}> = () => {
           {/** @ts-ignore */}
           <SplitPane split="vertical" defaultSize="50%" minSize={100}>
             {/** @todo 逍为，和编辑器联动 */}
-            <CodePreview error={new Error('abc')} header={header} />
+            <CodePreview error={error} header={header} />
             {/** @todo 逍为，获取源码内容和文件 */}
-            <CodeEditor source="" babeledSource="" relativePath="a.ts" onError={noop} onFullscreen={noop} onDestroy={noop} onReady={noop} />
+            <CodeEditor
+              source={source}
+              babeledSource={source}
+              relativePath={relativePath}
+              onError={setError}
+              onFullscreen={setFullscreen}
+              onDestroy={noop}
+              onReady={noop}
+            />
           </SplitPane>
         </Content>
       </Layout>

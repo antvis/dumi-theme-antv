@@ -1,12 +1,11 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react';
-import { useSiteData, useIntl, useLocale } from 'dumi';
+import { useSiteData } from 'dumi';
 import loadable from '@loadable/component';
 import { debounce, noop } from 'lodash-es';
 import {
   useTranslation,
 } from 'react-i18next';
 import { replaceInsertCss, execute, compile } from './utils';
-
 import { Toolbar, EDITOR_TABS } from './Toolbar';
 
 import styles from './index.module.less';
@@ -41,7 +40,7 @@ export type CodeEditorProps = {
   /**
    * 点击全屏按钮
    */
-  onFullscreen: () => void;
+  onFullscreen: (isFullScreen: boolean) => void;
   /**
    * 初始化
    */
@@ -77,7 +76,6 @@ export type CodeEditorProps = {
 export const CodeEditor: React.FC<CodeEditorProps> = ({
   title = '',
   source,
-  babeledSource,
   relativePath = '',
   playground = {},
   replaceId = 'container',
@@ -89,7 +87,6 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
 }) => {
   const { t, i18n } = useTranslation();
   const { extraLib = '' } = useSiteData().themeConfig.playground;
-  const [compiledCode, setCompiledCode] = useState(babeledSource);
   // 编辑器两个 tab，分别是代码和数据
   const [data, setData] = useState(null);
   const [code, setCode] = useState(replaceInsertCss(source, i18n.language));
@@ -109,17 +106,40 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
     window.dispatchEvent(e);
   };
 
-  const executeCode = useCallback(debounce(() => {
-    if (!compiledCode) {
+  
+  useEffect(() => {
+    // 用于上报错误信息，使用 script 执行代码
+    if (typeof window !== 'undefined') {
+      (window as any).__reportErrorInPlayground = (e: Error) => {
+        console.log(e);
+        onError(e);
+      };
+    }
+  });
+
+  const executeCode = useCallback(debounce((v: string) => {
+    if (!v) return;
+    
+    // 1. 先编译代码
+    let compiled;
+    try {
+      compiled = compile(v, relativePath);
+      // 清除错误
+      onError(null);
+    } catch (e) {
+      console.log(e);
+      onError(e);
+      // 执行出错，后面的步骤不用做了！
       return;
     }
-    // @todo 逍为
-    execute(compiledCode, document.getElementById(replaceId) as any, 'todo', replaceId, onError);
+
+    // 2. 执行代码，try catch 在内部已经做了
+    execute(compiled, document.getElementById(replaceId) as any, 'todo', replaceId);
   }, 300), []);
 
   useEffect(() => {
-    executeCode();
-  }, [compiledCode]);
+    executeCode(code);
+  }, [code]);
 
   useEffect(() => {
     onReady();
@@ -150,16 +170,6 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
   const onCodeChange = useCallback((value: string) => {
     if (currentEditorTab === EDITOR_TABS.JAVASCRIPT) {
       setCode(value)
-      try {
-        const code = compile(source, relativePath);
-        setCompiledCode(value);
-        // 清除错误信息
-        onError(null);
-      } catch (e) {
-        console.log(e);
-        // 抛出错误信息
-        onError(e);
-      }
     }
   }, []);
 
@@ -174,7 +184,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
         isFullScreen={isFullscreen}
         editorTabs={editorTabs}
         currentEditorTab={currentEditorTab}
-        onExecuteCode={executeCode}
+        onExecuteCode={() => executeCode(code)}
         onEditorTabChange={setCurrentEditorTab}
         onToggleFullscreen={onFullscreen}
       />
