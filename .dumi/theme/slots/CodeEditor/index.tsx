@@ -1,13 +1,21 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react';
 import { useSiteData, useLocale } from 'dumi';
-import loadable from '@loadable/component';
+import MonacoEditor, { loader } from '@monaco-editor/react';
 import { debounce, noop } from 'lodash-es';
 import { replaceInsertCss, execute, compile } from './utils';
 import { Toolbar, EDITOR_TABS } from './Toolbar';
-import { useT } from '../../slots/hooks'
 import styles from './index.module.less';
 
-const MonacoEditor = loadable(() => import('react-monaco-editor'));
+loader.config({
+  'vs/nls': {
+    availableLanguages: {
+      '*': 'zh-cn',
+    },
+  },
+  paths: {
+    vs: 'https://gw.alipayobjects.com/os/lib/monaco-editor/0.34.0/min/vs',
+  },
+});
 
 export type CodeEditorProps = {
   /**
@@ -193,7 +201,9 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
           language={
             currentEditorTab === EDITOR_TABS.JAVASCRIPT ? 'javascript' : 'json'
           }
-          value={code}
+          value={currentEditorTab === EDITOR_TABS.JAVASCRIPT ? code : JSON.stringify(data, null, 2)}
+          path={relativePath}
+          loading="Loading..."
           options={{
             readOnly: currentEditorTab === EDITOR_TABS.DATA,
             automaticLayout: true,
@@ -206,29 +216,9 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
             showFoldingControls: 'always',
             foldingHighlight: true,
           }}
-          onChange={(value: any) => onCodeChange(value)}
-          editorWillMount={(monaco: any) => {
-            try {
-              monaco.editor.defineTheme('customTheme', {
-                base: 'vs',
-                inherit: true,
-                rules: [],
-                colors: {
-                  'editor.inactiveSelectionBackground': '#ffffff',
-                },
-              });
-              monaco.editor.setTheme('customTheme');
-              // @todo why javascriptDefaults is undefined.
-              monaco.languages.typescript.javascriptDefaults.addExtraLib(
-                extraLib,
-                '',
-              );
-            } catch (e) {
-              console.log(e);
-            }
-          }}
-          editorDidMount={(editorInstance: any) => {
-            monacoRef.current = editorInstance.getModel();
+          onChange={onCodeChange}
+          onMount={(editor: any) => {
+            monacoRef.current = editor; 
           }}
         />
       </div>

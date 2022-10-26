@@ -11,7 +11,7 @@ import { useLocale } from 'dumi';
 import { getParameters } from 'codesandbox/lib/api/define';
 import stackblitzSdk from '@stackblitz/sdk';
 import { ping } from '../utils';
-import { extractImportDeps, getHtmlCodeTemplate, getCodeSandboxConfig, getStackblitzConfig, getRiddleConfig } from './utils';
+import { extractImportDeps, getCodeSandboxConfig, getStackblitzConfig, getRiddleConfig } from './utils';
 import { useT } from '../hooks';
 import styles from './Toolbar.module.less';
 
@@ -113,7 +113,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
   const riddlePrefillConfig = getRiddleConfig(exampleTitle, sourceCode, fileExtension, dependencies, devDependencies, playground);
   const stackblitzPrefillConfig = getStackblitzConfig(exampleTitle, sourceCode, fileExtension, dependencies, devDependencies, playground);
 
-  const htmlCode = getHtmlCodeTemplate(exampleTitle, sourceCode, fileExtension, dependencies, devDependencies, playground);
+  // const htmlCode = getHtmlCodeTemplate(exampleTitle, sourceCode, fileExtension, dependencies, devDependencies, playground);
 
   const [riddleVisible, updateRiddleVisible] = useState(false);
   useEffect(() => {
@@ -121,8 +121,6 @@ export const Toolbar: React.FC<ToolbarProps> = ({
       updateRiddleVisible(status === 'responded');
     });
   }, []);
-
-  const [htmlModalVisible, updateHtmlModalVisible] = useState(false);
 
   return (
     <div className={styles.toolbar}>

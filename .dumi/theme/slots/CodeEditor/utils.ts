@@ -1,7 +1,6 @@
 import path from 'path';
 import { transform } from '@babel/standalone';
 import indentString from 'indent-string';
-import { countBy } from 'lodash-es';
 
 export function replaceFetchUrl(sourceCode: string) {
   const dataFileMatch = sourceCode.match(/fetch\('(.*)'\)/);
@@ -173,7 +172,10 @@ export function compile(value: string, relativePath: string) {
   const { code } = transform(value, {
     filename: relativePath,
     presets: ['react', 'typescript', 'es2015', 'stage-3'],
-    plugins: ['transform-modules-umd'],
+    // Can only have one anonymous define call per script file
+    // 和 monaco loader 加载冲突
+    // plugins: ['transform-modules-umd'],
+    
   });
   return code;
 }
