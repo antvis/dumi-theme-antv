@@ -10,12 +10,12 @@ import {
 import { Typography, Tooltip, Modal, Button } from 'antd';
 import { getParameters } from 'codesandbox/lib/api/define';
 import stackblitzSdk from '@stackblitz/sdk';
-import { useTranslation } from 'react-i18next';
 
 import { ping } from '../utils';
 import { extractImportDeps, getHtmlCodeTemplate, getCodeSandboxConfig, getStackblitzConfig, getRiddleConfig } from './utils';
 
 import styles from './Toolbar.module.less';
+import { useLocale } from 'dumi';
 
 const { Paragraph } = Typography;
 const MonacoEditor = lazy(() => import('react-monaco-editor'));
@@ -101,10 +101,9 @@ export const Toolbar: React.FC<ToolbarProps> = ({
   onToggleFullscreen = null,
   onExecuteCode,
 }) => {
-  const { t, i18n } = useTranslation();
-
+  const locale=useLocale()
   const exampleTitle =
-    (typeof title === 'object' ? title[i18n.language as 'zh' | 'en'] : title) as string;
+    (typeof title === 'object' ? title[locale.id as 'zh' | 'en'] : title) as string;
 
   // 使用 playground.dependencies 定义的版本号
   const dependencies = {
