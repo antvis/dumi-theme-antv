@@ -1,13 +1,10 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react';
-import { useSiteData } from 'dumi';
+import { useSiteData, useLocale } from 'dumi';
 import loadable from '@loadable/component';
 import { debounce, noop } from 'lodash-es';
-import {
-  useTranslation,
-} from 'react-i18next';
 import { replaceInsertCss, execute, compile } from './utils';
 import { Toolbar, EDITOR_TABS } from './Toolbar';
-
+import { useT } from '../../slots/hooks'
 import styles from './index.module.less';
 
 const MonacoEditor = loadable(() => import('react-monaco-editor'));
@@ -85,11 +82,11 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
   onError = noop,
   onFullscreen = noop,
 }) => {
-  const { t, i18n } = useTranslation();
+  const locale = useLocale()
   const { extraLib = '' } = useSiteData().themeConfig.playground;
   // 编辑器两个 tab，分别是代码和数据
   const [data, setData] = useState(null);
-  const [code, setCode] = useState(replaceInsertCss(source, i18n.language));
+  const [code, setCode] = useState(replaceInsertCss(source, locale.id));
   // monaco instance
   const monacoRef = useRef<any>(null);
   // 文件后缀

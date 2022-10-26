@@ -1,8 +1,10 @@
 import React from 'react';
 import { Result } from 'antd';
-import { useTranslation } from 'react-i18next';
+
+import { useT } from '../hooks';
 
 import styles from './index.module.less';
+
 
 export type CodePreviewProps = {
   /**
@@ -21,7 +23,6 @@ export type CodePreviewProps = {
  * 2. 错误预览
  */
 export const CodePreview: React.FC<CodePreviewProps> = ({ header, error }) => {
-  const { i18n, t } = useTranslation();
   return (
     <div className={styles.preview}>
       <div className={styles.header}>{ header }</div>
@@ -34,7 +35,7 @@ export const CodePreview: React.FC<CodePreviewProps> = ({ header, error }) => {
             <Result
               className={styles.result}
               status="error"
-              title={t('演示代码报错，请检查')}
+              title={useT('演示代码报错，请检查')}
               subTitle={<pre>{error && (error as any).message}</pre>}
             /> : null
         }

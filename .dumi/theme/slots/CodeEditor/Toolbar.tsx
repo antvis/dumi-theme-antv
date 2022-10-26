@@ -1,24 +1,21 @@
-import React, { useEffect, useState, Suspense, lazy } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   CodeSandboxOutlined,
-  Html5Outlined,
   PlayCircleOutlined,
   ThunderboltOutlined,
   FullscreenExitOutlined,
   FullscreenOutlined,
 } from '@ant-design/icons';
-import { Typography, Tooltip, Modal, Button } from 'antd';
+import { Typography, Tooltip } from 'antd';
+import { useLocale } from 'dumi';
 import { getParameters } from 'codesandbox/lib/api/define';
 import stackblitzSdk from '@stackblitz/sdk';
-import { useTranslation } from 'react-i18next';
-
 import { ping } from '../utils';
 import { extractImportDeps, getHtmlCodeTemplate, getCodeSandboxConfig, getStackblitzConfig, getRiddleConfig } from './utils';
-
+import { useT } from '../hooks';
 import styles from './Toolbar.module.less';
 
 const { Paragraph } = Typography;
-const MonacoEditor = lazy(() => import('react-monaco-editor'));
 
 export enum EDITOR_TABS {
   JAVASCRIPT = 'JavaScript',
@@ -101,10 +98,9 @@ export const Toolbar: React.FC<ToolbarProps> = ({
   onToggleFullscreen = null,
   onExecuteCode,
 }) => {
-  const { t, i18n } = useTranslation();
-
+  const locale = useLocale()
   const exampleTitle =
-    (typeof title === 'object' ? title[i18n.language as 'zh' | 'en'] : title) as string;
+    (typeof title === 'object' ? title[locale.id as 'zh' | 'en'] : title) as string;
 
   // 使用 playground.dependencies 定义的版本号
   const dependencies = {
@@ -152,7 +148,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
             name="data"
             value={JSON.stringify(riddlePrefillConfig)}
           />
-          <Tooltip title={t('在 Riddle 中打开')}>
+          <Tooltip title={useT('在 Riddle 中打开')}>
             <input
               type="submit"
               value="Create New Riddle with Prefilled Data"
@@ -161,7 +157,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
           </Tooltip>
         </form>
       ) : null}
-      <Tooltip title={t('在 StackBlitz 中打开')}>
+      <Tooltip title={useT('在 StackBlitz 中打开')}>
         <ThunderboltOutlined
           className={styles.stackblitz}
           onClick={() => {
@@ -169,7 +165,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
           }}
         />
       </Tooltip>
-      <Tooltip title={t('在 CodeSandbox 中打开')}>
+      <Tooltip title={useT('在 CodeSandbox 中打开')}>
         <form
           action="https://codesandbox.io/api/v1/sandboxes/define"
           method="POST"
@@ -187,7 +183,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
       </Tooltip>
       <Paragraph copyable={{ text: sourceCode }} style={{ marginLeft: 6 }} />
       {onToggleFullscreen ? (
-        <Tooltip title={isFullScreen ? t('离开全屏') : t('进入全屏')}>
+        <Tooltip title={isFullScreen ? useT('离开全屏') : useT('进入全屏')}>
           {isFullScreen ? (
             <FullscreenExitOutlined
               onClick={onToggleFullscreen}
@@ -201,7 +197,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
           )}
         </Tooltip>
       ) : null}
-      <Tooltip title={t('执行代码')}>
+      <Tooltip title={useT('执行代码')}>
         <PlayCircleOutlined
           onClick={onExecuteCode}
           style={{ marginLeft: 12 }}

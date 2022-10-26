@@ -1,8 +1,9 @@
 import { repository, version } from './package.json';
 
 export default {
+  locales: [{ id: 'zh', name: '中文' }, { id: 'en', name: 'English' }],
   themeConfig: {
-    title: 'dumi-theme-antv',
+    title: 'Dumi-theme-antv', 
     description: '基于 dumi2 的 AntV 官网主题包',
     defaultLanguage: 'zh',                                              // 默认语言
     isAntVSite: false,                                                  // 是否是 AntV 的大官网
@@ -110,7 +111,7 @@ export default {
     },
     /** 首页技术栈介绍 */
     detail: {
-      title: 'dumi-theme-antv 主题包',
+      title: 'Dumi-theme-antv 主题包',
       description: '基于 dumi2 封装，提供灵活多变的 slots 插槽，抽取大量配置，一秒搭建 AntV 的各个技术栈官网。',
       image: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*wo_LToatmbwAAAAAAAAAAABkARQnAQ',
       buttons: [

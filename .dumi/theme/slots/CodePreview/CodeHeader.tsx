@@ -1,14 +1,12 @@
 import React from 'react';
 import { PageHeader, Tooltip, Space, Divider } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
-import {
-  useTranslation,
-  withTranslation,
-  WithTranslation,
-} from 'react-i18next';
+
+import { useT } from '../hooks';
 import { getGithubSourceUrl } from '../utils';
 
 import styles from './CodeHeader.module.less';
+
 
 export type CodeHeaderProps = {
   /**
@@ -34,14 +32,13 @@ export const CodeHeader: React.FC<any> = ({
   relativePath,
   githubUrl,
 }) => {
-  const { i18n, t } = useTranslation();
 
   return (
     <PageHeader
       ghost={false}
       title={title}
       subTitle={
-        <Tooltip title={t('在 GitHub 上编辑')}>
+        <Tooltip title={useT('在 GitHub 上编辑')}>
           <a
             href={getGithubSourceUrl(githubUrl, relativePath, 'examples')}
             target="_blank"

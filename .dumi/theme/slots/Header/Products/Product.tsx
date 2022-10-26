@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+import { useT } from '../../hooks';
 import { ProductType } from './getProducts';
 import styles from './Product.module.less';
 
@@ -31,7 +31,6 @@ const Product: React.FC<ProductProps> = ({
   style,
   language,
 }) => {
-  const { t } = useTranslation();
 
   return (
     <li className={styles.product} style={style}>
@@ -58,7 +57,7 @@ const Product: React.FC<ProductProps> = ({
               target={getTarget(links.home.url || '')}
               key={links.home.url}
             >
-              {links.home.title ?? t('产品首页')}
+              {links.home.title ?? useT('产品首页')}
             </a>
           )}
           {links.example && (
@@ -67,7 +66,7 @@ const Product: React.FC<ProductProps> = ({
               target={getTarget(links.example.url || '')}
               key={links.example.url}
             >
-              {links.example.title ?? t('图表示例')}
+              {links.example.title ?? useT('图表示例')}
             </a>
           )}
         </div>

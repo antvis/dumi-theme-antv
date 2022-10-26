@@ -2,9 +2,12 @@ import React, { useState, useEffect } from 'react';
 import cx from 'classnames';
 import gh from 'parse-github-url';
 import GitHubButton from 'react-github-button';
+
+import { useT } from '../hooks';
 import { News, NewsProps } from './News';
 
 import styles from './index.module.less';
+
 
 type DetailButtonProps = {
   text: string;
@@ -44,7 +47,7 @@ export const Detail: React.FC<DetailProps> = ({
   news = [],
 }) => {
   const [removeNews, setRemoteNews] = useState<NewsProps[]>([]);
-
+  
   useEffect(() => {
     fetch(AssetsNewsURL)
       .then((res) => res.json())
@@ -63,10 +66,10 @@ export const Detail: React.FC<DetailProps> = ({
       <div className={styles.content}>
         <div className={styles.text}>
           <div className={cx(styles.title, 'detail-title')}>
-            {title}
+            {useT(title)}
           </div>
           <div className={cx(styles.description, 'detail-description')}>
-            {description}
+            {useT(description)}
           </div>
           {/** buttons  */}
           <div className={cx(styles.buttons, 'detail-buttons')}>
@@ -86,7 +89,7 @@ export const Detail: React.FC<DetailProps> = ({
                     }}
                     href={link}
                   >
-                    <span className={styles.button}>{text}</span>
+                    <span className={styles.button}>{useT(text)}</span>
                   </a>
                 )
               })
@@ -106,7 +109,7 @@ export const Detail: React.FC<DetailProps> = ({
         {/** 新闻公告 */}
         <div className={cx(styles.news, 'news')}>
           {
-            (news || removeNews).slice(0, 2).map((n, i) => (<News key={i} index={i} {...n} />))
+            ( news || removeNews).slice(0, 2).map((n, i) => (<News key={i} index={i} {...n} />))
           }
         </div>
         {/** image */}

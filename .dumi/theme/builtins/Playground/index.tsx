@@ -36,8 +36,8 @@ const Playground: React.FC<PlaygroundProps> = ({ rid, path, ratio = 0.62, height
 
   return (
     <div className={styles.container} style={{ height }}>
-       {/** @ts-ignore */}
-      <SplitPane split="vertical" defaultSize={`${ratio *100}%`} minSize={100}>
+      {/** @ts-ignore */}
+      <SplitPane split="vertical" defaultSize={`${ratio * 100}%`} minSize={100}>
         {/** @todo 逍为，和编辑器联动 */}
         <CodePreview error={new Error('abc')} />
         {/** @todo 逍为，获取源码内容和文件 */}

@@ -1,11 +1,13 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { ArrowLeftOutlined, ArrowRightOutlined } from '@ant-design/icons';
 import { Link } from 'dumi';
 import Slider from 'react-slick';
 import cx from 'classnames';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+
+import { useT } from '../hooks';
+
 import styles from './index.module.less';
 
 interface Case {
@@ -24,7 +26,6 @@ interface CasesProps {
 }
 
 export const Cases: React.FC<CasesProps> = ({ cases = [], style = {}, className }) => {
-  const { t } = useTranslation();
   const slider = React.useRef<any>(null);
 
   const clickPrevious = () => {
@@ -71,11 +72,11 @@ export const Cases: React.FC<CasesProps> = ({ cases = [], style = {}, className 
               target='_blank'
               rel='noopener noreferrer'
             >
-              {t('查看详情')}
+              {useT('查看详情')}
             </a>
           ) : (
             <Link className={styles.detail} to={app.link ? app.link : ''}>
-              {t('查看详情')}
+              {useT('查看详情')}
             </Link>
           )}
         </div>
@@ -97,8 +98,8 @@ export const Cases: React.FC<CasesProps> = ({ cases = [], style = {}, className 
                     : '0px 0px 0px',
                 }}
               />
-              <p className={styles.appTitle}>{app.title}</p>
-              <p className={styles.appDescription}>{app.description}</p>
+              <p className={styles.appTitle}>{useT(app.title)}</p>
+              <p className={styles.appDescription}>{useT(app.description)}</p>
               {linkDiv}
             </div>
             {buttons}
