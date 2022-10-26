@@ -14,7 +14,7 @@ export default (api: IApi) => {
     {
       id: 'dumi-theme-antv-page-Examples',
       path: '/:language/Examples/',
-      file: require.resolve('./.dumi/theme/pages/Examples/Examples.tsx'),
+      file: require.resolve('./.dumi/theme/pages/Examples/index.tsx'),
     },
     // single example preview page.
     {
