@@ -7,6 +7,7 @@ import { debounce, groupBy } from 'lodash-es';
 import { LeftMenuProps } from '../../types';
 import styles from '../../index.module.less';
 import { useLocale } from 'dumi';
+import { getGroupedEdges, getGroupedEdgesDataEdit } from '@/.dumi/theme/slots/utils';
 
 
 /**
@@ -17,7 +18,7 @@ import { useLocale } from 'dumi';
  */
 export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
   const { edges, examples } = props;
-  const locale = useLocale()
+  const locale = useLocale();
   const isWide = useMedia('(min-width: 767.99px)', true);
   const [drawOpen, setDrawOpen] = useState(false);
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
@@ -56,21 +57,6 @@ export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
     }
   }, 300);
 
-  const groupedEdges = groupBy(
-    edges,
-    ({
-       node: {
-         fields: { slug: slugString },
-       },
-     }: any) => {
-      // API.md and design.md
-      if (slugString.endsWith('/API') || slugString.endsWith('/design')) {
-        return slugString.split('/').slice(0, -2).join('/');
-      }
-      // index.md
-      return slugString.split('/').slice(0, -1).join('/');
-    },
-  );
 
   const getMenuItemLocaleKey = (slug = '') => {
     const slugPieces = slug.split('/');
@@ -80,22 +66,10 @@ export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
       .join('/');
   };
 
+  const groupedEdges = getGroupedEdges(edges);
+
   // 提取出筛选 和 排序的方法 好在获取treeData 的时候使用
-  const groupedEdgesDataEdit = Object.keys(groupedEdges)
-    .filter((key) => key.startsWith(`/${locale}/`))
-    .sort((a: string, b: string) => {
-      const aOrder = getExampleOrder({
-        groupedEdgeKey: a,
-        examples,
-        groupedEdges,
-      });
-      const bOrder = getExampleOrder({
-        groupedEdgeKey: b,
-        examples,
-        groupedEdges,
-      });
-      return aOrder - bOrder;
-    });
+  const groupedEdgesDataEdit = getGroupedEdgesDataEdit(examples, edges, locale.id);
 
   const renderAnchorItems = (edges: any[]) =>
     edges

@@ -50,15 +50,14 @@ export function getGithubSourceUrl(githubUrl: string, relativePath: string, pref
   return `${githubUrl}/edit/master/${prefix}/${relativePath}`;
 }
 
-export const getDemoCategory = (demo: any, lang = i18n.language) => {
-  if (!demo.postFrontmatter || !demo.postFrontmatter[lang]) {
-    return 'OTHER';
-  }
-  return demo.postFrontmatter[lang].title;
-};
 
-export const getAllDemosInCategory = (allDemos: any[]) => {
-  return groupBy(allDemos || [], getDemoCategory);
+export const getAllDemosInCategory = (allDemos: any[], lang: string) => {
+  return groupBy(allDemos || [], (demo: any) => {
+    if (!demo.postFrontmatter || !demo.postFrontmatter[lang]) {
+      return 'OTHER';
+    }
+    return demo.postFrontmatter[lang].title;
+  });
 };
 
 export const getSortedCategories = (allDemosInCategory: any) => {
@@ -106,7 +105,7 @@ const getExampleOrder = (options: {
   return groupedEdges[groupedEdgeKey][0].node.frontmatter.order || 0;
 };
 
-const getGroupedEdges = (edges: any) => {
+export const getGroupedEdges = (edges: any) => {
   return groupBy(
     edges,
     ({
@@ -125,11 +124,10 @@ const getGroupedEdges = (edges: any) => {
 };
 
 // 提取出筛选 和 排序的方法 好在获取treeData 的时候使用
-export const getGroupedEdgesDataEdit = (examples: any, edges: any) => {
+export const getGroupedEdgesDataEdit = (examples: any, edges: any, local: string) => {
   const groupedEdges = getGroupedEdges(edges);
-
   return Object.keys(groupedEdges)
-    .filter((key) => key.startsWith(`/${i18n.language}/`))
+    .filter((key) => key.startsWith(`/${local}/`))
     .sort((a: string, b: string) => {
       const aOrder = getExampleOrder({
         groupedEdgeKey: a,
@@ -145,8 +143,8 @@ export const getGroupedEdgesDataEdit = (examples: any, edges: any) => {
     });
 };
 
-export const getTreeDataByExamplesAndEdges = (examples: any, edges: any) => {
-  return getGroupedEdgesDataEdit(examples, edges).map((slugString) => {
+export const getTreeDataByExamplesAndEdges = (examples: any, edges: any, locale: string) => {
+  return getGroupedEdgesDataEdit(examples, edges, locale).map((slugString) => {
     const menuItemLocaleKey = getMenuItemLocaleKey(slugString);
     const doc =
       examples.find((item: any) => item.slug === menuItemLocaleKey) || {};

@@ -13,6 +13,7 @@ import styles from './index.module.less';
 import { ThemeAntVContext } from '@/.dumi/theme/context';
 import i18n from 'i18next';
 import { getAllDemosInCategory, getSortedCategories, getTreeDataByExamplesAndEdges } from '@/.dumi/theme/slots/utils';
+import { useLocale } from 'dumi';
 
 const { Sider, Content } = Layout;
 
@@ -37,6 +38,8 @@ type ExampleParams = {
  */
 const Example: React.FC<{}> = () => {
   const { language, category, name } = useParams<ExampleParams>();
+
+  const locale = useLocale();
 
   /** 示例页面的元数据信息 */
   const metaData: any = useContext(ThemeAntVContext);
@@ -88,15 +91,7 @@ const Example: React.FC<{}> = () => {
     updateCurrentExample(defaultExample);
   }, [examples]);
 
-  // 获取 demo 的 Category 分类
-  const getDemoCategory = (demo: any, lang = i18n.language) => {
-    if (!demo.postFrontmatter || !demo.postFrontmatter[lang]) {
-      return 'OTHER';
-    }
-    return demo.postFrontmatter[lang].title;
-  };
-
-  const allDemosInCategory = getAllDemosInCategory(allDemos);
+  const allDemosInCategory = getAllDemosInCategory(allDemos, locale.id);
   const sortedCategories = getSortedCategories(allDemosInCategory);
 
   // 提取出来获取 唯一value值的 方法
@@ -159,7 +154,7 @@ const Example: React.FC<{}> = () => {
 
     const newTreeData: TreeItem[] = [];
     // 扁平化 一级菜单中的数据， 示例有些并不是在第三层， 也有在第二层
-    getTreeDataByExamplesAndEdges(examples, edges).forEach((treeItem) => {
+    getTreeDataByExamplesAndEdges(examples, edges, locale.id).forEach((treeItem) => {
       const slugPieces = treeItem.value?.split('/');
       if (!slugPieces) return;
       if (slugPieces.length <= 3) {
