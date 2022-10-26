@@ -5,9 +5,9 @@ import { createFromIconfontCN, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant
 import { useMedia } from 'react-use';
 import { debounce, groupBy } from 'lodash-es';
 import { LeftMenuProps } from '../../types';
-import styles from '../../index.module.less';
 import { useLocale } from 'dumi';
 import { getGroupedEdges, getGroupedEdgesDataEdit } from '@/.dumi/theme/slots/utils';
+import styles from '../../index.module.less';
 
 
 /**

@@ -8,12 +8,12 @@ import { ExampleSider, PlayGroundItemProps, TreeItem } from '../../slots/Example
 import { CodePreview } from '../../slots/CodePreview';
 import { CodeEditor } from '../../slots/CodeEditor';
 import { CodeHeader } from '../../slots/CodePreview/CodeHeader';
-
-import styles from './index.module.less';
 import { ThemeAntVContext } from '@/.dumi/theme/context';
 import i18n from 'i18next';
 import { getAllDemosInCategory, getSortedCategories, getTreeDataByExamplesAndEdges } from '@/.dumi/theme/slots/utils';
 import { useLocale } from 'dumi';
+import styles from './index.module.less';
+
 
 const { Sider, Content } = Layout;
 
