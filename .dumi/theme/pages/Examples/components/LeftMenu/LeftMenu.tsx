@@ -80,26 +80,6 @@ export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
       .join('/');
   };
 
-
-  const getExampleOrder = (options: {
-    groupedEdgeKey: string;
-    examples: any[];
-    groupedEdges: {
-      [key: string]: any[];
-    };
-  }): number => {
-    const { groupedEdgeKey, groupedEdges, examples } = options;
-
-    const key = getMenuItemLocaleKey(groupedEdgeKey);
-    if (examples.find((item) => item.slug === key)) {
-      return (examples.findIndex((item) => item.slug === key) || 0) + 100;
-    }
-    if (!groupedEdges[groupedEdgeKey] && !groupedEdges[groupedEdgeKey].length) {
-      return 0;
-    }
-    return groupedEdges[groupedEdgeKey][0].node.frontmatter.order || 0;
-  };
-
   // 提取出筛选 和 排序的方法 好在获取treeData 的时候使用
   const groupedEdgesDataEdit = Object.keys(groupedEdges)
     .filter((key) => key.startsWith(`/${locale}/`))
@@ -166,7 +146,7 @@ export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
         );
       });
 
-  const menu = () => {
+  const renderMenu = () => {
     return (
       <Anchor className={styles.galleryAnchor} onChange={onAnchorLinkChange}>
         <Menu
@@ -223,7 +203,7 @@ export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
     >
       {isWide ? (
         <AntLayout.Sider width='auto' theme='light' className={styles.sider}>
-          {menu()}
+          {renderMenu()}
         </AntLayout.Sider>
       ) : (
         <Drawer
@@ -238,7 +218,7 @@ export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
           onChange={(open: any) => setDrawOpen(!!open)}
           width={280}
         >
-          {menu()}
+          {renderMenu()}
         </Drawer>
       )}
     </Affix>

@@ -57,6 +57,90 @@ export const getDemoCategory = (demo: any, lang = i18n.language) => {
   return demo.postFrontmatter[lang].title;
 };
 
-export const getCategories = (allDemos: any[]) => {
+export const getAllDemosInCategory = (allDemos: any[]) => {
   return groupBy(allDemos || [], getDemoCategory);
+};
+
+export const getSortedCategories = (allDemosInCategory: any) => {
+  return Object.keys(allDemosInCategory).sort(
+    (a: string, b: string) => {
+      if (a === 'OTHER') {
+        return -1;
+      }
+      if (b === 'OTHER') {
+        return 1;
+      }
+      return (
+        allDemosInCategory[a][0].postFrontmatter[i18n.language].order -
+        allDemosInCategory[b][0].postFrontmatter[i18n.language].order
+      );
+    },
+  );
+};
+
+const getMenuItemLocaleKey = (slug = '') => {
+  const slugPieces = slug.split('/');
+  return slugPieces
+    .slice(slugPieces.indexOf('examples') + 1)
+    .filter((key) => key)
+    .join('/');
+};
+
+
+const getExampleOrder = (options: {
+  groupedEdgeKey: string;
+  examples: any[];
+  groupedEdges: {
+    [key: string]: any[];
+  };
+}): number => {
+  const { groupedEdgeKey, groupedEdges, examples } = options;
+
+  const key = getMenuItemLocaleKey(groupedEdgeKey);
+  if (examples.find((item) => item.slug === key)) {
+    return (examples.findIndex((item) => item.slug === key) || 0) + 100;
+  }
+  if (!groupedEdges[groupedEdgeKey] && !groupedEdges[groupedEdgeKey].length) {
+    return 0;
+  }
+  return groupedEdges[groupedEdgeKey][0].node.frontmatter.order || 0;
+};
+
+const getGroupedEdges = (edges: any) => {
+  return groupBy(
+    edges,
+    ({
+       node: {
+         fields: { slug: slugString },
+       },
+     }: any) => {
+      // API.md and design.md
+      if (slugString.endsWith('/API') || slugString.endsWith('/design')) {
+        return slugString.split('/').slice(0, -2).join('/');
+      }
+      // index.md
+      return slugString.split('/').slice(0, -1).join('/');
+    },
+  );
+};
+
+// 提取出筛选 和 排序的方法 好在获取treeData 的时候使用
+export const getGroupedEdgesDataEdit = (examples: any, edges: any) => {
+  const groupedEdges = getGroupedEdges(edges);
+
+  return Object.keys(groupedEdges)
+    .filter((key) => key.startsWith(`/${i18n.language}/`))
+    .sort((a: string, b: string) => {
+      const aOrder = getExampleOrder({
+        groupedEdgeKey: a,
+        examples,
+        groupedEdges,
+      });
+      const bOrder = getExampleOrder({
+        groupedEdgeKey: b,
+        examples,
+        groupedEdges,
+      });
+      return aOrder - bOrder;
+    });
 };

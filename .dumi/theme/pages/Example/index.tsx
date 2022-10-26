@@ -4,7 +4,7 @@ import { Layout } from 'antd';
 import { groupBy, noop } from 'lodash-es';
 import SplitPane from 'react-split-pane';
 import { Header } from '../../slots/Header';
-import { ExampleSider, TreeItem } from '../../slots/ExampleSider';
+import { ExampleSider, PlayGroundItemProps, TreeItem } from '../../slots/ExampleSider';
 import { CodePreview } from '../../slots/CodePreview';
 import { CodeEditor } from '../../slots/CodeEditor';
 import { CodeHeader } from '../../slots/CodePreview/CodeHeader';
@@ -12,6 +12,7 @@ import { CodeHeader } from '../../slots/CodePreview/CodeHeader';
 import styles from './index.module.less';
 import { ThemeAntVContext } from '@/.dumi/theme/context';
 import i18n from 'i18next';
+import { getSortedCategories } from '@/.dumi/theme/slots/utils';
 
 const { Sider, Content } = Layout;
 
@@ -52,21 +53,7 @@ const Example: React.FC<{}> = () => {
 
   const allDemosInCategory = groupBy(allDemos || [], getDemoCategory);
 
-  const Categories = Object.keys(allDemosInCategory).sort(
-    (a: string, b: string) => {
-      if (a === 'OTHER') {
-        return -1;
-      }
-      if (b === 'OTHER') {
-        return 1;
-      }
-      return (
-        allDemosInCategory[a][0].postFrontmatter[i18n.language].order -
-        allDemosInCategory[b][0].postFrontmatter[i18n.language].order
-      );
-    },
-  );
-
+  const sortedCategories = getSortedCategories(allDemosInCategory);
 
   // 提取出来获取 唯一value值的 方法
   const getPath = (item: PlayGroundItemProps) => {
@@ -79,9 +66,26 @@ const Example: React.FC<{}> = () => {
     return `/${i18n.language}/examples/${demoSlug}`;
   };
 
+  // 一级菜单，二级菜单 数据 treeData + 二级菜单，示例 数据 result 写成一个 一级，二级，示例的三层树结构 数据
+  const transformNode = (data: TreeItem[], result: TreeItem[]): TreeItem[] => {
+    return data.map((item) => {
+      if (item.children && !item.node) {
+        return { ...item, children: transformNode(item.children, result) };
+      }
+      const { frontmatter, fields } = item.node;
+      return {
+        ...frontmatter,
+        // 提前给二级菜单的key值加入 特殊值 好辨别
+        value: `secondaryKey-${fields?.slug}`,
+        children: result.find(({ title: k }) => k === frontmatter.title)
+          ?.children,
+      };
+    });
+  };
+
   const getTreeData = () => {
     const result: TreeItem[] = [];
-    categories.forEach((category: string) => {
+    sortedCategories.forEach((category: string) => {
       const root: TreeItem = {
         title: category,
         value: '',
@@ -107,44 +111,59 @@ const Example: React.FC<{}> = () => {
       result.push(root);
     });
 
-    // @todo 逍为
-    const header = <CodeHeader title='hello world' relativePath='a.ts' githubUrl='' />;
+    const newTreeData: TreeItem[] = [];
+    // 扁平化 一级菜单中的数据， 示例有些并不是在第三层， 也有在第二层
+    treeData.forEach((treeItem) => {
+      const slugPieces = treeItem.value?.split('/');
+      if (!slugPieces) return;
+      if (slugPieces.length <= 3) {
+        newTreeData.push(...treeItem.children);
+      } else {
+        newTreeData.push(treeItem);
+      }
+    });
 
-    return (
-      <div className={styles.example}>
-        <Header isHomePage={false} />
-        <Layout className={styles.container}>
-          <Sider
-            collapsedWidth={0}
-            width={250} // 多长好不晓得，250 差不多
-            trigger={null}
-            collapsible
-            className={styles.sider}
-            theme='light'
-          >
-            <div className={styles.exampleList}>
-              <ExampleSider
-                showExampleDemoTitle={showExampleDemoTitle}
-                getPath={getPath}
-                currentExample={currentExample}
-                updateCurrentExample={updateCurrentExample}
-                treeData={getTreeData()} />
-            </div>
-          </Sider>
-          <Content className={styles.content}>
-            {/** @ts-ignore */}
-            <SplitPane split='vertical' defaultSize='50%' minSize={100}>
-              {/** @todo 逍为，和编辑器联动 */}
-              <CodePreview error={new Error('abc')} header={header} />
-              {/** @todo 逍为，获取源码内容和文件 */}
-              <CodeEditor source='' babeledSource='' relativePath='a.ts' onError={noop} onFullscreen={noop}
-                          onDestroy={noop} onReady={noop} />
-            </SplitPane>
-          </Content>
-        </Layout>
-      </div>
-    );
-  }
-}
+    return transformNode(newTreeData, result);
+  };
 
-  export default Example;
+
+  // @todo 逍为
+  const header = <CodeHeader title='hello world' relativePath='a.ts' githubUrl='' />;
+
+  return (
+    <div className={styles.example}>
+      <Header isHomePage={false} />
+      <Layout className={styles.container}>
+        <Sider
+          collapsedWidth={0}
+          width={250} // 多长好不晓得，250 差不多
+          trigger={null}
+          collapsible
+          className={styles.sider}
+          theme='light'
+        >
+          <div className={styles.exampleList}>
+            <ExampleSider
+              showExampleDemoTitle={showExampleDemoTitle}
+              getPath={getPath}
+              currentExample={currentExample}
+              updateCurrentExample={updateCurrentExample}
+              treeData={getTreeData()} />
+          </div>
+        </Sider>
+        <Content className={styles.content}>
+          {/** @ts-ignore */}
+          <SplitPane split='vertical' defaultSize='50%' minSize={100}>
+            {/** @todo 逍为，和编辑器联动 */}
+            <CodePreview error={new Error('abc')} header={header} />
+            {/** @todo 逍为，获取源码内容和文件 */}
+            <CodeEditor source='' babeledSource='' relativePath='a.ts' onError={noop} onFullscreen={noop}
+                        onDestroy={noop} onReady={noop} />
+          </SplitPane>
+        </Content>
+      </Layout>
+    </div>
+  );
+};
+
+export default Example;
