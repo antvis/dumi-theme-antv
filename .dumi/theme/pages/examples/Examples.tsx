@@ -79,7 +79,7 @@ const Example = () => {
           </div>
         </Article>
       </AntLayout>
-      <Footer />
+      <Footer isDynamicFooter={true} />
     </>
   );
 };

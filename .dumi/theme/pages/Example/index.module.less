@@ -1,0 +1,40 @@
+@import 'antd/es/style/themes/default.less';
+@import '../../slots/_.less';
+
+:global(#root) {
+  width: 100%;
+  height: 100%;
+}
+
+.example {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .container {
+    flex: 1;
+    background-color: #fff;
+
+    .sider {
+      height: 100%;
+
+      .exampleList {
+
+      }
+    }
+
+    .content {
+      position: relative;
+      height: 100%;
+
+      .left {
+        height: 100%;
+      }
+
+      .right {
+        height: 100%;
+      }
+    }
+  }
+}
