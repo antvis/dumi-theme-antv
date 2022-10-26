@@ -189,14 +189,16 @@ const Example: React.FC<{}> = () => {
           className={styles.sider}
           theme='light'
         >
-          {currentExample && <div className={styles.exampleList}>
+          { 
+            currentExample &&
             <ExampleSider
               showExampleDemoTitle={showExampleDemoTitle}
               getPath={getPath}
               currentExample={currentExample}
               updateCurrentExample={updateCurrentExample}
-              treeData={getTreeData()} />
-          </div>}
+              treeData={getTreeData()}
+            />
+          }
         </Sider>
         <Content className={styles.content}>
           {/** @ts-ignore */}
