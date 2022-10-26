@@ -12,14 +12,14 @@ export default (api: IApi) => {
   const pages = [
     // Examples gallery page.
     {
-      id: 'dumi-theme-antv-page-Examples',
-      path: '/:language/Examples/',
+      id: 'dumi-theme-antv-page-examples',
+      path: '/:language/examples/',
       file: require.resolve('./.dumi/theme/pages/Examples/index.tsx'),
     },
     // single example preview page.
     {
       id: 'dumi-theme-antv-page-example',
-      path: '/:language/Examples/:category/:name',
+      path: '/:language/examples/:category/:name',
       file: require.resolve('./.dumi/theme/pages/Example/index.tsx'),
     },
   ];

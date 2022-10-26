@@ -1,14 +1,21 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react';
-import { useSiteData, useIntl, useLocale } from 'dumi';
-// @ts-ignore
-import loadable from '@loadable/component';
+import MonacoEditor, { loader } from '@monaco-editor/react';
+import { useSiteData, useLocale } from 'dumi';
 import { debounce, noop } from 'lodash-es';
-
 import { replaceInsertCss, execute, compile } from './utils';
 import { Toolbar, EDITOR_TABS } from './Toolbar';
 import styles from './index.module.less';
 
-const MonacoEditor = loadable(() => import('react-monaco-editor'));
+loader.config({
+  'vs/nls': {
+    availableLanguages: {
+      '*': 'zh-cn',
+    },
+  },
+  paths: {
+    vs: 'https://gw.alipayobjects.com/os/lib/monaco-editor/0.34.0/min/vs',
+  },
+});
 
 export type CodeEditorProps = {
   /**
@@ -38,7 +45,7 @@ export type CodeEditorProps = {
   /**
    * 点击全屏按钮
    */
-  onFullscreen: () => void;
+  onFullscreen: (isFullScreen: boolean) => void;
   /**
    * 初始化
    */
@@ -74,7 +81,6 @@ export type CodeEditorProps = {
 export const CodeEditor: React.FC<CodeEditorProps> = ({
   title = '',
   source,
-  babeledSource,
   relativePath = '',
   playground = {},
   replaceId = 'container',
@@ -86,7 +92,6 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
 }) => {
   const locale = useLocale()
   const { extraLib = '' } = useSiteData().themeConfig.playground;
-  const [compiledCode, setCompiledCode] = useState(babeledSource);
   // 编辑器两个 tab，分别是代码和数据
   const [data, setData] = useState(null);
   const [code, setCode] = useState(replaceInsertCss(source, locale.id));
@@ -106,17 +111,40 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
     window.dispatchEvent(e);
   };
 
-  const executeCode = useCallback(debounce(() => {
-    if (!compiledCode) {
+  
+  useEffect(() => {
+    // 用于上报错误信息，使用 script 执行代码
+    if (typeof window !== 'undefined') {
+      (window as any).__reportErrorInPlayground = (e: Error) => {
+        console.log(e);
+        onError(e);
+      };
+    }
+  });
+
+  const executeCode = useCallback(debounce((v: string) => {
+    if (!v) return;
+    
+    // 1. 先编译代码
+    let compiled;
+    try {
+      compiled = compile(v, relativePath);
+      // 清除错误
+      onError(null);
+    } catch (e) {
+      console.log(e);
+      onError(e);
+      // 执行出错，后面的步骤不用做了！
       return;
     }
-    // @todo 逍为
-    execute(compiledCode, document.getElementById(replaceId) as any, 'todo', replaceId, onError);
+
+    // 2. 执行代码，try catch 在内部已经做了
+    execute(compiled, document.getElementById(replaceId) as any, 'todo', replaceId);
   }, 300), []);
 
   useEffect(() => {
-    executeCode();
-  }, [compiledCode]);
+    executeCode(code);
+  }, [code]);
 
   useEffect(() => {
     onReady();
@@ -147,16 +175,6 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
   const onCodeChange = useCallback((value: string) => {
     if (currentEditorTab === EDITOR_TABS.JAVASCRIPT) {
       setCode(value)
-      try {
-        const code = compile(source, relativePath);
-        setCompiledCode(value);
-        // 清除错误信息
-        onError(null);
-      } catch (e) {
-        console.log(e);
-        // 抛出错误信息
-        onError(e);
-      }
     }
   }, []);
 
@@ -171,7 +189,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
         isFullScreen={isFullscreen}
         editorTabs={editorTabs}
         currentEditorTab={currentEditorTab}
-        onExecuteCode={executeCode}
+        onExecuteCode={() => executeCode(code)}
         onEditorTabChange={setCurrentEditorTab}
         onToggleFullscreen={onFullscreen}
       />
@@ -183,7 +201,9 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
           language={
             currentEditorTab === EDITOR_TABS.JAVASCRIPT ? 'javascript' : 'json'
           }
-          value={code}
+          value={currentEditorTab === EDITOR_TABS.JAVASCRIPT ? code : JSON.stringify(data, null, 2)}
+          path={relativePath}
+          loading="Loading..."
           options={{
             readOnly: currentEditorTab === EDITOR_TABS.DATA,
             automaticLayout: true,
@@ -196,29 +216,9 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
             showFoldingControls: 'always',
             foldingHighlight: true,
           }}
-          onChange={(value: any) => onCodeChange(value)}
-          editorWillMount={(monaco: any) => {
-            try {
-              monaco.editor.defineTheme('customTheme', {
-                base: 'vs',
-                inherit: true,
-                rules: [],
-                colors: {
-                  'editor.inactiveSelectionBackground': '#ffffff',
-                },
-              });
-              monaco.editor.setTheme('customTheme');
-              // @todo why javascriptDefaults is undefined.
-              monaco.languages.typescript.javascriptDefaults.addExtraLib(
-                extraLib,
-                '',
-              );
-            } catch (e) {
-              console.log(e);
-            }
-          }}
-          editorDidMount={(editorInstance: any) => {
-            monacoRef.current = editorInstance.getModel();
+          onChange={onCodeChange}
+          onMount={(editor: any) => {
+            monacoRef.current = editor; 
           }}
         />
       </div>

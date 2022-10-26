@@ -2,21 +2,21 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Layout } from 'antd';
 import { noop } from 'lodash-es';
+import { useLocale } from 'dumi';
 import SplitPane from 'react-split-pane';
 import { Header } from '../../slots/Header';
 import { ExampleSider, PlayGroundItemProps, TreeItem } from '../../slots/ExampleSider';
 import { CodePreview } from '../../slots/CodePreview';
 import { CodeEditor } from '../../slots/CodeEditor';
 import { CodeHeader } from '../../slots/CodePreview/CodeHeader';
-import { ThemeAntVContext } from '@/.dumi/theme/context';
-import i18n from 'i18next';
-import { getAllDemosInCategory, getSortedCategories, getTreeDataByExamplesAndEdges } from '@/.dumi/theme/slots/utils';
-import { useLocale } from 'dumi';
+import { ThemeAntVContext } from '../../context';
+import { getExampleInfo } from './utils';
+import { getAllDemosInCategory, getSortedCategories, getTreeDataByExamplesAndEdges } from '../../slots/utils';
+
 import styles from './index.module.less';
 
 
 const { Sider, Content } = Layout;
-
 
 type ExampleParams = {
   /**
@@ -37,12 +37,18 @@ type ExampleParams = {
  * 具体单个案例的页面
  */
 const Example: React.FC<{}> = () => {
+  /** 示例页面的元数据信息 */
+  const metaData: any = useContext(ThemeAntVContext);
+  const [error, setError] = useState<Error>();
+  const [isFullScreen, setFullscreen] = useState<boolean>(false);
   const { language, category, name } = useParams<ExampleParams>();
 
   const locale = useLocale();
-
-  /** 示例页面的元数据信息 */
-  const metaData: any = useContext(ThemeAntVContext);
+  const {
+    title,
+    relativePath,
+    source,
+  } = getExampleInfo(metaData);
 
   const { exampleSections = {}, allDemos = [] } = metaData.meta.result.pageContext;
 
@@ -97,7 +103,8 @@ const Example: React.FC<{}> = () => {
   // 提取出来获取 唯一value值的 方法
   const getPath = (item: PlayGroundItemProps) => {
     if (!item) {
-      debugger
+      // @todo 怀策
+      // debugger
     }
     const demoSlug = item.relativePath?.replace(
       /\/demo\/(.*)\..*/,
@@ -105,7 +112,7 @@ const Example: React.FC<{}> = () => {
         return `#${filename}`;
       },
     );
-    return `/${i18n.language}/examples/${demoSlug}`;
+    return `/${locale.id}/examples/${demoSlug}`;
   };
 
   // 一级菜单，二级菜单 数据 treeData + 二级菜单，示例 数据 result 写成一个 一级，二级，示例的三层树结构 数据
@@ -142,7 +149,7 @@ const Example: React.FC<{}> = () => {
           ...item, // 需要里面的 各种数据
           title:
             typeof item.title === 'object'
-              ? item.title[i18n.language]
+              ? item.title[locale.id]
               : item.title || item?.filename,
           value: path,
         };
@@ -167,7 +174,6 @@ const Example: React.FC<{}> = () => {
     return transformNode(newTreeData, result);
   };
 
-
   // @TODO 逍为
   const header = <CodeHeader title='hello world' relativePath='a.ts' githubUrl='' />;
 
@@ -183,23 +189,32 @@ const Example: React.FC<{}> = () => {
           className={styles.sider}
           theme='light'
         >
-          {currentExample && <div className={styles.exampleList}>
+          { 
+            currentExample &&
             <ExampleSider
               showExampleDemoTitle={showExampleDemoTitle}
               getPath={getPath}
               currentExample={currentExample}
               updateCurrentExample={updateCurrentExample}
-              treeData={getTreeData()} />
-          </div>}
+              treeData={getTreeData()}
+            />
+          }
         </Sider>
         <Content className={styles.content}>
           {/** @ts-ignore */}
           <SplitPane split='vertical' defaultSize='50%' minSize={100}>
             {/** @todo 逍为，和编辑器联动 */}
-            <CodePreview error={new Error('abc')} header={header} />
+            <CodePreview error={error} header={header} />
             {/** @todo 逍为，获取源码内容和文件 */}
-            <CodeEditor source='' babeledSource='' relativePath='a.ts' onError={noop} onFullscreen={noop}
-                        onDestroy={noop} onReady={noop} />
+            <CodeEditor
+              source={source}
+              babeledSource={source}
+              relativePath={relativePath}
+              onError={setError}
+              onFullscreen={setFullscreen}
+              onDestroy={noop}
+              onReady={noop}
+            />
           </SplitPane>
         </Content>
       </Layout>

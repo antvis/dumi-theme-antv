@@ -1,9 +1,9 @@
 import { Input, Menu, Tooltip } from 'antd';
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import Icon, { createFromIconfontCN, SearchOutlined } from '@ant-design/icons';
-import { t } from 'i18next';
 import classNames from 'classnames';
 import { difference, map, reduce, size } from 'lodash-es';
+import { useT } from '../hooks';
 import styles from './index.module.less';
 
 export interface PlayGroundItemProps {
@@ -245,12 +245,12 @@ export const ExampleSider: React.FC<ExampleSiderProps> = (props) => {
       <div className={styles.searchSider}>
         <Input
           size='small'
-          placeholder={t('搜索')}
+          placeholder={useT('搜索')}
           prefix={<SearchOutlined />}
           value={searchValue}
           onChange={(e: any) => setSearchValue(e.target.value)}
         />
-        <Tooltip placement='right' title={t('收起所有') as React.ReactNode}>
+        <Tooltip placement='right' title={useT('收起所有') as React.ReactNode}>
           <Icon
             // TODO: 解除注释
             // component={CollaspeAllSvg}
