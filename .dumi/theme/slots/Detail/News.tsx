@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'dumi';
 
 import styles from './News.module.less';
+import { useT } from '../hooks';
 
 export interface NewsProps {
   index?: number;
@@ -32,7 +33,7 @@ export const News: React.FC<NewsProps> = ({
       />
       <div className={styles.content}>
         <p className={styles.description}>
-          {type} ‧ {title}
+          {useT(type)} ‧ {useT(title)}
         </p>
         <p className={styles.date}>{date}</p>
       </div>

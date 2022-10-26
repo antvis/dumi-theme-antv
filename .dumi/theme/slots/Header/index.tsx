@@ -1,9 +1,10 @@
 // import { navigate } from 'gatsby';
 import React, { useState, useEffect } from 'react';
 import { useMedia } from 'react-use';
+import { useNavigate } from "react-router-dom";
 import cx from 'classnames';
 import { useSiteData } from 'dumi';
-import { useTranslation } from 'react-i18next';
+
 import {
   GithubOutlined,
   MenuOutlined,
@@ -11,6 +12,7 @@ import {
   DownOutlined,
   WechatOutlined,
   LikeOutlined,
+  CheckOutlined,
 } from '@ant-design/icons';
 import { Popover, Menu, Dropdown, Select } from 'antd';
 import { map, size } from 'lodash-es';
@@ -19,12 +21,13 @@ import { Products } from './Products';
 import { Navs, INav } from './Navs';
 import { Logo } from './Logo';
 import { LogoWhite } from './LogoWhite';
+import { useLocale } from 'dumi';
 
 import styles from './index.module.less';
+import { useT } from '../hooks';
 
 export type HeaderProps = {
   pathPrefix?: string;
-  path?: string;
   /** 子标题 */
   subTitle?: React.ReactNode;
   /** 子标题的链接 */
@@ -83,7 +86,6 @@ const HeaderComponent: React.FC<HeaderProps> = ({
   subTitle = '',
   subTitleHref,
   pathPrefix = '',
-  path = '',
   navs = [],
   showSearch = true,
   showGithubStar = false,
@@ -106,13 +108,12 @@ const HeaderComponent: React.FC<HeaderProps> = ({
   versions,
   ecosystems,
 }) => {
-  const { t, i18n } = useTranslation();
+  const locale=useLocale()
+  const navigate = useNavigate()
   const isAntVHome = isAntVSite && isHomePage; // 是否为AntV官网首页
 
-  const lang =
-    typeof defaultLanguage !== 'undefined'
-      ? defaultLanguage
-      : i18n.language || '';
+  const [lang, setLang] = useState(locale.id )
+   
   const [productMenuVisible, setProductMenuVisible] = useState(false);
   let productMenuHovering = false;
   const onProductMouseEnter = (e: React.MouseEvent) => {
@@ -153,7 +154,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
     if (popupMenuVisible) {
       setPopupMenuVisible(false);
     }
-  }, [path]);
+  }, [window.location.pathname]);
 
   // 移动端下弹出菜单时，禁止页面滚动
   useEffect(() => {
@@ -195,7 +196,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
       {
         /** 最左侧的菜单，一般是 教程、API、示例，或者其他自定义，有配置文件中的 `navs` 决定 */
         size(navs) &&
-        <Navs navs={navs} path={path} />
+        <Navs navs={navs} path={window.location.pathname} />
       }
 
       {
@@ -217,7 +218,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
             }
           >
             <span>
-              {t('周边生态')}
+              {useT('周边生态')}
               <DownOutlined style={{ marginLeft: '6px' }} />
             </span>
           </Dropdown>
@@ -229,7 +230,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
         showAntVProductsCard &&
         <li { ...productItemProps }>
           <a>
-            所有产品
+              {useT('所有产品')}
             {!isAntVHome ? (
               <img
                 src="https://gw.alipayobjects.com/zos/antfincdn/FLrTNDvlna/antv.png"
@@ -286,6 +287,70 @@ const HeaderComponent: React.FC<HeaderProps> = ({
 
       {
         /** 切换网站语言 */
+        showLanguageSwitcher && (
+        <li>
+          <Dropdown
+            placement="bottomRight"
+            overlay={
+              <Menu
+                defaultSelectedKeys={[lang]}
+                selectable
+                onSelect={({ key }) => {
+                  if (key === lang) {
+                    return;
+                  }
+                  setLang(key)
+                  if (onLanguageChange) {
+                    onLanguageChange(key.toString());
+                    return;
+                  }
+                  if (window.location.pathname == '/') {
+                    navigate('/en')
+                    return;
+                  }
+                  
+                  if (window.location.pathname.includes(`en`)) {
+                    navigate(
+                      window.location.pathname.replace(`/en`, ""),
+                    );
+                  } else {
+                    navigate(
+                      window.location.pathname.replace(`/`, "/en/"),
+                    );
+                  }
+                }}
+              >
+                <Menu.Item key="en">
+                  <CheckOutlined
+                    style={{
+                      visibility: lang === 'en' ? 'visible' : 'hidden',
+                      color: '#52c41a',
+                    }}
+                  />
+                  English
+                </Menu.Item>
+                <Menu.Item key="zh">
+                  <CheckOutlined
+                    style={{
+                      visibility: lang === 'zh' ? 'visible' : 'hidden',
+                      color: '#52c41a',
+                    }}
+                  />
+                  简体中文
+                </Menu.Item>
+              </Menu>
+            }
+            className={styles.translation}
+          >
+            <a
+              className="ant-dropdown-link"
+              onClick={(e) => e.preventDefault()}
+              >
+                <svg className={styles.translation}  xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z" /></svg>
+            </a>
+          </Dropdown>
+        </li>
+      )
       }
 
       {
@@ -339,7 +404,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
             <>
               <span className={styles.divider} />
               <h2 className={styles.subProduceName}>
-                <a href="/">{subTitle}</a>
+                <a href={(window.location.pathname.startsWith('/en')?'/en':'/')}>{subTitle}</a>
               </h2>
             </>
           )}

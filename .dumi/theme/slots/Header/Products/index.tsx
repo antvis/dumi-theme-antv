@@ -1,10 +1,10 @@
 import React from 'react';
 import cx from 'classnames';
-import { useTranslation } from 'react-i18next';
 import Product from './Product';
 import { CATEGORIES, getNewProducts, ProductType } from './getProducts';
-import { useChinaMirrorHost } from '../../hooks';
+import { useChinaMirrorHost, useT } from '../../hooks';
 import styles from './Product.module.less';
+import { useLocale } from 'dumi';
 
 interface ProductsProps {
   show: boolean;
@@ -14,10 +14,10 @@ interface ProductsProps {
 }
 
 export const Products: React.FC<ProductsProps> = ({ show, language, className }) => {
-  const { t, i18n } = useTranslation();
+  const locale=useLocale()
   const [isChinaMirrorHost] = useChinaMirrorHost();
   const [products, setProducts] = React.useState<ProductType[]>([]);
-  const lang = i18n.language === 'zh' ? 'zh' : 'en';
+  const lang = locale.id === 'zh' ? 'zh' : 'en';
   React.useEffect(() => {
     getNewProducts({
       language: lang,
@@ -38,7 +38,7 @@ export const Products: React.FC<ProductsProps> = ({ show, language, className })
           {CATEGORIES.map(({ name, type }, idx) => {
             return (
               <React.Fragment key={idx}>
-                <h3>{t(name)}</h3>
+                <h3>{useT(name)}</h3>
                 <ul>
                   {products
                     .filter((item) => item.category === type)
@@ -51,7 +51,7 @@ export const Products: React.FC<ProductsProps> = ({ show, language, className })
                         url={product.links?.home?.url}
                         icon={product.icon as string}
                         links={product.links}
-                        language={language || i18n.language}
+                        language={language || locale.id}
                       />
                     ))}
                 </ul>

@@ -1,19 +1,15 @@
 import React, { useRef, useEffect, useState } from 'react';
 import loadable from '@loadable/component';
-import { useSiteData } from 'dumi';
+import { useLocale, useSiteData } from 'dumi';
 import { useMedia } from 'react-use';
 import cx from 'classnames';
 import { Result } from 'antd';
 import { debounce } from 'lodash-es';
-import {
-  useTranslation,
-  withTranslation,
-  WithTranslation,
-} from 'react-i18next';
 import { transform } from '@babel/standalone';
 import SplitPane from 'react-split-pane';
 import { Toolbar, EDITOR_TABS } from './Toolbar';
 import styles from './index.module.less';
+import { useT } from '../hooks';
 
 const MonacoEditor = loadable(() => import('react-monaco-editor'));
 
@@ -50,7 +46,6 @@ export const PlayGround: React.FC<PlayGroundProps> = ({
   replaceId = 'container',
 }) => {
   const splitPaneSize = 0.62;
-  const { t, i18n } = useTranslation();
 
   const { extraLib = '' } = useSiteData().themeConfig.playground;
   const playgroundNode = useRef<HTMLDivElement>(null);
@@ -59,9 +54,9 @@ export const PlayGround: React.FC<PlayGroundProps> = ({
 
   const [currentSourceData, updateCurrentSourceData] = useState(null);
   const editroRef = useRef<any>(null);
-
+  const locale=useLocale()
   const comment =
-    i18n.language === 'zh'
+    locale.id === 'zh'
       ? `// 我们用 insert-css 演示引入自定义样式
 // 推荐将样式添加到自己的样式文件中
 // 若拷贝官方代码，别忘了 npm install insert-css
@@ -268,7 +263,7 @@ insertCss(`;
           {error ? (
             <Result
               status="error"
-              title={t('演示代码报错，请检查')}
+              title={useT('演示代码报错，请检查')}
               subTitle={<pre>{error && error.message}</pre>}
             />
           ) : (

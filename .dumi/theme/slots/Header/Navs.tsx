@@ -5,6 +5,7 @@ import { LinkOutlined } from '@ant-design/icons';
 import { Link } from 'dumi';
 
 import styles from './index.module.less';
+import { useLocale } from 'dumi';
 
 export type INav = {
   slug: string;
@@ -29,14 +30,17 @@ const getDocument = (navs: INav[], slug = '') =>
  * Header 中的导航菜单
  */
 export const Navs: React.FC<NavProps> = ({ navs, path }) => {
+  const locale=useLocale()
   return (
     <>
       {navs.map((nav: INav) => {
-        const href = nav.slug.startsWith('http')
+        let href = nav.slug.startsWith('http')
           ? nav.slug
           : `/${nav.slug}`;
-
-        const title = getDocument(navs, nav.slug).title['zh'];
+        const title = getDocument(navs, nav.slug).title[locale.id];
+        if (window.location.pathname.includes('en')) {
+          href=`/en${href}`
+        }
         const className = cx('header-menu-item-active', {
           [styles.activeItem]:
             path.startsWith(href) ||

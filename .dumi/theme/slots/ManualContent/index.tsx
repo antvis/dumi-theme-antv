@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Layout, Affix, BackTop, Menu, Tooltip } from 'antd';
 import { useMedia } from 'react-use';
 import Drawer from 'rc-drawer';
-import { useSidebarData, useSiteData, useFullSidebarData } from 'dumi';
+import { useSiteData, useFullSidebarData} from 'dumi';
 import { useNavigate } from "react-router-dom";
 import { EditOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { NavigatorBanner } from './NavigatorBanner';
@@ -24,15 +24,17 @@ interface PreAndNext {
 interface linkToTitle{
   [ket:string] :string
 }
+
+interface sidebarData{
+  [key:string]: Array<{children:Array<{link:string,title:string}>}>
+}
+
 /**
  * 文档的结构
  */
 export const ManualContent: React.FC<ManualContent> = ({ children }) => {
   const { themeConfig: { githubUrl, relativePath } } = useSiteData();
-  const sidebar = useSidebarData();
-
-  console.log(useFullSidebarData());
-
+  const sidebar = useFullSidebarData() as unknown as sidebarData
 
   const isWide = useMedia('(min-width: 767.99px)', true);
   const [drawOpen, setDrawOpen] = useState(false);
@@ -42,9 +44,22 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
     //linkoTitle用来映射路由和Title
   const linkoTitle: linkToTitle = {}
   
-  const renderSidebar = sidebar[0].children.map(item => {
-    const key=item.link 
-    linkoTitle[key]=item.title 
+  let matchRoute = window.location.pathname
+  
+  const reg = /(\/[A-z]*\/?\/[A-z]*)\/?/
+  const mainRoute = matchRoute.match(reg)
+  const currentBaseRoute = mainRoute![1]
+
+  const aboutRoutes=[]
+  for (const [key, value] of Object.entries(sidebar)) {
+    if (key.includes(currentBaseRoute)) {
+      aboutRoutes.push(value)
+    }
+  }
+  
+  const renderSidebar = aboutRoutes[0][0].children.map(item => {
+    const key=item.link
+    linkoTitle[key]=item.title
     return {
       ...item,
       label: item.title,
@@ -57,18 +72,23 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
     navigate(e.key)
     useScrollToTop()
   };
-  const [defaultSelectedKey, setdefaultSelectedKey] = useState([window.location.pathname])
+  const [defaultSelectedKey, setdefaultSelectedKey] = useState<[string]>()
   //上一夜下一页
   const [prev, setPrev] = useState<PreAndNext | undefined>(undefined)
   const [next, setNext] = useState<PreAndNext | undefined>(undefined)
 
   //监听路由去改变selected menu-item
   useEffect(() => {
+    if (window.location.pathname == currentBaseRoute) {
+      setdefaultSelectedKey([renderSidebar[0].key])
+      navigate(renderSidebar[0].key)
+      return;
+    }
     setdefaultSelectedKey([window.location.pathname])
   }, [window.location.pathname])
 
   useEffect(() => {
-    //监听选中的menu-item 拿到 prev and next 
+    //监听选中的menu-item 拿到 prev and next
     getPreAndNext()
   }, [defaultSelectedKey])
 

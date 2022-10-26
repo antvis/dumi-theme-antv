@@ -1,6 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 import styles from './FeatureCard.module.less';
+import { useT } from '../hooks';
 
 interface FeatureProps {
   icon: string;
@@ -17,8 +18,8 @@ const FeatureCard: React.FC<FeatureProps> = ({ icon, title, description }) => {
           src={icon}
           alt="advantage"
         />
-        <p className={styles.title}>{title}</p>
-        <p className={styles.description}>{description}</p>
+        <p className={styles.title}>{useT(title)}</p>
+        <p className={styles.description}>{useT(description)}</p>
       </div>
     </div>
   );

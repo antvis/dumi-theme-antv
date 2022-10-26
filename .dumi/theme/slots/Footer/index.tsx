@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { default as RCFooter, FooterProps as RcFooterProps } from 'rc-footer';
-import { useTranslation } from 'react-i18next';
 import {
   GithubOutlined,
   WeiboOutlined,
@@ -12,6 +11,8 @@ import { omit } from 'lodash-es';
 import 'rc-footer/assets/index.less';
 import styles from './index.module.less';
 import classnames from 'classnames';
+import { useLocale } from 'dumi';
+import { useT } from '../hooks';
 
 interface FooterProps extends RcFooterProps {
   rootDomain?: string;
@@ -32,9 +33,8 @@ export const Footer: React.FC<FooterProps> = (props) => {
     rootDomain = '',
     ...restProps
   } = props;
-
-  const { t, i18n } = useTranslation();
-  const lang = language || i18n.language;
+  const locale=useLocale()
+  const lang = locale.id;
 
   // TODO: 待迁移
   const [withMenu, setWithMenu] = useState<boolean>(true);
@@ -42,7 +42,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
   const getColums = () => {
     // 如果外部没有传入 columns，则默认展示 antv footer
     const col1 = {
-      title: t('Resources'),
+      title: 'Resources',
       items: [
         {
           title: 'Ant Design',
@@ -56,35 +56,35 @@ export const Footer: React.FC<FooterProps> = (props) => {
         },
         {
           title: 'Umi',
-          description: t('React 应用开发框架'),
+          description: useT('React 应用开发框架'),
           url: 'https://umijs.org',
           openExternal: true,
         },
         {
           title: 'Dumi',
-          description: t('组件/文档研发工具'),
+          description: useT('组件/文档研发工具'),
           url: 'https://d.umijs.org',
           openExternal: true,
         },
         {
           title: 'ahooks',
-          description: t('React Hooks 库'),
+          description: useT('React Hooks 库'),
           url: 'https://github.com/alibaba/hooks',
           openExternal: true,
         },
         {
-          title: t('国内镜像'),
+          title: useT('国内镜像'),
           url: 'https://antv.antgroup.com/',
         },
       ],
     };
 
     const col2 = {
-      title: t('社区'),
+      title: useT('社区'),
       items: [
         {
           icon: <ZhihuOutlined style={{ color: '#0084ff' }} />,
-          title: t('体验科技专栏'),
+          title: useT('体验科技专栏'),
           url: 'http://zhuanlan.zhihu.com/xtech',
           openExternal: true,
         },
@@ -96,7 +96,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
             />
           ),
           title: 'SEE Conf',
-          description: t('蚂蚁体验科技大会'),
+          description: useT('蚂蚁体验科技大会'),
           url: 'https://seeconf.antfin.com/',
           openExternal: true,
         },
@@ -104,7 +104,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
     };
 
     const col3 = {
-      title: t('帮助'),
+      title: useT('帮助'),
       items: [
         {
           icon: <GithubOutlined />,
@@ -114,7 +114,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
         },
         {
           icon: <QuestionCircleOutlined />,
-          title: t('StackOverflow'),
+          title: useT('StackOverflow'),
           url: 'http://stackoverflow.com/questions/tagged/antv',
           openExternal: true,
         },
@@ -128,7 +128,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
           alt='more products'
         />
       ),
-      title: t('更多产品'),
+      title: '更多产品',
       items: [
         {
           icon: (
@@ -139,7 +139,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
           ),
           title: 'Ant Design',
           url: 'https://ant.design',
-          description: t('企业级 UI 设计语言'),
+          description: '企业级 UI 设计语言',
           openExternal: true,
         },
         {
@@ -149,9 +149,9 @@ export const Footer: React.FC<FooterProps> = (props) => {
               alt='yuque'
             />
           ),
-          title: t('语雀'),
+          title: '语雀',
           url: 'https://yuque.com',
-          description: t('知识创作与分享工具'),
+          description: '知识创作与分享工具',
           openExternal: true,
         },
         {
@@ -163,7 +163,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
           ),
           title: 'Egg',
           url: 'https://eggjs.org',
-          description: t('企业级 Node 开发框架'),
+          description: '企业级 Node 开发框架',
           openExternal: true,
         },
         {
@@ -174,7 +174,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
             />
           ),
           title: 'Kitchen',
-          description: t('Sketch 工具集'),
+          description: 'Sketch 工具集',
           url: 'https://kitchen.alipay.com',
           openExternal: true,
         },
@@ -185,7 +185,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
               alt='xtech'
             />
           ),
-          title: t('蚂蚁体验科技'),
+          title: '蚂蚁体验科技',
           url: 'https://xtech.antfin.com/',
           openExternal: true,
         },
@@ -229,7 +229,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
                 >
                   <GithubOutlined />
                 </a>
-                <a href={`${rootDomain}/${lang}/about`}>{t('关于我们')}</a>
+                <a href={`${rootDomain}/${lang}/about`}>{useT('关于我们')}</a>
               </div>
               <div>
                 © {new Date().getFullYear()} Made with ❤ by{' '}

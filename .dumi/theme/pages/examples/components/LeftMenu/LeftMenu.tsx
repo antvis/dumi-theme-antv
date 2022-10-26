@@ -3,10 +3,10 @@ import { Affix, Anchor, Layout as AntLayout, Menu } from 'antd';
 import Drawer from 'rc-drawer';
 import { createFromIconfontCN, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { useMedia } from 'react-use';
-import i18n from 'i18next';
 import { debounce, groupBy } from 'lodash-es';
 import { LeftMenuProps } from '../../types';
 import styles from '../../index.module.less';
+import { useLocale } from 'dumi';
 
 
 /**
@@ -17,7 +17,7 @@ import styles from '../../index.module.less';
  */
 export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
   const { edges, examples } = props;
-
+  const locale=useLocale()
   const isWide = useMedia('(min-width: 767.99px)', true);
   const [drawOpen, setDrawOpen] = useState(false);
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
@@ -102,7 +102,7 @@ export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
 
   // 提取出筛选 和 排序的方法 好在获取treeData 的时候使用
   const groupedEdgesDataEdit = Object.keys(groupedEdges)
-    .filter((key) => key.startsWith(`/${i18n.language}/`))
+    .filter((key) => key.startsWith(`/${locale}/`))
     .sort((a: string, b: string) => {
       const aOrder = getExampleOrder({
         groupedEdgeKey: a,
@@ -166,7 +166,6 @@ export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
         );
       });
 
-
   const menu = () => {
     return (
       <Anchor className={styles.galleryAnchor} onChange={onAnchorLinkChange}>
@@ -201,7 +200,7 @@ export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
                     )}
                     <span>
                     {doc && doc.title
-                      ? doc.title[i18n.language]
+                      ? doc.title[locale.id]
                       : menuItemLocaleKey}
                   </span>
                   </div>

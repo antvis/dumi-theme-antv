@@ -1,11 +1,7 @@
 import React from 'react';
 import { Result } from 'antd';
-import {
-  useTranslation,
-  withTranslation,
-  WithTranslation,
-} from 'react-i18next';
 import { PlayGround, PlayGroundProps } from '../../slots/PlayGround';
+import { useT } from '../../slots/hooks';
 
 export type MdPlayGroundProps = {
   examples: PlayGroundProps[];
@@ -35,7 +31,7 @@ const MdPlayGround: React.FC<any> = ({
 };
 
 class ErrorHandlerMdPlayGround extends React.Component<
-  MdPlayGroundProps & WithTranslation,
+  MdPlayGroundProps,
   { error?: Error }
 > {
   state = {
@@ -48,14 +44,13 @@ class ErrorHandlerMdPlayGround extends React.Component<
   }
 
   render() {
-    const { t } = this.props;
     const { error } = this.state;
     if (error) {
       // 你可以自定义降级后的 UI 并渲染
       return (
         <Result
           status="error"
-          title={t('演示代码报错，请检查')}
+          title={useT('演示代码报错，请检查')}
           subTitle={<pre>{error && (error as any).message}</pre>}
         />
       );
@@ -64,4 +59,4 @@ class ErrorHandlerMdPlayGround extends React.Component<
   }
 }
 
-export default withTranslation()(ErrorHandlerMdPlayGround);
+export default ErrorHandlerMdPlayGround;
