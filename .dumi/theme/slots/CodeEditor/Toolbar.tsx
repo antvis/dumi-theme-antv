@@ -19,9 +19,9 @@ import {
   getRiddleConfig,
 } from './utils';
 
-import styles from './Toolbar.module.less';
 import { useLocale } from 'dumi';
 import { useT } from '@/.dumi/theme/slots/hooks';
+import styles from './Toolbar.module.less';
 
 const { Paragraph } = Typography;
 
