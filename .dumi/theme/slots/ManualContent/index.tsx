@@ -50,7 +50,6 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
   
   const reg = window.location.pathname.startsWith('/en') ? /(\/[A-z]*\/?\/[A-z]*)\/?/ : /(\/[A-z]*)\/?/
   const mainRoute = matchRoute.match(reg)
-  console.log(mainRoute);
   
   const currentBaseRoute = mainRoute![1]
 
@@ -76,17 +75,19 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
     navigate(e.key)
     useScrollToTop()
   };
-  const [defaultSelectedKey, setDefaultSelectedKey] = useState<[string]>()
+  const [defaultSelectedKey, setDefaultSelectedKey] = useState<[string]>([renderSidebar[0].key])
   //上一夜下一页
   const [prev, setPrev] = useState<PreAndNext | undefined>(undefined)
   const [next, setNext] = useState<PreAndNext | undefined>(undefined)
 
+ 
   //监听路由去改变selected menu-item
+
+
   useEffect(() => {
     if (window.location.pathname == currentBaseRoute) {
-      setDefaultSelectedKey([renderSidebar[0].key])
       navigate(renderSidebar[0].key)
-      return;
+      return
     }
     setDefaultSelectedKey([window.location.pathname])
   }, [window.location.pathname])
