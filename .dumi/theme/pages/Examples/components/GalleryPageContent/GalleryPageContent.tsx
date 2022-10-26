@@ -2,11 +2,9 @@ import React, { useMemo } from 'react';
 import { Link, useLocale } from 'dumi';
 import { Badge } from 'antd';
 import { each, filter, groupBy, size } from 'lodash-es';
-
 import { Announcement } from '../Accouncement/Announcement';
 import { GalleryPageContentProps, NewDemo } from '../../types';
 import { useT } from '../../../../slots/hooks';
-
 import styles from '../../index.module.less';
 
 const BANNER_LOCALSTORAGE_KEY = 'antv_gallery_banner';
@@ -36,7 +34,6 @@ export const GalleryPageContent: React.FC<GalleryPageContentProps> = (props) => 
   /** 获取上新的 demo. 直接用英文 title 作为 id */
   const demosOnTheNew = useMemo((): Array<NewDemo> => {
     const result: NewDemo[] = [];
-
     each(allDemosInCategory, (categoryDemos, category) => {
       const newDemos = filter(categoryDemos, (d) => d.new);
       // 大于4个新增 demo 或全部新增，则直接使用 category 作为代替

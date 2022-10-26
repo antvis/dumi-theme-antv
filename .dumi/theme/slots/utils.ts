@@ -1,3 +1,6 @@
+import { groupBy } from 'lodash-es';
+import i18n from 'i18next';
+
 type Status = 'responded' | 'error' | 'timeout';
 
 export const ping = (callback: (status: Status) => void): NodeJS.Timeout => {
@@ -45,4 +48,15 @@ export function getGithubSourceUrl(githubUrl: string, relativePath: string, pref
     )}/${prefix}/${relativePath}`;
   }
   return `${githubUrl}/edit/master/${prefix}/${relativePath}`;
+}
+
+export const getDemoCategory = (demo: any, lang = i18n.language) => {
+  if (!demo.postFrontmatter || !demo.postFrontmatter[lang]) {
+    return 'OTHER';
+  }
+  return demo.postFrontmatter[lang].title;
+};
+
+export const getCategories = (allDemos: any[]) => {
+  return groupBy(allDemos || [], getDemoCategory);
 };

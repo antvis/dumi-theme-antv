@@ -30,30 +30,6 @@ const Example = () => {
 
   const { edges = [] } = allMarkdownRemark;
 
-
-  // Playground 部分，先注释
-  // const currentPath = location.pathname.replace(/\/$/, '');
-  // const isGalleryView = currentPath.includes('/Examples/gallery');
-  //
-  // const { node: markdownRemark } =
-  // edges.find((edge: any) => {
-  //   const {
-  //     fields: { slug },
-  //   } = edge.node;
-  //
-  //   if (
-  //     /\/Examples\/.*\/API$/.test(currentPath) ||
-  //     /\/Examples\/.*\/design$/.test(currentPath)
-  //   ) {
-  //     return currentPath.indexOf(slug) >= 0;
-  //   }
-  //   return (
-  //     currentPath === slug ||
-  //     currentPath.endsWith(slug)
-  //   );
-  // }) || {};
-
-
   const [prev, next] = usePrevAndNext();
 
 
