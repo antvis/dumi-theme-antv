@@ -6,6 +6,7 @@ import { Features } from '../../slots/Features';
 import { Cases } from '../../slots/Cases';
 import { Companies } from '../../slots/Companies';
 import { Footer } from '../../slots/Footer';
+import { useT } from '../../slots/hooks';
 
 /**
  * Index 路由下的入口
@@ -48,7 +49,7 @@ export const Index = () => {
       <Detail { ...detailProps } />
       <Features { ...featuresProps } />
       <Cases { ...casesProps } />
-      <Companies title="感谢信赖" companies={companies} />
+      <Companies title={useT("感谢信赖")} companies={companies} />
       <Footer />
     </>
   );

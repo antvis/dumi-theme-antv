@@ -1,10 +1,12 @@
 import React, { useMemo } from 'react';
-import i18n, { t } from 'i18next';
-import { Link } from 'dumi';
+import { Link, useLocale } from 'dumi';
 import { Badge } from 'antd';
 import { each, filter, groupBy, size } from 'lodash-es';
+
 import { Announcement } from '../Accouncement/Announcement';
 import { GalleryPageContentProps, NewDemo } from '../../types';
+import { useT } from '../../../../slots/hooks';
+
 import styles from '../../index.module.less';
 
 const BANNER_LOCALSTORAGE_KEY = 'antv_gallery_banner';
@@ -18,10 +20,10 @@ const BANNER_LOCALSTORAGE_KEY = 'antv_gallery_banner';
  */
 export const GalleryPageContent: React.FC<GalleryPageContentProps> = (props) => {
   const { exampleSections, allDemos } = props;
-
+  const locale = useLocale()
 
   // 获取 demo 的 Category 分类
-  const getDemoCategory = (demo: any, lang = i18n.language) => {
+  const getDemoCategory = (demo: any, lang = locale.id) => {
     if (!demo.postFrontmatter || !demo.postFrontmatter[lang]) {
       return 'OTHER';
     }
@@ -50,7 +52,7 @@ export const GalleryPageContent: React.FC<GalleryPageContentProps> = (props) => 
       } else {
         each(newDemos, (demo) =>
           result.push({
-            title: demo.title[i18n.language],
+            title: demo.title[locale.id],
             id: demo.title.en,
             category: getDemoCategory(demo),
           }),
@@ -58,13 +60,12 @@ export const GalleryPageContent: React.FC<GalleryPageContentProps> = (props) => 
       }
     });
     return result;
-  }, [allDemosInCategory, allDemos, i18n.language]);
+  }, [allDemosInCategory, allDemos, locale.id]);
 
   /** 公告 id */
   const bannerId = useMemo(() => {
     return demosOnTheNew.map((d) => d.id).join('-');
   }, [demosOnTheNew]);
-
 
   const Categories = Object.keys(allDemosInCategory).sort(
     (a: string, b: string) => {
@@ -75,12 +76,11 @@ export const GalleryPageContent: React.FC<GalleryPageContentProps> = (props) => 
         return 1;
       }
       return (
-        allDemosInCategory[a][0].postFrontmatter[i18n.language].order -
-        allDemosInCategory[b][0].postFrontmatter[i18n.language].order
+        allDemosInCategory[a][0].postFrontmatter[locale.id].order -
+        allDemosInCategory[b][0].postFrontmatter[locale.id].order
       );
     },
   );
-
 
   return <div className={styles.gallery}>
     <div className={styles.galleryContent}>
@@ -96,7 +96,7 @@ export const GalleryPageContent: React.FC<GalleryPageContentProps> = (props) => 
           message={
             // @ts-ignore
             <div>
-              {t('上新啦，点击直达：')}
+              {useT('上新啦，点击直达：')}
               {demosOnTheNew.map((demo, idx) => (
                 <span key={demo.title}>
                     {idx !== 0 && '，'}
@@ -127,7 +127,7 @@ export const GalleryPageContent: React.FC<GalleryPageContentProps> = (props) => 
                   cardTitle = demo.title;
                 } else {
                   cardTitle = demo.title
-                    ? demo.title[i18n.language]
+                    ? demo.title[locale.id]
                     : demo.filename;
                 }
                 const demoSlug = demo.relativePath.replace(
@@ -155,7 +155,7 @@ export const GalleryPageContent: React.FC<GalleryPageContentProps> = (props) => 
                   >
                     <Link
                       className={styles.galleryCardLink}
-                      to={`/${i18n.language}/examples/${demoSlug}`}
+                      to={`/${locale.id}/examples/${demoSlug}`}
                     >
                       {demo.new ? (
                         <Badge.Ribbon

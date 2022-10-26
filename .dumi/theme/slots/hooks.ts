@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { NavigatorBannerProps } from './ManualContent/NavigatorBanner';
+import { useIntl } from 'dumi';
 
 export const useChinaMirrorHost = (): [boolean] => {
   const [isChinaMirrorHost, setIsChinaMirrorHost] = useState(false);
@@ -16,6 +17,13 @@ export const useChinaMirrorHost = (): [boolean] => {
 
 export const useScrollToTop = () => {
   document.body.scrollTop = document.documentElement.scrollTop = 0;
+}
+
+export const useT = (transformedMessage: string) => {
+  const intl = useIntl()
+  return intl.formatMessage({
+    id: transformedMessage
+  })
 }
 
 export const useLogoLink = ({
@@ -81,4 +89,3 @@ export const usePrevAndNext = (): NavigatorBannerProps['post'][] => {
   }, []);
   return prevAndNext;
 };
-
