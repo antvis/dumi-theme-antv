@@ -72,8 +72,6 @@ const Example: React.FC<{}> = () => {
     const dirnameReg = new RegExp(`.+\\/${dirname}.+`);
     const fullNameReg = new RegExp(`${fullName}\\.(jsx|tsx|ts|js)$`);
 
-    debugger
-
     for (let i = 0; i < allDemos.length; i += 1) {
       const item = allDemos[i];
       if (dirnameReg.test(item.absolutePath)) {
