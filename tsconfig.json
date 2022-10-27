@@ -11,9 +11,9 @@
     "allowJs": true
   },
   "include": [
-    "scripts/**/*",
     "examples/**/*",
     "./.dumi/**/*",
-    "plugin.ts"
+    "plugin.ts",
+    "examples.ts"
   ]
 }

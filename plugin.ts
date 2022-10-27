@@ -1,7 +1,7 @@
 import type { IApi } from 'dumi';
 import * as fs from 'fs-extra';
 import * as path from 'path';
-import { getExamplesPageTopics } from './scripts/examples';
+import { getExamplesPageTopics } from './examples';
 
 function generateMetaJSON() {
   const res = getExamplesPageTopics();
