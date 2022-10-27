@@ -1,4 +1,5 @@
 import path from 'path';
+// @ts-ignore
 import { transform } from '@babel/standalone';
 import indentString from 'indent-string';
 
@@ -24,7 +25,7 @@ export function replaceFetchUrl(sourceCode: string) {
 
 /**
  * 通过代码提取代码片段的 pkg 依赖
- * @param sourceCode 
+ * @param sourceCode
  */
 export function extractImportDeps(sourceCode: string) {
   const requireMatches = sourceCode.match(/require\(['"](.*)['"]\)/g) || [];
@@ -143,22 +144,23 @@ insertCss(`;
  * 执行代码
  * @param code 运行的代码
  * @param node 运行的节点
- * @param container 示例最终显示的位置 
- * @param replaceId 
- * @param cb 回调错误 
+ * @param container 示例最终显示的位置
+ * @param replaceId
+ * @param cb 回调错误
  */
-export function execute(
-  code: string, node: HTMLDivElement, exampleContainer: string | undefined, replaceId = 'container',
-  cb: (e: Error) => void
-) {
+export function execute(code: string, node: HTMLDivElement, exampleContainer: string | undefined, replaceId = 'container') {
   const script = document.createElement('script');
   // replace container id in case of multi demos in document
   const newCode = code.replace(/'container'|"container"/, `'${replaceId}'`);
-  try {
-    script.innerHTML = `${newCode}`;
-  } catch (e) {
-    cb(e as Error);
-  }
+  script.innerHTML = `
+try {
+  ${newCode}
+
+  window.__reportErrorInPlayground && window.__reportErrorInPlayground(null);
+} catch(e) {
+  window.__reportErrorInPlayground && window.__reportErrorInPlayground(e);
+}
+  `;
   // eslint-disable-next-line no-param-reassign
   node.innerHTML = exampleContainer || `<div id=${replaceId} />`;
   node!.appendChild(script);
@@ -166,14 +168,16 @@ export function execute(
 
 /**
  * 编译代码
- * @param value 
+ * @param value
  */
 export function compile(value: string, relativePath: string) {
   const { code } = transform(value, {
     filename: relativePath,
     presets: ['react', 'typescript', 'es2015', 'stage-3'],
-    plugins: ['transform-modules-umd'],
+    // Can only have one anonymous define call per script file
+    // 和 monaco loader 加载冲突
+    // plugins: ['transform-modules-umd'],
+    
   });
-
   return code;
 }

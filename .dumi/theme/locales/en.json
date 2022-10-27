@@ -24,7 +24,7 @@
   "演示": "Examples",
   "代码演示": "Examples",
   "设计指引": "Design Guide",
-  "搜索": "Search",
+  "搜索…": "Search…",
   "description": "Collapse all",
   "经典布局": "Classic",
   "三栏布局": "Three Cloumn",
@@ -107,8 +107,7 @@
   "移动定制（F版）产品": "Mobile (F series) products",
   "感谢信赖":"WE ARE TRUSTED BY",
   "更多产品":"More Productions",
-  "体验科技专栏":"Ant Financial Experience Tech",
-  "蚂蚁体验科技大会":"Experience Tech Conference",
   "上一篇":"Previous",
-  "下一篇":"Next"
+  "下一篇":"Next",
+  "演示代码报错，请检查": "演示代码报错，请检查"
 }

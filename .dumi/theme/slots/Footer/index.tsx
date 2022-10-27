@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { default as RCFooter, FooterProps as RcFooterProps } from 'rc-footer';
 import {
   GithubOutlined,
@@ -37,7 +37,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
     rootDomain = '',
     ...restProps
   } = props;
-  const locale = useLocale()
+  const locale = useLocale();
   const lang = locale.id;
 
   const getColumns = () => {

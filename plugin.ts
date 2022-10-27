@@ -10,11 +10,11 @@ function generateMetaJSON() {
 
 export default (api: IApi) => {
   const pages = [
-    // examples gallery page.
+    // Examples gallery page.
     {
       id: 'dumi-theme-antv-page-examples',
       path: '/:language/examples/',
-      file: require.resolve('./.dumi/theme/pages/examples/Examples.tsx'),
+      file: require.resolve('./.dumi/theme/pages/Examples/index.tsx'),
     },
     // single example preview page.
     {
