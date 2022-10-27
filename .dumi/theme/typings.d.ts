@@ -24,6 +24,7 @@ declare module '\*.svg' {
 }
 
 declare namespace ExamplesPage {
+
   /** 案例 DEMO */
   export interface Demo {
     /**
@@ -34,7 +35,10 @@ declare namespace ExamplesPage {
     /**
      * 标题（支持国际化）
      */
-    title: { zh: string; en: string };
+    title: {
+      zh: string;
+      en: string;
+    };
 
     /**
      * 路径
@@ -62,7 +66,10 @@ declare namespace ExamplesPage {
     /**
      * 标题（支持国际化）
      */
-    title: { zh: string; en: string };
+    title: {
+      zh: string;
+      en: string;
+    };
 
     /**
      * 图标
@@ -81,7 +88,7 @@ declare namespace ExamplesPage {
      * id
      */
     id: string;
-    
+
     /**
      * 标题
      */
