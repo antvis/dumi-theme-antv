@@ -40,11 +40,6 @@ declare namespace ExamplesPage {
     };
 
     /**
-     * 路径
-     */
-    slug: string;
-
-    /**
      * 截图
      */
     screenshot: string;

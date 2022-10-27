@@ -5,8 +5,27 @@ import fm from 'front-matter';
 
 const examplesBaseDir = path.resolve(process.cwd(), 'examples');
 
-export const getExampleDemos = (exampleDir: string) => {
-  return [];
+/**
+ * 获取某个案例下所有的 DEMO
+ *
+ * @param {string} exampleDir 案例路径
+ * @returns {ExamplesPage.Demo[]} DEMO 列表
+ * @author YuZhanglong <loveyzl1123@gmail.com>
+ */
+const getExampleDemos = (exampleDir: string) => {
+  const demoMetaJSON = fs.readFileSync(path.resolve(exampleDir, 'demo', 'meta.json')).toString();
+  const demoMeta: any[] = JSON.parse(demoMetaJSON).demos;
+  const demos: ExamplesPage.Demo[] = demoMeta.map(item => {
+    const { title, screenshot, filename } = item;
+    const id = filename.replace(/\.tsx?$/, '');
+    return {
+      id,
+      screenshot,
+      source: fs.readFileSync(path.resolve(exampleDir, 'demo', filename)).toString(),
+      title,
+    };
+  });
+  return demos;
 };
 
 
@@ -14,9 +33,10 @@ export const getExampleDemos = (exampleDir: string) => {
  * 获取某个案例主题下面的所有案例
  *
  * @param {string} topicPath 案例主题路径
+ * @returns {ExamplesPage.Example[]} 案例列表
  * @author YuZhanglong <loveyzl1123@gmail.com>
  */
-export const getTopicExamples = (topicPath: string) => {
+const getTopicExamples = (topicPath: string) => {
   const examplePaths = glob.sync(`${topicPath}/*`).filter(item => {
     return !item.endsWith('.js');
   });
@@ -44,6 +64,7 @@ export const getTopicExamples = (topicPath: string) => {
 /**
  * 获取案例页面的所有主题
  *
+ * @returns {ExamplesPage.ExampleTopic[]} 案例主题列表
  * @author YuZhanglong <loveyzl1123@gmail.com>
  */
 export const getExamplesPageTopics = () => {
@@ -58,5 +79,3 @@ export const getExamplesPageTopics = () => {
       return topicMeta;
     });
 };
-
-console.log(getExamplesPageTopics());
