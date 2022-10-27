@@ -23,6 +23,7 @@ const getExampleDemos = (exampleDir: string) => {
       screenshot,
       source: fs.readFileSync(path.resolve(exampleDir, 'demo', filename)).toString(),
       title,
+      filename,
     };
   });
   return demos;

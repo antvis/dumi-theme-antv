@@ -20,7 +20,6 @@ import styles from './index.module.less';
 const Example = () => {
   /** 示例页面的元数据信息 */
   const metaData: any = useContext(ThemeAntVContext);
-  console.log(metaData);
 
   const { allMarkdownRemark, site } = metaData.meta.result.data;
   const {

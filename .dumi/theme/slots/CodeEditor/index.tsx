@@ -27,10 +27,6 @@ export type CodeEditorProps = {
    */
   source: string;
   /**
-   * 经过编译之后的源码，包括 typescript 的处理。用于浏览器执行
-   */
-  babeledSource: string;
-  /**
    * 相对地址
    */
   relativePath?: string;
