@@ -8,7 +8,8 @@
     "target": "ESNext",
     "module": "CommonJS",
     "checkJs": true,
-    "allowJs": true
+    "allowJs": true,
+    "jsx": "react"
   },
   "include": [
     "examples/**/*",

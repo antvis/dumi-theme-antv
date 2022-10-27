@@ -1,7 +1,7 @@
 import { createContext } from 'react';
 
 export type IThemeAntVContext = {
-  // TODO: add your context type
+  exampleTopics?: ExamplesPage.ExampleTopic[];
 }
 
 export const ThemeAntVContext = createContext<IThemeAntVContext>({});

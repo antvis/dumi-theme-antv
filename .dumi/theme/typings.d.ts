@@ -48,6 +48,16 @@ declare namespace ExamplesPage {
      * TypeScript 源码文件
      */
     source: string;
+
+    /**
+     * DEMO 代码文件名称
+     */
+    filename: string;
+    
+    /**
+     * 衍生属性，通过 topic.id + example.id + demo.id 可以计算获取
+     */
+    relativePath?: string;
   }
 
   /** 示例 */
