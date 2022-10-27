@@ -1,4 +1,13 @@
 {
   "extends": "./.umi/tsconfig.json",
-  "include": ["./.dumi/**/*", "index.d.ts", "plugin.ts"]
+  "compilerOptions": {
+    "checkJs": true,
+    "allowJs": true
+  },
+  "include": [
+    "examples/**/*",
+    "./.dumi/**/*",
+    "index.d.ts",
+    "plugin.ts"
+  ]
 }
