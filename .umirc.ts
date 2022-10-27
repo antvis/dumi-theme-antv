@@ -24,7 +24,7 @@ export default {
     },
     navs: [                                                             // 头部的菜单列表
       {
-        slug: 'manual',
+        slug: 'manual/concepts/geometry/overview',
         title: {
           zh: '教程',
           en: 'Tutorials',
@@ -32,7 +32,7 @@ export default {
         order: 2,
       },
       {
-        slug: 'api',
+        slug: 'api/advanced/register-shape',
         title: {
           zh: 'API',
           en: 'API',
@@ -63,6 +63,40 @@ export default {
         },
         url: 'https://g6.antv.vision',
       }
+    ],
+    docs: [
+      {
+        slug: 'manual/concepts',
+        title: {
+          zh: '可视化基础概念',
+          en: 'Visualization Concepts',
+        },
+        order: 2,
+      },
+      {
+        slug: 'manual/concepts/geometry',
+        title: {
+          zh: '几何图形',
+          en: 'Geometry',
+        },
+        order: 2,
+      },
+      {
+        slug: 'api/advanced',
+        title: {
+          zh: '高级进阶功能',
+          en: 'Advanced Chart Features',
+        },
+        order: 1,
+      },
+      {
+        slug: 'api/shape',
+        title: {
+          zh: '绘图属性速查',
+          en: 'Quick Reference for Plotting Properties',
+        },
+        order: 2,
+      },
     ],
     tutorials: [
       {
