@@ -4,11 +4,10 @@ import Drawer from 'rc-drawer';
 import { createFromIconfontCN, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { useMedia } from 'react-use';
 import { debounce, groupBy } from 'lodash-es';
-import { LeftMenuProps } from '../../types';
 import { useLocale } from 'dumi';
-import { getGroupedEdges, getGroupedEdgesDataEdit } from '@/.dumi/theme/slots/utils';
+import { LeftMenuProps } from '../../types';
+import { getGroupedEdges, getGroupedEdgesDataEdit } from '../../../../slots/utils';
 import styles from '../../index.module.less';
-
 
 /**
  * Examples 左侧 Menu

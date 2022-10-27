@@ -15,7 +15,6 @@ import { getAllDemosInCategory, getSortedCategories, getTreeDataByExamplesAndEdg
 
 import styles from './index.module.less';
 
-
 const { Sider, Content } = Layout;
 
 type ExampleParams = {
@@ -39,6 +38,7 @@ type ExampleParams = {
 const Example: React.FC<{}> = () => {
   /** 示例页面的元数据信息 */
   const metaData: any = useContext(ThemeAntVContext);
+
   const [error, setError] = useState<Error>();
   const [isFullScreen, setFullscreen] = useState<boolean>(false);
   const { language, category, name } = useParams<ExampleParams>();
