@@ -24,7 +24,6 @@ declare module '\*.svg' {
 }
 
 declare namespace ExamplesPage {
-
   /** 案例 DEMO */
   export interface Demo {
     /**
@@ -107,5 +106,4 @@ declare namespace ExamplesPage {
      */
     examples: Example[];
   }
-
 }

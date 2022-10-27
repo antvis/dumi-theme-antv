@@ -1,13 +1,19 @@
 {
   "extends": "./.umi/tsconfig.json",
+  "ts-node": {
+    "files": true
+  },
   "compilerOptions": {
+    "importHelpers": false,
+    "target": "ESNext",
+    "module": "CommonJS",
     "checkJs": true,
     "allowJs": true
   },
   "include": [
+    "scripts/**/*",
     "examples/**/*",
     "./.dumi/**/*",
-    "index.d.ts",
     "plugin.ts"
   ]
 }
