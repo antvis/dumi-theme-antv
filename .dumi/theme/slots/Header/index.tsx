@@ -3,8 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useMedia } from 'react-use';
 import { useNavigate } from "react-router-dom";
 import cx from 'classnames';
-import { useSiteData } from 'dumi';
-
+import { useSiteData, useLocale } from 'dumi';
 import {
   GithubOutlined,
   MenuOutlined,
@@ -21,11 +20,13 @@ import { Products } from './Products';
 import { Navs, INav } from './Navs';
 import { Logo } from './Logo';
 import { LogoWhite } from './LogoWhite';
-import { useLocale } from 'dumi';
+import { getLangUrl } from './utils';
 
 import { useT } from '../hooks';
 
+
 import styles from './index.module.less';
+
 
 export type HeaderProps = {
   pathPrefix?: string;
@@ -305,20 +306,9 @@ const HeaderComponent: React.FC<HeaderProps> = ({
                     onLanguageChange(key.toString());
                     return;
                   }
-                  if (window.location.pathname == '/') {
-                    navigate('/en')
-                    return;
-                  }
-                  
-                  if (window.location.pathname.includes(`en`)) {
-                    navigate(
-                      window.location.pathname.replace(`/en`, ""),
-                    );
-                  } else {
-                    navigate(
-                      window.location.pathname.replace(`/`, "/en/"),
-                    );
-                  }
+
+                  const newUrl = getLangUrl(window.location.href, key);
+                  location.href = newUrl;
                 }}
               >
                 <Menu.Item key="en">

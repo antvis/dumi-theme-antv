@@ -1,3 +1,4 @@
+import React from 'react';
 import { useContext } from 'react';
 import { BackTop, Layout as AntLayout } from 'antd';
 import { Header } from '../../slots/Header';
@@ -31,7 +32,6 @@ const Example = () => {
   const { edges = [] } = allMarkdownRemark;
 
   const [prev, next] = usePrevAndNext();
-
 
   return (
     <>

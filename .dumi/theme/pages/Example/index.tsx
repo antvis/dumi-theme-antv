@@ -26,23 +26,23 @@ type ExampleParams = {
   /**
    * Example 的分类
    */
-  category: string;
+  topic: string;
   /**
    * Example 的名称
    */
-  name: string;
+  example: string;
 }
 
 /**
  * 具体单个案例的页面
  */
 const Example: React.FC<{}> = () => {
-  const { language, category, name } = useParams<ExampleParams>();
+  const { language = 'zh', topic, example } = useParams<ExampleParams>();
   const demo = location.hash.slice(1);
   /** 示例页面的元数据信息 */
   const { meta }: any = useContext(ThemeAntVContext);
   const { exampleTopics } = meta;
-  const demoInfo = getDemoInfo(exampleTopics, category, name, demo);
+  const demoInfo = getDemoInfo(exampleTopics, topic, example, demo);
 
   // 找不到，啥也别干了，404 页面
   if (!demoInfo) return <NotFound />;
