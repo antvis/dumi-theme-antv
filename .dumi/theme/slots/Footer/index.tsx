@@ -13,7 +13,6 @@ import { useT } from '../hooks';
 
 import 'rc-footer/assets/index.less';
 import styles from './index.module.less';
-
 interface FooterProps extends RcFooterProps {
   rootDomain?: string;
   language?: string;

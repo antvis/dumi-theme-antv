@@ -5,6 +5,7 @@ import { createFromIconfontCN, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant
 import { useMedia } from 'react-use';
 import { debounce, groupBy } from 'lodash-es';
 import { useLocale } from 'dumi';
+
 import { LeftMenuProps } from '../../types';
 import { getGroupedEdges, getGroupedEdgesDataEdit } from '../../../../slots/utils';
 import styles from '../../index.module.less';
@@ -18,6 +19,7 @@ import styles from '../../index.module.less';
 export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
   const { edges, examples } = props;
   const locale = useLocale();
+
   const isWide = useMedia('(min-width: 767.99px)', true);
   const [drawOpen, setDrawOpen] = useState(false);
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);

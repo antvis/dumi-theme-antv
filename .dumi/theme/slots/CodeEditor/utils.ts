@@ -168,10 +168,7 @@ try {
 
 /**
  * 编译代码
-<<<<<<< HEAD
-=======
  * @param value
->>>>>>> v3
  */
 export function compile(value: string, relativePath: string) {
   const { code } = transform(value, {
