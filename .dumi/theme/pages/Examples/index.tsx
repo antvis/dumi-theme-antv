@@ -10,8 +10,8 @@ import { ExampleTopicMenu } from './components/ExampleTopicMenu';
 import { GalleryPageContent } from './components/GalleryPageContent';
 import { usePrevAndNext } from '../../slots/hooks';
 import { ThemeAntVContext } from '../../context';
-import styles from './index.module.less';
 import React from 'react';
+import styles from './index.module.less';
 
 
 /**

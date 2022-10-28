@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocale } from 'dumi';
-import { GalleryPageContentProps, NewDemo } from '../../types';
+import { ExampleWithTopic, GalleryPageContentProps, NewDemo } from '../../types';
 import styles from '../../index.module.less';
 import { DemoCard } from './DemoCard';
 
@@ -46,8 +46,15 @@ export const GalleryPageContent: React.FC<GalleryPageContentProps> = (props) => 
 
 
   const flattenExamples = exampleTopics.reduce((prev, current) => {
-    return prev.concat(current.examples);
-  }, [] as ExamplesPage.Example[]);
+    const exampleWithTopic = current.examples.map(item => {
+      return {
+        ...item,
+        targetTopic: current,
+      };
+    });
+
+    return prev.concat(exampleWithTopic);
+  }, [] as ExampleWithTopic[]);
 
 
   return (
@@ -62,9 +69,9 @@ export const GalleryPageContent: React.FC<GalleryPageContentProps> = (props) => 
                   return (
                     <li
                       className={styles.galleryCard}
-                      key={demo.relativePath}
+                      key={demo.id}
                       title={demo.title[locale.id]}>
-                      <DemoCard demo={demo} />
+                      <DemoCard demo={demo} topicId={example.targetTopic.id} exampleId={example.id} />
                     </li>
                   );
                 })}

@@ -5,6 +5,8 @@ import { Badge } from 'antd';
 
 export interface DemoCardProps {
   demo: ExamplesPage.Demo;
+  topicId: string;
+  exampleId: string;
 }
 
 /**
@@ -15,7 +17,7 @@ export interface DemoCardProps {
  * @author YuZhanglong <loveyzl1123@gmail.com>
  */
 export const DemoCard: React.FC<DemoCardProps> = (props) => {
-  const { demo } = props;
+  const { demo, topicId, exampleId } = props;
   const locale = useLocale();
 
   const renderCardInternal = () => {
@@ -38,7 +40,7 @@ export const DemoCard: React.FC<DemoCardProps> = (props) => {
   return (
     <Link
       className={styles.galleryCardLink}
-      to={`/${locale.id}/examples/${demo.id}`}
+      to={`/${locale.id}/examples/${topicId}/${exampleId}/#${demo.id}`}
     >
       {demo.isNew ? (
         <Badge.Ribbon

@@ -26,3 +26,7 @@ export interface LeftMenuProps {
    */
   exampleTopics: ExamplesPage.ExampleTopic[];
 }
+
+export interface ExampleWithTopic extends ExamplesPage.Example {
+  targetTopic: ExamplesPage.ExampleTopic;
+}
