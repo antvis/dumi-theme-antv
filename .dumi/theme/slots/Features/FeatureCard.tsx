@@ -1,9 +1,8 @@
 import React from 'react';
 import cx from 'classnames';
 import { ic } from '../hooks';
-import { IC } from '../../typings';
-
 import styles from './FeatureCard.module.less';
+
 interface FeatureProps {
   icon: string;
   title: IC;
@@ -17,7 +16,7 @@ const FeatureCard: React.FC<FeatureProps> = ({ icon, title, description }) => {
         <img
           className={cx(styles.icon, 'feature-logo')}
           src={icon}
-          alt="advantage"
+          alt='advantage'
         />
         <p className={styles.title}>{ic(title)}</p>
         <p className={styles.description}>{ic(description)}</p>

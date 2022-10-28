@@ -1,11 +1,5 @@
 import React from 'react';
 
-export interface NewDemo {
-  title: string;
-  id: string;
-  category: string;
-}
-
 export interface AnnouncementProps {
   message: React.ReactNode;
   localStorageId: string;
@@ -15,22 +9,32 @@ export interface AnnouncementProps {
 
 export interface GalleryPageContentProps {
   /**
-   * 案例节点
+   * 案例主题列表
    */
-  exampleSections: Record<any, any>;
-
-  /**
-   * 所有 DEMO
-   */
-  allDemos: any[];
+  exampleTopics: ExamplesPage.ExampleTopic[];
 }
 
 export interface LeftMenuProps {
-  edges: any[];
-  examples: any[];
-
   /**
    * 案例主题列表
    */
   exampleTopics: ExamplesPage.ExampleTopic[];
 }
+
+export interface ExampleWithTopic extends ExamplesPage.Example {
+  targetTopic: ExamplesPage.ExampleTopic;
+}
+
+export interface DemoCardProps {
+  demo: ExamplesPage.Demo;
+  topicId: string;
+  exampleId: string;
+}
+
+export interface LeftMenuProps {
+  /**
+   * 案例主题列表
+   */
+  exampleTopics: ExamplesPage.ExampleTopic[];
+}
+
