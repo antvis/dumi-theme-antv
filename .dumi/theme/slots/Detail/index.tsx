@@ -2,15 +2,14 @@ import React, { useState, useEffect } from 'react';
 import cx from 'classnames';
 import gh from 'parse-github-url';
 import GitHubButton from 'react-github-button';
-
-import { useT } from '../hooks';
+import { ic } from '../hooks';
 import { News, NewsProps } from './News';
+import { IC } from '../../typings';
 
 import styles from './index.module.less';
 
-
 type DetailButtonProps = {
-  text: string;
+  text: IC;
   link: string;
   style?: React.CSSProperties;
   type?: string;
@@ -20,8 +19,8 @@ type DetailButtonProps = {
 type DetailProps = {
   className?: string;
   style?: React.CSSProperties;
-  title: string;
-  description: string;
+  title: IC;
+  description: IC;
   image?: string;
   buttons?: DetailButtonProps[];
   githubUrl: string;
@@ -66,10 +65,10 @@ export const Detail: React.FC<DetailProps> = ({
       <div className={styles.content}>
         <div className={styles.text}>
           <div className={cx(styles.title, 'detail-title')}>
-            {useT(title)}
+            {ic(title)}
           </div>
           <div className={cx(styles.description, 'detail-description')}>
-            {useT(description)}
+            {ic(description)}
           </div>
           {/** buttons  */}
           <div className={cx(styles.buttons, 'detail-buttons')}>
@@ -89,7 +88,7 @@ export const Detail: React.FC<DetailProps> = ({
                     }}
                     href={link}
                   >
-                    <span className={styles.button}>{useT(text)}</span>
+                    <span className={styles.button}>{ic(text)}</span>
                   </a>
                 )
               })

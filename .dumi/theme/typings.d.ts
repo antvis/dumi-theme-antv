@@ -112,3 +112,11 @@ declare namespace ExamplesPage {
     examples: Example[];
   }
 }
+
+/**
+ * 配置文件中的国际化配置
+ */
+export type IC = string | {
+  zh: string;
+  en: string;
+}
