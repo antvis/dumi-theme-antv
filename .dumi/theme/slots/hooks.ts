@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
+import { get } from 'lodash-es';
 import { NavigatorBannerProps } from './ManualContent/NavigatorBanner';
-import { useIntl } from 'dumi';
+import { useIntl, useLocale } from 'dumi';
 
 export const useChinaMirrorHost = (): [boolean] => {
   const [isChinaMirrorHost, setIsChinaMirrorHost] = useState(false);
@@ -89,3 +90,14 @@ export const usePrevAndNext = (): NavigatorBannerProps['post'][] => {
   }, []);
   return prevAndNext;
 };
+
+/**
+ * i18n .umirc config
+ * 如果是 object，则取 locale，否则直接用
+ * @param v 
+ */
+export function ic(v: string | object) {
+  const locale = useLocale();
+
+  return typeof v === 'object' ? get(v, [locale.id]) : v;
+}

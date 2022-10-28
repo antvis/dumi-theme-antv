@@ -28,7 +28,7 @@ export default () => {
   // 做一些跳转，比如：/zh/examples/xxx -> /examples/xxx
 
   // 首页
-  if (p === '/' || p === '/en') return <Index />;
+  if (p === '/' || p === '/en' || p === '/en/') return <Index />;
 
   // API 页面
   if (
