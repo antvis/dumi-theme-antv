@@ -57,7 +57,7 @@ export type CodeEditorProps = {
   /**
    * playground 的一些配置
    */
-  playground?: {
+  playground: {
     container?: string;
     playgroundDidMount?: string;
     playgroundWillUnmount?: string;
@@ -78,7 +78,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
   title = '',
   source,
   relativePath = '',
-  playground = {},
+  playground,
   replaceId = 'container',
   isFullscreen,
   onReady = noop,
@@ -112,8 +112,10 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
     // 用于上报错误信息，使用 script 执行代码
     if (typeof window !== 'undefined') {
       (window as any).__reportErrorInPlayground = (e: Error) => {
-        console.log(e);
-        onError(e);
+        if (e) {
+          console.error(e);
+          onError(e);
+        }
       };
     }
   });
@@ -128,14 +130,14 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
       // 清除错误
       onError(null);
     } catch (e) {
-      console.log(e);
+      console.error(e);
       onError(e);
       // 执行出错，后面的步骤不用做了！
       return;
     }
 
     // 2. 执行代码，try catch 在内部已经做了
-    execute(compiled, document.getElementById(replaceId) as any, 'todo', replaceId);
+    execute(compiled, 'playgroundScriptContainer', playground?.container, replaceId);
   }, 300), []);
 
   useEffect(() => {
@@ -193,6 +195,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
         className={styles.monaco}
         style={{ height: 'calc(100% - 36px)' }}
       >
+        {/* <textarea onChange={(e) => onCodeChange(e.target.value)}>{code}</textarea> */}
         <MonacoEditor
           language={
             currentEditorTab === EDITOR_TABS.JAVASCRIPT ? 'javascript' : 'json'
@@ -214,7 +217,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
           }}
           onChange={onCodeChange}
           onMount={(editor: any) => {
-            monacoRef.current = editor; 
+            monacoRef.current = editor;          
           }}
         />
       </div>

@@ -245,7 +245,7 @@ export const ExampleSider: React.FC<ExampleSiderProps> = (props) => {
       <div className={styles.searchSider}>
         <Input
           size='small'
-          placeholder={useT('搜索')}
+          placeholder={useT('搜索…')}
           prefix={<SearchOutlined />}
           value={searchValue}
           onChange={(e: any) => setSearchValue(e.target.value)}

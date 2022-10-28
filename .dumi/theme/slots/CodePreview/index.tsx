@@ -27,8 +27,9 @@ export const CodePreview: React.FC<CodePreviewProps> = ({ header, error }) => {
     <div className={styles.preview}>
       <div className={styles.header}>{ header }</div>
       <div className={styles.content}>
-        <div id="container" className={styles.container}>
+        <div id="playgroundScriptContainer" className={styles.playgroundScriptContainer}>
           {/** 这里是 DEMO 运行需要的 dom 容器  */}
+          {/** 这里是 script 标签运行的环境  */}
         </div>
         {
           error ?
