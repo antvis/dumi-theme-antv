@@ -6,7 +6,6 @@ import { difference, map, reduce, size } from 'lodash-es';
 import { useT } from '../hooks';
 import styles from './index.module.less';
 import { useLocale } from 'dumi';
-import examples from '@/.dumi/theme/pages/Examples';
 
 export interface PlayGroundItemProps {
   source: string;
@@ -291,7 +290,7 @@ export const ExampleSider: React.FC<ExampleSiderProps> = (props) => {
         style={{ width: '100%' }}
         className={styles.siderbarMenu}
         openKeys={openKeys}
-        // selectedKeys={[getPath(currentExample)]}
+        selectedKeys={[`DEMO-${currentDemo.id}`]}
         onOpenChange={onOpenChange}
       >
         {renderSubMenu()}

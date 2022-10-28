@@ -1,5 +1,5 @@
 {
-  "extends": "./.umi/tsconfig.json",
+  "extends": "./.dumi/tmp/tsconfig.json",
   "ts-node": {
     "files": true
   },
