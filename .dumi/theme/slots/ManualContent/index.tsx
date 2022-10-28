@@ -16,16 +16,18 @@ export type ManualContent = {
   readonly children: any;
 };
 
-interface PreAndNext {
+type PreAndNext = {
   slug?: string | undefined,
   title?: string | undefined
 }
 
-interface linkToTitle{
+type linkToTitle = {
   [ket:string] :string
 }
 
-interface DocsItem{
+type MenuItem = {
+  key: string,
+  label?: string
   slug?: string,
   title: {
     zh: string,
@@ -33,19 +35,14 @@ interface DocsItem{
   },
   order: number,
   link?: string,
-  children?: DocsItem[]
-}
-
-interface MenuItem extends DocsItem{
-  key: string,
-  label?: string
+  children?: MenuItem[]
 } 
 
-interface FullSidebarData{
+type FullSidebarData = {
   [key: string]: SidebarData
 }
-type SidebarData = MenuItem[]
 
+type SidebarData = MenuItem[]
 
 /**
  * 文档的结构
