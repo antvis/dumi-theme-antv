@@ -4,6 +4,7 @@ import { DocSearch } from '@docsearch/react';
 import { useLocale } from 'dumi';
 import { useT } from '../hooks';
 
+import '@docsearch/css';
 import styles from './Search.module.less';
 import 'docsearch.js/dist/cdn/docsearch.min.css';
 
@@ -48,9 +49,6 @@ function initDocSearchV2({
         /* eslint-enable no-param-reassign */
       });
 
-
-      console.log(hits);
-      
       return hits;
     },
     debug: false, // Set debug to true if you want to inspect the dropdown
