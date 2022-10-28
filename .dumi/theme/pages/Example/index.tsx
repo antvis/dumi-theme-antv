@@ -1,20 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Layout } from 'antd';
-import { noop } from 'lodash-es';
-import { useLocale, useSiteData } from 'dumi';
-import SplitPane from 'react-split-pane';
+import { useLocale } from 'dumi';
 import { Header } from '../../slots/Header';
 import { ExampleSider, PlayGroundItemProps, TreeItem } from '../../slots/ExampleSider';
-import { CodePreview } from '../../slots/CodePreview';
-import { CodeEditor } from '../../slots/CodeEditor';
-import { CodeHeader } from '../../slots/CodePreview/CodeHeader';
+import { CodeRunner } from '../../slots/CodeRunner';
 import { ThemeAntVContext } from '../../context';
-import { getDemoInfo } from './utils';
 import { getAllDemosInCategory, getSortedCategories, getTreeDataByExamplesAndEdges } from '../../slots/utils';
 
 import styles from './index.module.less';
-import NotFound from '../404';
 
 const { Sider, Content } = Layout;
 
@@ -42,18 +36,7 @@ const Example: React.FC<{}> = () => {
   /** 示例页面的元数据信息 */
   const { meta }: any = useContext(ThemeAntVContext);
   const { exampleTopics } = meta;
-  const demoInfo = getDemoInfo(exampleTopics, topic, example, demo);
 
-  // 找不到，啥也别干了，404 页面
-  if (!demoInfo) return <NotFound />;
-  const { title, source, relativePath } = demoInfo;
-
-  const { themeConfig } = useSiteData();
-  const { githubUrl } = themeConfig;
-
-
-  const [error, setError] = useState<Error>();
-  const [isFullScreen, setFullscreen] = useState<boolean>(false);
   const locale = useLocale();
 
   const { exampleSections = {}, allDemos = [] } = meta.result.pageContext;
@@ -179,9 +162,6 @@ const Example: React.FC<{}> = () => {
     return transformNode(newTreeData, result);
   };
 
-  // @TODO 逍为
-  const header = <CodeHeader title={title[locale.id]} relativePath={relativePath} githubUrl={githubUrl} />;
-
   return (
     <div className={styles.example}>
       <Header isHomePage={false} />
@@ -206,18 +186,7 @@ const Example: React.FC<{}> = () => {
           }
         </Sider>
         <Content className={styles.content}>
-          {/** @ts-ignore */}
-          <SplitPane split='vertical' defaultSize='50%' minSize={100}>
-            <CodePreview error={error} header={header} />
-            <CodeEditor
-              source={source}
-              relativePath={relativePath}
-              onError={setError}
-              onFullscreen={setFullscreen}
-              onDestroy={noop}
-              onReady={noop}
-            />
-          </SplitPane>
+          <CodeRunner exampleTopics={exampleTopics} topic={topic} example={example} demo={demo} />
         </Content>
       </Layout>
     </div>
