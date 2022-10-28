@@ -4,7 +4,6 @@ import gh from 'parse-github-url';
 import GitHubButton from 'react-github-button';
 import { ic } from '../hooks';
 import { News, NewsProps } from './News';
-import { IC } from '../../typings';
 
 import styles from './index.module.less';
 
@@ -46,7 +45,7 @@ export const Detail: React.FC<DetailProps> = ({
   news = [],
 }) => {
   const [removeNews, setRemoteNews] = useState<NewsProps[]>([]);
-  
+
   useEffect(() => {
     fetch(AssetsNewsURL)
       .then((res) => res.json())

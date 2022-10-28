@@ -6,8 +6,8 @@ import cx from 'classnames';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { useT, ic } from '../hooks';
-import { IC } from '../../typings';
 import styles from './index.module.less';
+
 interface Case {
   logo?: string;
   isAppLogo?: boolean;

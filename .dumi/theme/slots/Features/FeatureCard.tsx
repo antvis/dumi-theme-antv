@@ -1,7 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
 import { ic } from '../hooks';
-import { IC } from '../../typings';
 
 import styles from './FeatureCard.module.less';
 interface FeatureProps {

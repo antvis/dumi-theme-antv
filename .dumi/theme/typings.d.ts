@@ -121,7 +121,7 @@ declare namespace ExamplesPage {
 /**
  * 配置文件中的国际化配置
  */
-export type IC = string | {
+declare type IC = string | {
   zh: string;
   en: string;
 }

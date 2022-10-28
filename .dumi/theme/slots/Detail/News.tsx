@@ -1,8 +1,6 @@
 import React from 'react';
 import { Link } from 'dumi';
 import { ic } from '../hooks';
-import type { IC } from '../../typings';
-
 import styles from './News.module.less';
 
 export interface NewsProps {
