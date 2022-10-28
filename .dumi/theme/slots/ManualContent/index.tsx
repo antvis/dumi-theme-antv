@@ -5,14 +5,15 @@ import Drawer from 'rc-drawer';
 import { useLocale, useSiteData, useFullSidebarData, useRouteMeta } from 'dumi';
 import { useNavigate } from "react-router-dom";
 import { EditOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
-import { NavigatorBanner } from './NavigatorBanner';
 import readingTime from 'reading-time'
+
+import { NavigatorBanner } from './NavigatorBanner';
+import ReadingTime from './ReadingTime';
 import { TOC } from '../TOC';
 import { useScrollToTop } from '../hooks';
 
 import 'rc-drawer/assets/index.css';
 import styles from './index.module.less';
-import ReadingTime from './ReadingTime';
 
 export type ManualContent = {
   readonly children: any;
@@ -100,12 +101,15 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
       fullSidebarDataToMenuData(rootList, item.key, item.children)
       sidebar[item.key][0].children?.forEach(itemChild => {
         const label = itemChild.title as unknown as string
+        const key =itemChild.link as string
         item.children!.push({
           ...itemChild,
           label,
-          key: itemChild.link!
+          key
         })
+        linkoTitle[key]=label
       })
+
       if (item.children.length == 0) {
         delete item.children
       }
