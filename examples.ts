@@ -54,8 +54,8 @@ const getTopicExamples = (topicPath: string) => {
       icon: '',
       id: <string>item.split('/').pop(),
       title: {
-        en: exampleMetaEnContent.title,
-        zh: exampleMetaZhContent.title,
+        en: exampleMetaEnContent.attributes.title,
+        zh: exampleMetaZhContent.attributes.title,
       },
     };
     return example;
