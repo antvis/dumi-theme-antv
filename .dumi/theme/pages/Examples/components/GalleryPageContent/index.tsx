@@ -20,7 +20,7 @@ const BANNER_LOCALSTORAGE_KEY = 'antv_gallery_banner';
 export const GalleryPageContent: React.FC<GalleryPageContentProps> = (props) => {
   const { exampleSections, allDemos } = props;
   const locale = useLocale()
-
+  const redirectRoute = locale.id=='zh'?"":"/en"
   // 获取 demo 的 Category 分类
   const getDemoCategory = (demo: any, lang = locale.id) => {
     if (!demo.postFrontmatter || !demo.postFrontmatter[lang]) {
@@ -153,7 +153,7 @@ export const GalleryPageContent: React.FC<GalleryPageContentProps> = (props) => 
                   >
                     <Link
                       className={styles.galleryCardLink}
-                      to={`/${locale.id}/examples/${demoSlug}`}
+                      to={`${redirectRoute}/examples/${demoSlug}`}
                     >
                       {demo.new ? (
                         <Badge.Ribbon

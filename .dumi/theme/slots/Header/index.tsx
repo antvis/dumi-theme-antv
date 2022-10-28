@@ -310,13 +310,17 @@ const HeaderComponent: React.FC<HeaderProps> = ({
                     return;
                   }
                   
-                  if (window.location.pathname.includes(`en`)) {
+                  if (window.location.pathname.startsWith(`/en`)) {
                     navigate(
                       window.location.pathname.replace(`/en`, ""),
                     );
+                  } else if (window.location.pathname.startsWith(`/zh`)) {
+                    navigate(
+                      window.location.pathname.replace(`/zh`, "/en")
+                    )
                   } else {
                     navigate(
-                      window.location.pathname.replace(`/`, "/en/"),
+                      window.location.pathname.replace(`/`, "/en/")
                     );
                   }
                 }}

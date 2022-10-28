@@ -13,20 +13,6 @@ function generateMetaJSON() {
 }
 
 export default (api: IApi) => {
-  const pages = [
-    // Examples gallery page.
-    {
-      id: 'dumi-theme-antv-page-examples',
-      path: '/:language/examples/',
-      file: require.resolve('./.dumi/theme/pages/Examples/index.tsx'),
-    },
-    // single example preview page.
-    {
-      id: 'dumi-theme-antv-page-example',
-      path: '/:language/examples/:category/:name',
-      file: require.resolve('./.dumi/theme/pages/Example/index.tsx'),
-    },
-  ];
   // FIXME: wrap winPath for windows when dumi exported
   const contextFilePath = require.resolve('./.dumi/theme/context.ts');
 
@@ -64,16 +50,6 @@ export default function ThemeAntVContextWrapper() {
 
   // add custom pages
   api.modifyRoutes((routes) => {
-    pages.forEach((page) => {
-      routes[page.id] = {
-        id: page.id,
-        path: page.path,
-        absPath: page.path,
-        file: page.file,
-        parentId: 'DocLayout',
-      };
-    });
-
     // replace default 404
     routes['404'].file = require.resolve('./.dumi/theme/pages/404.tsx');
 
