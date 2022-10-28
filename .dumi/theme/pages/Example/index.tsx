@@ -97,7 +97,6 @@ const Example: React.FC = () => {
         >
           {currentDemo && <ExampleSider
             showExampleDemoTitle={true}
-            getPath={getPath}
             currentDemo={currentDemo}
             onDemoClicked={(example) => {
               const { id: demoId, targetExample, targetTopic } = example;

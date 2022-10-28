@@ -53,11 +53,6 @@ const MenuIcon = createFromIconfontCN({
 
 export interface ExampleSiderProps {
   /**
-   * 获得当前选中的示例 key 值
-   */
-  getPath: (currentExample: PlayGroundItemProps) => string;
-
-  /**
    * 当前 Example (受控)
    */
   currentDemo: ExamplesPage.Demo;
@@ -81,8 +76,8 @@ export interface ExampleSiderProps {
  * DEMO 预览页面的菜单
  */
 export const ExampleSider: React.FC<ExampleSiderProps> = (props) => {
-  const { getPath, currentDemo, onDemoClicked, showExampleDemoTitle, exampleTopics } = props;
-
+  const { currentDemo, onDemoClicked, exampleTopics } = props;
+  console.log(currentDemo);
   // 菜单栏展开keys
   const [openKeys, setOpenKeys] = useState<string[]>([]);
 
@@ -134,8 +129,6 @@ export const ExampleSider: React.FC<ExampleSiderProps> = (props) => {
   useEffect(() => {
     const { targetExample, targetTopic } = currentDemo;
     setOpenKeys([`TOPIC-${targetTopic?.id}`, `EXAMPLE-${targetExample?.id}`]);
-    // const exampleKey = getPath(currentExample);
-    // setOpenKeys(getDefaultOpenKeys(getTreeData(), exampleKey));
   }, [currentDemo]);
 
   // 初始化滚动到中间
@@ -278,11 +271,7 @@ export const ExampleSider: React.FC<ExampleSiderProps> = (props) => {
         className={styles.siderbarMenu}
         openKeys={openKeys}
         selectedKeys={[`DEMO-${currentDemo.id}`]}
-        onSelect={() => {
-
-        }}
         onOpenChange={(keys) => {
-          console.log(keys);
           setOpenKeys(keys);
         }}
       >
