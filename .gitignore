@@ -23,4 +23,5 @@ esm
 # Test
 coverage
 
-.umi
+.dumi/tmp
+.dumi/tmp-production
