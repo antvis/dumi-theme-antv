@@ -27,7 +27,6 @@ export const DemoCard: React.FC<DemoCardProps> = (props) => {
             alt={demo.title[locale.id]}
           />
         </div>
-        <h4>{demo.title[locale.id]}</h4>
       </>
     );
   };
@@ -46,6 +45,7 @@ export const DemoCard: React.FC<DemoCardProps> = (props) => {
         </Badge.Ribbon>
       ) : renderCardInternal()
       }
+      <h4>{demo.title[locale.id]}</h4>
     </Link>
   );
 };
