@@ -208,9 +208,7 @@ const Example: React.FC<{}> = () => {
         <Content className={styles.content}>
           {/** @ts-ignore */}
           <SplitPane split='vertical' defaultSize='50%' minSize={100}>
-            {/** @todo 逍为，和编辑器联动 */}
             <CodePreview error={error} header={header} />
-            {/** @todo 逍为，获取源码内容和文件 */}
             <CodeEditor
               source={source}
               relativePath={relativePath}

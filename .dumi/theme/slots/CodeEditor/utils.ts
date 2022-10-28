@@ -143,40 +143,45 @@ insertCss(`;
 /**
  * 执行代码
  * @param code 运行的代码
- * @param node 运行的节点
- * @param container 示例最终显示的位置
- * @param replaceId
+ * @param playgroundScriptContainer 运行的节点
+ * @param container 代码中 container dom
+ * @param replaceId rid
  * @param cb 回调错误
  */
-export function execute(code: string, node: HTMLDivElement, exampleContainer: string | undefined, replaceId = 'container') {
+export function execute(code: string, playgroundScriptContainer: string, container: string, replaceId = 'container') {
+  const node = document.getElementById(playgroundScriptContainer);
   const script = document.createElement('script');
   // replace container id in case of multi demos in document
   const newCode = code.replace(/'container'|"container"/, `'${replaceId}'`);
   script.innerHTML = `
+// Can only have one anonymous define call per script file
+// 和 monaco loader 加载冲突
+var __runnerDefine = window['define'];
+window['define'] = null;
 try {
   ${newCode}
 
   window.__reportErrorInPlayground && window.__reportErrorInPlayground(null);
 } catch(e) {
   window.__reportErrorInPlayground && window.__reportErrorInPlayground(e);
+} finally {
+  window['define'] = __runnerDefine;
 }
   `;
-  // eslint-disable-next-line no-param-reassign
-  node.innerHTML = exampleContainer || `<div id=${replaceId} />`;
+  // 追加图表容器
+  node.innerHTML = container || `<div id=${replaceId} />`;
+  // 运行 script
   node!.appendChild(script);
 }
 
 /**
  * 编译代码
- * @param value
  */
 export function compile(value: string, relativePath: string) {
   const { code } = transform(value, {
     filename: relativePath,
     presets: ['react', 'typescript', 'es2015', 'stage-3'],
-    // Can only have one anonymous define call per script file
-    // 和 monaco loader 加载冲突
-    // plugins: ['transform-modules-umd'],
+    plugins: ['transform-modules-umd'],
     
   });
   return code;
