@@ -63,7 +63,6 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
 
   //  获取阅读时间
   const mdInfo = useRouteMeta()
-  console.log(mdInfo.frontmatter);
   const text = mdInfo.texts.reduce((prev, next) => {
     return prev + next.value
   }, '');
