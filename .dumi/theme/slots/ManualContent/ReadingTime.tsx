@@ -1,11 +1,11 @@
 import React from 'react';
 import { Tag } from 'antd';
-import { useLocale } from 'dumi';
+import { useT } from '../hooks';
 
 const ReadingTime: React.FC<any> = ({ readingTime }) => {
   return (
     <Tag>
-        阅读时间约 {Math.ceil(readingTime/ 60000)} 分钟
+      {`${useT('阅读时间约')} ${Math.ceil(readingTime / 60000)} ${useT('分钟')}`}
     </Tag>
   );
 };
