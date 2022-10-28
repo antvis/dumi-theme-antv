@@ -6,7 +6,7 @@ import { Footer } from '../../slots/Footer';
 import NavigatorBanner from '../../slots/Header/Products/NavigatorBanner';
 import { VerticalAlignTopOutlined } from '@ant-design/icons';
 import { Article } from './components/Article';
-import { LeftMenu } from './components/LeftMenu';
+import { ExampleTopicMenu } from './components/ExampleTopicMenu';
 import { GalleryPageContent } from './components/GalleryPageContent';
 import { usePrevAndNext } from '../../slots/hooks';
 import { ThemeAntVContext } from '../../context';
@@ -25,14 +25,7 @@ const Example = () => {
 
   const exampleTopics: ExamplesPage.ExampleTopic[] = metaData.meta.exampleTopics;
 
-  const { allMarkdownRemark, site } = metaData.meta.result.data;
-  const {
-    siteMetadata: { examples = [] },
-  } = site;
-
   const { exampleSections = {}, allDemos = [] } = metaData.meta.result.pageContext;
-
-  const { edges = [] } = allMarkdownRemark;
 
   const [prev, next] = usePrevAndNext();
 
@@ -42,7 +35,7 @@ const Example = () => {
       <AntLayout
         hasSider
         className={styles.layout}>
-        <LeftMenu edges={edges} examples={examples} exampleTopics={exampleTopics} />
+        <ExampleTopicMenu exampleTopics={exampleTopics} />
         <Article className={styles.markdown}>
           <div className={styles.main} style={{ width: '100%' }}>
             <GalleryPageContent allDemos={allDemos} exampleSections={exampleSections} />

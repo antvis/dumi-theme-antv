@@ -26,9 +26,6 @@ export interface GalleryPageContentProps {
 }
 
 export interface LeftMenuProps {
-  edges: any[];
-  examples: any[];
-
   /**
    * 案例主题列表
    */
