@@ -2,15 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { Layout, Affix, BackTop, Menu, Tooltip } from 'antd';
 import { useMedia } from 'react-use';
 import Drawer from 'rc-drawer';
-import { useLocale, useSiteData, useFullSidebarData } from 'dumi';
+import { useLocale, useSiteData, useFullSidebarData, useRouteMeta } from 'dumi';
 import { useNavigate } from "react-router-dom";
 import { EditOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { NavigatorBanner } from './NavigatorBanner';
+import readingTime from 'reading-time'
 import { TOC } from '../TOC';
 import { useScrollToTop } from '../hooks';
 
 import 'rc-drawer/assets/index.css';
 import styles from './index.module.less';
+import ReadingTime from './ReadingTime';
 
 export type ManualContent = {
   readonly children: any;
@@ -51,13 +53,21 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
 
   const locale = useLocale()
   const currentLocale: string = locale.id 
-  
+
   const { themeConfig: { githubUrl, relativePath, docs } } = useSiteData();
   const sidebar = useFullSidebarData() as unknown as FullSidebarData
 
   const isWide = useMedia('(min-width: 767.99px)', true);
   const [drawOpen, setDrawOpen] = useState(false);
   const navigate = useNavigate();
+
+  //  获取阅读时间
+  const mdInfo = useRouteMeta()
+  console.log(mdInfo.frontmatter);
+  const text = mdInfo.texts.reduce((prev, next) => {
+    return prev + next.value
+  }, '');
+  const { time } = readingTime(text);
 
   // menu渲染
     // linkoTitle用来映射路由和Title
@@ -69,7 +79,7 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
     const mainRoute = matchRoute.match(reg)
     return mainRoute![1]
   }
-  const baseRoute=getBaseRoute()
+  const baseRoute = getBaseRoute()
   
   function fullSidebarDataToMenuData(rootList: SidebarData, hrefId: string, list: SidebarData) {
     // 递归
@@ -112,11 +122,11 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
         })
       })
       list.sort((a, b) => {
-        return a.order - b.order
+        return a.order - b.order;
       })
-      return list
-     }
+      return list;
     }
+  }
     
   // 获取最终的MenuData
   const renderSidebar = fullSidebarDataToMenuData(docs, baseRoute, [])
@@ -271,7 +281,7 @@ const getGithubSourceUrl = ({
                 </a>
               </Tooltip>
             </h1>
-            <div className={styles.readtime}>阅读时间 6 分钟</div>
+            <ReadingTime readingTime={time} className={styles.readtime}></ReadingTime>
             <div className={styles.markdown}>
               {children}
             </div>
