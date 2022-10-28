@@ -101,13 +101,13 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
       fullSidebarDataToMenuData(rootList, item.key, item.children)
       sidebar[item.key][0].children?.forEach(itemChild => {
         const label = itemChild.title as unknown as string
-        const key =itemChild.link as string
+        const key = itemChild.link as string
         item.children!.push({
           ...itemChild,
           label,
           key
         })
-        linkoTitle[key]=label
+        linkoTitle[key] = label
       })
 
       if (item.children.length == 0) {
