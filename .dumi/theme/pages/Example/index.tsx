@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Layout } from 'antd';
 import { noop } from 'lodash-es';
-import { useLocale } from 'dumi';
+import { useLocale, useSiteData } from 'dumi';
 import SplitPane from 'react-split-pane';
 import { Header } from '../../slots/Header';
 import { ExampleSider, PlayGroundItemProps, TreeItem } from '../../slots/ExampleSider';
@@ -10,10 +10,11 @@ import { CodePreview } from '../../slots/CodePreview';
 import { CodeEditor } from '../../slots/CodeEditor';
 import { CodeHeader } from '../../slots/CodePreview/CodeHeader';
 import { ThemeAntVContext } from '../../context';
-import { getExampleInfo } from './utils';
+import { getDemoInfo } from './utils';
 import { getAllDemosInCategory, getSortedCategories, getTreeDataByExamplesAndEdges } from '../../slots/utils';
 
 import styles from './index.module.less';
+import NotFound from '../404';
 
 const { Sider, Content } = Layout;
 
@@ -36,27 +37,31 @@ type ExampleParams = {
  * 具体单个案例的页面
  */
 const Example: React.FC<{}> = () => {
+  const { language, category, name } = useParams<ExampleParams>();
+  const demo = location.hash.slice(1);
   /** 示例页面的元数据信息 */
-  const metaData: any = useContext(ThemeAntVContext);
+  const { meta }: any = useContext(ThemeAntVContext);
+  const { exampleTopics } = meta;
+  const demoInfo = getDemoInfo(exampleTopics, category, name, demo);
+
+  // 找不到，啥也别干了，404 页面
+  if (!demoInfo) return <NotFound />;
+  const { title, source, relativePath } = demoInfo;
+
+  const { themeConfig } = useSiteData();
+  const { githubUrl } = themeConfig;
+
 
   const [error, setError] = useState<Error>();
   const [isFullScreen, setFullscreen] = useState<boolean>(false);
-  const { language, category, name } = useParams<ExampleParams>();
-
   const locale = useLocale();
-  const {
-    title,
-    relativePath,
-    source,
-  } = getExampleInfo(metaData);
 
-  const { exampleSections = {}, allDemos = [] } = metaData.meta.result.pageContext;
+  const { exampleSections = {}, allDemos = [] } = meta.result.pageContext;
 
-  const { allMarkdownRemark, site } = metaData.meta.result.data;
+  const { allMarkdownRemark, site } = meta.result.data;
 
   const {
     siteMetadata: {
-      githubUrl,
       playground,
       showExampleDemoTitle,
       examples = [],
@@ -175,7 +180,7 @@ const Example: React.FC<{}> = () => {
   };
 
   // @TODO 逍为
-  const header = <CodeHeader title='hello world' relativePath='a.ts' githubUrl='' />;
+  const header = <CodeHeader title={title[locale.id]} relativePath={relativePath} githubUrl={githubUrl} />;
 
   return (
     <div className={styles.example}>
@@ -208,7 +213,6 @@ const Example: React.FC<{}> = () => {
             {/** @todo 逍为，获取源码内容和文件 */}
             <CodeEditor
               source={source}
-              babeledSource={source}
               relativePath={relativePath}
               onError={setError}
               onFullscreen={setFullscreen}

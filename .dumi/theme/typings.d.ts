@@ -24,7 +24,6 @@ declare module '\*.svg' {
 }
 
 declare namespace ExamplesPage {
-
   /** 案例 DEMO */
   export interface Demo {
     /**
@@ -41,11 +40,6 @@ declare namespace ExamplesPage {
     };
 
     /**
-     * 路径
-     */
-    slug: string;
-
-    /**
      * 截图
      */
     screenshot: string;
@@ -54,6 +48,16 @@ declare namespace ExamplesPage {
      * TypeScript 源码文件
      */
     source: string;
+
+    /**
+     * DEMO 代码文件名称
+     */
+    filename: string;
+    
+    /**
+     * 衍生属性，通过 topic.id + example.id + demo.id 可以计算获取
+     */
+    relativePath?: string;
   }
 
   /** 示例 */
@@ -107,5 +111,4 @@ declare namespace ExamplesPage {
      */
     examples: Example[];
   }
-
 }

@@ -1,109 +1,32 @@
-export type ExampleInfo = {
-  title: string | { zh: string; en: string };
-  relativePath: string;
-  source: string;
-  screenshot: string;
-};
+import { map } from 'lodash-es';
 
 /**
- * @todo 逍为
+ * 将数据结构转化成 map，便于后续检索的速度
+ * @param exampleTopics 
+ * @returns 
+ */
+export function getExampleTopicMap(exampleTopics: ExamplesPage.ExampleTopic[]) {
+  const exampleTopicMap = new Map<string, ExamplesPage.Demo>();
+
+  map(exampleTopics, (({ id: topic, examples }) => {
+    map(examples, ({ id: example, demos }) => {
+      map(demos, (demo) => {
+        exampleTopicMap.set(`${topic}-${example}-${demo.id}`, {
+          ...demo,
+          relativePath: `${topic}/${example}/demo/${demo.filename}`,
+        });
+      });
+    });
+  }));
+
+  return exampleTopicMap;
+}
+
+/**
  * 从 Context 信息中，获取到 Example 相关的信息，用于页面渲染
  */
-export function getExampleInfo(meta: any): ExampleInfo {
-  return {
-    title: '测试 DEMO',
-    relativePath: 'case/line/demo/line1.ts',
-    screenshot: 'https://gw.alipayobjects.com/mdn/rms_f5c722/afts/img/A*aetpSLfcpFIAAAAAAAAAAABkARQnAQ',
-    source: `import DataSet from '@antv/data-set';
-import { Chart } from '@antv/g2';
+export function getDemoInfo(exampleTopics: ExamplesPage.ExampleTopic[], topic: string, example: string, demo: string): ExamplesPage.Demo {
+  const m = getExampleTopicMap(exampleTopics);
 
-fetch('https://gw.alipayobjects.com/os/antvdemo/assets/data/terrorism.json')
-  .then(res => res.json())
-  .then(data => {
-    const ds = new DataSet();
-
-    const chart = new Chart({
-      container: 'container',
-      autoFit: true,
-      height: 500,
-      syncViewPadding: true,
-    });
-
-    chart.scale({
-      Deaths: {
-        sync: true,
-        nice: true,
-      },
-      death: {
-        sync: true,
-        nice: true,
-      },
-    });
-
-
-    const dv1 = ds.createView().source(data);
-    dv1.transform({
-      type: 'map',
-      callback: (row) => {
-        if (typeof (row.Deaths) === 'string') {
-          row.Deaths = row.Deaths.replace(',', '');
-        }
-        row.Deaths = parseInt(row.Deaths, 10);
-        row.death = row.Deaths;
-        row.year = row.Year;
-        return row;
-      }
-    });
-    const view1 = chart.createView();
-    view1.data(dv1.rows);
-    view1.axis('Year', {
-      subTickLine: {
-        count: 3,
-        length: 3,
-      },
-      tickLine: {
-        length: 6,
-      },
-    });
-    view1.axis('Deaths', {
-      label: {
-        formatter: text => {
-          return text.replace(/(\d)(?=(?:\d{3})+$)/g, '$1,');
-        }
-      }
-    });
-    view1.line().position('Year*Deaths');
-
-
-    const dv2 = ds.createView().source(dv1.rows);
-    dv2.transform({
-      type: 'regression',
-      method: 'polynomial',
-      fields: ['year', 'death'],
-      bandwidth: 0.1,
-      as: ['year', 'death']
-    });
-
-    const view2 = chart.createView();
-    view2.axis(false);
-    view2.data(dv2.rows);
-    view2.line().position('year*death').style({
-      stroke: '#969696',
-      lineDash: [3, 3]
-    })
-      .tooltip(false);
-    view1.annotation().text({
-      content: '趋势线',
-      position: ['1970', 2500],
-      style: {
-        fill: '#8c8c8c',
-        fontSize: 14,
-        fontWeight: 300
-      },
-      offsetY: -70
-    });
-    chart.render();
-  });
-`,
-  };
+  return m.get(`${topic}-${example}-${demo}`);
 }
