@@ -3,7 +3,7 @@ import { repository, version } from './package.json';
 export default {
   locales: [{ id: 'zh', name: '中文' }, { id: 'en', name: 'English' }],
   themeConfig: {
-    title: 'Dumi-theme-antv', 
+    title: 'dumi-theme-antv', 
     description: '基于 dumi2 的 AntV 官网主题包',
     defaultLanguage: 'zh',                                              // 默认语言
     isAntVSite: false,                                                  // 是否是 AntV 的大官网
@@ -151,16 +151,28 @@ export default {
     },
     /** 首页技术栈介绍 */
     detail: {
-      title: 'Dumi-theme-antv 主题包',
-      description: '基于 dumi2 封装，提供灵活多变的 slots 插槽，抽取大量配置，一秒搭建 AntV 的各个技术栈官网。',
+      title: {
+        zh: 'dumi-theme-antv 主题包',
+        en: 'dumi-theme-antv',
+      },
+      description: {
+        zh: '基于 dumi2 封装，提供灵活多变的 slots 插槽，抽取大量配置，一秒搭建 AntV 的各个技术栈官网。',
+        en: 'Based on the dumi2 package, it provides flexible and changeable slots, extracts a large number of configurations, and builds the official website of each technology stack of AntV in one second.',
+      },
       image: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*wo_LToatmbwAAAAAAAAAAABkARQnAQ',
       buttons: [
         {
-          text: '开始使用',
+          text: {
+            zh: '开始使用',
+            en: 'Getting Started',
+          },
           link: `/tutorials/getting-started`,
         },
         {
-          text: '迁移手册',
+          text: {
+            zh: '迁移手册',
+            en: 'Migration Manual',
+          },
           link: `/tutorials/migration`,
           type: 'primary',
         },
@@ -169,14 +181,26 @@ export default {
     /** 新闻公告，优先选择配置的，如果没有配置则使用远程的！ */
     news: [
       {
-        type: '论坛',
-        title: 'AntV 芒种日 图新物：GraphInsight 发布',
+        type: {
+          zh: '论坛',
+          en: 'Forum',
+        },
+        title: {
+          zh: 'AntV 芒种日 图新物：GraphInsight 发布',
+          en: 'AntV Seeds Day Graph New: GraphInsight Released',
+        },
         date: '2022.06.06',
         link: 'https://github.com/antvis/GraphInsight',
       },
       {
-        type: '论坛',
-        title: 'SEE Conf 2022 支付宝体验科技大会',
+        type: {
+          zh: '论坛',
+          en: 'Forum',
+        },
+        title: {
+          zh: 'SEE Conf 2022 支付宝体验科技大会',
+          en: 'SEE Conf 2022 Alipay Experience Technology Conference',
+        },
         date: '2022.01.08',
         link: 'https://seeconf.antfin.com/',
       },
@@ -185,26 +209,50 @@ export default {
     features: [
       {
         icon: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*4x_KTKyqwJgAAAAAAAAAAABkARQnAQ',
-        title: '千变万化，自由组合',
-        description: '任何图表，都可以基于图形语法灵活绘制，满足你无限的创意',
+        title: {
+          zh: '千变万化，自由组合',
+          en: 'The ever-changing, free combination',
+        },
+        description: {
+          zh: '任何图表，都可以基于图形语法灵活绘制，满足你无限的创意',
+          en: 'Any chart can be drawn flexibly based on graphic syntax to satisfy your unlimited creativity',
+        },
       },
       {
         icon: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*ELYbTIVCgPoAAAAAAAAAAABkARQnAQ',
-        title: '专业完备',
-        description: '大量产品实践之上，提供绘图引擎、完备图形语法、专业设计规范',
+        title: {
+          zh: '专业完备',
+          en: 'Professional complete',
+        },
+        description: {
+          zh: '大量产品实践之上，提供绘图引擎、完备图形语法、专业设计规范',
+          en: 'On top of a large number of product practices, it provides a drawing engine, a complete graphics grammar, and professional design rules',
+        },
       },
       {
         icon: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*_riSQZrgczgAAAAAAAAAAABkARQnAQ',
-        title: '生动，可交互',
-        description: '强大的交互语法，助力可视分析，让图表栩栩如生',
+        title: {
+          zh: '生动，可交互',
+          en: 'Vivid, interactive',
+        },
+        description: {
+          zh: '强大的交互语法，助力可视分析，让图表栩栩如生',
+          en: 'owerful interactive syntax to help visual analysis and make charts come alive',
+        }
       },
     ],
     /** 首页案例 */
     cases: [
       {
         logo: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*-dLnTIexOxwAAAAAAAAAAABkARQnAQ',
-        title: '精品 Gallery',
-        description: '真实的数据可视化案例，我们将它们归纳为一个个故事性的设计模板，让用户达到开箱即用的效果。',
+        title: {
+          zh: '精品 Gallery',
+          en: 'Boutique Gallery',
+        },
+        description: {
+          zh: '真实的数据可视化案例，我们将它们归纳为一个个故事性的设计模板，让用户达到开箱即用的效果。',
+          en: 'Real data visualization cases, we summarize them into story-based design templates, allowing users to achieve out-of-the-box effects.'
+        },
         link: `/examples/gallery`,
         image: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*hDrgRb7ma4EAAAAAAAAAAABkARQnAQ'
       },

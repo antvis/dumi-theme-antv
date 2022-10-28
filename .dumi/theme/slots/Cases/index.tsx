@@ -5,16 +5,14 @@ import Slider from 'react-slick';
 import cx from 'classnames';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-
-import { useT } from '../hooks';
-
+import { useT, ic } from '../hooks';
+import { IC } from '../../typings';
 import styles from './index.module.less';
-
 interface Case {
   logo?: string;
   isAppLogo?: boolean;
-  title: string;
-  description: string;
+  title: IC;
+  description: IC;
   link?: string;
   image: string;
 }
@@ -83,8 +81,8 @@ export const Cases: React.FC<CasesProps> = ({ cases = [], style = {}, className 
       );
 
       return (
-        <div className={styles.appWrapper} key={app.title}>
-          <img className={styles.appTeaser} src={app.image} alt={app.title} />
+        <div className={styles.appWrapper} key={ic(app.title)}>
+          <img className={styles.appTeaser} src={app.image} alt={ic(app.title)} />
           <div className={styles.appLeft}>
             <div className={styles.appContent}>
               <img
@@ -98,8 +96,8 @@ export const Cases: React.FC<CasesProps> = ({ cases = [], style = {}, className 
                     : '0px 0px 0px',
                 }}
               />
-              <p className={styles.appTitle}>{useT(app.title)}</p>
-              <p className={styles.appDescription}>{useT(app.description)}</p>
+              <p className={styles.appTitle}>{ic(app.title)}</p>
+              <p className={styles.appDescription}>{ic(app.description)}</p>
               {linkDiv}
             </div>
             {buttons}
