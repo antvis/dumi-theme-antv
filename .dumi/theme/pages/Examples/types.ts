@@ -1,11 +1,5 @@
 import React from 'react';
 
-export interface NewDemo {
-  title: string;
-  id: string;
-  category: string;
-}
-
 export interface AnnouncementProps {
   message: React.ReactNode;
   localStorageId: string;
@@ -30,3 +24,17 @@ export interface LeftMenuProps {
 export interface ExampleWithTopic extends ExamplesPage.Example {
   targetTopic: ExamplesPage.ExampleTopic;
 }
+
+export interface DemoCardProps {
+  demo: ExamplesPage.Demo;
+  topicId: string;
+  exampleId: string;
+}
+
+export interface LeftMenuProps {
+  /**
+   * 案例主题列表
+   */
+  exampleTopics: ExamplesPage.ExampleTopic[];
+}
+

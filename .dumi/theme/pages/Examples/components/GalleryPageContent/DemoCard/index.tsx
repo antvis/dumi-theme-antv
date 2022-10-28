@@ -1,13 +1,8 @@
 import React from 'react';
-import styles from '../../../index.module.less';
 import { Link, useLocale } from 'dumi';
 import { Badge } from 'antd';
-
-export interface DemoCardProps {
-  demo: ExamplesPage.Demo;
-  topicId: string;
-  exampleId: string;
-}
+import { DemoCardProps } from '../../../types';
+import styles from '../../../index.module.less';
 
 /**
  * DEMO 的卡片预览

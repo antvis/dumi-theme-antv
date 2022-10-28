@@ -7,9 +7,6 @@ import { LeftMenuProps } from '../../types';
 import { LeftMenu } from './components/LeftMenu';
 import styles from '../../index.module.less';
 
-const url = require('url')
-
-
 /**
  * Examples 左侧 LeftMenu
  *

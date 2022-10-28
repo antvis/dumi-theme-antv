@@ -1,8 +1,8 @@
 import React from 'react';
 import { useLocale } from 'dumi';
-import { ExampleWithTopic, GalleryPageContentProps, NewDemo } from '../../types';
-import styles from '../../index.module.less';
+import { ExampleWithTopic, GalleryPageContentProps } from '../../types';
 import { DemoCard } from './DemoCard';
+import styles from '../../index.module.less';
 
 /**
  * Examples 首页内容预览组件
