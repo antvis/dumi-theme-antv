@@ -2,10 +2,11 @@ import { Input, Menu, Tooltip } from 'antd';
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import Icon, { createFromIconfontCN, SearchOutlined } from '@ant-design/icons';
 import classNames from 'classnames';
-import { difference, map, reduce, size } from 'lodash-es';
+import { reduce, size } from 'lodash-es';
 import { useT } from '../hooks';
 import styles from './index.module.less';
 import { useLocale } from 'dumi';
+import { ReactComponent as CollapseAllSvg } from '../../../../assets/collapse-all.svg';
 
 export interface PlayGroundItemProps {
   source: string;
@@ -115,19 +116,6 @@ export const ExampleSider: React.FC<ExampleSiderProps> = (props) => {
       [],
     );
 
-  // 控制 菜单栏展开key 保证二级菜单唯一
-  const onOpenChange = (keys: any[]) => {
-    let newKeys = keys;
-    const diffKey = difference(keys, openKeys)[0];
-    if (diffKey && /^secondaryKey-/.test(diffKey)) {
-      newKeys = [
-        ...newKeys.filter((key) => !/^secondaryKey-/.test(key)),
-        diffKey,
-      ];
-    }
-    setOpenKeys(newKeys);
-  };
-
   // 获取默认展开的keys数组 传入treeData 和 底层的 key  返回符合条件的 keys
   const getDefaultOpenKeys = (data: TreeItem[], key: string): string[] =>
     reduce(
@@ -144,8 +132,8 @@ export const ExampleSider: React.FC<ExampleSiderProps> = (props) => {
 
   // 初始化菜单栏展开keys
   useEffect(() => {
-    console.log(currentDemo);
-    setOpenKeys(['TOPIC-case', 'EXAMPLE-area', 'DEMO-area5']);
+    const { targetExample, targetTopic } = currentDemo;
+    setOpenKeys([`TOPIC-${targetTopic?.id}`, `EXAMPLE-${targetExample?.id}`]);
     // const exampleKey = getPath(currentExample);
     // setOpenKeys(getDefaultOpenKeys(getTreeData(), exampleKey));
   }, [currentDemo]);
@@ -271,8 +259,7 @@ export const ExampleSider: React.FC<ExampleSiderProps> = (props) => {
         />
         <Tooltip placement='right' title={useT('收起所有') as React.ReactNode}>
           <Icon
-            // TODO: 解除注释
-            // component={CollaspeAllSvg}
+            component={CollapseAllSvg}
             className={styles.searchSiderIcon}
             onClick={() => setOpenKeys([])}
           />
@@ -291,7 +278,13 @@ export const ExampleSider: React.FC<ExampleSiderProps> = (props) => {
         className={styles.siderbarMenu}
         openKeys={openKeys}
         selectedKeys={[`DEMO-${currentDemo.id}`]}
-        onOpenChange={onOpenChange}
+        onSelect={() => {
+
+        }}
+        onOpenChange={(keys) => {
+          console.log(keys);
+          setOpenKeys(keys);
+        }}
       >
         {renderSubMenu()}
       </Menu>
