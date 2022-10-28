@@ -63,6 +63,16 @@ declare namespace ExamplesPage {
      * 是否为新品
      */
     isNew?: boolean;
+
+    /**
+     * 目标 example
+     */
+    targetExample?: ExamplesPage.Example;
+
+    /**
+     * 目标主题
+     */
+    targetTopic?: ExamplesPage.ExampleTopic;
   }
 
   /** 示例 */
