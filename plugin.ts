@@ -16,23 +16,23 @@ export default (api: IApi) => {
   const pages = [
     // Examples gallery page.
     {
-      id: 'dumi-theme-antv-examples-zh',
+      id: 'dumi-theme-antv-example-list-zh',
       path: '/examples/',
       file: require.resolve('./.dumi/theme/pages/Examples/index.tsx'),
     },
     {
-      id: 'dumi-theme-antv-examples-lang',
+      id: 'dumi-theme-antv-example-list-lang',
       path: '/:language/examples/',
       file: require.resolve('./.dumi/theme/pages/Examples/index.tsx'),
     },
     // single example preview page.
     {
-      id: 'dumi-theme-antv-example-zh',
+      id: 'dumi-theme-antv-single-example-zh',
       path: '/examples/:topic/:example',
       file: require.resolve('./.dumi/theme/pages/Example/index.tsx'),
     },
     {
-      id: 'dumi-theme-antv-examples-lang',
+      id: 'dumi-theme-antv-single-example-lang',
       path: '/:language/examples/:topic/:example',
       file: require.resolve('./.dumi/theme/pages/Example/index.tsx'),
     },
