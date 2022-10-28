@@ -78,6 +78,15 @@ export type HeaderProps = {
     name: Record<string /** zh, en */, string>;
     url: string;
   }>;
+  /** 头部搜索框配置 */
+  searchOptions?: {                        
+    docsearchOptions: {
+      versionV3: boolean;
+      apiKey: string;
+      indexName: string;
+      appId: string;
+   }
+  }
 }
 
 /**
@@ -108,6 +117,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
   rootDomain = '',
   versions,
   ecosystems,
+  searchOptions
 }) => {
   const locale = useLocale()
   const navigate = useNavigate()
@@ -125,7 +135,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
         setProductMenuVisible(true);
       }
     }, 200);
-  };
+  };  
   const onProductMouseLeave = (e: React.MouseEvent) => {
     e.persist();
     productMenuHovering = false;
@@ -411,7 +421,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
           )}
           {
             showSearch && !isAntVHome &&
-            <Search />
+            <Search {...searchOptions}  />
           }
         </div>
         <nav className={styles.nav}>
@@ -428,9 +438,11 @@ export const Header: React.FC<Partial<HeaderProps>> = (props) => {
   const {
     title, siteUrl, githubUrl, isAntVSite, subTitleHref,
     showSearch, showGithubCorner, showGithubStars, showLanguageSwitcher, showWxQrcode, defaultLanguage, showAntVProductsCard,
-    versions, ecosystems, navs,
+    versions, ecosystems, navs, docsearchOptions
   } = themeConfig;
-
+  const searchOptions = {
+    docsearchOptions
+  }
   const headerProps = {
     subTitle: title,
     subTitleHref,
@@ -438,7 +450,7 @@ export const Header: React.FC<Partial<HeaderProps>> = (props) => {
     isAntVSite,
     siteUrl,
     showSearch, showGithubCorner, showGithubStars, showLanguageSwitcher, showWxQrcode, defaultLanguage, showAntVProductsCard,
-    versions, ecosystems, navs,
+    versions, ecosystems, navs, searchOptions,
     isHomePage: true,
   }
 
