@@ -25,8 +25,6 @@ const Example = () => {
 
   const exampleTopics: ExamplesPage.ExampleTopic[] = metaData.meta.exampleTopics;
 
-  const { exampleSections = {}, allDemos = [] } = metaData.meta.result.pageContext;
-
   const [prev, next] = usePrevAndNext();
 
   return (
@@ -38,7 +36,7 @@ const Example = () => {
         <ExampleTopicMenu exampleTopics={exampleTopics} />
         <Article className={styles.markdown}>
           <div className={styles.main} style={{ width: '100%' }}>
-            <GalleryPageContent exampleTopics={exampleTopics} allDemos={allDemos} exampleSections={exampleSections} />
+            <GalleryPageContent exampleTopics={exampleTopics} />
             <div>
               <NavigatorBanner type='prev' post={prev} />
               <NavigatorBanner type='next' post={next} />

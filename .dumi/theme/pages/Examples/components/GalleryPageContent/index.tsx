@@ -2,10 +2,10 @@ import React from 'react';
 import { useLocale } from 'dumi';
 import { GalleryPageContentProps, NewDemo } from '../../types';
 import styles from '../../index.module.less';
-import { DemoCard } from '@/.dumi/theme/pages/Examples/components/GalleryPageContent/DemoCard';
+import { DemoCard } from './DemoCard';
 
 /**
- * GalleryPageContent
+ * Examples 首页内容预览组件
  *
  * @param {GalleryPageContentProps} props 相关参数，详见类型定义
  * @returns {React.FC} React.FC
