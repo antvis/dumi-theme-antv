@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Anchor, Menu } from 'antd';
 import { debounce } from 'lodash-es';
 import { useLocale } from 'dumi';
@@ -25,37 +25,8 @@ export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
   const locale = useLocale();
   const [openKeys, setOpenKeys] = useState<string[]>([]);
 
-
-  const onAnchorLinkChange = debounce((currentActiveLink: string) => {
-    // let currentSlug = '';
-    // edges.forEach((edge) => {
-    //   const {
-    //     node: {
-    //       frontmatter: { title },
-    //       fields: { slug },
-    //     },
-    //   } = edge;
-    //
-    //   if (`#category-${title.replace(/\s/g, '')}` === currentActiveLink) {
-    //     currentSlug = slug;
-    //   }
-    // });
-    //
-    // setSelectedKeys([currentSlug]);
-    //
-    // if (currentActiveLink) {
-    //   const link = document.querySelector(`a[href='${currentActiveLink}']`);
-    //   if (link) {
-    //     const anchor = link?.parentNode as Element;
-    //     anchor.scrollIntoView({
-    //       block: 'center',
-    //     });
-    //   }
-    // }
-  }, 300);
-
   return (
-    <Anchor className={styles.galleryAnchor} onChange={onAnchorLinkChange}>
+    <Anchor className={styles.galleryAnchor}>
       <Menu
         mode='inline'
         selectedKeys={selectedKeys}
@@ -74,16 +45,18 @@ export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
             </div>
           }>
             {topic.examples.map((example) => {
-              return <Menu.Item key={example.id}>
-                <Anchor.Link
-                  href={`#category-${example.id.replace(/\s/g, '')}`}
-                  title={
-                    <div>
-                      <span>{example.title[locale.id]}</span>
-                    </div>
-                  }
-                />
-              </Menu.Item>;
+              return (
+                <Menu.Item key={example.id}>
+                  <Anchor.Link
+                    href={`#category-${example.id.replace(/\s/g, '')}`}
+                    title={
+                      <div>
+                        <span>{example.title[locale.id]}</span>
+                      </div>
+                    }
+                  />
+                </Menu.Item>
+              );
             })}
           </Menu.SubMenu>;
         })}
