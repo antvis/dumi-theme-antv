@@ -10,6 +10,7 @@
         "zh": "某公司烟花国内累计销售额趋势",
         "en": "Domestic cumulative sales trend of fireworks"
       },
+      "new": true,
       "screenshot": "https://gw.alipayobjects.com/mdn/rms_f5c722/afts/img/A*QlLyQ6EleE4AAAAAAAAAAABkARQnAQ"
     },
     {
@@ -34,6 +35,7 @@
         "zh": "某频道视频订阅数和月收入关系",
         "en": "Range Area Chart"
       },
+      "new": true,
       "screenshot": "https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*hGBYTpJauooAAAAAAAAAAABkARQnAQ"
     }
   ]

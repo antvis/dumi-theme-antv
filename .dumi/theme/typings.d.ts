@@ -53,11 +53,16 @@ declare namespace ExamplesPage {
      * DEMO 代码文件名称
      */
     filename: string;
-    
+
     /**
      * 衍生属性，通过 topic.id + example.id + demo.id 可以计算获取
      */
     relativePath?: string;
+
+    /**
+     * 是否为新品
+     */
+    isNew?: boolean;
   }
 
   /** 示例 */

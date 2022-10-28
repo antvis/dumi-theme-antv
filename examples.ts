@@ -16,7 +16,7 @@ const getExampleDemos = (exampleDir: string) => {
   const demoMetaJSON = fs.readFileSync(path.resolve(exampleDir, 'demo', 'meta.json')).toString();
   const demoMeta: any[] = JSON.parse(demoMetaJSON).demos;
   const demos: ExamplesPage.Demo[] = demoMeta.map(item => {
-    const { title, screenshot, filename } = item;
+    const { title, screenshot, filename, new: isNew } = item;
     const id = filename.replace(/\.tsx?$/, '');
     return {
       id,
@@ -24,6 +24,7 @@ const getExampleDemos = (exampleDir: string) => {
       source: fs.readFileSync(path.resolve(exampleDir, 'demo', filename)).toString(),
       title,
       filename,
+      isNew: !!isNew,
     };
   });
   return demos;

@@ -15,14 +15,9 @@ export interface AnnouncementProps {
 
 export interface GalleryPageContentProps {
   /**
-   * 案例节点
+   * 案例主题列表
    */
-  exampleSections: Record<any, any>;
-
-  /**
-   * 所有 DEMO
-   */
-  allDemos: any[];
+  exampleTopics: ExamplesPage.ExampleTopic[];
 }
 
 export interface LeftMenuProps {

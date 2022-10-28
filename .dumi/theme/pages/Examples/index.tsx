@@ -38,7 +38,7 @@ const Example = () => {
         <ExampleTopicMenu exampleTopics={exampleTopics} />
         <Article className={styles.markdown}>
           <div className={styles.main} style={{ width: '100%' }}>
-            <GalleryPageContent allDemos={allDemos} exampleSections={exampleSections} />
+            <GalleryPageContent exampleTopics={exampleTopics} allDemos={allDemos} exampleSections={exampleSections} />
             <div>
               <NavigatorBanner type='prev' post={prev} />
               <NavigatorBanner type='next' post={next} />
