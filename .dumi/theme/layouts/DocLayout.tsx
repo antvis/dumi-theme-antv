@@ -1,3 +1,4 @@
+import React from 'react';
 import { useOutlet, useLocation } from 'dumi';
 import { Index } from './entry/Index';
 import { API } from './entry/API';
@@ -23,16 +24,27 @@ export default () => {
   const { pathname } = useLocation();
   const p = pathname.toLowerCase();
 
-  // // 首页
+  // @todo 南洋
+  // 做一些跳转，比如：/zh/examples/xxx -> /examples/xxx
+
+  // 首页
   if (p === '/' || p === '/en') return <Index />;
 
-  // // API 页面（docs 是兼容之前的 URL）
-  if (p.startsWith('/api') || p.startsWith('/en/api') || p.startsWith('/docs/en/api')) {
+  // API 页面
+  if (
+    p.startsWith('/api') || p.startsWith('/en/api') ||
+    // 这两个是兼容之前的
+    p.startsWith('/zh/docs/api') || p.startsWith('/en/docs/api') 
+  ) {
     return <API> {outlet} </API>
   }
 
-  // 教程页面（docs 是兼容之前的 URL）
-  if (p.startsWith('/manual') || p.startsWith('/en/manual') || p.startsWith('/docs/manual/')) {
+  // 教程页面
+  if (
+    p.startsWith('/manual') || p.startsWith('/en/manual') ||
+    // 这两个是兼容之前的
+    p.startsWith('/zh/docs/manual/') || p.startsWith('/en/docs/manual/')
+  ) {
     return <Manual> {outlet} </Manual>;
   }
 
