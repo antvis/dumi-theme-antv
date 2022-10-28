@@ -28,12 +28,12 @@ export default (api: IApi) => {
     // single example preview page.
     {
       id: 'dumi-theme-antv-example-zh',
-      path: '/examples/:category/:name',
+      path: '/examples/:topic/:example',
       file: require.resolve('./.dumi/theme/pages/Example/index.tsx'),
     },
     {
       id: 'dumi-theme-antv-examples-lang',
-      path: '/:language/examples/:category/:name',
+      path: '/:language/examples/:topic/:example',
       file: require.resolve('./.dumi/theme/pages/Example/index.tsx'),
     },
   ];

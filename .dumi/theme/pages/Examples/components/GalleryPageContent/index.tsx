@@ -153,7 +153,7 @@ export const GalleryPageContent: React.FC<GalleryPageContentProps> = (props) => 
                   >
                     <Link
                       className={styles.galleryCardLink}
-                      to={`/${locale.id}/examples/${demoSlug}`}
+                      to={locale.id === 'zh' ? `/examples/${demoSlug}` : `/${locale.id}/examples/${demoSlug}`}
                     >
                       {demo.new ? (
                         <Badge.Ribbon
