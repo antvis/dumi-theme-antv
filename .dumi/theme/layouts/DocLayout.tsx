@@ -34,8 +34,7 @@ export default () => {
   if (p =='/examples' || p =='/en/examples' || p == '/docs/examples') {
     return <Example></Example>
   }
-
- 
+  
   // More router, add here...
 
   return outlet;
