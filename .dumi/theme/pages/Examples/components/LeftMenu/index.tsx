@@ -17,7 +17,8 @@ import styles from '../../index.module.less';
  * @returns {React.FC} React.FC
  */
 export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
-  const { edges, examples } = props;
+  const { edges, examples, exampleTopics } = props;
+  console.log(exampleTopics);
   const locale = useLocale();
 
   const isWide = useMedia('(min-width: 767.99px)', true);
@@ -72,54 +73,6 @@ export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
   // 提取出筛选 和 排序的方法 好在获取treeData 的时候使用
   const groupedEdgesDataEdit = getGroupedEdgesDataEdit(examples, edges, locale.id);
 
-  const renderAnchorItems = (edges: any[]) =>
-    edges
-      .filter((edge: any) => {
-        const {
-          node: {
-            fields: { slug },
-          },
-        } = edge;
-        return !(slug.endsWith('/API') ||
-          slug.endsWith('/design') ||
-          slug.endsWith('/gallery'));
-      })
-      .sort((a: any, b: any) => {
-        const {
-          node: {
-            frontmatter: { order: aOrder },
-          },
-        } = a;
-        const {
-          node: {
-            frontmatter: { order: bOrder },
-          },
-        } = b;
-        return aOrder - bOrder;
-      })
-      .map((edge: any) => {
-        const {
-          node: {
-            frontmatter: { title, icon },
-            fields: { slug },
-          },
-        } = edge;
-        return (
-          <Menu.Item key={slug}>
-            <Anchor.Link
-              href={`#category-${title.replace(/\s/g, '')}`}
-              title={
-                <div>
-                  {icon && (
-                    <MenuIcon className={styles.menuIcon} type={`icon-${icon}`} />
-                  )}
-                  <span>{title}</span>
-                </div>
-              }
-            />
-          </Menu.Item>
-        );
-      });
 
   const renderMenu = () => {
     return (
@@ -134,37 +87,60 @@ export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
           }
           forceSubMenuRender
         >
-          {groupedEdgesDataEdit.map((slugString) => {
-            const slugPieces = slugString.split('/');
-            if (slugPieces.length <= 3) {
-              return renderAnchorItems(groupedEdges[slugString]);
-            }
-            const menuItemLocaleKey = getMenuItemLocaleKey(slugString);
-            const doc =
-              examples.find((item: any) => item.slug === menuItemLocaleKey) || {};
-            return (
-              <Menu.SubMenu
-                key={slugString}
-                title={
-                  <div>
-                    {doc.icon && (
-                      <MenuIcon
-                        className={styles.menuIcon}
-                        type={`icon-${doc.icon}`}
-                      />
-                    )}
-                    <span>
-                    {doc && doc.title
-                      ? doc.title[locale.id]
-                      : menuItemLocaleKey}
-                  </span>
-                  </div>
-                }
-              >
-                {renderAnchorItems(groupedEdges[slugString])}
-              </Menu.SubMenu>
-            );
+          {exampleTopics.map((topic) => {
+            return <Menu.SubMenu key={topic.id} title={
+              <div>
+                {topic.title[locale.id]}
+              </div>
+            }>
+              {topic.examples.map((example) => {
+                return <Menu.Item key={example.id}>
+                  <Anchor.Link
+                    href={`#category-${example.id.replace(/\s/g, '')}`}
+                    title={
+                      <div>
+                        {example.icon && (
+                          <MenuIcon className={styles.menuIcon} type={`icon-${example.icon}`} />
+                        )}
+                        <span>{example.title[locale.id]}</span>
+                      </div>
+                    }
+                  />
+                </Menu.Item>;
+              })}
+            </Menu.SubMenu>;
           })}
+          {/*{groupedEdgesDataEdit.map((slugString) => {*/}
+          {/*  const slugPieces = slugString.split('/');*/}
+          {/*  if (slugPieces.length <= 3) {*/}
+          {/*    return renderAnchorItems(groupedEdges[slugString]);*/}
+          {/*  }*/}
+          {/*  const menuItemLocaleKey = getMenuItemLocaleKey(slugString);*/}
+          {/*  const doc =*/}
+          {/*    examples.find((item: any) => item.slug === menuItemLocaleKey) || {};*/}
+          {/*  return (*/}
+          {/*    <Menu.SubMenu*/}
+          {/*      key={slugString}*/}
+          {/*      title={*/}
+          {/*        <div>*/}
+          {/*          {doc.icon && (*/}
+          {/*            <MenuIcon*/}
+          {/*              className={styles.menuIcon}*/}
+          {/*              type={`icon-${doc.icon}`}*/}
+          {/*            />*/}
+          {/*          )}*/}
+          {/*          <span>*/}
+          {/*          {doc && doc.title*/}
+          {/*            ? doc.title[locale.id]*/}
+          {/*            : menuItemLocaleKey}*/}
+          {/*        </span>*/}
+          {/*        </div>*/}
+          {/*      }*/}
+          {/*    >*/}
+          {/*      {renderAnchorItems(groupedEdges[slugString])}*/}
+          {/*    </Menu.SubMenu>*/}
+          {/*  );*/}
+          {/*})}*/}
         </Menu>
       </Anchor>
     );
@@ -177,9 +153,11 @@ export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
       style={{ height: isWide ? '100vh' : 'inherit' }}
     >
       {isWide ? (
-        <AntLayout.Sider width='auto' theme='light' className={styles.sider}>
-          {renderMenu()}
-        </AntLayout.Sider>
+        <div>
+          <AntLayout.Sider width='auto' theme='light' className={styles.sider}>
+            {renderMenu()}
+          </AntLayout.Sider>
+        </div>
       ) : (
         <Drawer
           handler={

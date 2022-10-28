@@ -11,6 +11,7 @@ import { GalleryPageContent } from './components/GalleryPageContent';
 import { usePrevAndNext } from '../../slots/hooks';
 import { ThemeAntVContext } from '../../context';
 import styles from './index.module.less';
+import React from 'react';
 
 
 /**
@@ -21,6 +22,8 @@ import styles from './index.module.less';
 const Example = () => {
   /** 示例页面的元数据信息 */
   const metaData: any = useContext(ThemeAntVContext);
+
+  const exampleTopics: ExamplesPage.ExampleTopic[] = metaData.meta.exampleTopics;
 
   const { allMarkdownRemark, site } = metaData.meta.result.data;
   const {
@@ -39,7 +42,7 @@ const Example = () => {
       <AntLayout
         hasSider
         className={styles.layout}>
-        <LeftMenu edges={edges} examples={examples} />
+        <LeftMenu edges={edges} examples={examples} exampleTopics={exampleTopics} />
         <Article className={styles.markdown}>
           <div className={styles.main} style={{ width: '100%' }}>
             <GalleryPageContent allDemos={allDemos} exampleSections={exampleSections} />
