@@ -23,11 +23,11 @@ export default {
       '0.2.x': 'https://antv.vision/',
     },
     docsearchOptions: {                                                 // 头部搜索框配置
-        versionV3: true,
-        apiKey: '90c9a5dbf6e5ea7058cc32bcde8e94b2',
-        indexName: 's2-antv-vision',
-        appId: 'D73DOU8RXD',
-      },
+      versionV3: true,
+      apiKey: '90c9a5dbf6e5ea7058cc32bcde8e94b2',
+      indexName: 's2-antv-vision',
+      appId: 'D73DOU8RXD',
+    },
     navs: [                                                             // 头部的菜单列表
       {
         slug: 'manual/concepts/geometry/overview',
