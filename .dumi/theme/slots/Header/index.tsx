@@ -23,7 +23,6 @@ import { LogoWhite } from './LogoWhite';
 import { getLangUrl } from './utils';
 import { useT } from '../hooks';
 
-
 import styles from './index.module.less';
 
 export type HeaderProps = {
@@ -118,8 +117,9 @@ const HeaderComponent: React.FC<HeaderProps> = ({
   ecosystems,
   searchOptions
 }) => {
-  const locale = useLocale();
   const isAntVHome = isAntVSite && isHomePage; // 是否为AntV官网首页
+
+  const locale = useLocale();
   const nav=useNavigate()
 
   const [lang, setLang] = useState(locale.id)
