@@ -84,7 +84,7 @@
     "uri-parse": "^1.0.0"
   },
   "peerDependencies": {
-    "dumi": "^2.0.0-beta.10",
+    "dumi": "^2.0.0-beta.14",
     "react": ">=16.9.0",
     "react-dom": ">=16.9.0"
   },
@@ -100,7 +100,7 @@
     "@types/react-router-dom": "^5.3.3",
     "@types/react-slick": "^0.23.10",
     "@umijs/lint": "^4.0.0",
-    "dumi": "^2.0.0-beta.10",
+    "dumi": "^2.0.0-beta.14",
     "eslint": "^8.23.0",
     "father": "^4.1.0",
     "father-plugin-dumi-theme": "^1.0.0-beta.1",
