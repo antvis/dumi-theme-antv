@@ -1,12 +1,11 @@
 import { Input, Menu, Tooltip } from 'antd';
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
-import Icon, { createFromIconfontCN, SearchOutlined } from '@ant-design/icons';
+import { useLocale } from 'dumi';
+import { createFromIconfontCN, SearchOutlined, VerticalAlignTopOutlined } from '@ant-design/icons';
 import classNames from 'classnames';
 import { reduce, size } from 'lodash-es';
 import { useT } from '../hooks';
 import styles from './index.module.less';
-import { useLocale } from 'dumi';
-import { ReactComponent as CollapseAllSvg } from '../../../../assets/collapse-all.svg';
 
 export interface PlayGroundItemProps {
   source: string;
@@ -77,7 +76,6 @@ export interface ExampleSiderProps {
  */
 export const ExampleSider: React.FC<ExampleSiderProps> = (props) => {
   const { currentDemo, onDemoClicked, exampleTopics } = props;
-  console.log(currentDemo);
   // 菜单栏展开keys
   const [openKeys, setOpenKeys] = useState<string[]>([]);
 
@@ -251,11 +249,15 @@ export const ExampleSider: React.FC<ExampleSiderProps> = (props) => {
           onChange={(e: any) => setSearchValue(e.target.value)}
         />
         <Tooltip placement='right' title={useT('收起所有') as React.ReactNode}>
-          <Icon
-            component={CollapseAllSvg}
+          <VerticalAlignTopOutlined
             className={styles.searchSiderIcon}
             onClick={() => setOpenKeys([])}
           />
+          {/* <Icon
+            component={CollapseAllSvg}
+            className={styles.searchSiderIcon}
+            onClick={() => setOpenKeys([])}
+          /> */}
         </Tooltip>
       </div>
     );

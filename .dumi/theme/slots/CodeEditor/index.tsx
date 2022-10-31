@@ -90,7 +90,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
   const { extraLib = '' } = useSiteData().themeConfig.playground;
   // 编辑器两个 tab，分别是代码和数据
   const [data, setData] = useState(null);
-  const [code, setCode] = useState(replaceInsertCss(source, locale.id));
+  const [code, setCode] = useState(source);
   // monaco instance
   const monacoRef = useRef<any>(null);
   // 文件后缀
@@ -126,7 +126,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
     // 1. 先编译代码
     let compiled;
     try {
-      compiled = compile(v, relativePath);
+      compiled = compile(replaceInsertCss(v, locale.id), relativePath);
       // 清除错误
       onError(null);
     } catch (e) {
@@ -139,6 +139,10 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
     // 2. 执行代码，try catch 在内部已经做了
     execute(compiled, 'playgroundScriptContainer', playground?.container, replaceId);
   }, 300), []);
+
+  useEffect(() => {
+    setCode(source);
+  }, [source]);
 
   useEffect(() => {
     executeCode(code);

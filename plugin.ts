@@ -1,13 +1,9 @@
 import type { IApi } from 'dumi';
-import * as fs from 'fs-extra';
-import * as path from 'path';
 import { getExamplesPageTopics } from './examples';
 
 function generateMetaJSON() {
   const res = getExamplesPageTopics();
-  const content = fs.readFileSync(path.resolve(process.cwd(), 'site-config.json')).toString();
   return {
-    ...JSON.parse(content),
     exampleTopics: res,
   };
 }
