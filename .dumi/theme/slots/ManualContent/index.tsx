@@ -4,7 +4,7 @@ import { useMedia } from 'react-use';
 import Drawer from 'rc-drawer';
 import { useLocale, useSiteData, useFullSidebarData, useRouteMeta } from 'dumi';
 import { useNavigate } from "react-router-dom";
-import { EditOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
+import { EditOutlined, MenuFoldOutlined, MenuUnfoldOutlined, VerticalAlignTopOutlined } from '@ant-design/icons';
 import readingTime from 'reading-time'
 
 import { NavigatorBanner } from './NavigatorBanner';
@@ -292,6 +292,11 @@ const getGithubSourceUrl = ({
               <div className={styles.preandnext}>
                 <NavigatorBanner type="prev" post={prev} />
                 <NavigatorBanner type="next" post={next} />
+                <BackTop style={{ right: 32 }}>
+                  <div className={styles.backTop}>
+                    <VerticalAlignTopOutlined />
+                  </div>
+                </BackTop>
               </div>
             </div>
           </div>
