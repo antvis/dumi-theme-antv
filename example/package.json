@@ -1,0 +1,12 @@
+{
+  "version": "0.3.0",
+  "scripts": {
+    "start": "../node_modules/.bin/dumi dev",
+    "build": "dumi build",
+    "preview": "dumi preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/antvis/dumi-theme-antv"
+  }
+}

@@ -1,49 +1,54 @@
-# dumi-theme-antv
+# @antv/dumi-theme-antv
 
-> AntV 各技术栈的官网模板，基于最新的 dumi2。
+[![NPM version](https://img.shields.io/npm/v/@antv/dumi-theme-antv.svg?style=flat)](https://npmjs.org/package/@antv/dumi-theme-antv)
+[![NPM downloads](http://img.shields.io/npm/dm/@antv/dumi-theme-antv.svg?style=flat)](https://npmjs.org/package/@antv/dumi-theme-antv)
 
-
-## Install
-
-```bash
-$ npm i @antv/dumi-theme-antv --save-dev
-```
-
+A theme package for the [dumi](https://next.d.umijs.org) framework.
 
 ## Usage
 
-所有的配置文件，都是在 `.umirc.ts` 中，具体配置结构，可以参考 dumi 的文档。
-
-
- - 配置文件
-
-`themeConfig` 是本项目 AntV 主题配置，可以参考当前项目中的配置文件去修改各自技术栈中的配置。
-
- - 文档结构
-
-所有的文档，均在 `docs` 目录中，其中的结构和配置文件，参考本项目中的示例文档。
-
- - 自定义
-
-自定义能力，除了 `themeConfig` 开放的配置之外，就是 `dumi2` 提供的自定义 `slots` 能力。
-
-
-## Contributing
-
-参考以下命令。
+Install this theme into `devDependencies`:
 
 ```bash
-# 下载代码，切换分支
-$ git clone https://github.com/antvis/dumi-theme-antv.git
-
-# 安装依赖
-$ npm install
-
-# 启动示例站点
-$ npm start
+$ npm i @antv/dumi-theme-antv -D
 ```
 
+Configure it in dumi config file `.dumirc.ts`:
 
-## License
+```ts
+import { defineConfig } from 'dumi';
 
-MIT.
+export defineConfig({
+  themeConfig: {
+    ...
+  },
+});
+```
+
+That's all, now you can execute `dumi dev` and enjoy this theme.
+
+## Options
+
+TODO
+
+## Development
+
+```bash
+$ tnpm install
+```
+
+After the dependencies are installed, a symlink from `example/.dumi/theme` to `../../src` will be created automatically, the symlink makes dumi load our theme package as a local theme, so we can start the example directly, HMR is also available:
+
+```bash
+# switch to example directory
+$ cd example
+
+# start dev server to preview
+npm run dev
+```
+
+dumi theme development documentation: https://next.d.umijs.org/theme
+
+## LICENSE
+
+MIT

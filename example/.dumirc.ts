@@ -1,6 +1,7 @@
+import { defineConfig } from 'dumi';
 import { repository, version } from './package.json';
 
-export default {
+export default defineConfig({
   locales: [{ id: 'zh', name: '中文' }, { id: 'en', name: 'English' }],
   themeConfig: {
     title: 'dumi-theme-antv', 
@@ -269,10 +270,11 @@ export default {
       { name: '菜鸟', img: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*TgV-RZDODJIAAAAAAAAAAABkARQnAQ', },
     ],
   },
-  
   mfsu: false,
+  // tnpm 安装的目录会导致 webpack 缓存快照 OOM，暂时禁用
+  chainWebpack(memo) { memo.delete('cache'); return memo },
   links: [
   ],
   scripts: [
   ],
-}
+});

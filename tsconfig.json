@@ -1,21 +1,10 @@
 {
-  "extends": "./.dumi/tmp/tsconfig.json",
-  "ts-node": {
-    "files": true
-  },
   "compilerOptions": {
-    "importHelpers": false,
-    "target": "ESNext",
-    "module": "CommonJS",
-    "checkJs": true,
-    "allowJs": true,
+    "strict": true,
+    "declaration": true,
+    "esModuleInterop": true,
     "jsx": "react",
-    "noImplicitAny": false
-  },
-  "include": [
-    "examples/**/*",
-    "./.dumi/**/*",
-    "plugin.ts",
-    "examples.ts"
-  ]
+    "skipLibCheck": true,
+    "baseUrl": "./"
+  }
 }

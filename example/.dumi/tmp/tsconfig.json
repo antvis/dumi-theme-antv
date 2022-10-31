@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "jsx": "react-jsx",
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "baseUrl": "../",
+    "strict": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "@/*": [
+        "*"
+      ],
+      "@@/*": [
+        ".umi/*"
+      ],
+      "umi": [
+        "/Users/xiaowei/Documents/code/dumi-theme-antv/pkg/node_modules/_umi@4.0.28@umi"
+      ],
+      "umi/typings": [
+        ".umi/typings"
+      ]
+    }
+  },
+  "include": [
+    "../.umirc.ts",
+    "../**/*.d.ts",
+    "../**/*.ts",
+    "../**/*.tsx"
+  ]
+}
