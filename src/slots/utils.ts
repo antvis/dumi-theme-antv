@@ -1,6 +1,4 @@
-import { groupBy } from 'lodash-es';
-
-type Status = 'responded' | 'error' | 'timeout';
+import { Status } from '../types';
 
 export const ping = (callback: (status: Status) => void): NodeJS.Timeout => {
   const url =
@@ -38,7 +36,7 @@ export const getChinaMirrorHost = (host?: string): string => {
   return hostString;
 };
 
-export function getGithubSourceUrl(githubUrl: string, relativePath: string, prefix: string = 'examples'): string {
+export function getGithubSourceURL(githubUrl: string, relativePath: string, prefix: string = 'examples'): string {
   // https://github.com/antvis/x6/tree/master/packages/x6-sites
   if (githubUrl.includes('/tree/master/')) {
     return `${githubUrl.replace(
@@ -48,120 +46,3 @@ export function getGithubSourceUrl(githubUrl: string, relativePath: string, pref
   }
   return `${githubUrl}/edit/master/${prefix}/${relativePath}`;
 }
-
-
-export const getAllDemosInCategory = (allDemos: any[], lang: string) => {
-  return groupBy(allDemos || [], (demo: any) => {
-    if (!demo.postFrontmatter || !demo.postFrontmatter[lang]) {
-      return 'OTHER';
-    }
-    return demo.postFrontmatter[lang].title;
-  });
-};
-
-export const getSortedCategories = (allDemosInCategory: any, locale: string) => {
-  return Object.keys(allDemosInCategory).sort(
-    (a: string, b: string) => {
-      if (a === 'OTHER') {
-        return -1;
-      }
-      if (b === 'OTHER') {
-        return 1;
-      }
-      return (
-        allDemosInCategory[a][0].postFrontmatter[locale].order -
-        allDemosInCategory[b][0].postFrontmatter[locale].order
-      );
-    },
-  );
-};
-
-const getMenuItemLocaleKey = (slug = '') => {
-  const slugPieces = slug.split('/');
-  return slugPieces
-    .slice(slugPieces.indexOf('examples') + 1)
-    .filter((key) => key)
-    .join('/');
-};
-
-
-const getExampleOrder = (options: {
-  groupedEdgeKey: string;
-  examples: any[];
-  groupedEdges: {
-    [key: string]: any[];
-  };
-}): number => {
-  const { groupedEdgeKey, groupedEdges, examples } = options;
-
-  const key = getMenuItemLocaleKey(groupedEdgeKey);
-  if (examples.find((item) => item.slug === key)) {
-    return (examples.findIndex((item) => item.slug === key) || 0) + 100;
-  }
-  if (!groupedEdges[groupedEdgeKey] && !groupedEdges[groupedEdgeKey].length) {
-    return 0;
-  }
-  return groupedEdges[groupedEdgeKey][0].node.frontmatter.order || 0;
-};
-
-export const getGroupedEdges = (edges: any) => {
-  return groupBy(
-    edges,
-    ({
-       node: {
-         fields: { slug: slugString },
-       },
-     }: any) => {
-      // API.md and design.md
-      if (slugString.endsWith('/API') || slugString.endsWith('/design')) {
-        return slugString.split('/').slice(0, -2).join('/');
-      }
-      // index.md
-      return slugString.split('/').slice(0, -1).join('/');
-    },
-  );
-};
-
-// 提取出筛选 和 排序的方法 好在获取treeData 的时候使用
-export const getGroupedEdgesDataEdit = (examples: any, edges: any, local: string) => {
-  const groupedEdges = getGroupedEdges(edges);
-  return Object.keys(groupedEdges)
-    .filter((key) => key.startsWith(`/${local}/`))
-    .sort((a: string, b: string) => {
-      const aOrder = getExampleOrder({
-        groupedEdgeKey: a,
-        examples,
-        groupedEdges,
-      });
-      const bOrder = getExampleOrder({
-        groupedEdgeKey: b,
-        examples,
-        groupedEdges,
-      });
-      return aOrder - bOrder;
-    });
-};
-
-export const getTreeDataByExamplesAndEdges = (examples: any, edges: any, locale: string) => {
-  return getGroupedEdgesDataEdit(examples, edges, locale).map((slugString) => {
-    const menuItemLocaleKey = getMenuItemLocaleKey(slugString);
-    const doc =
-      examples.find((item: any) => item.slug === menuItemLocaleKey) || {};
-
-    return {
-      title: doc && doc.title ? doc.title[locale] : menuItemLocaleKey,
-      value: slugString,
-      icon: doc.icon,
-      children: getGroupedEdges(edges)[slugString].filter((edge) => {
-        const {
-          node: {
-            fields: { slug },
-          },
-        } = edge;
-        return !(slug.endsWith('/API') ||
-          slug.endsWith('/design') ||
-          slug.endsWith('/gallery'));
-      }),
-    };
-  });
-};

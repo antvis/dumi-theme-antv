@@ -3,7 +3,7 @@ import { PageHeader, Tooltip, Space, Divider } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 
 import { useT } from '../hooks';
-import { getGithubSourceUrl } from '../utils';
+import { getGithubSourceURL } from '../utils';
 
 import styles from './CodeHeader.module.less';
 
@@ -21,7 +21,7 @@ export type CodeHeaderProps = {
    * GitHub 的地址，用于拼接最后 GitHub 编辑地址
    */
   githubUrl: string;
-  
+
 }
 
 /**
@@ -40,7 +40,7 @@ export const CodeHeader: React.FC<any> = ({
       subTitle={
         <Tooltip title={useT('在 GitHub 上编辑')}>
           <a
-            href={getGithubSourceUrl(githubUrl, relativePath, 'examples')}
+            href={getGithubSourceURL(githubUrl, relativePath, 'examples')}
             target="_blank"
             rel="noopener noreferrer"
             className={styles.editOnGtiHubButton}
