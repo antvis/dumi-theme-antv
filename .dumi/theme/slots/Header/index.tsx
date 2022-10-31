@@ -120,7 +120,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
   const isAntVHome = isAntVSite && isHomePage; // 是否为AntV官网首页
 
   const locale = useLocale();
-  const nav=useNavigate()
+  const nav = useNavigate()
 
   const [lang, setLang] = useState(locale.id)
    
