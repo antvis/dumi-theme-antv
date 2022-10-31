@@ -2,9 +2,11 @@ import { Input, Menu, Tooltip } from 'antd';
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import Icon, { createFromIconfontCN, SearchOutlined } from '@ant-design/icons';
 import classNames from 'classnames';
-import { difference, map, reduce, size } from 'lodash-es';
+import { reduce, size } from 'lodash-es';
 import { useT } from '../hooks';
 import styles from './index.module.less';
+import { useLocale } from 'dumi';
+import { ReactComponent as CollapseAllSvg } from '../../../../assets/collapse-all.svg';
 
 export interface PlayGroundItemProps {
   source: string;
@@ -50,10 +52,22 @@ const MenuIcon = createFromIconfontCN({
 });
 
 export interface ExampleSiderProps {
-  getPath: (currentExample: PlayGroundItemProps) => string; // 获得当前选中的示例 key 值
-  currentExample: PlayGroundItemProps;
-  updateCurrentExample: (val: PlayGroundItemProps) => void;
-  treeData: TreeItem[];
+  /**
+   * 当前 Example (受控)
+   */
+  currentDemo: ExamplesPage.Demo;
+
+  /**
+   * 当选中的 Demo 被改变时做些什么
+   */
+  onDemoClicked: (demo: ExamplesPage.Demo) => void;
+
+  /**
+   * 所有的案例主题
+   */
+  exampleTopics: ExamplesPage.ExampleTopic[];
+
+
   showExampleDemoTitle: boolean;
 }
 
@@ -62,17 +76,20 @@ export interface ExampleSiderProps {
  * DEMO 预览页面的菜单
  */
 export const ExampleSider: React.FC<ExampleSiderProps> = (props) => {
-  const { treeData, getPath, currentExample, updateCurrentExample, showExampleDemoTitle } = props;
-
+  const { currentDemo, onDemoClicked, exampleTopics } = props;
+  console.log(currentDemo);
   // 菜单栏展开keys
   const [openKeys, setOpenKeys] = useState<string[]>([]);
 
   const menuRef = useRef<Menu | null>(null);
+
   // 初始化点击进来的示例按钮a的dom
   const [aRef, setARef] = useState<HTMLAnchorElement>();
 
   // input 搜索框的value
   const [searchValue, setSearchValue] = useState<string>('');
+
+  const locale = useLocale();
 
 
   // 查找符合条件的数据 从title和 searchValue 可以匹配 就返回 否自返回[]
@@ -94,24 +111,6 @@ export const ExampleSider: React.FC<ExampleSiderProps> = (props) => {
       [],
     );
 
-
-  // 获取最新的 TreeData 数据
-  const getTreeData = () =>
-    searchValue ? findSearchTreeData(treeData) : treeData;
-
-  // 控制 菜单栏展开key 保证二级菜单唯一
-  const onOpenChange = (keys: any[]) => {
-    let newKeys = keys;
-    const diffKey = difference(keys, openKeys)[0];
-    if (diffKey && /^secondaryKey-/.test(diffKey)) {
-      newKeys = [
-        ...newKeys.filter((key) => !/^secondaryKey-/.test(key)),
-        diffKey,
-      ];
-    }
-    setOpenKeys(newKeys);
-  };
-
   // 获取默认展开的keys数组 传入treeData 和 底层的 key  返回符合条件的 keys
   const getDefaultOpenKeys = (data: TreeItem[], key: string): string[] =>
     reduce(
@@ -128,9 +127,9 @@ export const ExampleSider: React.FC<ExampleSiderProps> = (props) => {
 
   // 初始化菜单栏展开keys
   useEffect(() => {
-    const exampleKey = getPath(currentExample);
-    setOpenKeys(getDefaultOpenKeys(getTreeData(), exampleKey));
-  }, [currentExample]);
+    const { targetExample, targetTopic } = currentDemo;
+    setOpenKeys([`TOPIC-${targetTopic?.id}`, `EXAMPLE-${targetExample?.id}`]);
+  }, [currentDemo]);
 
   // 初始化滚动到中间
   useEffect(() => {
@@ -155,92 +154,93 @@ export const ExampleSider: React.FC<ExampleSiderProps> = (props) => {
     );
 
   // 图例按钮 + img + tooltip文本
-  const example = (item: TreeItem) => (
+  const renderExampleDemoCard = (demo: ExamplesPage.Demo) => (
     <Tooltip
       placement='right'
-      title={getSearchValueTitle(item.title || '')}
-      key={item.relativePath}
+      title={getSearchValueTitle(demo.title[locale.id] || '')}
+      key={demo.id}
     >
-      {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
       <a
         ref={(dom) => {
-          if (dom && !aRef && item.value === getPath(currentExample)) {
-            setARef(dom);
-          }
+          // TODO: DEAL WITH ME
+          // if (dom && !aRef && item.value === getPath(currentExample)) {
+          //   setARef(dom);
+          // }
         }}
         className={classNames(styles.card, {
-          [styles.current]:
-          currentExample && item.relativePath === currentExample.relativePath,
+          // TODO: DEAL WITH ME
+          [styles.current]: currentDemo.id === demo.id,
         })}
       >
         <div
           className={classNames(styles.screenshot)}
           style={{
             backgroundImage: `url(${
-              item.screenshot ||
+              demo.screenshot ||
               'https://gw.alipayobjects.com/os/s/prod/antv/assets/image/screenshot-placeholder-b8e70.png'
             })`,
           }}
-          title={item.title || item.relativePath}
-        >
-          {(showExampleDemoTitle || !item.screenshot) && (
-            <div className={classNames(styles.exampleDemoTitle)}>
-              {item.title}
-            </div>
-          )}
-        </div>
+          title={demo.title[locale.id]}
+        />
       </a>
     </Tooltip>
   );
 
-
-  // 导航栏
-  const getMenuSub = (data: TreeItem[]) =>
-    map(data, (item: TreeItem) =>
-      item.children ? (
-        <Menu.SubMenu
-          key={item.value}
-          title={
-            <div>
-              {item.icon && (
-                <MenuIcon
-                  className={styles.menuIcon}
-                  type={`icon-${item.icon}`}
-                />
+  const renderSubMenu = () => {
+    return exampleTopics.map((topic) => {
+      return (
+        <Menu.SubMenu key={`TOPIC-${topic.id}`} title={
+          <div>
+            {topic.icon && (
+              <MenuIcon
+                className={styles.menuIcon}
+                type={`icon-${topic.icon}`}
+              />
+            )}
+            <span
+              className={classNames(
+                styles.menuTitleContent,
+                styles.subMenuTitleContent,
               )}
-              <span
-                className={classNames(
-                  styles.menuTitleContent,
-                  styles.subMenuTitleContent,
-                )}
-              >
-                {item.title && getSearchValueTitle(item.title)}
+            >
+                {topic.title && getSearchValueTitle(topic.title[locale.id])}
               </span>
-            </div>
-          }
-        >
-          {getMenuSub(item.children)}
+          </div>
+        }>
+          {topic.examples.map((example) => {
+            return (
+              <Menu.SubMenu key={`EXAMPLE-${example.id}`} title={example.title[locale.id]}>
+                {example.demos.map((demo) => {
+                  return (
+                    <Menu.Item
+                      key={`DEMO-${demo.id}`}
+                      style={{
+                        height: 70,
+                        padding: 0,
+                        cursor: 'pointer',
+                      }}
+                      onClick={() => {
+                        onDemoClicked({
+                          ...demo,
+                          targetExample: example,
+                          targetTopic: topic,
+                        });
+                      }}
+                    >
+                      <span className={styles.menuTitleContent}>{renderExampleDemoCard(demo)}</span>
+                    </Menu.Item>
+                  );
+                })}
+              </Menu.SubMenu>
+            );
+          })}
         </Menu.SubMenu>
-      ) : (
-        <Menu.Item
-          key={item.value}
-          style={{
-            height: 70,
-            padding: 0,
-            cursor: 'pointer',
-          }}
-          onClick={() => {
-            window.history.replaceState({}, '', `${item.value}`);
-            updateCurrentExample(item as any);
-          }}
-        >
-          <span className={styles.menuTitleContent}>{example(item)}</span>
-        </Menu.Item>
-      ),
-    );
+      );
+    });
+  };
 
   // 搜索栏
-  const searchSider = () => {
+  const renderSearchBar = () => {
     return (
       <div className={styles.searchSider}>
         <Input
@@ -252,8 +252,7 @@ export const ExampleSider: React.FC<ExampleSiderProps> = (props) => {
         />
         <Tooltip placement='right' title={useT('收起所有') as React.ReactNode}>
           <Icon
-            // TODO: 解除注释
-            // component={CollaspeAllSvg}
+            component={CollapseAllSvg}
             className={styles.searchSiderIcon}
             onClick={() => setOpenKeys([])}
           />
@@ -264,20 +263,20 @@ export const ExampleSider: React.FC<ExampleSiderProps> = (props) => {
 
   return (
     <div className={classNames(styles.shadowWrapper)}>
-      {searchSider()}
-      {openKeys && (
-        <Menu
-          ref={menuRef}
-          mode='inline'
-          style={{ width: '100%' }}
-          className={styles.siderbarMenu}
-          openKeys={openKeys}
-          selectedKeys={[getPath(currentExample)]}
-          onOpenChange={onOpenChange}
-        >
-          {getMenuSub(getTreeData())}
-        </Menu>
-      )}
+      {renderSearchBar()}
+      <Menu
+        ref={menuRef}
+        mode='inline'
+        style={{ width: '100%' }}
+        className={styles.siderbarMenu}
+        openKeys={openKeys}
+        selectedKeys={[`DEMO-${currentDemo.id}`]}
+        onOpenChange={(keys) => {
+          setOpenKeys(keys);
+        }}
+      >
+        {renderSubMenu()}
+      </Menu>
     </div>
   );
 };

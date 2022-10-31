@@ -6,9 +6,9 @@ import { Header } from '../../slots/Header';
 import { ExampleSider, PlayGroundItemProps, TreeItem } from '../../slots/ExampleSider';
 import { CodeRunner } from '../../slots/CodeRunner';
 import { ThemeAntVContext } from '../../context';
-import { getAllDemosInCategory, getSortedCategories, getTreeDataByExamplesAndEdges } from '../../slots/utils';
 
 import styles from './index.module.less';
+import { getDemoInfo } from '@/.dumi/theme/slots/CodeRunner/utils';
 
 const { Sider, Content } = Layout;
 
@@ -30,63 +30,26 @@ type ExampleParams = {
 /**
  * 具体单个案例的页面
  */
-const Example: React.FC<{}> = () => {
+const Example: React.FC = () => {
   const { language = 'zh', topic, example } = useParams<ExampleParams>();
-  const demo = location.hash.slice(1);
-  /** 示例页面的元数据信息 */
-  const { meta }: any = useContext(ThemeAntVContext);
-  const { exampleTopics } = meta;
+  console.log(topic, example);
 
+  /** 示例页面的元数据信息 */
+  const metaData: any = useContext(ThemeAntVContext);
   const locale = useLocale();
 
-  const { exampleSections = {}, allDemos = [] } = meta.result.pageContext;
+  const exampleTopics: ExamplesPage.ExampleTopic[] = metaData.meta.exampleTopics;
+  const demo = location.hash.slice(1);
 
-  const { allMarkdownRemark, site } = meta.result.data;
-
-  const {
-    siteMetadata: {
-      playground,
-      showExampleDemoTitle,
-      examples = [],
-    },
-  } = site;
-
-  const { edges = [] } = allMarkdownRemark;
-
-  const [currentExample, updateCurrentExample] =
-    useState<PlayGroundItemProps>();
+  const [currentDemo, setCurrentDemo] = useState<ExamplesPage.Demo>();
 
 
   useEffect(() => {
-    if (currentExample || !examples || !exampleSections?.examples?.length) {
-      return;
+    if (topic && example && demo) {
+      const targetDemoInfo = getDemoInfo(exampleTopics, topic, example, demo);
+      setCurrentDemo(targetDemoInfo);
     }
-
-    let defaultExample = exampleSections.examples[0];
-    const pathName = location.pathname.split('/');
-    const dirname = pathName.slice(2).join('\\/');
-    const fullName = `${pathName.slice(3).join('\\/')}\\/demo\\/${location.hash?.replace('#', '').replace('/', '\\/')}`;
-    const dirnameReg = new RegExp(`.+\\/${dirname}.+`);
-    const fullNameReg = new RegExp(`${fullName}\\.(jsx|tsx|ts|js)$`);
-
-    for (let i = 0; i < allDemos.length; i += 1) {
-      const item = allDemos[i];
-      if (dirnameReg.test(item.absolutePath)) {
-        defaultExample = item;
-
-        if (fullNameReg.test(item.relativePath)) {
-          break;
-        }
-      }
-      if (!location.hash) {
-        break;
-      }
-    }
-    updateCurrentExample(defaultExample);
-  }, [examples]);
-
-  const allDemosInCategory = getAllDemosInCategory(allDemos, locale.id);
-  const sortedCategories = getSortedCategories(allDemosInCategory, locale.id);
+  }, []);
 
   // 提取出来获取 唯一value值的 方法
   const getPath = (item: PlayGroundItemProps) => {
@@ -120,48 +83,6 @@ const Example: React.FC<{}> = () => {
     });
   };
 
-  const getTreeData = () => {
-    const result: TreeItem[] = [];
-    sortedCategories.forEach((category: string) => {
-      const root: TreeItem = {
-        title: category,
-        value: '',
-        children: [],
-      };
-      allDemosInCategory[category].forEach((item: PlayGroundItemProps, index: number) => {
-        const path = getPath(item);
-        if (index === 0) {
-          root.value = `root::${path}`;
-        }
-        const child = {
-          ...item, // 需要里面的 各种数据
-          title:
-            typeof item.title === 'object'
-              ? item.title[locale.id]
-              : item.title || item?.filename,
-          value: path,
-        };
-        root.children.push(child);
-      });
-
-      result.push(root);
-    });
-
-    const newTreeData: TreeItem[] = [];
-    // 扁平化 一级菜单中的数据， 示例有些并不是在第三层， 也有在第二层
-    getTreeDataByExamplesAndEdges(examples, edges, locale.id).forEach((treeItem) => {
-      const slugPieces = treeItem.value?.split('/');
-      if (!slugPieces) return;
-      if (slugPieces.length <= 3) {
-        newTreeData.push(...treeItem.children);
-      } else {
-        newTreeData.push(treeItem);
-      }
-    });
-
-    return transformNode(newTreeData, result);
-  };
-
   return (
     <div className={styles.example}>
       <Header isHomePage={false} />
@@ -174,19 +95,21 @@ const Example: React.FC<{}> = () => {
           className={styles.sider}
           theme='light'
         >
-          { 
-            currentExample &&
-            <ExampleSider
-              showExampleDemoTitle={showExampleDemoTitle}
-              getPath={getPath}
-              currentExample={currentExample}
-              updateCurrentExample={updateCurrentExample}
-              treeData={getTreeData()}
-            />
-          }
+          {currentDemo && <ExampleSider
+            showExampleDemoTitle={true}
+            currentDemo={currentDemo}
+            onDemoClicked={(example) => {
+              const { id: demoId, targetExample, targetTopic } = example;
+              // eg: /zh/examples/case/area/#area1
+              const newURL = `/${locale.id}/examples/${targetTopic?.id}/${targetExample?.id}/#${demoId}`;
+              window.history.replaceState({}, '', newURL);
+              setCurrentDemo(example);
+            }}
+            exampleTopics={exampleTopics}
+          />}
         </Sider>
         <Content className={styles.content}>
-          <CodeRunner exampleTopics={exampleTopics} topic={topic} example={example} demo={demo} />
+          {topic && example && <CodeRunner exampleTopics={exampleTopics} topic={topic} example={example} demo={demo} />}
         </Content>
       </Layout>
     </div>
