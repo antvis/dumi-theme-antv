@@ -1,14 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
+import { useHash } from 'react-use'; 
 import { Layout } from 'antd';
 import { useLocale } from 'dumi';
 import { Header } from '../../slots/Header';
 import { ExampleSider, PlayGroundItemProps, TreeItem } from '../../slots/ExampleSider';
 import { CodeRunner } from '../../slots/CodeRunner';
+import { getDemoInfo } from '../../slots/CodeRunner/utils';
 import { ThemeAntVContext } from '../../context';
 
 import styles from './index.module.less';
-import { getDemoInfo } from '@/.dumi/theme/slots/CodeRunner/utils';
+
 
 const { Sider, Content } = Layout;
 
@@ -31,13 +33,15 @@ type ExampleParams = {
  * 具体单个案例的页面
  */
 const Example: React.FC = () => {
+  const { hash } = useLocation();
+  const nav = useNavigate()
   const { language = 'zh', topic, example } = useParams<ExampleParams>();
   /** 示例页面的元数据信息 */
   const metaData: any = useContext(ThemeAntVContext);
   const locale = useLocale();
 
   const exampleTopics: ExamplesPage.ExampleTopic[] = metaData.meta.exampleTopics;
-  const demo = location.hash.slice(1);
+  const demo = hash.slice(1);
 
   const [currentDemo, setCurrentDemo] = useState<ExamplesPage.Demo>();
 
@@ -47,7 +51,7 @@ const Example: React.FC = () => {
       const targetDemoInfo = getDemoInfo(exampleTopics, topic, example, demo);
       setCurrentDemo(targetDemoInfo);
     }
-  }, []);
+  }, [topic, example, hash]);
 
   // 提取出来获取 唯一value值的 方法
   const getPath = (item: PlayGroundItemProps) => {
@@ -100,8 +104,7 @@ const Example: React.FC = () => {
               const { id: demoId, targetExample, targetTopic } = example;
               // eg: /zh/examples/case/area/#area1
               const newURL = `/${locale.id}/examples/${targetTopic?.id}/${targetExample?.id}/#${demoId}`;
-              window.history.replaceState({}, '', newURL);
-              setCurrentDemo(example);
+              nav(newURL)
             }}
             exampleTopics={exampleTopics}
           />}
