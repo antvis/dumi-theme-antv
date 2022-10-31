@@ -117,8 +117,10 @@ const HeaderComponent: React.FC<HeaderProps> = ({
   ecosystems,
   searchOptions
 }) => {
-  const locale = useLocale();
   const isAntVHome = isAntVSite && isHomePage; // 是否为AntV官网首页
+
+  const locale = useLocale();
+  const nav = useNavigate()
 
   const [lang, setLang] = useState(locale.id)
    
@@ -312,9 +314,8 @@ const HeaderComponent: React.FC<HeaderProps> = ({
                     onLanguageChange(key.toString());
                     return;
                   }
-
                   const newUrl = getLangUrl(window.location.href, key);
-                  location.href = newUrl;
+                  nav(newUrl.replace(window.location.origin, ''))
                 }}
               >
                 <Menu.Item key="en">
