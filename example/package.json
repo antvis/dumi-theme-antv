@@ -1,0 +1,15 @@
+{
+  "version": "0.3.0",
+  "scripts": {
+    "start": "../node_modules/.bin/dumi dev",
+    "build": "dumi build",
+    "preview": "dumi preview"
+  },
+  "dependencies": {
+    "@antv/g2": "^4.2.8"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/antvis/dumi-theme-antv"
+  }
+}
