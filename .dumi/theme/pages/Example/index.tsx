@@ -32,8 +32,6 @@ type ExampleParams = {
  */
 const Example: React.FC = () => {
   const { language = 'zh', topic, example } = useParams<ExampleParams>();
-  console.log(topic, example);
-
   /** 示例页面的元数据信息 */
   const metaData: any = useContext(ThemeAntVContext);
   const locale = useLocale();
