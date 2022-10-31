@@ -2,7 +2,8 @@
   "version": "0.3.0",
   "scripts": {
     "start": "../node_modules/.bin/dumi dev",
-    "build": "dumi build",
+    "build": "../node_modules/.bin/dumi build",
+    "deploy": "gh-pages -d dist",
     "preview": "dumi preview"
   },
   "dependencies": {
@@ -11,5 +12,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/antvis/dumi-theme-antv"
+  },
+  "devDependencies": {
+    "gh-pages": "^4.0.0"
   }
 }
