@@ -1,4 +1,4 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[2643],{86299:function(i,t,n){n.r(t),n.d(t,{default:function(){return r}});var e=n(7715),a=n(62594),o=n(54767);function r(){var l=(0,e.pC)();return(0,o.jsx)(a.w.Provider,{value:{meta:{exampleTopics:[{id:"case",title:{zh:"\u573A\u666F\u6848\u4F8B",en:"Show Case"},icon:"gallery",examples:[{demos:[{id:"area1",screenshot:"https://gw.alipayobjects.com/mdn/rms_f5c722/afts/img/A*QlLyQ6EleE4AAAAAAAAAAABkARQnAQ",source:`import { Chart } from '@antv/g2';
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[2643],{86299:function(i,t,n){n.r(t),n.d(t,{default:function(){return r}});var e=n(62903),a=n(62594),o=n(54767);function r(){var l=(0,e.pC)();return(0,o.jsx)(a.w.Provider,{value:{meta:{exampleTopics:[{id:"case",title:{zh:"\u573A\u666F\u6848\u4F8B",en:"Show Case"},icon:"gallery",examples:[{demos:[{id:"area1",screenshot:"https://gw.alipayobjects.com/mdn/rms_f5c722/afts/img/A*QlLyQ6EleE4AAAAAAAAAAABkARQnAQ",source:`import { Chart } from '@antv/g2';
 
 fetch('https://gw.alipayobjects.com/os/antvdemo/assets/data/fireworks-sales.json')
   .then(res => res.json())
