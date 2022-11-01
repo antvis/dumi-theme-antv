@@ -5,6 +5,10 @@
     "esModuleInterop": true,
     "jsx": "react",
     "skipLibCheck": true,
-    "baseUrl": "./"
-  }
+    "baseUrl": "./",
+    "noImplicitAny": false
+  },
+  "include": [
+    "src/**/*"
+  ]
 }

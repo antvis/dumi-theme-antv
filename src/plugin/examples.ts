@@ -13,23 +13,30 @@ const examplesBaseDir = path.resolve(process.cwd(), 'examples');
  * @author YuZhanglong <loveyzl1123@gmail.com>
  */
 const getExampleDemos = (exampleDir: string) => {
-  const demoMetaJSON = fs.readFileSync(path.resolve(exampleDir, 'demo', 'meta.json')).toString();
+  const demoMetaJSON = fs
+    .readFileSync(path.resolve(exampleDir, 'demo', 'meta.json'))
+    .toString();
   const demoMeta: any[] = JSON.parse(demoMetaJSON).demos;
-  const demos: ExamplesPage.Demo[] = demoMeta.map(item => {
+  const demos: ExamplesPage.Demo[] = demoMeta.map((item) => {
     const { title, screenshot, filename, new: isNew } = item;
-    const id = filename.replace(/\.tsx?$/, '').replace(/\.ts?$/, '').replace(/\.jsx?$/, '').replace(/\.js?$/, '');
+    const id = filename
+      .replace(/\.tsx?$/, '')
+      .replace(/\.ts?$/, '')
+      .replace(/\.jsx?$/, '')
+      .replace(/\.js?$/, '');
     return {
       id,
       screenshot,
-      source: fs.readFileSync(path.resolve(exampleDir, 'demo', filename)).toString(),
+      source: fs
+        .readFileSync(path.resolve(exampleDir, 'demo', filename))
+        .toString(),
       title,
       filename,
-      isNew: !!isNew,
+      isNew: !!isNew
     };
   });
   return demos;
 };
-
 
 /**
  * 获取某个案例主题下面的所有案例
@@ -39,13 +46,17 @@ const getExampleDemos = (exampleDir: string) => {
  * @author YuZhanglong <loveyzl1123@gmail.com>
  */
 const getTopicExamples = (topicPath: string) => {
-  const examplePaths = glob.sync(`${topicPath}/*`).filter(item => {
+  const examplePaths = glob.sync(`${topicPath}/*`).filter((item) => {
     return !item.endsWith('.js');
   });
 
-  return examplePaths.map(item => {
-    const exampleMetaZh = fs.readFileSync(path.resolve(item, 'index.zh.md')).toString();
-    const exampleMetaEn = fs.readFileSync(path.resolve(item, 'index.en.md')).toString();
+  return examplePaths.map((item) => {
+    const exampleMetaZh = fs
+      .readFileSync(path.resolve(item, 'index.zh.md'))
+      .toString();
+    const exampleMetaEn = fs
+      .readFileSync(path.resolve(item, 'index.en.md'))
+      .toString();
     const exampleMetaZhContent: Record<string, any> = fm(exampleMetaZh);
     const exampleMetaEnContent: Record<string, any> = fm(exampleMetaEn);
 
@@ -56,8 +67,9 @@ const getTopicExamples = (topicPath: string) => {
       id: <string>item.split('/').pop(),
       title: {
         en: exampleMetaEnContent.attributes.title,
-        zh: exampleMetaZhContent.attributes.title,
+        zh: exampleMetaZhContent.attributes.title
       },
+      childrenKey: 'demos'
     };
     return example;
   });
@@ -69,20 +81,25 @@ const getTopicExamples = (topicPath: string) => {
  * @returns {ExamplesPage.ExampleTopic[]} 案例主题列表
  * @author YuZhanglong <loveyzl1123@gmail.com>
  */
-export const getExamplesPageTopics = (exampleTopics: ExamplesPage.ExampleTopic[]) => {
-  return exampleTopics.map(({ id, slug, title, icon }: ExamplesPage.ExampleTopic) => {
-    const nid = (id || slug) as string;
-    let examples: ExamplesPage.Example[] = [];
-    try {
-      examples = getTopicExamples(path.join(examplesBaseDir, nid));
-    } catch (e) {
-      console.warn(e);
+export const getExamplesPageTopics = (
+  exampleTopics: ExamplesPage.ExampleTopic[]
+) => {
+  return exampleTopics.map(
+    ({ id, slug, title, icon }: ExamplesPage.ExampleTopic) => {
+      const nid = (id || slug) as string;
+      let examples: ExamplesPage.Example[] = [];
+      try {
+        examples = getTopicExamples(path.join(examplesBaseDir, nid));
+      } catch (e) {
+        console.warn(e);
+      }
+      return {
+        id: nid,
+        title,
+        icon,
+        examples,
+        childrenKey: 'examples'
+      };
     }
-    return {
-      id: nid,
-      title,
-      icon,
-      examples,
-    }
-  });
+  );
 };

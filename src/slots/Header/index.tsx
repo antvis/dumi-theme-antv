@@ -77,7 +77,7 @@ export type HeaderProps = {
     url: string;
   }>;
   /** 头部搜索框配置 */
-  searchOptions?: {                        
+  searchOptions?: {
     docsearchOptions: {
       versionV3: boolean;
       apiKey: string;
@@ -123,7 +123,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
   const nav = useNavigate()
 
   const [lang, setLang] = useState(locale.id)
-   
+
   const [productMenuVisible, setProductMenuVisible] = useState(false);
   let productMenuHovering = false;
   const onProductMouseEnter = (e: React.MouseEvent) => {
@@ -134,7 +134,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
         setProductMenuVisible(true);
       }
     }, 200);
-  };  
+  };
   const onProductMouseLeave = (e: React.MouseEvent) => {
     e.persist();
     productMenuHovering = false;
@@ -375,7 +375,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
         <li className={styles.githubCorner}>
           <a
             href={githubUrl}
-            target="_blank"
+            target="_blank" rel="noreferrer"
           >
             <GithubOutlined />
           </a>

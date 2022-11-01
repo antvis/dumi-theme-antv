@@ -1,10 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
-import { useHash } from 'react-use'; 
 import { Layout } from 'antd';
 import { useLocale } from 'dumi';
 import { Header } from '../../slots/Header';
-import { ExampleSider, PlayGroundItemProps, TreeItem } from '../../slots/ExampleSider';
+import { ExampleSider } from '../../slots/ExampleSider';
 import { CodeRunner } from '../../slots/CodeRunner';
 import { getDemoInfo } from '../../slots/CodeRunner/utils';
 import { ThemeAntVContext } from '../../context';
@@ -23,6 +22,7 @@ type ExampleParams = {
    * Example 的分类
    */
   topic: string;
+
   /**
    * Example 的名称
    */
@@ -35,7 +35,7 @@ type ExampleParams = {
 const Example: React.FC = () => {
   const { hash } = useLocation();
   const nav = useNavigate()
-  const { language = 'zh', topic, example } = useParams<ExampleParams>();
+  const { topic, example } = useParams<ExampleParams>();
   /** 示例页面的元数据信息 */
   const metaData: any = useContext(ThemeAntVContext);
   const locale = useLocale();
@@ -52,38 +52,6 @@ const Example: React.FC = () => {
       setCurrentDemo(targetDemoInfo);
     }
   }, [topic, example, hash]);
-
-  // 提取出来获取 唯一value值的 方法
-  const getPath = (item: PlayGroundItemProps) => {
-    if (!item) {
-      // @todo 怀策
-      // debugger
-    }
-    const demoSlug = item.relativePath?.replace(
-      /\/demo\/(.*)\..*/,
-      (_: string, filename: string) => {
-        return `#${filename}`;
-      },
-    );
-    return `/${locale.id}/examples/${demoSlug}`;
-  };
-
-  // 一级菜单，二级菜单 数据 treeData + 二级菜单，示例 数据 result 写成一个 一级，二级，示例的三层树结构 数据
-  const transformNode = (data: TreeItem[], result: TreeItem[]): TreeItem[] => {
-    return data.map((item) => {
-      if (item.children && !item.node) {
-        return { ...item, children: transformNode(item.children, result) };
-      }
-      const { frontmatter, fields } = item.node;
-      return {
-        ...frontmatter,
-        // 提前给二级菜单的key值加入 特殊值 好辨别
-        value: `secondaryKey-${fields?.slug}`,
-        children: result.find(({ title: k }) => k === frontmatter.title)
-          ?.children,
-      };
-    });
-  };
 
   return (
     <div className={styles.example}>
