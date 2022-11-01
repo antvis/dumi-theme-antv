@@ -2,6 +2,12 @@ import { repository, version } from './package.json';
 
 export default {
   locales: [{ id: 'zh', name: '中文' }, { id: 'en', name: 'English' }],
+  title: 'dumi-theme-antv主题包',                                        // 网站header标题
+  favicons: ['https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*7svFR6wkPMoAAAAAAAAAAAAADmJ7AQ/original'], // 网站 favicon
+  metas: [                                                              // 自定义 meta 标签  
+    { name: 'keywords', content: 'dumi-theme-antv' },
+    { name: 'description', content: '基于 dumi2 的 AntV 官网主题包' },
+  ],
   themeConfig: {
     title: 'dumi-theme-antv', 
     description: '基于 dumi2 的 AntV 官网主题包',
@@ -269,7 +275,6 @@ export default {
       { name: '菜鸟', img: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*TgV-RZDODJIAAAAAAAAAAABkARQnAQ', },
     ],
   },
-  
   mfsu: false,
   links: [
   ],
