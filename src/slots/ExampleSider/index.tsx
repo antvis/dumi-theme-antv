@@ -1,6 +1,5 @@
-import React from 'react';
-import { Input, Menu, Tooltip } from 'antd';
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
+import { Input, Menu, Tooltip } from 'antd';
 import { useLocale } from 'dumi';
 import { createFromIconfontCN, SearchOutlined, VerticalAlignTopOutlined } from '@ant-design/icons';
 import classNames from 'classnames';

@@ -17,7 +17,7 @@ const getExampleDemos = (exampleDir: string) => {
   const demoMeta: any[] = JSON.parse(demoMetaJSON).demos;
   const demos: ExamplesPage.Demo[] = demoMeta.map(item => {
     const { title, screenshot, filename, new: isNew } = item;
-    const id = filename.replace(/\.tsx?$/, '');
+    const id = filename.replace(/\.tsx?$/, '').replace(/\.ts?$/, '').replace(/\.jsx?$/, '').replace(/\.js?$/, '');
     return {
       id,
       screenshot,
