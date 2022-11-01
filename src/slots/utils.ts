@@ -56,36 +56,28 @@ export const filterTreeNode = (
   keyValue: string,
   locale: string,
 ) => {
-  const isTreeNodeMatched = treeNode.title[locale]
+  console.log(treeNode);
+  if (treeNode.childrenKey && Array.isArray(treeNode[treeNode.childrenKey])) {
+    const children = treeNode[treeNode.childrenKey] as ExamplesPage.TreeNode[];
+    const filteredChildren = children.filter((child) => {
+      const c = filterTreeNode(child, keyValue, locale);
+      return c !== null;
+    });
+
+    if (filteredChildren.length > 0) {
+      treeNode[treeNode.childrenKey] = [...filteredChildren];
+      return treeNode;
+    }
+  }
+
+  const isCurrentTreeNodeMatched = treeNode.title[locale]
     .toLowerCase()
     .includes(keyValue.toLowerCase());
 
   // 当前节点自身匹配，那么其孩子直接匹配，可以直接返回当前节点
-  if (isTreeNodeMatched) {
+  if (isCurrentTreeNodeMatched) {
     return treeNode;
   }
 
-  // 尝试匹配孩子节点
-  if (!treeNode.childrenKey || !Array.isArray(treeNode[treeNode.childrenKey])) {
-    // 没有孩子，返回 null
-    return null;
-  } else {
-    const filteredChildren = (
-      treeNode[treeNode.childrenKey] as ExamplesPage.TreeNode[]
-    ).filter((node) => {
-      const filteredChild = filterTreeNode(node, keyValue, locale);
-      return filteredChild !== null;
-    });
-
-    if (filteredChildren.length > 0) {
-      return {
-        ...treeNode,
-        [treeNode.childrenKey]: filteredChildren,
-      };
-    }
-
-    return null;
-  }
-
-
+  return null;
 };
