@@ -22,14 +22,14 @@ export type NavProps = {
 
 const getDocument = (navs: INav[], slug = '') =>
   navs.find(doc => doc.slug === slug) || {
-    title: {} as { [key: string]: string },
+    title: {} as { [key: string]: string }
   };
 
 /**
  * Header 中的导航菜单
  */
 export const Navs: React.FC<NavProps> = ({ navs, path }) => {
-  const locale = useLocale()
+  const locale = useLocale();
   return (
     <>
       {navs.map((nav: INav) => {
@@ -38,20 +38,20 @@ export const Navs: React.FC<NavProps> = ({ navs, path }) => {
           : `/${nav.slug}`;
         const title = getDocument(navs, nav.slug).title[locale.id];
         if (window.location.pathname.includes('en')) {
-          href=`/en${href}`
+          href = `/en${href}`;
         }
         const className = cx('header-menu-item-active', {
           [styles.activeItem]:
-            path.startsWith(href) ||
-            isEqual(
-              path.split('/').slice(0, 4),
-              href.split('/').slice(0, 4),
-            ),
+          path.startsWith(href) ||
+          isEqual(
+            path.split('/').slice(0, 4),
+            href.split('/').slice(0, 4)
+          )
         });
         return (
           <li key={title} className={className}>
             {nav.target === '_blank' || href.startsWith('http') ? (
-              <a href={href} target="_blank">
+              <a href={href} target='_blank' rel='noreferrer'>
                 {title}
                 <LinkOutlined />
               </a>
@@ -62,5 +62,5 @@ export const Navs: React.FC<NavProps> = ({ navs, path }) => {
         );
       })}
     </>
-  )
+  );
 };

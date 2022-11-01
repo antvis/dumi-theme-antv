@@ -1,9 +1,9 @@
-import * as glob from "glob";
-import * as path from "path";
-import * as fs from "fs-extra";
-import fm from "front-matter";
+import * as glob from 'glob';
+import * as path from 'path';
+import * as fs from 'fs-extra';
+import fm from 'front-matter';
 
-const examplesBaseDir = path.resolve(process.cwd(), "examples");
+const examplesBaseDir = path.resolve(process.cwd(), 'examples');
 
 /**
  * 获取某个案例下所有的 DEMO
@@ -14,25 +14,25 @@ const examplesBaseDir = path.resolve(process.cwd(), "examples");
  */
 const getExampleDemos = (exampleDir: string) => {
   const demoMetaJSON = fs
-    .readFileSync(path.resolve(exampleDir, "demo", "meta.json"))
+    .readFileSync(path.resolve(exampleDir, 'demo', 'meta.json'))
     .toString();
   const demoMeta: any[] = JSON.parse(demoMetaJSON).demos;
   const demos: ExamplesPage.Demo[] = demoMeta.map((item) => {
     const { title, screenshot, filename, new: isNew } = item;
     const id = filename
-      .replace(/\.tsx?$/, "")
-      .replace(/\.ts?$/, "")
-      .replace(/\.jsx?$/, "")
-      .replace(/\.js?$/, "");
+      .replace(/\.tsx?$/, '')
+      .replace(/\.ts?$/, '')
+      .replace(/\.jsx?$/, '')
+      .replace(/\.js?$/, '');
     return {
       id,
       screenshot,
       source: fs
-        .readFileSync(path.resolve(exampleDir, "demo", filename))
+        .readFileSync(path.resolve(exampleDir, 'demo', filename))
         .toString(),
       title,
       filename,
-      isNew: !!isNew,
+      isNew: !!isNew
     };
   });
   return demos;
@@ -47,15 +47,15 @@ const getExampleDemos = (exampleDir: string) => {
  */
 const getTopicExamples = (topicPath: string) => {
   const examplePaths = glob.sync(`${topicPath}/*`).filter((item) => {
-    return !item.endsWith(".js");
+    return !item.endsWith('.js');
   });
 
   return examplePaths.map((item) => {
     const exampleMetaZh = fs
-      .readFileSync(path.resolve(item, "index.zh.md"))
+      .readFileSync(path.resolve(item, 'index.zh.md'))
       .toString();
     const exampleMetaEn = fs
-      .readFileSync(path.resolve(item, "index.en.md"))
+      .readFileSync(path.resolve(item, 'index.en.md'))
       .toString();
     const exampleMetaZhContent: Record<string, any> = fm(exampleMetaZh);
     const exampleMetaEnContent: Record<string, any> = fm(exampleMetaEn);
@@ -63,13 +63,13 @@ const getTopicExamples = (topicPath: string) => {
     const example: ExamplesPage.Example = {
       demos: getExampleDemos(item),
       // 二级暂时无须 ICON，保留
-      icon: "",
-      id: <string>item.split("/").pop(),
+      icon: '',
+      id: <string>item.split('/').pop(),
       title: {
         en: exampleMetaEnContent.attributes.title,
-        zh: exampleMetaZhContent.attributes.title,
+        zh: exampleMetaZhContent.attributes.title
       },
-      childrenKey: "demos",
+      childrenKey: 'demos'
     };
     return example;
   });
@@ -98,7 +98,7 @@ export const getExamplesPageTopics = (
         title,
         icon,
         examples,
-        childrenKey,
+        childrenKey
       };
     }
   );
