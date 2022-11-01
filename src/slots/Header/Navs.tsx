@@ -37,6 +37,9 @@ export const Navs: React.FC<NavProps> = ({ navs, path }) => {
           ? nav.slug
           : `/${nav.slug}`;
         const title = getDocument(navs, nav.slug).title[locale.id];
+        href = nav.slug.startsWith('/')
+          ? nav.slug
+          : `/${nav.slug}`;
         if (window.location.pathname.includes('en')) {
           href=`/en${href}`
         }

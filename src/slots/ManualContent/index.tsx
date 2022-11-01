@@ -75,6 +75,9 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
   
   function getBaseRoute() {
     let matchRoute = window.location.pathname
+    // 兼容带有docs的route
+    matchRoute = matchRoute.replace('/docs', '')
+    // 查找 baseRoute
     const reg = window.location.pathname.startsWith('/en') ? /(\/[A-z]*\/?\/[A-z]*)\/?/ : /(\/[A-z]*)\/?/
     const mainRoute = matchRoute.match(reg)
     return mainRoute![1]
@@ -114,15 +117,17 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
         delete item.children
       }
     }
-  
+    
     if (hrefId == baseRoute) {
       sidebar[baseRoute] && sidebar[baseRoute][0].children?.forEach(itemChild => {
+        const key = itemChild.link!
         const label = itemChild.title as unknown as string
         list.push({
           ...itemChild,
           label,
-          key: itemChild.link!
+          key
         })
+        linkoTitle[key] = label
       })
       list.sort((a, b) => {
         return a.order - b.order;
@@ -131,7 +136,7 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
     }
   }
     
-  // 获取最终的MenuData
+  // 获取最终的 MenuData
   const renderSidebar = fullSidebarDataToMenuData(docs, baseRoute, [])
 
   //  获取默认打开的菜单栏
@@ -146,7 +151,8 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
     return defaultOpenKeys
   }
   const defaultOpenKeys: string[] = getDefaultOpenKeys(renderSidebar!)
-
+  const indexRoute = defaultOpenKeys[defaultOpenKeys.length - 1]
+  
   // 点击菜单栏
   const onClick = (e: any) => {
     navigate(e.key)
@@ -157,10 +163,11 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
   const [prev, setPrev] = useState<PreAndNext | undefined>(undefined)
   const [next, setNext] = useState<PreAndNext | undefined>(undefined)
  
-  // 监听路由去改变selected menu-item
+  // 监听路由去改变 selected menu-item
   useEffect(() => {
-    if (window.location.pathname == baseRoute) {
-      navigate(renderSidebar![0].key)
+    // 兜底 如果 nav 指定有误则重定向到 indexDocRoute
+    if (window.location.pathname!==indexRoute) {
+      navigate(indexRoute)
       return
     }
     setDefaultSelectedKey([window.location.pathname])

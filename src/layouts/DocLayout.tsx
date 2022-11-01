@@ -26,7 +26,7 @@ export default () => {
   if (
     p.startsWith('/api') || p.startsWith('/en/api') ||
     // 这两个是兼容之前的
-    p.startsWith('/zh/docs/api') || p.startsWith('/en/docs/api') 
+    p.startsWith('/docs/api') || p.startsWith('/en/docs/api') 
   ) {
     return <API> {outlet} </API>
   }
@@ -35,7 +35,7 @@ export default () => {
   if (
     p.startsWith('/manual') || p.startsWith('/en/manual') ||
     // 这两个是兼容之前的
-    p.startsWith('/zh/docs/manual/') || p.startsWith('/en/docs/manual/')
+    p.startsWith('/docs/manual') || p.startsWith('/en/docs/manual')
   ) {
     return <Manual> {outlet} </Manual>;
   }
