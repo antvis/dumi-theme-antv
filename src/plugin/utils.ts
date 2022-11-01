@@ -14,7 +14,10 @@ export function myResolve(p: string, alternateExts: string[] = ['.js']): string 
     const fullpath = `${pathname}${ext}`;
     
     // 找到一个，则终止
-    if (fs.existsSync(require.resolve(fullpath))) return require.resolve(fullpath);
+    // 如果文件不存在，则会 throw error
+    try {
+      return require.resolve(fullpath);
+    } catch (e) {}
   }
 
   // 找不到，返回空
