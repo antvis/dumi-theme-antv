@@ -58,6 +58,7 @@ const getTopicExamples = (topicPath: string) => {
         en: exampleMetaEnContent.attributes.title,
         zh: exampleMetaZhContent.attributes.title,
       },
+      childrenKey: 'demos',
     };
     return example;
   });

@@ -24,12 +24,16 @@ declare module '\*.svg' {
 }
 
 declare namespace ExamplesPage {
-  /** 案例 DEMO */
-  export interface Demo {
+  export interface TreeNode {
     /**
      * id
      */
     id: string;
+
+    /**
+     * 孩子节点 key
+     */
+    childrenKey?: string;
 
     /**
      * 标题（支持国际化）
@@ -39,6 +43,11 @@ declare namespace ExamplesPage {
       en: string;
     };
 
+    [key: string]: any;
+  }
+
+  /** 案例 DEMO */
+  export interface Demo extends TreeNode {
     /**
      * 截图
      */
@@ -76,20 +85,7 @@ declare namespace ExamplesPage {
   }
 
   /** 示例 */
-  export interface Example {
-    /**
-     * id
-     */
-    id: string;
-
-    /**
-     * 标题（支持国际化）
-     */
-    title: {
-      zh: string;
-      en: string;
-    };
-
+  export interface Example extends TreeNode {
     /**
      * 图标
      */
@@ -102,27 +98,16 @@ declare namespace ExamplesPage {
   }
 
   /** 案例主题 */
-  export interface ExampleTopic {
-    /**
-     * id 和文件夹目录名保持一致
-     */
-    id: string;
-    /**
-     * slug 和 id 一样，兼容旧配置
-     */
-    slug?: string;
-    /**
-     * 标题
-     */
-    title: {
-      zh: string;
-      en: string;
-    };
-
+  export interface ExampleTopic extends TreeNode {
     /**
      * 图标
      */
     icon: string;
+
+    /**
+     * slug 和 id 一样，兼容旧配置
+     */
+    slug?: string;
 
     /**
      * 所有案例

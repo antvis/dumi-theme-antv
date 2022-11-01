@@ -36,7 +36,11 @@ export const getChinaMirrorHost = (host?: string): string => {
   return hostString;
 };
 
-export function getGithubSourceURL(githubUrl: string, relativePath: string, prefix: string = 'examples'): string {
+export function getGithubSourceURL(
+  githubUrl: string,
+  relativePath: string,
+  prefix: string = 'examples',
+): string {
   // https://github.com/antvis/x6/tree/master/packages/x6-sites
   if (githubUrl.includes('/tree/master/')) {
     return `${githubUrl.replace(
@@ -46,3 +50,42 @@ export function getGithubSourceURL(githubUrl: string, relativePath: string, pref
   }
   return `${githubUrl}/edit/master/${prefix}/${relativePath}`;
 }
+
+export const filterTreeNode = (
+  treeNode: ExamplesPage.TreeNode,
+  keyValue: string,
+  locale: string,
+) => {
+  const isTreeNodeMatched = treeNode.title[locale]
+    .toLowerCase()
+    .includes(keyValue.toLowerCase());
+
+  // 当前节点自身匹配，那么其孩子直接匹配，可以直接返回当前节点
+  if (isTreeNodeMatched) {
+    return treeNode;
+  }
+
+  // 尝试匹配孩子节点
+  if (!treeNode.childrenKey || !Array.isArray(treeNode[treeNode.childrenKey])) {
+    // 没有孩子，返回 null
+    return null;
+  } else {
+    const filteredChildren = (
+      treeNode[treeNode.childrenKey] as ExamplesPage.TreeNode[]
+    ).filter((node) => {
+      const filteredChild = filterTreeNode(node, keyValue, locale);
+      return filteredChild !== null;
+    });
+
+    if (filteredChildren.length > 0) {
+      return {
+        ...treeNode,
+        [treeNode.childrenKey]: filteredChildren,
+      };
+    }
+
+    return null;
+  }
+
+
+};

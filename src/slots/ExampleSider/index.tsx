@@ -1,11 +1,15 @@
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import { Input, Menu, Tooltip } from 'antd';
 import { useLocale } from 'dumi';
-import { createFromIconfontCN, SearchOutlined, VerticalAlignTopOutlined } from '@ant-design/icons';
+import {
+  createFromIconfontCN,
+  SearchOutlined,
+  VerticalAlignTopOutlined,
+} from '@ant-design/icons';
 import classNames from 'classnames';
-import { reduce, size } from 'lodash-es';
 import { useT } from '../hooks';
 import styles from './index.module.less';
+import { filterTreeNode } from '../utils';
 
 // menu icon
 const MenuIcon = createFromIconfontCN({
@@ -28,10 +32,8 @@ export interface ExampleSiderProps {
    */
   exampleTopics: ExamplesPage.ExampleTopic[];
 
-
   showExampleDemoTitle: boolean;
 }
-
 
 /**
  * DEMO 预览页面的菜单
@@ -51,6 +53,23 @@ export const ExampleSider: React.FC<ExampleSiderProps> = (props) => {
 
   const locale = useLocale();
 
+  const getCurrentTopics = () => {
+    if (searchValue) {
+      const res = filterTreeNode({
+        id: 'FAKE_ID',
+        childrenKey: 'exampleTopics',
+        title: {
+          'zh': 'FAKE_TITLE',
+          'en': 'FAKE_TITLE',
+        },
+        exampleTopics: exampleTopics,
+      }, searchValue, locale.id);
+      return res?.exampleTopics || [];
+    }
+    return exampleTopics;
+  };
+
+  console.log(getCurrentTopics());
 
   // 初始化菜单栏展开keys
   useEffect(() => {
@@ -95,7 +114,6 @@ export const ExampleSider: React.FC<ExampleSiderProps> = (props) => {
           // }
         }}
         className={classNames(styles.card, {
-          // TODO: DEAL WITH ME
           [styles.current]: currentDemo.id === demo.id,
         })}
       >
@@ -114,29 +132,35 @@ export const ExampleSider: React.FC<ExampleSiderProps> = (props) => {
   );
 
   const renderSubMenu = () => {
-    return exampleTopics.map((topic) => {
+    return getCurrentTopics().map((topic) => {
       return (
-        <Menu.SubMenu key={`TOPIC-${topic.id}`} title={
-          <div>
-            {topic.icon && (
-              <MenuIcon
-                className={styles.menuIcon}
-                type={`icon-${topic.icon}`}
-              />
-            )}
-            <span
-              className={classNames(
-                styles.menuTitleContent,
-                styles.subMenuTitleContent,
+        <Menu.SubMenu
+          key={`TOPIC-${topic.id}`}
+          title={
+            <div>
+              {topic.icon && (
+                <MenuIcon
+                  className={styles.menuIcon}
+                  type={`icon-${topic.icon}`}
+                />
               )}
-            >
+              <span
+                className={classNames(
+                  styles.menuTitleContent,
+                  styles.subMenuTitleContent,
+                )}
+              >
                 {topic.title && getSearchValueTitle(topic.title[locale.id])}
               </span>
-          </div>
-        }>
+            </div>
+          }
+        >
           {topic.examples.map((example) => {
             return (
-              <Menu.SubMenu key={`EXAMPLE-${example.id}`} title={example.title[locale.id]}>
+              <Menu.SubMenu
+                key={`EXAMPLE-${example.id}`}
+                title={example.title[locale.id]}
+              >
                 {example.demos.map((demo) => {
                   return (
                     <Menu.Item
@@ -154,7 +178,9 @@ export const ExampleSider: React.FC<ExampleSiderProps> = (props) => {
                         });
                       }}
                     >
-                      <span className={styles.menuTitleContent}>{renderExampleDemoCard(demo)}</span>
+                      <span className={styles.menuTitleContent}>
+                        {renderExampleDemoCard(demo)}
+                      </span>
                     </Menu.Item>
                   );
                 })}
