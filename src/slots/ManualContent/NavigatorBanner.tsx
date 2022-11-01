@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { history } from 'umi';
+import { history } from 'dumi';
 import styles from './NavigatorBanner.module.less';
 import { useScrollToTop, useT } from '../hooks';
 

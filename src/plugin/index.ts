@@ -9,32 +9,34 @@ function generateMetaJSON() {
 }
 
 export default (api: IApi) => {
+  api.describe({ key: `dumi-theme:${require('../../package.json').name}` });
+
   const pages = [
     // Examples gallery page.
     {
       id: 'dumi-theme-antv-example-list-zh',
       path: '/examples/',
-      file: require.resolve('./.dumi/theme/pages/Examples/index.tsx'),
+      file: require.resolve('../pages/Examples/index.tsx'),
     },
     {
       id: 'dumi-theme-antv-example-list-lang',
       path: '/:language/examples/',
-      file: require.resolve('./.dumi/theme/pages/Examples/index.tsx'),
+      file: require.resolve('../pages/Examples/index.tsx'),
     },
     // single example preview page.
     {
       id: 'dumi-theme-antv-single-example-zh',
       path: '/examples/:topic/:example',
-      file: require.resolve('./.dumi/theme/pages/Example/index.tsx'),
+      file: require.resolve('../pages/Example/index.tsx'),
     },
     {
       id: 'dumi-theme-antv-single-example-lang',
       path: '/:language/examples/:topic/:example',
-      file: require.resolve('./.dumi/theme/pages/Example/index.tsx'),
+      file: require.resolve('../pages/Example/index.tsx'),
     },
   ];
   // FIXME: wrap winPath for windows when dumi exported
-  const contextFilePath = require.resolve('./.dumi/theme/context.ts');
+  const contextFilePath = require.resolve('../context.ts');
 
   api.onGenerateFiles(() => {
     // write context provider when generate tmp file
@@ -81,7 +83,7 @@ export default function ThemeAntVContextWrapper() {
     });
 
     // replace default 404
-    routes['404'].file = require.resolve('./.dumi/theme/pages/404.tsx');
+    routes['404'].file = require.resolve('../pages/404.tsx');
 
     return routes;
   });

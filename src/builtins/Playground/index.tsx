@@ -31,7 +31,7 @@ const Playground: React.FC<PlaygroundProps> = ({ rid, path, ratio = 0.62, height
   const { meta }: any = useContext(ThemeAntVContext);
   const { exampleTopics } = meta;
   // '/case/area/demo/area5.ts'
-  const [_, topic, example, demo] = path.match(/\/([\w-]+)\/([\w-]+)\/demo\/([\w-]+)/i);
+  const [_, topic, example, demo] = path.match(/\/([\w-]+)\/([\w-]+)\/demo\/([\w-]+)/i) as string[];
 
   return (
     <div className={styles.container} style={{ height }}>

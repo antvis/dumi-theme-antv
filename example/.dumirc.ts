@@ -1,6 +1,7 @@
+import { defineConfig } from 'dumi';
 import { repository, version } from './package.json';
 
-export default {
+export default defineConfig({
   locales: [{ id: 'zh', name: '中文' }, { id: 'en', name: 'English' }],
   title: 'dumi-theme-antv主题包',                                        // 网站header标题
   favicons: ['https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*7svFR6wkPMoAAAAAAAAAAAAADmJ7AQ/original'], // 网站 favicon
@@ -276,8 +277,10 @@ export default {
     ],
   },
   mfsu: false,
+  // tnpm 安装的目录会导致 webpack 缓存快照 OOM，暂时禁用
+  chainWebpack(memo) { memo.delete('cache'); return memo },
   links: [
   ],
   scripts: [
   ],
-}
+});
