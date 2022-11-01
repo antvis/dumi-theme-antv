@@ -104,10 +104,13 @@ declare namespace ExamplesPage {
   /** 案例主题 */
   export interface ExampleTopic {
     /**
-     * id
+     * id 和文件夹目录名保持一致
      */
     id: string;
-
+    /**
+     * slug 和 id 一样，兼容旧配置
+     */
+    slug?: string;
     /**
      * 标题
      */

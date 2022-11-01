@@ -1,12 +1,6 @@
 import type { IApi } from 'dumi';
 import { getExamplesPageTopics } from './examples';
-
-function generateMetaJSON() {
-  const res = getExamplesPageTopics();
-  return {
-    exampleTopics: res,
-  };
-}
+import { myResolve } from './utils';
 
 export default (api: IApi) => {
   api.describe({ key: `dumi-theme:${require('../../package.json').name}` });
@@ -16,27 +10,27 @@ export default (api: IApi) => {
     {
       id: 'dumi-theme-antv-example-list-zh',
       path: '/examples/',
-      file: require.resolve('../pages/Examples/index.tsx'),
+      file: myResolve('../pages/Examples/index.tsx'),
     },
     {
       id: 'dumi-theme-antv-example-list-lang',
       path: '/:language/examples/',
-      file: require.resolve('../pages/Examples/index.tsx'),
+      file: myResolve('../pages/Examples/index.tsx'),
     },
     // single example preview page.
     {
       id: 'dumi-theme-antv-single-example-zh',
       path: '/examples/:topic/:example',
-      file: require.resolve('../pages/Example/index.tsx'),
+      file: myResolve('../pages/Example/index.tsx'),
     },
     {
       id: 'dumi-theme-antv-single-example-lang',
       path: '/:language/examples/:topic/:example',
-      file: require.resolve('../pages/Example/index.tsx'),
+      file: myResolve('../pages/Example/index.tsx'),
     },
   ];
   // FIXME: wrap winPath for windows when dumi exported
-  const contextFilePath = require.resolve('../context.ts');
+  const contextFilePath = myResolve('../context.ts');
 
   api.onGenerateFiles(() => {
     // write context provider when generate tmp file
@@ -44,16 +38,21 @@ export default (api: IApi) => {
       noPluginDir: true,
       path: 'theme-antv/ContextWrapper.tsx',
       content: `
-import { useOutlet } from 'dumi';
+import React from 'react';
+import { useOutlet, useSiteData } from 'dumi';
 import { ThemeAntVContext } from '${contextFilePath}';
 
 export default function ThemeAntVContextWrapper() {
   const outlet = useOutlet();
+  // const { themeConfig } = useSiteData();
+  // const exampleTopics = themeConfig?.examples || [];
 
   return (
     <ThemeAntVContext.Provider
       value={{
-        meta: ${JSON.stringify(generateMetaJSON())}
+        meta: ${JSON.stringify({
+          exampleTopics: getExamplesPageTopics(api.config.themeConfig.examples || []),
+        })}
       }}
     >
       {outlet}
@@ -83,7 +82,7 @@ export default function ThemeAntVContextWrapper() {
     });
 
     // replace default 404
-    routes['404'].file = require.resolve('../pages/404.tsx');
+    routes['404'].file = myResolve('../pages/404.tsx');
 
     return routes;
   });

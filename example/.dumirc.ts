@@ -123,13 +123,13 @@ export default defineConfig({
     ],
     examples: [
       {
-        slug: 'gallery',
-        icon: 'gallery',
+        id: 'case',
         title: {
-          zh: '技术栈官网',
-          en: 'Sites',
+          zh: '场景案例',
+          en: 'Show Case',
         },
-      },
+        icon: 'gallery',
+      }
     ],
     playground: {
       devDependencies: {
