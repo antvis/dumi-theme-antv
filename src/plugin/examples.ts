@@ -69,15 +69,20 @@ const getTopicExamples = (topicPath: string) => {
  * @returns {ExamplesPage.ExampleTopic[]} 案例主题列表
  * @author YuZhanglong <loveyzl1123@gmail.com>
  */
-export const getExamplesPageTopics = () => {
-  // 最外层目录
-  const exampleTopicPaths = glob.sync(`${examplesBaseDir}/*`);
-  return exampleTopicPaths
-    .map((topicPath) => {
-      const topicMetaPath = path.resolve(topicPath, 'meta.js');
-      const topicMeta: ExamplesPage.ExampleTopic = require(topicMetaPath);
-      // 追加所有的 examples
-      topicMeta.examples = getTopicExamples(topicPath);
-      return topicMeta;
-    });
+export const getExamplesPageTopics = (exampleTopics: ExamplesPage.ExampleTopic[]) => {
+  return exampleTopics.map(({ id, slug, title, icon }: ExamplesPage.ExampleTopic) => {
+    const nid = (id || slug) as string;
+    let examples: ExamplesPage.Example[] = [];
+    try {
+      examples = getTopicExamples(path.join(examplesBaseDir, nid));
+    } catch (e) {
+      console.warn(e);
+    }
+    return {
+      id: nid,
+      title,
+      icon,
+      examples,
+    }
+  });
 };

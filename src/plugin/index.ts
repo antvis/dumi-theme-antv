@@ -2,13 +2,6 @@ import type { IApi } from 'dumi';
 import { getExamplesPageTopics } from './examples';
 import { myResolve } from './utils';
 
-function generateMetaJSON() {
-  const res = getExamplesPageTopics();
-  return {
-    exampleTopics: res,
-  };
-}
-
 export default (api: IApi) => {
   api.describe({ key: `dumi-theme:${require('../../package.json').name}` });
 
@@ -46,16 +39,20 @@ export default (api: IApi) => {
       path: 'theme-antv/ContextWrapper.tsx',
       content: `
 import React from 'react';
-import { useOutlet } from 'dumi';
+import { useOutlet, useSiteData } from 'dumi';
 import { ThemeAntVContext } from '${contextFilePath}';
 
 export default function ThemeAntVContextWrapper() {
   const outlet = useOutlet();
+  // const { themeConfig } = useSiteData();
+  // const exampleTopics = themeConfig?.examples || [];
 
   return (
     <ThemeAntVContext.Provider
       value={{
-        meta: ${JSON.stringify(generateMetaJSON())}
+        meta: ${JSON.stringify({
+          exampleTopics: getExamplesPageTopics(api.config.themeConfig.examples || []),
+        })}
       }}
     >
       {outlet}
