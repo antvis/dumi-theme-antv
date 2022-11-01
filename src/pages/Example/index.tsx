@@ -65,7 +65,7 @@ const Example: React.FC = () => {
           trigger={null}
           collapsible
           collapsed={isCollapsed}
-          className={styles.sider}
+          className={styles.menuSider}
           theme="light"
         >
           {currentDemo && (

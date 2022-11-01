@@ -16,13 +16,6 @@
     flex: 1;
     background-color: #fff;
 
-    .sider {
-      height: 100%;
-
-      .exampleList {
-      }
-    }
-
     .content {
       position: relative;
       height: 100%;
@@ -33,6 +26,22 @@
 
       .right {
         height: 100%;
+      }
+    }
+  }
+}
+
+.menuSider {
+  background-color: #f8f9fc;
+  border-right: 1px solid #ececec;
+
+  :global {
+    .ant-layout-sider-children {
+      overflow-y: hidden;
+      overflow-x: hidden;
+
+      &:hover {
+        overflow-y: auto;
       }
     }
   }
