@@ -5,6 +5,13 @@ import { myResolve } from './utils';
 export default (api: IApi) => {
   api.describe({ key: `dumi-theme:${require('../../package.json').name}` });
 
+  // use passive mode for code blocks of markdown, to avoid dumi compile theme as react component
+  api.modifyDefaultConfig((memo) => {
+    memo.resolve.codeBlockMode = 'passive';
+
+    return memo;
+  });
+
   const pages = [
     // Examples gallery page.
     {
