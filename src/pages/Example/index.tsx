@@ -22,6 +22,7 @@ type ExampleParams = {
    * Example 的分类
    */
   topic: string;
+
   /**
    * Example 的名称
    */
@@ -34,7 +35,7 @@ type ExampleParams = {
 const Example: React.FC = () => {
   const { hash } = useLocation();
   const nav = useNavigate()
-  const { language = 'zh', topic, example } = useParams<ExampleParams>();
+  const { topic, example } = useParams<ExampleParams>();
   /** 示例页面的元数据信息 */
   const metaData: any = useContext(ThemeAntVContext);
   const locale = useLocale();

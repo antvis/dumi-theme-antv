@@ -85,7 +85,7 @@ export const getExamplesPageTopics = (
   exampleTopics: ExamplesPage.ExampleTopic[]
 ) => {
   return exampleTopics.map(
-    ({ id, slug, title, icon, childrenKey }: ExamplesPage.ExampleTopic) => {
+    ({ id, slug, title, icon }: ExamplesPage.ExampleTopic) => {
       const nid = (id || slug) as string;
       let examples: ExamplesPage.Example[] = [];
       try {
@@ -98,7 +98,7 @@ export const getExamplesPageTopics = (
         title,
         icon,
         examples,
-        childrenKey
+        childrenKey: 'examples'
       };
     }
   );

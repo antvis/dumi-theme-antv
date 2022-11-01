@@ -56,7 +56,6 @@ export const filterTreeNode = (
   keyValue: string,
   locale: string,
 ) => {
-  console.log(treeNode);
   if (treeNode.childrenKey && Array.isArray(treeNode[treeNode.childrenKey])) {
     const children = treeNode[treeNode.childrenKey] as ExamplesPage.TreeNode[];
     const filteredChildren = children.filter((child) => {
