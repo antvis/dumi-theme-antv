@@ -16,17 +16,15 @@ export default () => {
   const { pathname } = useLocation();
   const p = pathname.toLowerCase();
 
-  // @todo 南洋
-  // 做一些跳转，比如：/zh/examples/xxx -> /examples/xxx
-
   // 首页
-  if (p === '/' || p === '/en' || p === '/en/') return <Index />;
+  if (p === '/' || p === '/zh'|| p === '/en' || p === '/en/') return <Index />;
 
   // API 页面
   if (
     p.startsWith('/api') || p.startsWith('/en/api') ||
-    // 这两个是兼容之前的
-    p.startsWith('/docs/api') || p.startsWith('/en/docs/api') 
+    // 这四个是兼容之前的
+    p.startsWith('/zh/api') || p.startsWith('/en/api') ||
+    p.startsWith('/zh/docs/api') || p.startsWith('/en/docs/api')
   ) {
     return <API> {outlet} </API>
   }
@@ -34,8 +32,9 @@ export default () => {
   // 教程页面
   if (
     p.startsWith('/manual') || p.startsWith('/en/manual') ||
-    // 这两个是兼容之前的
-    p.startsWith('/docs/manual') || p.startsWith('/en/docs/manual')
+    // 这四个是兼容之前的
+    p.startsWith('/zh/manual') || p.startsWith('/en/manual') ||
+    p.startsWith('/zh/docs/manual/') || p.startsWith('/en/docs/manual/')
   ) {
     return <Manual> {outlet} </Manual>;
   }

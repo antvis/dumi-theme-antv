@@ -75,6 +75,8 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
   
   function getBaseRoute() {
     let matchRoute = window.location.pathname
+    // 兼容 zh
+    matchRoute = matchRoute.replace('/zh/', '/')
     // 兼容带有docs的route
     matchRoute = matchRoute.replace('/docs', '')
     // 查找 baseRoute
@@ -117,7 +119,7 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
         delete item.children
       }
     }
-    
+
     if (hrefId == baseRoute) {
       sidebar[baseRoute] && sidebar[baseRoute][0].children?.forEach(itemChild => {
         const key = itemChild.link!
@@ -151,6 +153,7 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
     return defaultOpenKeys
   }
   const defaultOpenKeys: string[] = getDefaultOpenKeys(renderSidebar!)
+  
   const indexRoute = defaultOpenKeys[defaultOpenKeys.length - 1]
   
   // 点击菜单栏
@@ -158,7 +161,9 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
     navigate(e.key)
     useScrollToTop()
   };
-  const [defaultSelectedKey, setDefaultSelectedKey] = useState<[string]>([renderSidebar![0].key])
+  const [defaultSelectedKey, setDefaultSelectedKey] = useState<[string]>(() => {
+    return renderSidebar.length !== 0? [renderSidebar[0].key] : ''
+  })
   //上一夜下一页
   const [prev, setPrev] = useState<PreAndNext | undefined>(undefined)
   const [next, setNext] = useState<PreAndNext | undefined>(undefined)

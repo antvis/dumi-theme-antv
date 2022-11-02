@@ -34,7 +34,7 @@ export const DemoCard: React.FC<DemoCardProps> = (props) => {
   return (
     <Link
       className={styles.galleryCardLink}
-      to={`/${locale.id}/examples/${topicId}/${exampleId}/#${demo.id}`}
+      to={`${locale.id == 'zh' ? '' : '/en'}/examples/${topicId}/${exampleId}/#${demo.id}`}
     >
       {demo.isNew ? (
         <Badge.Ribbon

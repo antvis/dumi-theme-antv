@@ -1,5 +1,6 @@
 import React from 'react';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import { BackTop, Layout as AntLayout } from 'antd';
 import { Header } from '../../slots/Header';
 import { Footer } from '../../slots/Footer';
@@ -19,13 +20,20 @@ import styles from './index.module.less';
  * @author YuZhanglong <loveyzl1123@gmail.com>
  */
 const Example = () => {
+  const nav = useNavigate()
   /** 示例页面的元数据信息 */
   const metaData: any = useContext(ThemeAntVContext);
 
   const exampleTopics: ExamplesPage.ExampleTopic[] = metaData.meta.exampleTopics;
 
   const [prev, next] = usePrevAndNext();
-
+  // 为 zh 做兜底
+  useEffect(() => {
+    const p = window.location.pathname
+    if (p.includes('/zh/')) {
+      nav(p.replace('/zh/','/'))
+  }
+  },[])
   return (
     <>
       <Header isHomePage={false} />
