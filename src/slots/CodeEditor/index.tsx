@@ -173,6 +173,14 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
     }
   }, []);
 
+  useEffect(() => {
+    if (monacoRef.current) {
+      monacoRef.current.setValue(
+        currentEditorTab === EDITOR_TABS.JAVASCRIPT ? code : JSON.stringify(data, null, 2),
+      );
+    }
+  }, [currentEditorTab]);
+
   const onCodeChange = useCallback((value: string) => {
     if (currentEditorTab === EDITOR_TABS.JAVASCRIPT) {
       setCode(value)
@@ -202,7 +210,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
           language={
             currentEditorTab === EDITOR_TABS.JAVASCRIPT ? 'javascript' : 'json'
           }
-          value={currentEditorTab === EDITOR_TABS.JAVASCRIPT ? code : JSON.stringify(data, null, 2)}
+          value={code}
           path={relativePath}
           loading="Loading..."
           options={{
