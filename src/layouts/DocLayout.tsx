@@ -23,8 +23,7 @@ export default () => {
   // API 页面
   if (
     p.startsWith('/api') || p.startsWith('/en/api') ||
-    // 这四个是兼容之前的
-    p.startsWith('/api') || p.startsWith('/en/api') ||
+    // 这两个是兼容之前的
     p.startsWith('/docs/api') || p.startsWith('/en/docs/api')
   ) {
     return <API> {outlet} </API>
@@ -33,8 +32,7 @@ export default () => {
   // 教程页面
   if (
     p.startsWith('/manual') || p.startsWith('/en/manual') ||
-    // 这四个是兼容之前的
-    p.startsWith('/manual') || p.startsWith('/en/manual') ||
+    // 这两个是兼容之前的
     p.startsWith('/docs/manual') || p.startsWith('/en/docs/manual')
   ) {
     return <Manual> {outlet} </Manual>;
