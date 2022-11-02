@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useSiteData, useLocale } from 'dumi';
 import { noop } from 'lodash-es';
 import SplitPane from 'react-split-pane';
-import { ExamplesPage } from '../../typings';
 import { CodeEditor } from '../CodeEditor';
 import { CodePreview } from '../CodePreview';
 import { CodeHeader } from '../CodePreview/CodeHeader';
