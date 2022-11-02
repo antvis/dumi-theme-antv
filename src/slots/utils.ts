@@ -1,26 +1,33 @@
 import { Status } from '../types';
 
-export const ping = (callback: (status: Status) => void): NodeJS.Timeout => {
-  const url =
+export async function ping(): Promise<Status> {
+  const timeout = new Promise<Status>((resolve) => {
+    setTimeout(() => {
+      resolve('timeout');
+    }, 1500);
+  });
+
+  const network = new Promise<Status>((resolve) => {
+    const url =
     'https://private-a' +
     'lipay' +
     'objects.alip' +
     'ay.com/alip' +
     'ay-rmsdeploy-image/rmsportal/RKuAiriJqrUhyqW.png';
-  const img = new Image();
-  let done = false;
-  const finish = (status: Status) => {
-    if (!done) {
-      done = true;
+    const img = new Image();
+    img.onload = () => {
       img.src = '';
-      callback(status);
-    }
-  };
-  img.onload = () => finish('responded');
-  img.onerror = () => finish('error');
-  img.src = url;
-  return setTimeout(() => finish('timeout'), 1500);
-};
+      resolve('responded');
+    };
+    img.onerror = () => {
+      img.src = '';
+      resolve('error');
+    };
+    img.src = url;
+  });
+
+  return Promise.race([timeout, network]);
+}
 
 export const getChinaMirrorHost = (host?: string): string => {
   const hostString = typeof host === 'undefined' ? window.location.host : host;

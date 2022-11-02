@@ -49,6 +49,7 @@ export const CodeRunner: React.FC<CodeRunnerProps> = ({
         onFullscreen={setFullscreen}
         onDestroy={noop}
         onReady={noop}
+        playground={{}}
       />
     </SplitPane>
   );
