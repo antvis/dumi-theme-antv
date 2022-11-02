@@ -161,9 +161,7 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
     navigate(e.key)
     useScrollToTop()
   };
-  const [defaultSelectedKey, setDefaultSelectedKey] = useState<[string]>(() => {
-    return renderSidebar.length !== 0? [renderSidebar[0].key] : ''
-  })
+  const [defaultSelectedKey, setDefaultSelectedKey] = useState<[string]>(renderSidebar!.length !== 0 ? [renderSidebar![0].key] : [''])
   //上一夜下一页
   const [prev, setPrev] = useState<PreAndNext | undefined>(undefined)
   const [next, setNext] = useState<PreAndNext | undefined>(undefined)
@@ -171,7 +169,7 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
   // 监听路由去改变 selected menu-item
   useEffect(() => {
     // 兜底 如果 nav 指定有误则重定向到 indexDocRoute
-    if (window.location.pathname!==indexRoute) {
+    if (window.location.pathname !== indexRoute) {
       navigate(indexRoute)
       return
     }

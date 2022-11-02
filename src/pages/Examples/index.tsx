@@ -1,6 +1,6 @@
 import React from 'react';
 import { useContext, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import { BackTop, Layout as AntLayout } from 'antd';
 import { Header } from '../../slots/Header';
 import { Footer } from '../../slots/Footer';
