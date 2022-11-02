@@ -7,12 +7,13 @@ import { CodePreview } from '../CodePreview';
 import { CodeHeader } from '../CodePreview/CodeHeader';
 import { getDemoInfo } from './utils';
 import { NotFound } from '../404';
+import { ExampleTopic } from '../../types';
 
 type CodeRunnerProps = {
   topic: string;
   example: string;
   demo: string;
-  exampleTopics: ExamplesPage.ExampleTopic[];
+  exampleTopics: ExampleTopic[];
   notFound?: React.Element;
 }
 

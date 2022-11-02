@@ -3,6 +3,7 @@ import cx from 'classnames';
 import gh from 'parse-github-url';
 import GitHubButton from 'react-github-button';
 import { ic } from '../hooks';
+import { IC } from '../../types';
 import { News, NewsProps } from './News';
 
 import styles from './index.module.less';

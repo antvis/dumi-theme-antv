@@ -10,7 +10,7 @@ import {
   CaretDownFilled,
   DownOutlined,
   WechatOutlined,
-  LikeOutlined,
+  LinkOutlined,
   CheckOutlined,
 } from '@ant-design/icons';
 import { Popover, Menu, Dropdown, Select } from 'antd';
@@ -215,12 +215,12 @@ const HeaderComponent: React.FC<HeaderProps> = ({
         <li>
           <Dropdown
             className={styles.ecoSystems}
-            menu={
+            overlay={
               <Menu>
                 {map(ecosystems, ({ url, name: ecosystemName }) => (
                   <Menu.Item key={ecosystemName?.[lang]}>
                     <a target="_blank" rel="noreferrer" href={url}>
-                      {ecosystemName?.[lang]} <LikeOutlined />
+                      {ecosystemName?.[lang]} <LinkOutlined />
                     </a>
                   </Menu.Item>
                 ))}
@@ -301,7 +301,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
         <li>
           <Dropdown
             placement="bottomRight"
-            menu={
+            overlay={
               <Menu
                 defaultSelectedKeys={[lang]}
                 selectable
