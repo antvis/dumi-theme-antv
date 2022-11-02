@@ -3,13 +3,15 @@ import * as path from 'path';
 import * as fs from 'fs-extra';
 import fm from 'front-matter';
 
+import { Demo, Example, ExampleTopic } from '../types';
+
 const examplesBaseDir = path.resolve(process.cwd(), 'examples');
 
 /**
  * 获取某个案例下所有的 DEMO
  *
  * @param {string} exampleDir 案例路径
- * @returns {ExamplesPage.Demo[]} DEMO 列表
+ * @returns {Demo[]} DEMO 列表
  * @author YuZhanglong <loveyzl1123@gmail.com>
  */
 const getExampleDemos = (exampleDir: string) => {
@@ -17,7 +19,7 @@ const getExampleDemos = (exampleDir: string) => {
     .readFileSync(path.resolve(exampleDir, 'demo', 'meta.json'))
     .toString();
   const demoMeta: any[] = JSON.parse(demoMetaJSON).demos;
-  const demos: ExamplesPage.Demo[] = demoMeta.map((item) => {
+  const demos: Demo[] = demoMeta.map((item) => {
     const { title, screenshot, filename, new: isNew } = item;
     const id = filename
       .replace(/\.tsx?$/, '')
@@ -60,7 +62,7 @@ const getTopicExamples = (topicPath: string) => {
     const exampleMetaZhContent: Record<string, any> = fm(exampleMetaZh);
     const exampleMetaEnContent: Record<string, any> = fm(exampleMetaEn);
 
-    const example: ExamplesPage.Example = {
+    const example: Example = {
       demos: getExampleDemos(item),
       // 二级暂时无须 ICON，保留
       icon: '',
@@ -79,16 +81,16 @@ const getTopicExamples = (topicPath: string) => {
 /**
  * 获取案例页面的所有主题
  *
- * @returns {ExamplesPage.ExampleTopic[]} 案例主题列表
+ * @returns {ExampleTopic[]} 案例主题列表
  * @author YuZhanglong <loveyzl1123@gmail.com>
  */
 export const getExamplesPageTopics = (
-  exampleTopics: ExamplesPage.ExampleTopic[]
+  exampleTopics: ExampleTopic[]
 ) => {
   return exampleTopics.map(
-    ({ id, slug, title, icon }: ExamplesPage.ExampleTopic) => {
+    ({ id, slug, title, icon }: ExampleTopic) => {
       const nid = (id || slug) as string;
-      let examples: ExamplesPage.Example[] = [];
+      let examples: Example[] = [];
       try {
         examples = getTopicExamples(path.join(examplesBaseDir, nid));
       } catch (e) {

@@ -1,12 +1,13 @@
 import { map } from 'lodash-es';
+import { Demo, ExampleTopic } from '../../types';
 
 /**
  * 将数据结构转化成 map，便于后续检索的速度
  * @param exampleTopics
  * @returns
  */
-export function getExampleTopicMap(exampleTopics: ExamplesPage.ExampleTopic[]) {
-  const exampleTopicMap = new Map<string, ExamplesPage.Demo>();
+export function getExampleTopicMap(exampleTopics: ExampleTopic[]) {
+  const exampleTopicMap = new Map<string, Demo>();
 
   map(exampleTopics, ((topic) => {
     map(topic.examples, (example) => {
@@ -27,7 +28,7 @@ export function getExampleTopicMap(exampleTopics: ExamplesPage.ExampleTopic[]) {
 /**
  * 从 Context 信息中，获取到 Example 相关的信息，用于页面渲染
  */
-export function getDemoInfo(exampleTopics: ExamplesPage.ExampleTopic[], topic: string, example: string, demo: string) {
+export function getDemoInfo(exampleTopics: ExampleTopic[], topic: string, example: string, demo: string) {
   const m = getExampleTopicMap(exampleTopics);
 
   return m.get(`${topic}-${example}-${demo}`);
