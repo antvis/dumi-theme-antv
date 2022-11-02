@@ -32,7 +32,7 @@ export const CodeRunner: React.FC<CodeRunnerProps> = ({
   const { title, source, relativePath } = demoInfo;
 
   const { themeConfig } = useSiteData();
-  const { githubUrl } = themeConfig;
+  const { githubUrl, playground } = themeConfig;
   const [error, setError] = useState<Error>();
   const [isFullScreen, setFullscreen] = useState<boolean>(false);
   const locale = useLocale();
@@ -49,7 +49,7 @@ export const CodeRunner: React.FC<CodeRunnerProps> = ({
         onFullscreen={setFullscreen}
         onDestroy={noop}
         onReady={noop}
-        playground={{}}
+        playground={playground}
       />
     </SplitPane>
   );
