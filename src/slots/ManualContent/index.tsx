@@ -171,8 +171,10 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
     // 兜底 如果 nav 指定有误则重定向到 indexDocRoute
     if (window.location.pathname !== indexRoute) {
       navigate(indexRoute)
-      return
-    }
+    } 
+  }, [])
+  // 改变菜单栏选中状态
+  useEffect(() => {    
     setDefaultSelectedKey([window.location.pathname])
   }, [window.location.pathname])
 
