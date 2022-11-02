@@ -3,6 +3,7 @@ import { Row, Col } from 'antd';
 import cx from 'classnames';
 import FeatureCard from './FeatureCard';
 import styles from './index.module.less';
+import { ic } from '../hooks';
 
 interface Card {
   icon: string;
@@ -27,7 +28,7 @@ export const Features: React.FC<FeaturesProps> = ({
 }) => {
   const getCards = () => {
     const children = features.map(card => (
-      <Col className={styles.cardWrapper} key={card.title} md={8} xs={24}>
+      <Col className={styles.cardWrapper} key={ic(card.title)} md={8} xs={24}>
         <FeatureCard {...card} />
       </Col>
     ));
