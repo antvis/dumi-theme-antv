@@ -7,9 +7,7 @@ import { ExampleSider } from '../../slots/ExampleSider';
 import { CodeRunner } from '../../slots/CodeRunner';
 import { getDemoInfo } from '../../slots/CodeRunner/utils';
 import { ThemeAntVContext } from '../../context';
-
 import styles from './index.module.less';
-import { LeftOutlined } from '@ant-design/icons';
 
 const { Sider, Content } = Layout;
 
@@ -40,8 +38,7 @@ const Example: React.FC = () => {
   const metaData: any = useContext(ThemeAntVContext);
   const locale = useLocale();
 
-  const exampleTopics: ExamplesPage.ExampleTopic[] =
-    metaData.meta.exampleTopics;
+  const exampleTopics: ExamplesPage.ExampleTopic[] = metaData.meta.exampleTopics;
   const demo = hash.slice(1);
 
   const [currentDemo, setCurrentDemo] = useState<ExamplesPage.Demo>();
@@ -61,12 +58,12 @@ const Example: React.FC = () => {
       <Layout className={styles.container}>
         <Sider
           collapsedWidth={0}
-          width={188}
+          width={250}
           trigger={null}
           collapsible
           collapsed={isCollapsed}
           className={styles.menuSider}
-          theme="light"
+          theme='light'
         >
           {currentDemo && (
             <ExampleSider
@@ -83,15 +80,15 @@ const Example: React.FC = () => {
           )}
         </Sider>
         {/*//FIXME: 待 ANTD bug 修复后，可以使用下面的代码*/}
-        {/*<LeftOutlined*/}
-        {/*  className={styles.trigger}*/}
-        {/*  type={isCollapsed ? 'menu-unfold' : 'menu-fold'}*/}
-        {/*  onClick={() => {*/}
-        {/*   */}
-        {/*    setIsCollapsed(!isCollapsed);*/}
-        {/*  }}*/}
-        {/*  rotate={isCollapsed ? 180 : 0}*/}
-        {/*/>*/}
+        {/*<LeftOutlined
+          className={styles.trigger}
+          type={isCollapsed ? 'menu-unfold' : 'menu-fold'}
+          onClick={() => {
+
+            setIsCollapsed(!isCollapsed);
+          }}
+          rotate={isCollapsed ? 180 : 0}
+        />*/}
         <Content className={styles.content}>
           {topic && example && (
             <CodeRunner
