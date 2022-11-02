@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useOutlet, useLocation } from 'dumi';
 import { Index } from './entry/Index';
 import { API } from './entry/API';
@@ -12,6 +12,15 @@ import '../slots/_.less';
  * DocuLayout 是 dumi2 的内置 layout 入口，在这里使用页面路径进行区分成自己不同的 Layout。
  */
 export default () => {
+
+  // 打印控制台文案
+  useEffect(() => {
+    console.log("%cAntV 让数据栩栩如生", "color:#5B7102; font-size: 20px;"),
+    console.log("%c新一代数据可视化解决方案", "color:#5B7102;"),
+    console.log("--------------------------"),
+    console.log("%c关注我们的微信公众号 %c“数据可视化 AntV”%c，获取我们团队最新的进展、动态、分享，也欢迎加入我们！", "color: red", "color: pink", "color: red");
+  }, []);
+
   const outlet = useOutlet();
   const { pathname } = useLocation();
   const p = pathname.toLowerCase();
