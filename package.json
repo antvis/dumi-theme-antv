@@ -1,6 +1,6 @@
 {
   "name": "@antv/dumi-theme-antv",
-  "version": "0.3.0-beta.3",
+  "version": "0.3.0-beta.4",
   "description": "AntV website theme based on dumi2.",
   "types": "dist/types.d.ts",
   "scripts": {
@@ -62,7 +62,7 @@
     "classnames": "^2.3.2",
     "codesandbox": "^2.2.3",
     "docsearch.js": "^2.6.3",
-    "dumi": "^2.0.0-beta.11",
+    "dumi": "^2.0.0-beta.15",
     "front-matter": "^4.0.2",
     "fs-extra": "^10.1.0",
     "glob": "^8.0.3",
@@ -85,7 +85,7 @@
     "uri-parse": "^1.0.0"
   },
   "peerDependencies": {
-    "dumi": "^2.0.0-beta.14",
+    "dumi": "^2.0.0-beta.15",
     "react": ">=16.9.0",
     "react-dom": ">=16.9.0"
   },
@@ -101,7 +101,6 @@
     "@types/react-router-dom": "^5.3.3",
     "@types/react-slick": "^0.23.10",
     "@umijs/lint": "^4.0.0",
-    "dumi": "^2.0.0-beta.14",
     "eslint": "^8.23.0",
     "father": "^4.1.0",
     "father-plugin-dumi-theme": "^1.0.0-beta.1",
