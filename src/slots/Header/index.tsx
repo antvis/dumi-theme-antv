@@ -205,17 +205,17 @@ const HeaderComponent: React.FC<HeaderProps> = ({
     >
       {
         /** 最左侧的菜单，一般是 教程、API、示例，或者其他自定义，有配置文件中的 `navs` 决定 */
-        size(navs) &&
-        <Navs navs={navs} path={window.location.pathname} />
+        size(navs) ?
+        <Navs navs={navs} path={window.location.pathname} /> : null
       }
 
       {
         /** 生态产品 */
-        size(ecosystems) &&
+        size(ecosystems) ?
         <li>
           <Dropdown
             className={styles.ecoSystems}
-            overlay={
+            menu={
               <Menu>
                 {map(ecosystems, ({ url, name: ecosystemName }) => (
                   <Menu.Item key={ecosystemName?.[lang]}>
@@ -232,7 +232,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
               <DownOutlined style={{ marginLeft: '6px' }} />
             </span>
           </Dropdown>
-        </li>
+        </li> : null
       }
 
       {
@@ -301,7 +301,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
         <li>
           <Dropdown
             placement="bottomRight"
-            overlay={
+            menu={
               <Menu
                 defaultSelectedKeys={[lang]}
                 selectable
