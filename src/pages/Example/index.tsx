@@ -82,16 +82,16 @@ const Example: React.FC = () => {
             />
           )}
         </Sider>
-
-        <LeftOutlined
-          className={styles.trigger}
-          type={isCollapsed ? 'menu-unfold' : 'menu-fold'}
-          onClick={() => {
-            setIsCollapsed(!isCollapsed);
-          }}
-          rotate={isCollapsed ? 180 : 0}
-        />
-
+        {/*//FIXME: 待 ANTD bug 修复后，可以使用下面的代码*/}
+        {/*<LeftOutlined*/}
+        {/*  className={styles.trigger}*/}
+        {/*  type={isCollapsed ? 'menu-unfold' : 'menu-fold'}*/}
+        {/*  onClick={() => {*/}
+        {/*   */}
+        {/*    setIsCollapsed(!isCollapsed);*/}
+        {/*  }}*/}
+        {/*  rotate={isCollapsed ? 180 : 0}*/}
+        {/*/>*/}
         <Content className={styles.content}>
           {topic && example && (
             <CodeRunner
