@@ -14,8 +14,9 @@ import '../slots/_.less';
 export default () => {
   const outlet = useOutlet();
   const { pathname } = useLocation();
-  const p = pathname.toLowerCase();
-
+  const path = pathname.toLowerCase();
+  
+  const p = path.replace('/zh/','/')
   // 首页
   if (p === '/' || p === '/zh'|| p === '/en' || p === '/en/') return <Index />;
 
@@ -23,8 +24,8 @@ export default () => {
   if (
     p.startsWith('/api') || p.startsWith('/en/api') ||
     // 这四个是兼容之前的
-    p.startsWith('/zh/api') || p.startsWith('/en/api') ||
-    p.startsWith('/zh/docs/api') || p.startsWith('/en/docs/api')
+    p.startsWith('/api') || p.startsWith('/en/api') ||
+    p.startsWith('/docs/api') || p.startsWith('/en/docs/api')
   ) {
     return <API> {outlet} </API>
   }
@@ -33,8 +34,8 @@ export default () => {
   if (
     p.startsWith('/manual') || p.startsWith('/en/manual') ||
     // 这四个是兼容之前的
-    p.startsWith('/zh/manual') || p.startsWith('/en/manual') ||
-    p.startsWith('/zh/docs/manual/') || p.startsWith('/en/docs/manual/')
+    p.startsWith('/manual') || p.startsWith('/en/manual') ||
+    p.startsWith('/docs/manual') || p.startsWith('/en/docs/manual')
   ) {
     return <Manual> {outlet} </Manual>;
   }
