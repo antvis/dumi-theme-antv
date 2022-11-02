@@ -4,6 +4,7 @@ import { useSiteData, useLocale } from 'dumi';
 import { debounce, noop } from 'lodash-es';
 import { replaceInsertCss, execute, compile } from './utils';
 import { Toolbar, EDITOR_TABS } from './Toolbar';
+import { Loading } from '../Loading';
 import styles from './index.module.less';
 
 loader.config({
@@ -212,7 +213,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
           }
           value={code}
           path={relativePath}
-          loading="Loading..."
+          loading={<Loading />}
           options={{
             readOnly: currentEditorTab === EDITOR_TABS.DATA,
             automaticLayout: true,
