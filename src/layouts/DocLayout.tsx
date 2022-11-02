@@ -14,28 +14,27 @@ import '../slots/_.less';
 export default () => {
   const outlet = useOutlet();
   const { pathname } = useLocation();
-  const p = pathname.toLowerCase();
-
+  const path = pathname.toLowerCase();
+  // 统一去掉中英文前缀
+  let p = path.replace('/zh/', '/').replace('/en/', '/')
   // 首页
-  if (p === '/' || p === '/zh'|| p === '/en' || p === '/en/') return <Index />;
+  if (p === '/' || p === '/zh' || p === '/en' || p === '/en/') return <Index />;
 
   // API 页面
   if (
-    p.startsWith('/api') || p.startsWith('/en/api') ||
-    // 这四个是兼容之前的
-    p.startsWith('/zh/api') || p.startsWith('/en/api') ||
-    p.startsWith('/zh/docs/api') || p.startsWith('/en/docs/api')
+    p.startsWith('/api') ||
+    // 这两个是兼容之前的
+    p.startsWith('/docs/api')
   ) {
     return <API> {outlet} </API>
   }
 
   // 教程页面
   if (
-    p.startsWith('/manual') || p.startsWith('/en/manual') ||
-    // 这四个是兼容之前的
-    p.startsWith('/zh/manual') || p.startsWith('/en/manual') ||
-    p.startsWith('/zh/docs/manual/') || p.startsWith('/en/docs/manual/')
-  ) {
+    p.startsWith('/manual') ||
+    // 这两个是兼容之前的
+    p.startsWith('/docs/manual')
+  ){
     return <Manual> {outlet} </Manual>;
   }
 
