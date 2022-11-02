@@ -69,10 +69,11 @@ const getTopicExamples = (topicPath: string) => {
         en: exampleMetaEnContent.attributes.title,
         zh: exampleMetaZhContent.attributes.title
       },
-      childrenKey: 'demos'
+      childrenKey: 'demos',
+      order: exampleMetaZhContent.attributes.order || 0,
     };
     return example;
-  });
+  }).sort((a, b) => a.order - b.order);
 };
 
 /**
