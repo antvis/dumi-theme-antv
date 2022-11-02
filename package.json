@@ -5,6 +5,7 @@
   "types": "dist/types.d.ts",
   "scripts": {
     "dev": "father dev",
+    "dev:example-site": "cd example && npm run start",
     "build": "father build",
     "prepare": "father link-dev-theme",
     "lint": "npm run lint:es && npm run lint:css",
