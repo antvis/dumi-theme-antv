@@ -40,7 +40,6 @@ export interface ExampleSiderProps {
  */
 export const ExampleSider: React.FC<ExampleSiderProps> = (props) => {
   const { currentDemo, onDemoClicked, exampleTopics } = props;
-  console.log(111, exampleTopics);
   // 菜单栏展开keys
   const [openKeys, setOpenKeys] = useState<string[]>([]);
 
@@ -69,8 +68,6 @@ export const ExampleSider: React.FC<ExampleSiderProps> = (props) => {
     }
     return exampleTopics;
   };
-
-  console.log('当前 TOPICS', getCurrentTopics());
 
   // 初始化菜单栏展开keys
   useEffect(() => {
