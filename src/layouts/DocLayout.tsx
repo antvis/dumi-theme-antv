@@ -15,26 +15,26 @@ export default () => {
   const outlet = useOutlet();
   const { pathname } = useLocation();
   const path = pathname.toLowerCase();
-  
-  const p = path.replace('/zh/','/')
+  // 统一去掉中英文前缀
+  let p = path.replace('/zh/', '/').replace('/en/', '/')
   // 首页
-  if (p === '/' || p === '/zh'|| p === '/en' || p === '/en/') return <Index />;
+  if (p === '/' || p === '/zh' || p === '/en' || p === '/en/') return <Index />;
 
   // API 页面
   if (
-    p.startsWith('/api') || p.startsWith('/en/api') ||
+    p.startsWith('/api') ||
     // 这两个是兼容之前的
-    p.startsWith('/docs/api') || p.startsWith('/en/docs/api')
+    p.startsWith('/docs/api')
   ) {
     return <API> {outlet} </API>
   }
 
   // 教程页面
   if (
-    p.startsWith('/manual') || p.startsWith('/en/manual') ||
+    p.startsWith('/manual') ||
     // 这两个是兼容之前的
-    p.startsWith('/docs/manual') || p.startsWith('/en/docs/manual')
-  ) {
+    p.startsWith('/docs/manual')
+  ){
     return <Manual> {outlet} </Manual>;
   }
 
