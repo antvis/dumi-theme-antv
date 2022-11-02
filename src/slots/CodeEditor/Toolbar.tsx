@@ -87,18 +87,18 @@ type ToolbarProps = {
 }
 
 export const Toolbar: React.FC<ToolbarProps> = ({
-                                                  sourceCode,
-                                                  fileExtension,
-                                                  playground = {},
-                                                  location,
-                                                  title = '',
-                                                  isFullScreen = false,
-                                                  editorTabs,
-                                                  currentEditorTab,
-                                                  onEditorTabChange,
-                                                  onToggleFullscreen = null,
-                                                  onExecuteCode,
-                                                }) => {
+  sourceCode,
+  fileExtension,
+  playground = {},
+  location,
+  title = '',
+  isFullScreen = false,
+  editorTabs,
+  currentEditorTab,
+  onEditorTabChange,
+  onToggleFullscreen = null,
+  onExecuteCode,
+}) => {
   const locale = useLocale();
   const exampleTitle =
     (typeof title === 'object' ? title[locale.id as 'zh' | 'en'] : title) as string;
@@ -113,16 +113,12 @@ export const Toolbar: React.FC<ToolbarProps> = ({
   const codeSandboxConfig = getCodeSandboxConfig(exampleTitle, sourceCode, fileExtension, dependencies, devDependencies, playground);
   const riddlePrefillConfig = getRiddleConfig(exampleTitle, sourceCode, fileExtension, dependencies, devDependencies, playground);
   const stackblitzPrefillConfig = getStackblitzConfig(exampleTitle, sourceCode, fileExtension, dependencies, devDependencies, playground);
-
   // const htmlCode = getHtmlCodeTemplate(exampleTitle, sourceCode, fileExtension, dependencies, devDependencies, playground);
 
   const [riddleVisible, updateRiddleVisible] = useState(false);
   useEffect(() => {
-    ping((status) => {
-      updateRiddleVisible(status === 'responded');
-    });
+    ping().then(status => updateRiddleVisible(status === 'responded'));
   }, []);
-
   return (
     <div className={styles.toolbar}>
       <div className={styles.editortabs}>
@@ -181,7 +177,8 @@ export const Toolbar: React.FC<ToolbarProps> = ({
         </form>
       </Tooltip>
       <Paragraph copyable={{ text: sourceCode }} style={{ marginLeft: 6 }} />
-      {onToggleFullscreen ? (
+      {/** 暂时去掉全屏，当前空间已经非常大了 */}
+      {/* {onToggleFullscreen ? (
         <Tooltip title={isFullScreen ? useT('离开全屏') : useT('进入全屏')}>
           {isFullScreen ? (
             <FullscreenExitOutlined
@@ -195,7 +192,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
             />
           )}
         </Tooltip>
-      ) : null}
+      ) : null} */}
       <Tooltip title={useT('执行代码')}>
         <PlayCircleOutlined
           onClick={onExecuteCode}

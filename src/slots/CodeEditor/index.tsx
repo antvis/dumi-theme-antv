@@ -106,7 +106,6 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
     const e = new Event('resize');
     window.dispatchEvent(e);
   };
-
   
   useEffect(() => {
     // 用于上报错误信息，使用 script 执行代码
@@ -137,7 +136,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
     }
 
     // 2. 执行代码，try catch 在内部已经做了
-    execute(compiled, 'playgroundScriptContainer', playground?.container, replaceId);
+    execute(compiled, 'playgroundScriptContainer', playground?.container as string, replaceId);
   }, 300), []);
 
   useEffect(() => {
@@ -199,7 +198,6 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
         className={styles.monaco}
         style={{ height: 'calc(100% - 36px)' }}
       >
-        {/* <textarea onChange={(e) => onCodeChange(e.target.value)}>{code}</textarea> */}
         <MonacoEditor
           language={
             currentEditorTab === EDITOR_TABS.JAVASCRIPT ? 'javascript' : 'json'

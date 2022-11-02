@@ -75,7 +75,7 @@ export const Detail: React.FC<DetailProps> = ({
               buttons.map(({ type, style, text, link, shape }) => {
                 return (
                   <a
-                    key={text}
+                    key={ic(text)}
                     className={cx(
                       styles.buttonLink,
                       styles[type || ''],
