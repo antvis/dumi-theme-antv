@@ -44,7 +44,7 @@ export const Navs: React.FC<NavProps> = ({ navs, path }) => {
           href = `/en${href}`;
         }
         // 去除 docs  防止二次点击相同nav跳转出现04
-        href=href.replace('/docs/', '/')
+        href = href.replace('/docs/', '/')
         const className = cx('header-menu-item-active', {
           [styles.activeItem]:
           path.startsWith(href) ||
