@@ -1,7 +1,8 @@
 import { createContext } from 'react';
+import { ExampleTopic } from './types';
 
 export type IThemeAntVContext = {
-  exampleTopics?: ExamplesPage.ExampleTopic[];
+  exampleTopics?: ExampleTopic[];
 }
 
 export const ThemeAntVContext = createContext<IThemeAntVContext>({});

@@ -8,8 +8,9 @@ import {
 } from '@ant-design/icons';
 import classNames from 'classnames';
 import { useT } from '../hooks';
-import styles from './index.module.less';
 import { filterTreeNode } from '../utils';
+import { Demo, ExampleTopic } from '../../types';
+import styles from './index.module.less';
 
 // menu icon
 const MenuIcon = createFromIconfontCN({
@@ -20,17 +21,17 @@ export interface ExampleSiderProps {
   /**
    * 当前 Example (受控)
    */
-  currentDemo: ExamplesPage.Demo;
+  currentDemo: Demo;
 
   /**
    * 当选中的 Demo 被改变时做些什么
    */
-  onDemoClicked: (demo: ExamplesPage.Demo) => void;
+  onDemoClicked: (demo: Demo) => void;
 
   /**
    * 所有的案例主题
    */
-  exampleTopics: ExamplesPage.ExampleTopic[];
+  exampleTopics: ExampleTopic[];
 
   showExampleDemoTitle: boolean;
 }
@@ -98,7 +99,7 @@ export const ExampleSider: React.FC<ExampleSiderProps> = (props) => {
     );
 
   // 图例按钮 + img + tooltip文本
-  const renderExampleDemoCard = (demo: ExamplesPage.Demo) => (
+  const renderExampleDemoCard = (demo: Demo) => (
     <Tooltip
       placement='right'
       title={getSearchValueTitle(demo.title[locale.id] || '')}

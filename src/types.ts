@@ -12,7 +12,7 @@ export type IC = string | {
   en: string;
 }
 
-interface TreeNode {
+export interface TreeNode {
   /**
    * id
    */

@@ -1,4 +1,4 @@
-import { Status } from '../types';
+import { Status, TreeNode } from '../types';
 
 export async function ping(): Promise<Status> {
   const timeout = new Promise<Status>((resolve) => {
@@ -59,12 +59,12 @@ export function getGithubSourceURL(
 }
 
 export const filterTreeNode = (
-  treeNode: ExamplesPage.TreeNode,
+  treeNode: TreeNode,
   keyValue: string,
   locale: string,
 ) => {
   if (treeNode.childrenKey && Array.isArray(treeNode[treeNode.childrenKey])) {
-    const children = treeNode[treeNode.childrenKey] as ExamplesPage.TreeNode[];
+    const children = treeNode[treeNode.childrenKey] as TreeNode[];
     const filteredChildren = children.filter((child) => {
       const c = filterTreeNode(child, keyValue, locale);
       return c !== null;
