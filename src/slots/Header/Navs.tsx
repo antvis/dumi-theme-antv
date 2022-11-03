@@ -43,13 +43,15 @@ export const Navs: React.FC<NavProps> = ({ navs, path }) => {
         if (window.location.pathname.includes('en')) {
           href = `/en${href}`;
         }
+        // 去除 docs  防止二次点击相同nav跳转出现04
+        href=href.replace('/docs/', '/')
         const className = cx('header-menu-item-active', {
           [styles.activeItem]:
           path.startsWith(href) ||
           isEqual(
             path.split('/').slice(0, 4),
             href.split('/').slice(0, 4)
-          )
+            )
         });
         return (
           <li key={title} className={className}>
