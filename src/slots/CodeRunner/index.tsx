@@ -14,6 +14,7 @@ type CodeRunnerProps = {
   example: string;
   demo: string;
   exampleTopics: ExampleTopic[];
+  size?: number;
   notFound?: React.Element;
 }
 
@@ -21,7 +22,7 @@ type CodeRunnerProps = {
  * 代码编辑器 + 代码预览区域
  */
 export const CodeRunner: React.FC<CodeRunnerProps> = ({
-  exampleTopics, topic, example, demo,
+  exampleTopics, topic, example, demo, size,
   notFound = <NotFound />,
 }) => {
   const demoInfo = getDemoInfo(exampleTopics, topic, example, demo);
@@ -40,7 +41,7 @@ export const CodeRunner: React.FC<CodeRunnerProps> = ({
   const header = <CodeHeader title={title[locale.id]} relativePath={relativePath} githubUrl={githubUrl} />;
 
   return (
-    <SplitPane split='vertical' defaultSize='50%' minSize={100}>
+    <SplitPane split='vertical' defaultSize={`${(1 - size) * 100}%`} minSize={100}>
       <CodePreview error={error} header={header} />
       <CodeEditor
         source={source}

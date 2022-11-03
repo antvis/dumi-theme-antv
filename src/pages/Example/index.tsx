@@ -1,12 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
+import { get } from 'lodash-es';
 import { Layout } from 'antd';
-import { useLocale } from 'dumi';
+import { useLocale, useSiteData } from 'dumi';
 import { Header } from '../../slots/Header';
 import { ExampleSider } from '../../slots/ExampleSider';
 import { CodeRunner } from '../../slots/CodeRunner';
 import { getDemoInfo } from '../../slots/CodeRunner/utils';
 import { ThemeAntVContext } from '../../context';
+import { ExampleTopic, Demo } from '../../types';
 import styles from './index.module.less';
 
 const { Sider, Content } = Layout;
@@ -37,11 +39,12 @@ const Example: React.FC = () => {
   /** 示例页面的元数据信息 */
   const metaData: any = useContext(ThemeAntVContext);
   const locale = useLocale();
+  const { themeConfig } = useSiteData()
 
-  const exampleTopics: ExamplesPage.ExampleTopic[] = metaData.meta.exampleTopics;
+  const exampleTopics: ExampleTopic[] = metaData.meta.exampleTopics;
   const demo = hash.slice(1);
 
-  const [currentDemo, setCurrentDemo] = useState<ExamplesPage.Demo>();
+  const [currentDemo, setCurrentDemo] = useState<Demo>();
 
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
 
@@ -96,6 +99,7 @@ const Example: React.FC = () => {
               topic={topic}
               example={example}
               demo={demo}
+              size={get(themeConfig, 'editor.size', 0.4)}
             />
           )}
         </Content>

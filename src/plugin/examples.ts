@@ -44,7 +44,7 @@ const getExampleDemos = (exampleDir: string) => {
  * 获取某个案例主题下面的所有案例
  *
  * @param {string} topicPath 案例主题路径
- * @returns {ExamplesPage.Example[]} 案例列表
+ * @returns {Example[]} 案例列表
  * @author YuZhanglong <loveyzl1123@gmail.com>
  */
 const getTopicExamples = (topicPath: string) => {

@@ -1,4 +1,5 @@
 import React from 'react';
+import { ExampleTopic, Example, Demo } from '../../types';
 
 export interface AnnouncementProps {
   message: React.ReactNode;
@@ -11,22 +12,22 @@ export interface GalleryPageContentProps {
   /**
    * 案例主题列表
    */
-  exampleTopics: ExamplesPage.ExampleTopic[];
+  exampleTopics: ExampleTopic[];
 }
 
 export interface LeftMenuProps {
   /**
    * 案例主题列表
    */
-  exampleTopics: ExamplesPage.ExampleTopic[];
+  exampleTopics: ExampleTopic[];
 }
 
-export interface ExampleWithTopic extends ExamplesPage.Example {
-  targetTopic: ExamplesPage.ExampleTopic;
+export interface ExampleWithTopic extends Example {
+  targetTopic: ExampleTopic;
 }
 
 export interface DemoCardProps {
-  demo: ExamplesPage.Demo;
+  demo: Demo;
   topicId: string;
   exampleId: string;
 }
@@ -35,6 +36,6 @@ export interface LeftMenuProps {
   /**
    * 案例主题列表
    */
-  exampleTopics: ExamplesPage.ExampleTopic[];
+  exampleTopics: ExampleTopic[];
 }
 
