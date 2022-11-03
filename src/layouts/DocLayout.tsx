@@ -33,12 +33,13 @@ export default () => {
   if (p === '/' || p === '/zh' || p === '/en' || p === '/en/') return <Index />;
 
   // 匹配 navs 中的 docs 路由
-  const hasDocs = navs.filter(nav => nav.slug.startsWith('docs/'))
-  const docsRoutes = hasDocs.map(nav => nav.slug.split('/').find(item => item !== 'docs'))
-  for (let i = 0; i < docsRoutes.length; i++){
-    if (p.startsWith(`/${docsRoutes[i]}`) || p.startsWith(`/docs/${docsRoutes[i]}`)) {
-      return <Manual>{ outlet }</Manual>
-    }
+  const hasDocsRoutes = navs.filter(nav => nav.slug.startsWith('docs/'))
+  const docsRoutes = hasDocsRoutes.map(nav => nav.slug.split('/').find(item => item !== 'docs'))
+  if (docsRoutes.some(route => {
+    return p.startsWith(`/${route}`) || p.startsWith(`/docs/${route}`) 
+  })) {
+    return <Manual>{outlet}</Manual>      
   }
-  return outlet;
+  
+    return outlet;
 };
