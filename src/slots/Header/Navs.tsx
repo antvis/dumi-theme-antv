@@ -51,7 +51,7 @@ export const Navs: React.FC<NavProps> = ({ navs, path }) => {
           isEqual(
             path.split('/').slice(0, 4),
             href.split('/').slice(0, 4)
-            )
+          )
         });
         return (
           <li key={title} className={className}>
