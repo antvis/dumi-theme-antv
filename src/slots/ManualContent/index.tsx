@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { EditOutlined, MenuFoldOutlined, MenuUnfoldOutlined, VerticalAlignTopOutlined } from '@ant-design/icons';
 import readingTime from 'reading-time'
 
+import { getBaseRoute, getIndexRoute, getOpenKeys } from './utils';
 import { NavigatorBanner } from './NavigatorBanner';
 import ReadingTime from './ReadingTime';
 import { TOC } from '../TOC';
@@ -62,99 +63,84 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
   const [drawOpen, setDrawOpen] = useState(false);
   const navigate = useNavigate();
 
-  //  获取阅读时间
+  // 获取阅读时间
   const mdInfo = useRouteMeta()
   const text = mdInfo.texts.reduce((prev, next) => {
     return prev + next.value
   }, '');
   const { time } = readingTime(text);
 
-  // menu渲染
-    // linkoTitle用来映射路由和Title
+  // linkoTitle用来映射路由和Title
   const linkoTitle: linkToTitle = {}
   
-  function getBaseRoute() {
-    let matchRoute = window.location.pathname
-    // 兼容 zh
-    matchRoute = matchRoute.replace('/zh/', '/')
-    // 兼容带有docs的route
-    matchRoute = matchRoute.replace('/docs', '')
-    // 查找 baseRoute
-    const reg = window.location.pathname.startsWith('/en') ? /(\/[A-z]*\/?\/[A-z]*)\/?/ : /(\/[A-z]*)\/?/
-    const mainRoute = matchRoute.match(reg)
-    return mainRoute![1]
-  }
+  /**
+   *  /api/xxx -->  /api
+   *  /en/api  -->  /en/api
+   */
   const baseRoute = getBaseRoute()
-  
-  function fullSidebarDataToMenuData(rootList: SidebarData, hrefId: string, list: SidebarData) {
-    // 递归
-    rootList.forEach(( item: MenuItem ) => {
-      const href = !baseRoute.startsWith('/en') ? `/${item.slug}` : `/en/${item.slug}`
-      const id = href.split("/").slice(0, href.split("/").length - 1).join("/")
-      if (href.includes(baseRoute)) {
-        if (id === hrefId) {
-          list.push({
-            ...item,
-            key: href,
-            label: item.title[currentLocale as 'zh' | 'en'] 
+ 
+  // 获取最终的 MenuData
+  const renderSidebar = getMenuData(sidebar, docs, baseRoute, [])
+  function getMenuData(funllSidebarData: FullSidebarData, rootList: SidebarData, hrefId: string, list: SidebarData) {
+    function fullSidebarDataToMenuData(rootList: SidebarData, hrefId: string, list: SidebarData) {
+      // 递归
+      rootList.forEach((item: MenuItem) => {
+        const href = !baseRoute.startsWith('/en') ? `/${item.slug}` : `/en/${item.slug}`
+        const id = href.split("/").slice(0, href.split("/").length - 1).join("/")
+        if (href.includes(baseRoute)) {
+          if (id === hrefId) {
+            list.push({
+              ...item,
+              key: href,
+              label: item.title[currentLocale as 'zh' | 'en']
+            })
+          }
+        }
+      })
+      for (const item of list) {
+        item.children = []
+        fullSidebarDataToMenuData(rootList, item.key, item.children)
+        funllSidebarData[item.key][0].children?.forEach(itemChild => {
+          const label = itemChild.title as unknown as string
+          const key = itemChild.link as string
+          item.children!.push({
+            ...itemChild,
+            label,
+            key
           })
+          linkoTitle[key] = label
+        })
+
+        if (item.children.length == 0) {
+          delete item.children
         }
       }
-    })
-    for (const item of list) {
-      item.children = []
-      fullSidebarDataToMenuData(rootList, item.key, item.children)
-      sidebar[item.key][0].children?.forEach(itemChild => {
-        const label = itemChild.title as unknown as string
-        const key = itemChild.link as string
-        item.children!.push({
-          ...itemChild,
-          label,
-          key
-        })
-        linkoTitle[key] = label
-      })
 
-      if (item.children.length == 0) {
-        delete item.children
+      if (hrefId == baseRoute) {
+        funllSidebarData[baseRoute] && funllSidebarData[baseRoute][0].children?.forEach(itemChild => {
+          const key = itemChild.link!
+          const label = itemChild.title as unknown as string
+          list.push({
+            ...itemChild,
+            label,
+            key
+          })
+          linkoTitle[key] = label
+        })
+        list.sort((a, b) => {
+          return a.order - b.order;
+        })
+        return list;
       }
     }
-
-    if (hrefId == baseRoute) {
-      sidebar[baseRoute] && sidebar[baseRoute][0].children?.forEach(itemChild => {
-        const key = itemChild.link!
-        const label = itemChild.title as unknown as string
-        list.push({
-          ...itemChild,
-          label,
-          key
-        })
-        linkoTitle[key] = label
-      })
-      list.sort((a, b) => {
-        return a.order - b.order;
-      })
-      return list;
-    }
+    return fullSidebarDataToMenuData(rootList, hrefId, list)
   }
-    
-  // 获取最终的 MenuData
-  const renderSidebar = fullSidebarDataToMenuData(docs, baseRoute, [])
 
-  //  获取默认打开的菜单栏
-  function getDefaultOpenKeys(MenuData: SidebarData) {
-    const defaultOpenKeys=[]
-    let topRoute = MenuData![0]
-    defaultOpenKeys.push(topRoute.key)
-    while (topRoute.children) {
-      topRoute = topRoute.children[0]
-      defaultOpenKeys.push(topRoute.key)
-    }
-    return defaultOpenKeys
-  }
-  const defaultOpenKeys: string[] = getDefaultOpenKeys(renderSidebar!)
-  
-  const indexRoute = defaultOpenKeys[defaultOpenKeys.length - 1]
+  // 获取打开的菜单栏
+  const [defaultOpenKeys, setDefaultOpenKeys] = useState<string[]>(() => getOpenKeys())
+
+  // 获取第一个md文件的路由
+  const indexRoute = getIndexRoute(renderSidebar)
   
   // 点击菜单栏
   const onClick = (e: any) => {
@@ -166,15 +152,20 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
   const [prev, setPrev] = useState<PreAndNext | undefined>(undefined)
   const [next, setNext] = useState<PreAndNext | undefined>(undefined)
  
-  // 监听路由去改变 selected menu-item
-  useEffect(() => {
-    // 兜底 如果 nav 指定有误则重定向到 indexDocRoute
-    if (window.location.pathname !== indexRoute) {
-      navigate(indexRoute)
-    } 
-  }, [])
-  // 改变菜单栏选中状态
+  // 所有的 sidebar 路由
+  const sidebarRoutes = []
+  for (const route of Object.keys(linkoTitle)) {
+    sidebarRoutes.push(route)
+  }
+  // 兜底 如果 nav 指定有误则自动重定向到 indexDocRoute
+  if (window.location.pathname.startsWith('/docs/') || !sidebarRoutes.includes(window.location.pathname)) {
+    navigate(indexRoute)
+  } 
+  // 改变菜单栏选中和 openKeys 状态
   useEffect(() => {    
+    if (window.location.pathname == indexRoute) {
+      setDefaultOpenKeys(getOpenKeys())
+    }
     setDefaultSelectedKey([window.location.pathname])
   }, [window.location.pathname])
 
@@ -234,14 +225,17 @@ const getGithubSourceUrl = ({
   const menu = (
     <Menu
       onClick={onClick}
-      defaultSelectedKeys={defaultSelectedKey}
+      onOpenChange={(openKeys) => {
+        setDefaultOpenKeys(openKeys);
+      }}
       selectedKeys={defaultSelectedKey}
-      defaultOpenKeys={[...defaultOpenKeys]}
+      openKeys={defaultOpenKeys}
       mode="inline"
       items={renderSidebar}
       inlineIndent={16}
       style={{ height: '100%' }}
       forceSubMenuRender
+      triggerSubMenuAction='click'
     />
   );
   return (

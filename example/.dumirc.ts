@@ -35,9 +35,12 @@ export default defineConfig({
       indexName: 's2-antv-vision',
       appId: 'D73DOU8RXD',
     },
+    /**
+     *  tips: 文档列表类型的路由导航(nav) 请以 docs/* 格式命名
+     */
     navs: [                                                             // 头部的菜单列表
       {
-        slug: 'manual/concepts/geometry/overview',
+        slug: 'docs/manual',
         title: {
           zh: '教程',
           en: 'Tutorials',
@@ -45,7 +48,7 @@ export default defineConfig({
         order: 2,
       },
       {
-        slug: 'api/advanced/register-shape',
+        slug: 'docs/api',
         title: {
           zh: 'API',
           en: 'API',
