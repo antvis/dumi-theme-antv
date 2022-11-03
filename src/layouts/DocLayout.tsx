@@ -26,18 +26,19 @@ export default () => {
 
   const outlet = useOutlet();
   const { pathname } = useLocation();
-  const path = pathname.toLowerCase();
+  const path = pathname
   // 统一去掉中英文前缀
   let p = path.replace('/zh/', '/').replace('/en/', '/')
   // 首页
   if (p === '/' || p === '/zh' || p === '/en' || p === '/en/') return <Index />;
 
   // 匹配 navs 中的 docs 路由
-  for (let i = 0; i < navs.length; i++){
-    if (navs[i].slug.startsWith('docs/') && (p.startsWith(navs[i].slug.replace('docs/', '/')) ||
-      p.startsWith(`/${navs[i].slug}`))) {
-      return <Manual> {outlet} </Manual>
+  const hasDocs = navs.filter(nav => nav.slug.startsWith('docs/'))
+  const docsRoutes = hasDocs.map(nav => nav.slug.split('/').find(item => item !== 'docs'))
+  for (let i = 0; i < docsRoutes.length; i++){
+    if (p.startsWith(`/${docsRoutes[i]}`) || p.startsWith(`/docs/${docsRoutes[i]}`)) {
+      return <Manual>{ outlet }</Manual>
     }
-  } 
+  }
   return outlet;
 };
