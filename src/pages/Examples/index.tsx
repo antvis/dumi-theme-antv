@@ -11,8 +11,8 @@ import { ExampleTopicMenu } from './components/ExampleTopicMenu';
 import { GalleryPageContent } from './components/GalleryPageContent';
 import { usePrevAndNext } from '../../slots/hooks';
 import { ThemeAntVContext } from '../../context';
+import { ExampleTopic } from '../../types';
 import styles from './index.module.less';
-
 
 /**
  * Examples 页面
@@ -24,7 +24,7 @@ const Example = () => {
   /** 示例页面的元数据信息 */
   const metaData: any = useContext(ThemeAntVContext);
 
-  const exampleTopics: ExamplesPage.ExampleTopic[] = metaData.meta.exampleTopics;
+  const exampleTopics: ExampleTopic[] = metaData.meta.exampleTopics;
 
   const [prev, next] = usePrevAndNext();
   // 为 zh 做兜底
