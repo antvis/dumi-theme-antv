@@ -37,7 +37,7 @@ export default defineConfig({
     },
     navs: [                                                             // 头部的菜单列表
       {
-        slug: 'manual/concepts/geometry/overview',
+        slug: 'docs/manual',
         title: {
           zh: '教程',
           en: 'Tutorials',
@@ -45,7 +45,7 @@ export default defineConfig({
         order: 2,
       },
       {
-        slug: 'api/advanced/register-shape',
+        slug: 'docs/api',
         title: {
           zh: 'API',
           en: 'API',
