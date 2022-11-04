@@ -11,9 +11,6 @@ export default (api: IApi) => {
     memo.resolve.codeBlockMode = 'passive';
 
     // add exportStatic .html
-    if (!memo.exportStatic) {
-      memo.exportStatic = {};
-    }
     memo.exportStatic.extraRoutePaths = getExamplePaths();
 
     return memo;
