@@ -37,7 +37,7 @@ export const CodePreview: React.FC<CodePreviewProps> = ({ header, error }) => {
               className={styles.result}
               status="error"
               title={useT('演示代码报错，请检查')}
-              subTitle={<pre>{error && (error as any).message}</pre>}
+              subTitle={<pre>{error && (error as any).toString()}</pre>}
             /> : null
         }
       </div>

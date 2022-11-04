@@ -111,12 +111,26 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
   useEffect(() => {
     // 用于上报错误信息，使用 script 执行代码
     if (typeof window !== 'undefined') {
-      (window as any).__reportErrorInPlayground = (e: Error) => {
+      const reportError = (e) => {
         if (e) {
           console.error(e);
           onError(e);
         }
-      };
+      }
+
+      // Cath error of code.
+      (window as any).__reportErrorInPlayground = reportError;
+      // Catch error of timeout/raf.
+      window.onerror = reportError
+      // Catch error of  promise.
+      window.addEventListener('unhandledrejection', reportError);
+    }
+    return () => {
+      if (window) {
+        (window as any).__reportErrorInPlayground = undefined;
+        window.onerror = undefined;
+        window.removeEventListener('unhandledrejection', reportError);
+      }
     }
   });
 
