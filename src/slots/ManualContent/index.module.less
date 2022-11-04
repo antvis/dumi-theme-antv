@@ -2,7 +2,7 @@
 @import '../_.less';
 
 // 参考 yuque 右侧 tabOfContent 宽度
-@toc-width: 413px;
+@toc-width: 260px;
 
 .markdown {
   font-size: 14px;
@@ -479,12 +479,10 @@
       padding-right: 32px;
     }
   }
-
-  .toc{
-    z-index: -999;
-    position: fixed;
-    transform: translate(1000px,1000px);
+  .tocSiderbar {
+      display: none;
   }
+ 
   .gallery {
     .galleryCard {
       width: 50%;
@@ -609,7 +607,6 @@
   margin-bottom: 20px;
   font-weight: 500;
   font-size: 30px;
-  font-family: Avenir, -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
   line-height: 38px;
 }
 
@@ -619,7 +616,7 @@
   justify-content: center;
 }
 
-.footer{
+.footer {
   width: 100%;
 }
 
