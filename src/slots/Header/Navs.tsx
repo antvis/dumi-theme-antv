@@ -36,6 +36,8 @@ export const Navs: React.FC<NavProps> = ({ navs, path }) => {
         let href = nav.slug.startsWith('http')
           ? nav.slug
           : `/${nav.slug}`;
+        const isAnotherSite = nav.slug.startsWith('http')
+        const anotherSite = isAnotherSite ? href : ''
         const title = getDocument(navs, nav.slug).title[locale.id];
         href = nav.slug.startsWith('/')
           ? nav.slug
@@ -55,8 +57,8 @@ export const Navs: React.FC<NavProps> = ({ navs, path }) => {
         });
         return (
           <li key={title} className={className}>
-            {nav.target === '_blank' || href.startsWith('http') ? (
-              <a href={href} target='_blank' rel='noreferrer'>
+            {nav.target === '_blank' || isAnotherSite ? (
+              <a href={anotherSite} target='_blank' rel='noreferrer'>
                 {title}
                 <LinkOutlined />
               </a>
