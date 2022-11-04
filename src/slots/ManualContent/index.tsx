@@ -72,7 +72,11 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
 
   // linkoTitle用来映射路由和Title
   const linkoTitle: linkToTitle = {}
-  
+    for (const route of Object.values(sidebar)) {
+      route[0].children.forEach(item => {
+        linkoTitle[item.link] = item.title as unknown as string
+      });
+    }
   /**
    *  /api/xxx -->  /api
    *  /en/api  -->  /en/api
@@ -108,7 +112,6 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
             label,
             key
           })
-          linkoTitle[key] = label
         })
 
         if (item.children.length == 0) {
@@ -125,7 +128,6 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
             label,
             key
           })
-          linkoTitle[key] = label
         })
         list.sort((a, b) => {
           return a.order - b.order;
