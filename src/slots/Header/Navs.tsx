@@ -40,7 +40,7 @@ export const Navs: React.FC<NavProps> = ({ navs, path }) => {
         href = nav.slug.startsWith('/')
           ? nav.slug
           : `/${nav.slug}`;
-        if (window.location.pathname.includes('en')) {
+        if (locale.id == 'en') {
           href = `/en${href}`;
         }
         // 去除 docs  防止二次点击相同nav跳转出现04
