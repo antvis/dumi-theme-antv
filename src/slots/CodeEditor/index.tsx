@@ -107,17 +107,17 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
     const e = new Event('resize');
     window.dispatchEvent(e);
   };
+
+  const reportError = useCallback((e) => {
+    if (e) {
+      console.error(e);
+      onError(e);
+    }
+  }, []);
   
   useEffect(() => {
     // 用于上报错误信息，使用 script 执行代码
     if (typeof window !== 'undefined') {
-      const reportError = (e) => {
-        if (e) {
-          console.error(e);
-          onError(e);
-        }
-      }
-
       // Cath error of code.
       (window as any).__reportErrorInPlayground = reportError;
       // Catch error of timeout/raf.
