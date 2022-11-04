@@ -37,10 +37,7 @@ export const Navs: React.FC<NavProps> = ({ navs, path }) => {
           ? nav.slug
           : `/${nav.slug}`;
         const isAnotherSite = nav.slug.startsWith('http')
-        let anotherSite = ''
-        if (isAnotherSite) {
-          anotherSite = href
-        }
+        const anotherSite = isAnotherSite ? href : ''
         const title = getDocument(navs, nav.slug).title[locale.id];
         href = nav.slug.startsWith('/')
           ? nav.slug
