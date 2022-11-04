@@ -1,38 +1,49 @@
+import * as path from 'path';
 import type { IApi } from 'dumi';
-import { getExamplesPageTopics } from './examples';
+import { getExamplesPageTopics, getExamplePaths } from './examples';
 import { myResolve } from './utils';
 
 export default (api: IApi) => {
   api.describe({ key: `dumi-theme:${require('../../package.json').name}` });
 
-  // use passive mode for code blocks of markdown, to avoid dumi compile theme as react component
   api.modifyDefaultConfig((memo) => {
+    // use passive mode for code blocks of markdown, to avoid dumi compile theme as react component
     memo.resolve.codeBlockMode = 'passive';
+
+    // add exportStatic .html
+    if (!memo.exportStatic) {
+      memo.exportStatic = {};
+    }
+    memo.exportStatic.extraRoutePaths = getExamplePaths();
 
     return memo;
   });
 
   const pages = [
+    {
+      id: 'dumi-theme-antv-homepage',
+      absPath: '/',
+    },
     // Examples gallery page.
     {
       id: 'dumi-theme-antv-example-list-zh',
-      path: '/examples/',
+      absPath: '/examples',
       file: myResolve('../pages/Examples/index.tsx'),
     },
     {
       id: 'dumi-theme-antv-example-list-lang',
-      path: '/:language/examples/',
+      absPath: '/:language/examples',
       file: myResolve('../pages/Examples/index.tsx'),
     },
     // single example preview page.
     {
       id: 'dumi-theme-antv-single-example-zh',
-      path: '/examples/:topic/:example',
+      absPath: '/examples/:topic/:example',
       file: myResolve('../pages/Example/index.tsx'),
     },
     {
       id: 'dumi-theme-antv-single-example-lang',
-      path: '/:language/examples/:topic/:example',
+      absPath: '/:language/examples/:topic/:example',
       file: myResolve('../pages/Example/index.tsx'),
     },
   ];
@@ -51,8 +62,6 @@ import { ThemeAntVContext } from '${contextFilePath}';
 
 export default function ThemeAntVContextWrapper() {
   const outlet = useOutlet();
-  // const { themeConfig } = useSiteData();
-  // const exampleTopics = themeConfig?.examples || [];
 
   return (
     <ThemeAntVContext.Provider
@@ -81,8 +90,8 @@ export default function ThemeAntVContextWrapper() {
     pages.forEach((page) => {
       routes[page.id] = {
         id: page.id,
-        path: page.path,
-        absPath: page.path,
+        path: page.absPath.slice(1),
+        absPath: page.absPath,
         file: page.file,
         parentId: 'DocLayout',
       };
@@ -93,4 +102,7 @@ export default function ThemeAntVContextWrapper() {
 
     return routes;
   });
+
+  // watch the `examples` folder
+  api.addTmpGenerateWatcherPaths(() => [path.resolve(process.cwd(), 'examples')]);
 };
