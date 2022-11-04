@@ -74,8 +74,8 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
   const linkoTitle: linkToTitle = {}
     for (const route of Object.values(sidebar)) {
       route[0].children.forEach(item => {
-          linkoTitle[item.link]=item.title as unknown as string
-       })
+        linkoTitle[item.link] = item.title as unknown as string
+      });
     }
   /**
    *  /api/xxx -->  /api
