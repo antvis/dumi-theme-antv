@@ -15,6 +15,7 @@ import { useScrollToTop } from '../hooks';
 
 import 'rc-drawer/assets/index.css';
 import styles from './index.module.less';
+import { Footer } from '../Footer';
 
 export type ManualContent = {
   readonly children: any;
@@ -272,8 +273,8 @@ const getGithubSourceUrl = ({
 
         </Affix>
         <Layout.Content className={styles.content}>
-          <div className={styles.contentMain}>
-            <h1>
+          <div className={styles.main} >
+            <h1 className={styles.contentTitle}>
               {linkoTitle[window.location.pathname]}
               <Tooltip title={'在 GitHub 上编辑'}>
                 <a
@@ -306,15 +307,15 @@ const getGithubSourceUrl = ({
               </div>
             </div>
           </div>
+          <Footer className={styles.footer}></Footer>
+
         </Layout.Content>
         { /** @toc-width: 260px; */}
-        <Layout.Sider theme="light" width={260} >
           <Affix
             className={styles.toc}
           >
             <TOC />
           </Affix>
-        </Layout.Sider>
       </Layout>
     </>
   );
