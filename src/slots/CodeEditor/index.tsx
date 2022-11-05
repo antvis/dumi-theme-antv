@@ -108,12 +108,15 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
     window.dispatchEvent(e);
   };
 
-  const reportError = useCallback((e) => {
+  const reportError = useCallback(debounce((e) => {
     if (e) {
       console.error(e);
       onError(e);
+      e && e.preventDefault && e.preventDefault();
+    } else {
+      onError(null);
     }
-  }, []);
+  }, 50), []);
   
   useEffect(() => {
     // 用于上报错误信息，使用 script 执行代码
@@ -142,10 +145,9 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
     try {
       compiled = compile(replaceInsertCss(v, locale.id), relativePath);
       // 清除错误
-      onError(null);
+      reportError(null);
     } catch (e) {
-      console.error(e);
-      onError(e);
+      reportError(e);
       // 执行出错，后面的步骤不用做了！
       return;
     }
