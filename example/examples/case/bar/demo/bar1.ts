@@ -1,23 +1,30 @@
 import { Chart } from '@antv/g2';
 
-const data = [
-  { year: '1951 年', value: 38 },
-  { year: '1952 年', value: 52 },
-  { year: '1956 年', value: 61 },
-  { year: '1957 年', value: 145 },
-  { year: '1958 年', value: 48 },
-];
+const text =
+  `This Is Just To Say\nWilliam Carlos Williams, 1934\n\nI have eaten\nthe plums\nthat were in\nthe icebox\n\nand which\nyou were probably\nsaving\nfor breakfast\n\nForgive me\nthey were delicious\nso sweet\nand so cold`.split(
+    '\n',
+  );
 
 const chart = new Chart({
   container: 'container',
+  autoFit: true,
 });
 
+chart.data(text);
+
 chart
-  .interval()
-  .data(data)
-  .encode('x', 'year')
-  .encode('y', 'value')
-  .encode('color', 'steelblue')
-  .axis('y', { tickFormatter: '.0%' });
+  .text()
+  .encode('x', 0.5)
+  .encode('y', (_, idx) => idx)
+  .encode('text', (v) => v)
+  // .encode('color', (v) => v)
+  .scale('x', { domain: [0, 1] })
+  .scale('y', { type: 'band' })
+  .style('textAlign', 'center')
+  .style('textBaseline', 'middle')
+  .style('fontSize', 16)
+  .style('opacity', (_, idx, arr) => idx / arr.length + 0.3)
+  .axis(false)
+  .legend(false);
 
 chart.render();

@@ -99,7 +99,7 @@ const Example: React.FC = () => {
               topic={topic}
               example={example}
               demo={demo}
-              size={get(themeConfig, 'editor.size', 0.4)}
+              size={get(themeConfig, 'editor.size', 0.38)}
             />
           )}
         </Content>

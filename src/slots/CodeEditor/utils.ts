@@ -161,6 +161,7 @@ window['define'] = null;
 try {
   ${newCode}
 
+  // 清除显示的错误
   window.__reportErrorInPlayground && window.__reportErrorInPlayground(null);
 } catch(e) {
   window.__reportErrorInPlayground && window.__reportErrorInPlayground(e);
