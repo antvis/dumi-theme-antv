@@ -111,9 +111,9 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
 
   const reportError = useCallback((e) => {
     if (e) {
-      console.error(e);
+      console.log(e);
       onError(e);
-      e && e.preventDefault && e.preventDefault();
+      e.preventDefault && e.preventDefault();
     } else {
       onError(null);
     }
@@ -136,7 +136,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
         window.removeEventListener('unhandledrejection', reportError);
       }
     }
-  });
+  }, []);
 
   const executeCode = useCallback(debounce((v: string) => {
     if (!v) return;
@@ -167,7 +167,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
     const dom = document.getElementById('playgroundScriptContainer')
     bind(dom, debounce(() => {
       dispatchResizeEvent();
-    }), 100);
+    }, 100));
     onReady();
     if (playground?.playgroundDidMount) {
       new Function(playground.playgroundDidMount)();
