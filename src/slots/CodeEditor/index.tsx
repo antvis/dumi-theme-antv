@@ -2,6 +2,7 @@ import React, { useRef, useState, useCallback, useEffect } from 'react';
 import MonacoEditor, { loader } from '@monaco-editor/react';
 import { useSiteData, useLocale } from 'dumi';
 import { debounce, noop } from 'lodash-es';
+import { bind, clear } from 'size-sensor';
 import { replaceInsertCss, execute, compile } from './utils';
 import { Toolbar, EDITOR_TABS } from './Toolbar';
 import { Loading } from '../Loading';
@@ -107,18 +108,35 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
     const e = new Event('resize');
     window.dispatchEvent(e);
   };
+
+  const reportError = useCallback((e) => {
+    if (e) {
+      console.log(e);
+      onError(e);
+      e.preventDefault && e.preventDefault();
+    } else {
+      onError(null);
+    }
+  }, []);
   
   useEffect(() => {
     // 用于上报错误信息，使用 script 执行代码
     if (typeof window !== 'undefined') {
-      (window as any).__reportErrorInPlayground = (e: Error) => {
-        if (e) {
-          console.error(e);
-          onError(e);
-        }
-      };
+      // Cath error of code.
+      (window as any).__reportErrorInPlayground = reportError;
+      // Catch error of timeout/raf.
+      window.onerror = reportError
+      // Catch error of  promise.
+      window.addEventListener('unhandledrejection', reportError);
     }
-  });
+    return () => {
+      if (window) {
+        (window as any).__reportErrorInPlayground = undefined;
+        window.onerror = undefined;
+        window.removeEventListener('unhandledrejection', reportError);
+      }
+    }
+  }, []);
 
   const executeCode = useCallback(debounce((v: string) => {
     if (!v) return;
@@ -127,11 +145,8 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
     let compiled;
     try {
       compiled = compile(replaceInsertCss(v, locale.id), relativePath);
-      // 清除错误
-      onError(null);
     } catch (e) {
-      console.error(e);
-      onError(e);
+      reportError(e);
       // 执行出错，后面的步骤不用做了！
       return;
     }
@@ -149,11 +164,16 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
   }, [code]);
 
   useEffect(() => {
+    const dom = document.getElementById('playgroundScriptContainer')
+    bind(dom, debounce(() => {
+      dispatchResizeEvent();
+    }, 100));
     onReady();
     if (playground?.playgroundDidMount) {
       new Function(playground.playgroundDidMount)();
     }
     return () => {
+      clear(dom);
       onDestroy();
       if (playground?.playgroundWillUnmount) {
         new Function(playground.playgroundWillUnmount)();

@@ -1,6 +1,6 @@
 {
   "name": "@antv/dumi-theme-antv",
-  "version": "0.3.0-beta.5",
+  "version": "0.3.0-beta.8",
   "description": "AntV website theme based on dumi2.",
   "types": "dist/types.d.ts",
   "scripts": {
@@ -81,6 +81,7 @@
     "react-split-pane": "^0.1.92",
     "react-use": "^17.4.0",
     "reading-time": "^1.5.0",
+    "size-sensor": "^1.0.1",
     "slick-carousel": "^1.8.1",
     "uri-parse": "^1.0.0"
   },

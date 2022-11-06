@@ -106,3 +106,16 @@ export const getExamplesPageTopics = (
     }
   );
 };
+
+/**
+ * 根据目录结构返回，所有的 example 页面，用于 buiild static
+ */
+export function getExamplePaths() {
+  const exampleTopicPaths = glob.sync(`${examplesBaseDir}/*/*`);
+  const paths =  exampleTopicPaths.map(p => p.replace(process.cwd(), ''));
+  return [
+    ...paths,
+    ...paths.map(p => `/zh${p}`),
+    ...paths.map(p => `/en${p}`),
+  ]
+}

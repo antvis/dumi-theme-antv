@@ -1,57 +1,30 @@
 import { Chart } from '@antv/g2';
 
-const data = [
-  { type: '汽车', value: 34 },
-  { type: '建材家居', value: 85 },
-  { type: '住宿旅游', value: 103 },
-  { type: '交通运输与仓储邮政', value: 142 },
-  { type: '建筑房地产', value: 251 },
-  { type: '教育', value: 367 },
-  { type: 'IT 通讯电子', value: 491 },
-  { type: '社会公共管理', value: 672 },
-  { type: '医疗卫生', value: 868 },
-  { type: '金融保险', value: 1234 },
-];
+const text =
+  `This Is Just To Say\nWilliam Carlos Williams, 1934\n\nI have eaten\nthe plums\nthat were in\nthe icebox\n\nand which\nyou were probably\nsaving\nfor breakfast\n\nForgive me\nthey were delicious\nso sweet\nand so cold`.split(
+    '\n',
+  );
+
 const chart = new Chart({
   container: 'container',
   autoFit: true,
-  height: 500,
-});
-chart.data(data);
-chart.scale({
-  value: {
-    max: 1400,
-    min: 0,
-    alias: '销量（百万）',
-  },
-});
-chart.axis('type', {
-  title: null,
-  tickLine: null,
-  line: null,
 });
 
-chart.axis('value', {
-  label: null,
-  title: {
-    offset: 30,
-    style: {
-      fontSize: 12,
-      fontWeight: 300,
-    },
-  },
-});
-chart.legend(false);
-chart.coordinate().transpose();
+chart.data(text);
+
 chart
-  .interval()
-  .position('type*value')
-  .size(26)
-  .label('value', {
-    style: {
-      fill: '#8d8d8d',
-    },
-    offset: 10,
-  });
-chart.interaction('element-active');
+  .text()
+  .encode('x', 0.5)
+  .encode('y', (_, idx) => idx)
+  .encode('text', (v) => v)
+  // .encode('color', (v) => v)
+  .scale('x', { domain: [0, 1] })
+  .scale('y', { type: 'band' })
+  .style('textAlign', 'center')
+  .style('textBaseline', 'middle')
+  .style('fontSize', 16)
+  .style('opacity', (_, idx, arr) => idx / arr.length + 0.3)
+  .axis(false)
+  .legend(false);
+
 chart.render();
