@@ -11,11 +11,12 @@ import { getBaseRoute, getIndexRoute, getOpenKeys } from './utils';
 import { NavigatorBanner } from './NavigatorBanner';
 import ReadingTime from './ReadingTime';
 import { TOC } from '../TOC';
+import { Footer } from '../Footer';
 import { useScrollToTop } from '../hooks';
 
 import 'rc-drawer/assets/index.css';
 import styles from './index.module.less';
-import { Footer } from '../Footer';
+
 
 export type ManualContent = {
   readonly children: any;
