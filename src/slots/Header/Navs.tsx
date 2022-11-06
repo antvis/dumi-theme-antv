@@ -1,29 +1,34 @@
 import React from 'react';
 import cx from 'classnames';
 import { isEqual } from 'lodash-es';
-import { LinkOutlined } from '@ant-design/icons';
 import { Link, useLocale } from 'dumi';
+import { Dropdown, Menu } from 'antd';
+import { DownOutlined, LinkOutlined } from '@ant-design/icons';
 
 import styles from './index.module.less';
 
+type dropdownItem = {
+  label: {
+    [key: string]: string;
+  },
+  key: string
+}
+
 export type INav = {
-  slug: string;
+  slug?: string;
   order: number;
   title: {
     [key: string]: string;
   };
   target?: '_blank';
+  notPage?: boolean,
+  dropdownItems?: dropdownItem[]
 }
 
 export type NavProps = {
   navs: INav[];
   path: string;
 }
-
-const getDocument = (navs: INav[], slug = '') =>
-  navs.find(doc => doc.slug === slug) || {
-    title: {} as { [key: string]: string }
-  };
 
 /**
  * Header 中的导航菜单
@@ -33,40 +38,66 @@ export const Navs: React.FC<NavProps> = ({ navs, path }) => {
   return (
     <>
       {navs.map((nav: INav) => {
-        let href = nav.slug.startsWith('http')
-          ? nav.slug
-          : `/${nav.slug}`;
-        const isAnotherSite = nav.slug.startsWith('http')
-        const anotherSite = isAnotherSite ? href : ''
-        const title = getDocument(navs, nav.slug).title[locale.id];
-        href = nav.slug.startsWith('/')
-          ? nav.slug
-          : `/${nav.slug}`;
-        if (locale.id == 'en') {
-          href = `/en${href}`;
-        }
-        // 去除 docs  防止二次点击相同nav跳转出现04
-        href = href.replace('/docs/', '/')
-        const className = cx('header-menu-item-active', {
-          [styles.activeItem]:
-          path.startsWith(href) ||
-          isEqual(
-            path.split('/').slice(0, 4),
-            href.split('/').slice(0, 4)
-          )
-        });
+        const title = nav.title[locale.id];
+        let href = ''
+        let className = ''
+        if (nav.slug) {
+          href = nav.slug.startsWith('http')
+            ? nav.slug
+            : `/${nav.slug}`;
+          if (locale.id == 'en' && !href.startsWith('http') ) {
+            href = `/en${href}`;
+          }
+          // 去除 docs  防止二次点击相同nav跳转出现04
+          href = href.replace('/docs/', '/')
+          className = cx('header-menu-item-active', {
+            [styles.activeItem]:
+              path.startsWith(href) ||
+              isEqual(
+                path.split('/').slice(0, 4),
+                href.split('/').slice(0, 4)
+              )
+          });
+       }
         return (
-          <li key={title} className={className}>
-            {nav.target === '_blank' || isAnotherSite ? (
-              <a href={anotherSite} target='_blank' rel='noreferrer'>
+          nav.notPage ? 
+            (
+              <li>
+                <Dropdown
+                  className={styles.ecoSystems}
+                  placement="bottom"
+                  overlay={
+                    <Menu>
+                      {nav.dropdownItems.map(({ label, key }) => (
+                        <Menu.Item key={key}>
+                          <a target="_blank" rel="noreferrer" href={key}>
+                            {label[locale.id]} <LinkOutlined />
+                          </a>
+                        </Menu.Item>
+                      ))}
+                    </Menu>
+                  }
+                >
+                  <span>
+                    {title}
+                    <DownOutlined />
+                  </span>
+                </Dropdown>
+            </li>
+            )
+            :
+           ( <li key={title} className={className}>
+              {nav.target === '_blank' || href.startsWith('http') ? (
+              <a href={href} target='_blank' rel='noreferrer'>
                 {title}
                 <LinkOutlined />
               </a>
-            ) : (
-              <Link to={href}>{title}</Link>
-            )}
-          </li>
-        );
+              ) : (
+               <Link to={href}>{title}</Link>
+             )}
+              </li>
+            )
+          )
       })}
     </>
   );

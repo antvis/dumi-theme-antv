@@ -63,6 +63,22 @@ export default defineConfig({
         },
         order: 0,
       },
+      {
+        notPage: true,
+        title: {
+          zh: '相关资源',
+          en: 'Related resource',
+        },
+        dropdownItems: [
+          {
+            label: {
+              zh: 'Dumi 2.x',
+              en: 'Dumi 2.x'
+            },
+            key: 'https://github.com/umijs/dumi'
+          }
+        ]
+      },
     ],
     ecosystems: [                                                       // 头部的菜单中的「周边生态」
       {

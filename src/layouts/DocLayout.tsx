@@ -33,8 +33,8 @@ export default () => {
   if (p === '/' || p === '/zh' || p === '/en' || p === '/en/') return <Index />;
 
   // 匹配 navs 中的 docs 路由
-  const hasDocsRoutes = navs.filter(nav => nav.slug.startsWith('docs/'))
-  const docsRoutes = hasDocsRoutes.map(nav => nav.slug.split('/').find(item => item !== 'docs'))
+  const hasDocsRoutes = navs.filter(nav => nav.slug && nav.slug.startsWith('docs/'))
+  const docsRoutes = hasDocsRoutes.map(nav => nav.slug && nav.slug.split('/').find(item => item !== 'docs'))
   if (docsRoutes.some(route => {
     return p.startsWith(`/${route}`) || p.startsWith(`/docs/${route}`) 
   })) {
