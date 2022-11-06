@@ -11,10 +11,12 @@ import { getBaseRoute, getIndexRoute, getOpenKeys } from './utils';
 import { NavigatorBanner } from './NavigatorBanner';
 import ReadingTime from './ReadingTime';
 import { TOC } from '../TOC';
+import { Footer } from '../Footer';
 import { useScrollToTop } from '../hooks';
 
 import 'rc-drawer/assets/index.css';
 import styles from './index.module.less';
+
 
 export type ManualContent = {
   readonly children: any;
@@ -59,7 +61,9 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
   const { themeConfig: { githubUrl, relativePath, docs } } = useSiteData();
   const sidebar = useFullSidebarData() as unknown as FullSidebarData
 
-  const isWide = useMedia('(min-width: 767.99px)', true);
+  const is767Wide = useMedia('(min-width: 767.99px)', true);
+  const is991Wide = useMedia('(min-width: 991.99px)', true);
+
   const [drawOpen, setDrawOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -249,9 +253,9 @@ const getGithubSourceUrl = ({
         <Affix
           offsetTop={0}
           className={styles.affix}
-          style={{ height: isWide ? '100vh' : 'inherit' }}
+          style={{ height: is767Wide ? '100vh' : 'inherit' }}
         >
-          {isWide ? (
+          {is767Wide ? (
             <Layout.Sider width="auto" theme="light" className={styles.sider}>
               {menu}
             </Layout.Sider>
@@ -274,8 +278,8 @@ const getGithubSourceUrl = ({
 
         </Affix>
         <Layout.Content className={styles.content}>
-          <div className={styles.contentMain}>
-            <h1>
+          <div className={styles.main} >
+            <h1 className={styles.contentTitle}>
               {linkoTitle[window.location.pathname]}
               <Tooltip title={'在 GitHub 上编辑'}>
                 <a
@@ -308,15 +312,17 @@ const getGithubSourceUrl = ({
               </div>
             </div>
           </div>
+          <Footer className={styles.footer}></Footer>
+
         </Layout.Content>
         { /** @toc-width: 260px; */}
-        <Layout.Sider theme="light" width={260} >
+        {is991Wide ? <Layout.Sider theme="light" width={260} >
           <Affix
             className={styles.toc}
           >
             <TOC />
           </Affix>
-        </Layout.Sider>
+        </Layout.Sider> : <div></div>}
       </Layout>
     </>
   );
