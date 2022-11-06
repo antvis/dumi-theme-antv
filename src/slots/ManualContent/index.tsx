@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { EditOutlined, MenuFoldOutlined, MenuUnfoldOutlined, VerticalAlignTopOutlined } from '@ant-design/icons';
 import readingTime from 'reading-time'
 
+import { SEO } from '../SEO';
 import { getBaseRoute, getIndexRoute, getOpenKeys } from './utils';
 import { NavigatorBanner } from './NavigatorBanner';
 import ReadingTime from './ReadingTime';
@@ -246,6 +247,7 @@ const getGithubSourceUrl = ({
   );
   return (
     <>
+      <SEO title={linkoTitle[window.location.pathname]} lang={locale.id} />
       <Layout
         style={{ background: '#fff' }}
         hasSider

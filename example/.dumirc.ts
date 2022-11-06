@@ -179,7 +179,7 @@ export default defineConfig({
     detail: {
       title: {
         zh: 'dumi-theme-antv 主题包',
-        en: 'dumi-theme-antv',
+        en: 'dumi-theme-antv Theme Pack',
       },
       description: {
         zh: '基于 dumi2 封装，提供灵活多变的 slots 插槽，抽取大量配置，一秒搭建 AntV 的各个技术栈官网。',

@@ -62,7 +62,7 @@ export const Navs: React.FC<NavProps> = ({ navs, path }) => {
         return (
           nav.notPage ? 
             (
-              <li>
+              <li key={title} className={className}>
                 <Dropdown
                   className={styles.ecoSystems}
                   placement="bottom"
