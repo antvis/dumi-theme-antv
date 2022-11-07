@@ -13,6 +13,9 @@ export default (api: IApi) => {
     // add exportStatic .html
     memo.exportStatic.extraRoutePaths = getExamplePaths();
 
+    // mfsu
+    memo.mfsu = false;
+
     return memo;
   });
 
