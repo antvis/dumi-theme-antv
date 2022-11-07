@@ -296,7 +296,7 @@ const getGithubSourceUrl = ({
                 </a>
               </Tooltip>
             </h1>
-            <div className={styles.readtimeMarginBottom}>
+            <div className={styles.readtimeContainer}>
               <ReadingTime readingTime={time} className={styles.readtime}></ReadingTime>
             </div>
             <div className={styles.markdown}>
