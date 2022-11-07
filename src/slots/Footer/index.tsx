@@ -13,6 +13,7 @@ import { useT } from '../hooks';
 
 import 'rc-footer/assets/index.less';
 import styles from './index.module.less';
+
 interface FooterProps extends RcFooterProps {
   rootDomain?: string;
   language?: string;
@@ -35,6 +36,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
     language,
     isDynamicFooter,
     rootDomain = '',
+    className,
     ...restProps
   } = props;
   const locale = useLocale();
@@ -201,7 +203,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
       maxColumnsPerRow={5}
       theme={theme}
       columns={columns || getColumns()}
-      className={classnames(styles.footer, {
+      className={classnames(styles.footer, className, {
         [styles.withMenu]: isDynamicFooter,
       })}
       bottom={
