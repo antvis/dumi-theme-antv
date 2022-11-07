@@ -3,6 +3,7 @@ import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { get } from 'lodash-es';
 import { Layout } from 'antd';
 import { useLocale, useSiteData } from 'dumi';
+import { SEO } from '../../slots/SEO';
 import { Header } from '../../slots/Header';
 import { ExampleSider } from '../../slots/ExampleSider';
 import { CodeRunner } from '../../slots/CodeRunner';
@@ -10,9 +11,13 @@ import { getDemoInfo } from '../../slots/CodeRunner/utils';
 import { ThemeAntVContext } from '../../context';
 import { ExampleTopic, Demo } from '../../types';
 import styles from './index.module.less';
+import { getCurrentTitle } from './utils';
 
 const { Sider, Content } = Layout;
 
+type title = {
+  [key: string]: string
+}
 type ExampleParams = {
   /**
    * 多语言
@@ -48,15 +53,18 @@ const Example: React.FC = () => {
 
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
 
+  const [title, setTitle] = useState<title>({})
+  
   useEffect(() => {
     if (topic && example && demo) {
       const targetDemoInfo = getDemoInfo(exampleTopics, topic, example, demo);
       setCurrentDemo(targetDemoInfo);
+      setTitle(getCurrentTitle(exampleTopics, topic, example))
     }
   }, [topic, example, hash]);
-
   return (
     <div className={styles.example}>
+      <SEO title={title[locale.id]} lang={locale.id} />
       <Header isHomePage={false} />
       <Layout className={styles.container}>
         <Sider

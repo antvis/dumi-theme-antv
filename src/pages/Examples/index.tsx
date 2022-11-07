@@ -2,6 +2,8 @@ import React from 'react';
 import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BackTop, Layout as AntLayout } from 'antd';
+import { useLocale } from 'dumi';
+import { SEO } from '../../slots/SEO';
 import { Header } from '../../slots/Header';
 import { Footer } from '../../slots/Footer';
 import NavigatorBanner from '../../slots/Header/Products/NavigatorBanner';
@@ -14,6 +16,7 @@ import { ThemeAntVContext } from '../../context';
 import { ExampleTopic } from '../../types';
 import styles from './index.module.less';
 
+
 /**
  * Examples 页面
  *
@@ -21,12 +24,19 @@ import styles from './index.module.less';
  */
 const Example = () => {
   const nav = useNavigate()
+  const locale = useLocale()
   /** 示例页面的元数据信息 */
   const metaData: any = useContext(ThemeAntVContext);
 
   const exampleTopics: ExampleTopic[] = metaData.meta.exampleTopics;
 
   const [prev, next] = usePrevAndNext();
+
+  const title = {
+    zh: '所有图表',
+    en: "Gallery"
+
+  }
   // 为 zh 做兜底
   useEffect(() => {
     const p = window.location.pathname
@@ -36,6 +46,7 @@ const Example = () => {
   },[])
   return (
     <>
+      <SEO title={title[locale.id]} />
       <Header isHomePage={false} />
       <AntLayout
         hasSider

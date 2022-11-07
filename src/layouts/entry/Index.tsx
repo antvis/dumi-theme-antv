@@ -1,5 +1,6 @@
 import React from 'react';
-import { useSiteData } from 'dumi';
+import { useLocale, useSiteData } from 'dumi';
+import { SEO } from '../../slots/SEO';
 import { Header } from '../../slots/Header';
 import { Detail } from '../../slots/Detail';
 import { Features } from '../../slots/Features';
@@ -14,14 +15,15 @@ import { useT } from '../../slots/hooks';
  * - 组合 slots 下的木偶组件
  */
 export const Index = () => {
-  const { themeConfig } = useSiteData();
+  const locale = useLocale()
+  const { themeConfig } = useSiteData();  
   const {
     title, siteUrl, githubUrl, isAntVSite,
     showSearch, showGithubCorner, showGithubStars, showLanguageSwitcher, showWxQrcode, defaultLanguage, showAntVProductsCard,
     versions, ecosystems, navs,
     detail, news, companies, features, cases, className,
     style,
-    id,
+    id
   } = themeConfig;
 
   const detailProps = {
@@ -43,8 +45,11 @@ export const Index = () => {
     cases, style, className
   }
 
+  const metaTitle = detailProps.title
+  
   return (
     <>
+      <SEO title={`${(metaTitle[locale.id])}`} titleSuffix="AntV" lang={locale.id} />
       <Header />
       <Detail { ...detailProps } />
       <Features { ...featuresProps } />
