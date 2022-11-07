@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { ErrorBoundary } from 'react-error-boundary'
 import { ThemeAntVContext } from '../../context';
 import { CodeRunner } from '../../slots/CodeRunner';
 
@@ -30,8 +31,8 @@ const Playground: React.FC<PlaygroundProps> = ({ rid, path, ratio = 0.62, height
   /** 示例页面的元数据信息 */
   const { meta }: any = useContext(ThemeAntVContext);
   const { exampleTopics } = meta;
-  // '/case/area/demo/area5.ts'
-  const [_, topic, example, demo] = path.match(/\/([\w-]+)\/([\w-]+)\/demo\/([\w-]+)/i) as string[];
+  // 'case/area/demo/area5.ts'
+  const [_, topic, example, demo] = path.match(/([\w-]+)\/([\w-]+)\/demo\/([\w-]+)/i) as string[];
 
   return (
     <div className={styles.container} style={{ height }}>
@@ -40,4 +41,20 @@ const Playground: React.FC<PlaygroundProps> = ({ rid, path, ratio = 0.62, height
   );
 };
 
-export default Playground;
+function ErrorFallback({error, resetErrorBoundary}) {
+  console.log(error);
+  return (
+    <div role="alert">
+      <p>Something went wrong:</p>
+      <pre>{error.message}</pre>
+    </div>
+  )
+}
+
+export default ((props: PlaygroundProps) => {
+  return (
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
+      <Playground {...props} />
+    </ErrorBoundary>
+  );
+}) as React.FC<PlaygroundProps>;
