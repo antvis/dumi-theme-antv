@@ -49,7 +49,7 @@ export const Index = () => {
   
   return (
     <>
-      <SEO title={`${(metaTitle[locale.id])}`} titleSuffix='AntV' lang={locale.id} />
+      <SEO title={`${(metaTitle[locale.id])}`} titleSuffix="AntV" lang={locale.id} />
       <Header />
       <Detail { ...detailProps } />
       <Features { ...featuresProps } />

@@ -1,5 +1,5 @@
 import React from 'react';
-import {SEO} from '../slots/SEO';
+import { SEO } from '../slots/SEO';
 import { Header } from '../slots/Header';
 import { NotFound as NotFoundPage } from '../slots/404';
 import { Footer } from '../slots/Footer';

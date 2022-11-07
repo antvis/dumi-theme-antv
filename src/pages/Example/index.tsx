@@ -3,7 +3,7 @@ import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { get } from 'lodash-es';
 import { Layout } from 'antd';
 import { useLocale, useSiteData } from 'dumi';
-import {SEO} from '../../slots/SEO';
+import { SEO } from '../../slots/SEO';
 import { Header } from '../../slots/Header';
 import { ExampleSider } from '../../slots/ExampleSider';
 import { CodeRunner } from '../../slots/CodeRunner';

@@ -3,7 +3,7 @@ import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BackTop, Layout as AntLayout } from 'antd';
 import { useLocale } from 'dumi';
-import {SEO} from '../../slots/SEO';
+import { SEO } from '../../slots/SEO';
 import { Header } from '../../slots/Header';
 import { Footer } from '../../slots/Footer';
 import NavigatorBanner from '../../slots/Header/Products/NavigatorBanner';
