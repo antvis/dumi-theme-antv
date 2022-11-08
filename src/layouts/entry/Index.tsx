@@ -23,7 +23,7 @@ export const Index = () => {
     versions, ecosystems, navs,
     detail, news, companies, features, cases, className,
     style,
-    id
+    id, caseImgStyle
   } = themeConfig;
 
   const detailProps = {
@@ -42,7 +42,7 @@ export const Index = () => {
   }
 
   const casesProps = {
-    cases, style, className
+    cases, style, className, caseImgStyle
   }
 
   const metaTitle = detailProps.title

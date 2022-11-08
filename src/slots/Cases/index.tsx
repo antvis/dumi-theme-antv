@@ -22,9 +22,10 @@ interface CasesProps {
   cases: Case[];
   style?: React.CSSProperties;
   className?: string;
+  caseImgStyle?: object;
 }
 
-export const Cases: React.FC<CasesProps> = ({ cases = [], style = {}, className }) => {
+export const Cases: React.FC<CasesProps> = ({ cases = [], style = {}, className ,caseImgStyle = {} }) => {
   const slider = React.useRef<any>(null);
 
   const clickPrevious = () => {
@@ -83,7 +84,7 @@ export const Cases: React.FC<CasesProps> = ({ cases = [], style = {}, className 
 
       return (
         <div className={styles.appWrapper} key={ic(app.title)}>
-          <img className={styles.appTeaser} src={app.image} alt={ic(app.title)} />
+          <img className={styles.appTeaser} src={app.image} alt={ic(app.title)} style={ caseImgStyle } />
           <div className={styles.appLeft}>
             <div className={styles.appContent}>
               <img

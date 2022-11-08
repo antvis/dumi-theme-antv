@@ -283,6 +283,8 @@ export default defineConfig({
         image: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*hDrgRb7ma4EAAAAAAAAAAABkARQnAQ'
       },
     ],
+    caseImgStyle: {                                          // 定制 case 图片样式需求
+    },       
     /** 首页合作公司 */
     companies: [
       { name: '阿里云', img: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*V_xMRIvw2iwAAAAAAAAAAABkARQnAQ' },
