@@ -317,8 +317,6 @@ const getGithubSourceUrl = ({
               </div>
             </div>
           </div>
-          <Footer className={styles.footer}></Footer>
-
         </Layout.Content>
         { /** @toc-width: 260px; */}
         {is991Wide ? <Layout.Sider theme="light" width={260} >

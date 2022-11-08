@@ -3,13 +3,16 @@
   height: 100%;
   position: relative;
 
-  padding: 16px;
+  padding: 24px;
   overflow: auto;
 
   display: flex;
   flex-direction: column;
 
   .header {
+    :global(.ant-page-header) {
+      padding-left: 0;
+    }
   }
 
   .content {

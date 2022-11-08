@@ -185,7 +185,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
       new Function(playground.playgroundDidMount)();
     }
     return () => {
-      clear(dom);
+      dom && clear(dom);
       onDestroy();
       if (playground?.playgroundWillUnmount) {
         new Function(playground.playgroundWillUnmount)();

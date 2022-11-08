@@ -16,17 +16,14 @@ export const DemoCard: React.FC<DemoCardProps> = (props) => {
   const locale = useLocale();
 
   const renderCardInternal = () => {
+    const img = demo.screenshot ||
+      'https://gw.alipayobjects.com/os/s/prod/antv/assets/image/screenshot-placeholder-b8e70.png';
     return (
       <>
-        <div>
-          <img
-            src={
-              demo.screenshot ||
-              'https://gw.alipayobjects.com/os/s/prod/antv/assets/image/screenshot-placeholder-b8e70.png'
-            }
-            alt={demo.title[locale.id]}
-          />
-        </div>
+        <div style={{
+          backgroundImage: `url("${img}")`,
+          backgroundSize: 'cover',
+        }} />
       </>
     );
   };
