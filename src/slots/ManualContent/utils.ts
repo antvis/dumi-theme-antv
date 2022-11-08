@@ -1,5 +1,5 @@
 export function getOpenKeys() {
-  const pathname = window.location.pathname
+  const pathname = window.location.pathname.replace('/docs/','/').replace('/zh/','/')
   const pathArr = pathname.split('/')
   const openKeys = []
   for (let i = pathArr.length; i > 0; i--) {

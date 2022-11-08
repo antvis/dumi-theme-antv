@@ -155,7 +155,7 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
     navigate(e.key)
     useScrollToTop()
   };
-  const [defaultSelectedKey, setDefaultSelectedKey] = useState<[string]>(renderSidebar!.length !== 0 ? [renderSidebar![0].key] : [''])
+  const [defaultSelectedKey, setDefaultSelectedKey] = useState<[string]>()
   //上一夜下一页
   const [prev, setPrev] = useState<PreAndNext | undefined>(undefined)
   const [next, setNext] = useState<PreAndNext | undefined>(undefined)
@@ -166,7 +166,10 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
     sidebarRoutes.push(route)
   }
   // 兜底 如果 nav 指定有误则自动重定向到 indexDocRoute
-  if (window.location.pathname.startsWith('/docs/') || !sidebarRoutes.includes(window.location.pathname)) {
+  if (window.location.pathname.includes('/docs/') || window.location.pathname.includes('/zh/')) {
+    navigate(window.location.pathname.replace('/docs/', '/').replace('/zh/','/'))
+  }
+  if (!sidebarRoutes.some(item => item === window.location.pathname)) {
     navigate(indexRoute)
   } 
   // 改变菜单栏选中和 openKeys 状态
