@@ -1,3 +1,5 @@
+import { useSiteData } from 'dumi';
+import { get } from 'lodash-es';
 import React, { useContext } from 'react';
 import { ErrorBoundary } from 'react-error-boundary'
 import { ThemeAntVContext } from '../../context';
@@ -27,16 +29,19 @@ export type PlaygroundProps = {
 /**
  * Markdown 标签插件 Playground
  */
-const Playground: React.FC<PlaygroundProps> = ({ rid, path, ratio = 0.62, height = 400 }) => {
+const Playground: React.FC<PlaygroundProps> = ({ rid, path, ratio, height = 400 }) => {
   /** 示例页面的元数据信息 */
   const { meta }: any = useContext(ThemeAntVContext);
   const { exampleTopics } = meta;
   // 'case/area/demo/area5.ts'
   const [_, topic, example, demo] = path.match(/([\w-]+)\/([\w-]+)\/demo\/([\w-]+)/i) as string[];
 
+  const themeConfig = useSiteData();
+  const defaultSize = get(themeConfig, 'editor.playgroundSize', 0.38);
+
   return (
     <div className={styles.container} style={{ height }}>
-      <CodeRunner exampleTopics={exampleTopics} topic={topic} example={example} demo={demo} />
+      <CodeRunner exampleTopics={exampleTopics} topic={topic} example={example} demo={demo} size={ratio || defaultSize} />
     </div>
   );
 };
