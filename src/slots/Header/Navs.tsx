@@ -1,6 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
-import { isEqual } from 'lodash-es';
+import { isEqual, size } from 'lodash-es';
 import { Link, useLocale } from 'dumi';
 import { Dropdown, Menu } from 'antd';
 import { DownOutlined, LinkOutlined } from '@ant-design/icons';
@@ -8,10 +8,10 @@ import { DownOutlined, LinkOutlined } from '@ant-design/icons';
 import styles from './index.module.less';
 
 type dropdownItem = {
-  label: {
+  name: {
     [key: string]: string;
   },
-  key: string
+  url: string
 }
 
 export type INav = {
@@ -60,7 +60,7 @@ export const Navs: React.FC<NavProps> = ({ navs, path }) => {
           });
        }
         return (
-          nav.notPage ? 
+          size(nav.dropdownItems) ? 
             (
               <li key={title} className={className}>
                 <Dropdown
@@ -68,10 +68,10 @@ export const Navs: React.FC<NavProps> = ({ navs, path }) => {
                   placement="bottom"
                   overlay={
                     <Menu>
-                      {nav.dropdownItems.map(({ label, key }) => (
-                        <Menu.Item key={key}>
-                          <a target="_blank" rel="noreferrer" href={key}>
-                            {label[locale.id]} <LinkOutlined />
+                      {nav.dropdownItems.map(({ name, url }) => (
+                        <Menu.Item key={url}>
+                          <a target="_blank" rel="noreferrer" href={url}>
+                            {name[locale.id]} <LinkOutlined />
                           </a>
                         </Menu.Item>
                       ))}

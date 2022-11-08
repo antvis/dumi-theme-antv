@@ -8,11 +8,10 @@ import { EditOutlined, MenuFoldOutlined, MenuUnfoldOutlined, VerticalAlignTopOut
 import readingTime from 'reading-time'
 
 import { SEO } from '../SEO';
-import { getBaseRoute, getIndexRoute, getOpenKeys } from './utils';
+import { getBaseRoute, getIndexRoute, getOpenKeys, getNavigateUrl } from './utils';
 import { NavigatorBanner } from './NavigatorBanner';
 import ReadingTime from './ReadingTime';
 import { TOC } from '../TOC';
-import { Footer } from '../Footer';
 import { useScrollToTop } from '../hooks';
 
 import 'rc-drawer/assets/index.css';
@@ -165,13 +164,12 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
   for (const route of Object.keys(linkoTitle)) {
     sidebarRoutes.push(route)
   }
-  // 兜底 如果 nav 指定有误则自动重定向到 indexDocRoute
-  if (window.location.pathname.includes('/docs/') || window.location.pathname.includes('/zh/')) {
-    navigate(window.location.pathname.replace('/docs/', '/').replace('/zh/','/'))
+
+  const url = getNavigateUrl(window.location.pathname, indexRoute, sidebarRoutes);
+  if (url !== window.location.pathname) {
+    navigate(url);
   }
-  if (!sidebarRoutes.some(item => item === window.location.pathname)) {
-    navigate(indexRoute)
-  } 
+
   // 改变菜单栏选中和 openKeys 状态
   useEffect(() => {    
     if (window.location.pathname == indexRoute) {
