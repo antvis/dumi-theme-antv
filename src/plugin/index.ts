@@ -16,6 +16,9 @@ export default (api: IApi) => {
     // mfsu
     memo.mfsu = false;
 
+    // 网站 favicon
+    memo.favicons = ['https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*7svFR6wkPMoAAAAAAAAAAAAADmJ7AQ/original'];
+
     return memo;
   });
 

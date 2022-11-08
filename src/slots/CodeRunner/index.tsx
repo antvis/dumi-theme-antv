@@ -10,11 +10,13 @@ import { NotFound } from '../404';
 import { ExampleTopic } from '../../types';
 
 type CodeRunnerProps = {
+  isPlayground?: boolean;
   topic: string;
   example: string;
   demo: string;
   exampleTopics: ExampleTopic[];
   size?: number;
+  replaceId?: string;
   notFound?: React.Element;
 }
 
@@ -22,7 +24,7 @@ type CodeRunnerProps = {
  * 代码编辑器 + 代码预览区域
  */
 export const CodeRunner: React.FC<CodeRunnerProps> = ({
-  exampleTopics, topic, example, demo, size,
+  exampleTopics, topic, example, demo, size, replaceId, isPlayground,
   notFound = <NotFound />,
 }) => {
   const demoInfo = getDemoInfo(exampleTopics, topic, example, demo);
@@ -40,12 +42,23 @@ export const CodeRunner: React.FC<CodeRunnerProps> = ({
 
   const header = <CodeHeader title={title[locale.id]} relativePath={relativePath} githubUrl={githubUrl} />;
 
+  function getExampleId() {
+    return `${topic}_${example}_${demo}`;
+  }
+
   return (
     <SplitPane split='vertical' defaultSize={`${(1 - size) * 100}%`} minSize={100}>
-      <CodePreview error={error} header={header} />
+      <CodePreview
+        exampleId={getExampleId()}
+        error={error}
+        header={header}
+        isPlayground={isPlayground}
+      />
       <CodeEditor
+        exampleId={getExampleId()}
         source={source}
         relativePath={relativePath}
+        replaceId={replaceId}
         onError={setError}
         onFullscreen={setFullscreen}
         onDestroy={noop}

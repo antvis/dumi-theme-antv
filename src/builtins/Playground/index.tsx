@@ -41,12 +41,20 @@ const Playground: React.FC<PlaygroundProps> = ({ rid, path, ratio, height = 400 
 
   return (
     <div className={styles.container} style={{ height }}>
-      <CodeRunner exampleTopics={exampleTopics} topic={topic} example={example} demo={demo} size={ratio || defaultSize} />
+      <CodeRunner
+        isPlayground
+        exampleTopics={exampleTopics}
+        topic={topic}
+        example={example}
+        demo={demo}
+        size={ratio || defaultSize}
+        replaceId={rid}
+      />
     </div>
   );
 };
 
-function ErrorFallback({error, resetErrorBoundary}) {
+function ErrorFallback({error}) {
   console.log(error);
   return (
     <div role="alert">
