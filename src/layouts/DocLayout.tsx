@@ -28,18 +28,19 @@ export default () => {
   const { pathname } = useLocation();
   const path = pathname
   // 统一去掉中英文前缀
-  let p = path.replace('/zh/', '/').replace('/en/', '/')
+  let p = path.replace('/zh/', '/').replace('/en/', '/');
   // 首页
   if (p === '/' || p === '/zh' || p === '/en' || p === '/en/') return <Index />;
 
   // 匹配 navs 中的 docs 路由
-  const hasDocsRoutes = navs.filter(nav => nav.slug && nav.slug.startsWith('docs/'))
-  const docsRoutes = hasDocsRoutes.map(nav => nav.slug && nav.slug.split('/').find(item => item !== 'docs'))
-  if (docsRoutes.some(route => {
-    return p.startsWith(`/${route}`) || p.startsWith(`/docs/${route}`) 
-  })) {
+  const docsRoutes = 
+    navs
+    .filter(nav => nav.slug && nav.slug.startsWith('docs/'))
+    .map(nav => nav.slug && nav.slug.split('/').find(item => item !== 'docs'));
+
+  if (docsRoutes.some(route => p.startsWith(`/${route}`) || p.startsWith(`/docs/${route}`))) {
     return <Manual>{outlet}</Manual>      
   }
   
-    return outlet;
+  return outlet;
 };

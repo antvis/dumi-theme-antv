@@ -31,3 +31,28 @@ export function getIndexRoute(MenuData) {
   }
   return defaultOpenKeys[defaultOpenKeys.length - 1]
 }
+
+/**
+ * 返回需要跳转的 pathname
+ * /en/api/ ----> /en/api/[first-doc]
+ * /zh/api/ ----> /api/[first-doc]
+ * /en/docs/api/ ----> /en/api/[first-doc]
+ * /zh/docs/api/ ----> /api/[first-doc]
+ *
+ * /en/docs/api/xxx ----> /en/api/xxx 
+ * /zh/docs/api/xxx ----> /api/xxx
+ * 
+ * /docs/api/xxx -----> /api/xxx
+ * 
+ * @param p 
+ */
+export function getNavigateUrl(pathname: string, first: string, siderbarMenu: any[]) {
+  // 兜底 如果 nav 指定有误则自动重定向到 indexDocRoute
+  if (pathname.includes('/docs/') || pathname.includes('/zh/')) {
+    return pathname.replace('/docs/', '/').replace('/zh/','/');
+  }
+  if (!siderbarMenu.some(item => item === pathname)) {
+    return first;
+  }
+  return pathname;
+}
