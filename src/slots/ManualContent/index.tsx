@@ -169,7 +169,7 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
   if (window.location.pathname.includes('/docs/') || window.location.pathname.includes('/zh/')) {
     navigate(window.location.pathname.replace('/docs/', '/').replace('/zh/','/'))
   }
-  if (!sidebarRoutes.some(item => item===window.location.pathname)) {
+  if (!sidebarRoutes.some(item => item === window.location.pathname)) {
     navigate(indexRoute)
   } 
   // 改变菜单栏选中和 openKeys 状态
