@@ -109,7 +109,7 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
       for (const item of list) {
         item.children = []
         fullSidebarDataToMenuData(rootList, item.key, item.children)
-        funllSidebarData[item.key][0].children?.forEach(itemChild => {
+        funllSidebarData[item.key] && funllSidebarData[item.key][0].children?.forEach(itemChild => {
           const label = itemChild.title as unknown as string
           const key = itemChild.link as string
           item.children!.push({
@@ -118,7 +118,8 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
             key
           })
         })
-
+        // children 的 order 排序
+        item.children.sort((a, b) => a.order - b.order)
         if (item.children.length == 0) {
           delete item.children
         }
