@@ -1,12 +1,18 @@
 import React from 'react';
 import { Result } from 'antd';
-
 import { useT } from '../hooks';
 
 import styles from './index.module.less';
 
-
 export type CodePreviewProps = {
+  /**
+   * 在文档中预览
+   */
+  isPlayground: boolean;
+  /**
+   * id
+   */
+  exampleId: string;
   /**
    * 预览页面头部组件，用于显示 demo 名称，一些操作栏等
    */
@@ -22,12 +28,14 @@ export type CodePreviewProps = {
  * 1. 一些 header 菜单
  * 2. 错误预览
  */
-export const CodePreview: React.FC<CodePreviewProps> = ({ header, error }) => {
+export const CodePreview: React.FC<CodePreviewProps> = ({ isPlayground, exampleId, header, error }) => {
   return (
     <div className={styles.preview}>
-      <div className={styles.header}>{ header }</div>
+      {
+        isPlayground ? null : <div className={styles.header}>{ header }</div>
+      }
       <div className={styles.content}>
-        <div id="playgroundScriptContainer" className={styles.playgroundScriptContainer}>
+        <div id={`playgroundScriptContainer_${exampleId}`}  className={styles.playgroundScriptContainer}>
           {/** 这里是 DEMO 运行需要的 dom 容器  */}
           {/** 这里是 script 标签运行的环境  */}
         </div>

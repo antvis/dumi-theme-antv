@@ -297,6 +297,7 @@ export default defineConfig({
     // 代码编辑器设置
     editor: {
       size: 0.4,   // 代码区占比
+      playgroundSize: 0.38, // 文档中的代码区占比
     }
   },
   // tnpm 安装的目录会导致 webpack 缓存快照 OOM，暂时禁用

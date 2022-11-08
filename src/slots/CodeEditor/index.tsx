@@ -1,3 +1,4 @@
+import ReactDOM from 'react-dom';
 import React, { useRef, useState, useCallback, useEffect } from 'react';
 import MonacoEditor, { loader } from '@monaco-editor/react';
 import { useSiteData, useLocale } from 'dumi';
@@ -24,6 +25,10 @@ export type CodeEditorProps = {
    * 标题
    */
   title?: string;
+  /**
+   * 示例的 id
+   */
+  exampleId: string;
   /**
    * 输入的源码
    */
@@ -83,6 +88,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
   playground,
   replaceId = 'container',
   isFullscreen,
+  exampleId,
   onReady = noop,
   onDestroy = noop,
   onError = noop,
@@ -103,6 +109,9 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
   const [currentEditorTab, setCurrentEditorTab] = useState(
     EDITOR_TABS.JAVASCRIPT,
   );
+
+  const containerId = `playgroundScriptContainer_${exampleId}`;
+
   // 出发 auto resize
   const dispatchResizeEvent = () => {
     const e = new Event('resize');
@@ -152,7 +161,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
     }
 
     // 2. 执行代码，try catch 在内部已经做了
-    execute(compiled, 'playgroundScriptContainer', playground?.container as string, replaceId);
+    execute(compiled, containerId, playground?.container as string, replaceId);
   }, 300), []);
 
   useEffect(() => {
@@ -164,10 +173,13 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
   }, [code]);
 
   useEffect(() => {
-    const dom = document.getElementById('playgroundScriptContainer')
-    bind(dom, debounce(() => {
-      dispatchResizeEvent();
-    }, 100));
+    const dom = document.getElementById('containerId');
+    if (dom) {
+      bind(dom, debounce(() => {
+        dispatchResizeEvent();
+      }, 100));
+    }
+    
     onReady();
     if (playground?.playgroundDidMount) {
       new Function(playground.playgroundDidMount)();
