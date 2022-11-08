@@ -51,9 +51,9 @@ export const Index = () => {
     <>
       <SEO title={`${(metaTitle[locale.id])}`} titleSuffix="AntV" lang={locale.id} />
       <Header />
-      <Detail { ...detailProps } />
-      <Features { ...featuresProps } />
-      <Cases { ...casesProps } />
+      { detail && <Detail { ...detailProps } /> }
+      { features && <Features { ...featuresProps } /> }
+      { cases && <Cases { ...casesProps } /> }
       <Companies title={useT("感谢信赖")} companies={companies} />
       <Footer />
     </>
