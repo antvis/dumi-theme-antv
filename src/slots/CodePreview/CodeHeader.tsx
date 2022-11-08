@@ -37,18 +37,19 @@ export const CodeHeader: React.FC<any> = ({
     <PageHeader
       ghost={false}
       title={title}
-      subTitle={
-        <Tooltip title={useT('在 GitHub 上编辑')}>
-          <a
-            href={getGithubSourceURL(githubUrl, relativePath, 'examples')}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.editOnGtiHubButton}
-          >
-            <EditOutlined />
-          </a>
-        </Tooltip>
-      }
+      // todo 编辑地址各种各样，需要有单独的配置，暂时关闭！
+      // subTitle={
+      //   <Tooltip title={useT('在 GitHub 上编辑')}>
+      //     <a
+      //       href={getGithubSourceURL(githubUrl, relativePath, 'examples')}
+      //       target="_blank"
+      //       rel="noopener noreferrer"
+      //       className={styles.editOnGtiHubButton}
+      //     >
+      //       <EditOutlined />
+      //     </a>
+      //   </Tooltip>
+      // }
       extra={
         <Space split={<Divider type="vertical" />}></Space>
       }
