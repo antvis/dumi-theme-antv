@@ -307,6 +307,14 @@ export default defineConfig({
       playgroundSize: 0.38, // 文档中的代码区占比
     }
   },
+  analytics: {
+    // google analytics 的 key (GA 4)
+    // ga_v2: 'G-abcdefg',
+    // 若你在使用 GA v1 旧版本，请使用 `ga` 来配置
+    ga: 'ga_old_key'
+    // 百度统计的 key
+    // baidu: 'baidu_tongji_key',
+  },
   // tnpm 安装的目录会导致 webpack 缓存快照 OOM，暂时禁用
   // 只有主题包开发需要用，其他技术栈使用的时候，不需要！
   chainWebpack(memo) { memo.delete('cache'); return memo },

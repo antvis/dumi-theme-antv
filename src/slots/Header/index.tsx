@@ -135,7 +135,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
     const timeout = setTimeout(() => {
       if (
         showChinaMirror && lang === 'zh'
-        && localStorage.getItem('china-mirror-no-more-hint')
+        && !localStorage.getItem('china-mirror-no-more-hint')
         && window.location.host.includes('antv.vision')
       ) {
         updateChinaMirrorHintVisible(true);
