@@ -6,6 +6,8 @@ import { useLocale, useSiteData, useFullSidebarData, useRouteMeta } from 'dumi';
 import { useNavigate } from "react-router-dom";
 import { EditOutlined, MenuFoldOutlined, MenuUnfoldOutlined, VerticalAlignTopOutlined } from '@ant-design/icons';
 import readingTime from 'reading-time'
+import URI from 'uri-parse';
+
 
 import { SEO } from '../SEO';
 import { getBaseRoute, getIndexRoute, getOpenKeys, getNavigateUrl } from './utils';
@@ -165,9 +167,11 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
     sidebarRoutes.push(route)
   }
 
-  const url = getNavigateUrl(window.location.pathname, indexRoute, sidebarRoutes);
-  if (url !== window.location.pathname) {
-    navigate(url);
+  const uri = new URI(location.href);
+  uri.path = getNavigateUrl(`/${uri.path}`, indexRoute, sidebarRoutes);
+  if (`${uri.path}` !== window.location.pathname) {
+    uri.path = uri.path.slice(1);
+    navigate(uri.toURI().replace(location.origin, ''));
   }
 
   // 改变菜单栏选中和 openKeys 状态

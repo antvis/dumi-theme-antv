@@ -51,7 +51,7 @@ export function getNavigateUrl(pathname: string, first: string, siderbarMenu: an
   if (pathname.includes('/docs/') || pathname.includes('/zh/')) {
     return pathname.replace('/docs/', '/').replace('/zh/','/');
   }
-  if (!siderbarMenu.some(item => item === pathname)) {
+  if (siderbarMenu.every(item => ![item, `${item}/`].includes(pathname))) {
     return first;
   }
   return pathname;
