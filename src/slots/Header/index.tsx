@@ -13,15 +13,15 @@ import {
   LinkOutlined,
   CheckOutlined,
 } from '@ant-design/icons';
-import { Popover, Menu, Dropdown, Select } from 'antd';
-import { map, size } from 'lodash-es';
+import { Modal, Button, Popover, Menu, Dropdown, Select } from 'antd';
+import { get, map, size } from 'lodash-es';
 import { Search } from './Search';
 import { Products } from './Products';
 import { Navs, INav } from './Navs';
 import { Logo } from './Logo';
 import { LogoWhite } from './LogoWhite';
 import { getLangUrl } from './utils';
-import { useT } from '../hooks';
+import { ic, useT } from '../hooks';
 
 import styles from './index.module.less';
 
@@ -41,6 +41,13 @@ export type HeaderProps = {
   showGithubStar?: boolean;
   /** 是否显示切换语言选项 */
   showLanguageSwitcher?: boolean;
+  /**
+   * 国内镜像相关的信息
+   */
+  internalSite?: {
+    url: string;
+    name: object;
+  },
   /** 切换语言的回调 */
   onLanguageChange?: (language: string) => void;
   /** 是否二维码 */
@@ -65,8 +72,6 @@ export type HeaderProps = {
   isAntVSite?: boolean;
   /** AntV root 域名，直接用主题的可不传 */
   rootDomain?: string;
-  /** 是否展示国内镜像链接 */
-  showChinaMirror?: boolean;
   /** 是否显示 AntV 产品卡片 */
   showAntVProductsCard?: boolean;
   /** 展示版本切换 */
@@ -87,6 +92,10 @@ export type HeaderProps = {
   }
 }
 
+function redirectChinaMirror(chinaMirrorOrigin: string) {
+  window.location.href = window.location.href.replace(window.location.origin, chinaMirrorOrigin);
+}
+
 /**
  * 头部菜单
  */
@@ -100,7 +109,6 @@ const HeaderComponent: React.FC<HeaderProps> = ({
   showGithubCorner = true,
   showAntVProductsCard = true,
   showLanguageSwitcher = true,
-  showChinaMirror = true,
   logo,
   onLanguageChange,
   // 默认就使用 AntV 的公众号
@@ -114,10 +122,29 @@ const HeaderComponent: React.FC<HeaderProps> = ({
   isAntVSite = false,
   rootDomain = '',
   versions,
+  internalSite,
   ecosystems,
   searchOptions
 }) => {
   const isAntVHome = isAntVSite && isHomePage; // 是否为AntV官网首页
+
+  const showChinaMirror: boolean = !!internalSite;
+  const chinaMirrorUrl: string = get(internalSite, 'url');
+  const [chinaMirrorHintVisible, updateChinaMirrorHintVisible] = useState(false);
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (
+        showChinaMirror && lang === 'zh'
+        && localStorage.getItem('china-mirror-no-more-hint')
+        && window.location.host.includes('antv.vision')
+      ) {
+        updateChinaMirrorHintVisible(true);
+      }
+    }, 5000);
+    return () => {
+      clearTimeout(timeout);
+    };
+  });
 
   const locale = useLocale();
   const nav = useNavigate()
@@ -234,6 +261,108 @@ const HeaderComponent: React.FC<HeaderProps> = ({
           </Dropdown>
         </li> : null
       }
+
+
+      {showChinaMirror && isWide ? (
+        <Popover
+          title={null}
+          content={
+            <div style={{ width: 300 }}>
+              <div>
+                <span
+                  role="img"
+                  aria-labelledby="中国"
+                  style={{ marginRight: '8px' }}
+                >
+                  🇨🇳
+                </span>
+                AntV 系列网站部署在 gh-pages
+                上，若访问速度不佳，可以前往国内镜像站点。
+              </div>
+              <div style={{ marginTop: 16, textAlign: 'right' }}>
+                <Button
+                  onClick={() => updateChinaMirrorHintVisible(false)}
+                  size="small"
+                  style={{ marginRight: 8 }}
+                >
+                  暂时关闭
+                </Button>
+                <Button
+                  type="primary"
+                  size="small"
+                  onClick={() => {
+                    localStorage.setItem(
+                      'china-mirror-no-more-hint',
+                      Date.now().toString(),
+                    );
+                    updateChinaMirrorHintVisible(false);
+                  }}
+                >
+                  不再提醒
+                </Button>
+              </div>
+            </div>
+          }
+          visible={chinaMirrorHintVisible}
+          placement="bottomRight"
+          align={{
+            offset: [-12, -16],
+          }}
+        >
+          <li>
+            <a
+              href={chinaMirrorUrl}
+              onClick={(e) => {
+                e.preventDefault();
+                redirectChinaMirror(chinaMirrorUrl);
+              }}
+            >
+              {ic(get(internalSite, 'name'))}
+              {!isAntVHome && <LinkOutlined />}
+            </a>
+          </li>
+        </Popover>
+      ) : null}
+
+      {showChinaMirror && !isWide && (
+        <Modal
+          visible={chinaMirrorHintVisible}
+          cancelText="不再提醒"
+          okText="立即前往"
+          onCancel={() => {
+            updateChinaMirrorHintVisible(false);
+          }}
+          onOk={() => redirectChinaMirror(chinaMirrorUrl) }
+          cancelButtonProps={{
+            onClick: () => {
+              localStorage.setItem(
+                'china-mirror-no-more-hint',
+                Date.now().toString(),
+              );
+              updateChinaMirrorHintVisible(false);
+            },
+          }}
+        >
+          <div className={styles.modalContent}>
+            <span role="img" aria-labelledby="中国">
+              🇨🇳
+            </span>
+            AntV 系列网站部署在 gh-pages 上，若访问速度不佳，可以前往
+            <a
+              href={chinaMirrorUrl}
+              onClick={(e) => {
+                e.preventDefault();
+                window.location.href = chinaMirrorUrl;
+              }}
+              className={styles.remindHref}
+            >
+              {ic(get(internalSite, 'name'))}
+              <LinkOutlined />
+            </a>
+            <span> 站点。</span>
+          </div>
+        </Modal>
+      )}
 
       {
         /** 产品列表 */
@@ -423,7 +552,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
 export const Header: React.FC<Partial<HeaderProps>> = (props) => {
   const { themeConfig } = useSiteData();
   const {
-    title, siteUrl, githubUrl, isAntVSite, subTitleHref,
+    title, siteUrl, githubUrl, isAntVSite, subTitleHref, internalSite,
     showSearch, showGithubCorner, showGithubStars, showLanguageSwitcher, showWxQrcode, defaultLanguage, showAntVProductsCard,
     versions, ecosystems, navs, docsearchOptions
   } = themeConfig;
@@ -436,6 +565,7 @@ export const Header: React.FC<Partial<HeaderProps>> = (props) => {
     githubUrl,
     isAntVSite,
     siteUrl,
+    internalSite,
     showSearch, showGithubCorner, showGithubStars, showLanguageSwitcher, showWxQrcode, defaultLanguage, showAntVProductsCard,
     versions, ecosystems, navs, searchOptions,
     isHomePage: true,

@@ -29,6 +29,13 @@ export default defineConfig({
       [version]: 'https://antv.vision/',
       '0.2.x': 'https://antv.vision/',
     },
+    internalSite: {
+      url: 'https://antv.antgroup.com',
+      name: {
+        zh: '国内镜像',
+        en: 'China Mirror',
+      },
+    },
     docsearchOptions: {                                                 // 头部搜索框配置
       versionV3: true,
       apiKey: '90c9a5dbf6e5ea7058cc32bcde8e94b2',
