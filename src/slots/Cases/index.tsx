@@ -87,7 +87,7 @@ export const Cases: React.FC<CasesProps> = ({ cases = [], style = {}, className 
           <div className={styles.appLeft}>
             <div className={styles.appContent}>
               <img
-                className={styles.appLogo}
+                className={cx(styles.appLogo, 'index-case-logo')}
                 src={app.logo}
                 alt='logo'
                 style={{
