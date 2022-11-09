@@ -29,6 +29,13 @@ export default defineConfig({
       [version]: 'https://antv.vision/',
       '0.2.x': 'https://antv.vision/',
     },
+    internalSite: {
+      url: 'https://antv.antgroup.com',
+      name: {
+        zh: '国内镜像',
+        en: 'China Mirror',
+      },
+    },
     docsearchOptions: {                                                 // 头部搜索框配置
       versionV3: true,
       apiKey: '90c9a5dbf6e5ea7058cc32bcde8e94b2',
@@ -299,6 +306,14 @@ export default defineConfig({
       size: 0.4,   // 代码区占比
       playgroundSize: 0.38, // 文档中的代码区占比
     }
+  },
+  analytics: {
+    // google analytics 的 key (GA 4)
+    // ga_v2: 'G-abcdefg',
+    // 若你在使用 GA v1 旧版本，请使用 `ga` 来配置
+    ga: 'ga_old_key'
+    // 百度统计的 key
+    // baidu: 'baidu_tongji_key',
   },
   // tnpm 安装的目录会导致 webpack 缓存快照 OOM，暂时禁用
   // 只有主题包开发需要用，其他技术栈使用的时候，不需要！
