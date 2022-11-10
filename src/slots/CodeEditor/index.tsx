@@ -162,7 +162,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
 
     // 2. 执行代码，try catch 在内部已经做了
     execute(compiled, containerId, playground?.container as string, replaceId);
-  }, 300), []);
+  }, 300), [containerId]);
 
   useEffect(() => {
     setCode(source);
@@ -173,7 +173,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
   }, [code]);
 
   useEffect(() => {
-    const dom = document.getElementById('containerId');
+    const dom = document.getElementById(containerId);
     if (dom) {
       bind(dom, debounce(() => {
         dispatchResizeEvent();

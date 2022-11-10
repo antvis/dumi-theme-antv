@@ -42,20 +42,18 @@ export const CodeRunner: React.FC<CodeRunnerProps> = ({
 
   const header = <CodeHeader title={title[locale.id]} relativePath={relativePath} githubUrl={githubUrl} />;
 
-  function getExampleId() {
-    return `${topic}_${example}_${demo}`;
-  }
+  const exampleId = `${topic}_${example}_${demo}`;
 
   return (
     <SplitPane split='vertical' defaultSize={`${(1 - size) * 100}%`} minSize={100}>
       <CodePreview
-        exampleId={getExampleId()}
+        exampleId={exampleId}
         error={error}
         header={header}
         isPlayground={isPlayground}
       />
       <CodeEditor
-        exampleId={getExampleId()}
+        exampleId={exampleId}
         source={source}
         relativePath={relativePath}
         replaceId={replaceId}
