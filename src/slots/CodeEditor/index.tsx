@@ -163,12 +163,14 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
 
     // 2. 执行代码，try catch 在内部已经做了
     execute(compiled, containerId, playground?.container as string, replaceId);
-  }, 300), [containerId, currentEditorTab]);
+  }, 300), [exampleId, currentEditorTab]);
 
+  // 案例变化的时候，修改期待吗
   useEffect(() => {
     setCode(source);
-  }, [source]);
+  }, [exampleId]);
 
+  // 代码变化的时候，运行代码
   useEffect(() => {
     executeCode(code);
   }, [code]);
@@ -180,13 +182,18 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
         dispatchResizeEvent();
       }, 100));
     }
-    
+    return () => {
+      dom && clear(dom);
+    };
+  }, []);
+
+  // 生命周期
+  useEffect(() => {
     onReady();
     if (playground?.playgroundDidMount) {
       new Function(playground.playgroundDidMount)();
     }
     return () => {
-      dom && clear(dom);
       onDestroy();
       if (playground?.playgroundWillUnmount) {
         new Function(playground.playgroundWillUnmount)();
@@ -204,18 +211,25 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
           setEditorTabs([EDITOR_TABS.JAVASCRIPT, EDITOR_TABS.DATA]);
           setData(data);
         });
+    } else {
+      setEditorTabs([EDITOR_TABS.JAVASCRIPT]);
     }
-  }, []);
+  }, [exampleId]);
 
-  useEffect(() => {
-    if (monacoRef.current) {
-      const v = currentEditorTab === EDITOR_TABS.JAVASCRIPT ? code : JSON.stringify(data, null, 2);
-      monacoRef.current.setValue(v);
-    }
-  }, [currentEditorTab]);
+  // 切换 tab
+  const onTabChange = useCallback((tab) => {
+    setCurrentEditorTab(tab);
+  }, [exampleId]);
 
-  const onCodeChange = useCallback((value: string) => {
-    if (currentEditorTab === EDITOR_TABS.JAVASCRIPT) {
+  // useEffect(() => {
+  //   if (monacoRef.current) {
+  //     const v = currentEditorTab === EDITOR_TABS.JAVASCRIPT ? code : JSON.stringify(data, null, 2);
+  //     monacoRef.current.setValue(v);
+  //   }
+  // }, [currentEditorTab]);
+
+  const onCodeChange = useCallback((value: string, event) => {
+    if (!event.isFlush && currentEditorTab === EDITOR_TABS.JAVASCRIPT) {
       setCode(value)
     }
   }, [currentEditorTab]);
@@ -232,7 +246,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
         editorTabs={editorTabs}
         currentEditorTab={currentEditorTab}
         onExecuteCode={() => executeCode(code)}
-        onEditorTabChange={setCurrentEditorTab}
+        onEditorTabChange={onTabChange}
         onToggleFullscreen={onFullscreen}
       />
       <div
@@ -243,8 +257,8 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
           language={
             currentEditorTab === EDITOR_TABS.JAVASCRIPT ? 'javascript' : 'json'
           }
-          // value={currentEditorTab === EDITOR_TABS.JAVASCRIPT ? code : JSON.stringify(data, null, 2)}
-          defaultValue={code}
+          value={currentEditorTab === EDITOR_TABS.JAVASCRIPT ? code : JSON.stringify(data, null, 2)}
+          // defaultValue={code}
           path={relativePath}
           loading={<Loading />}
           options={{
