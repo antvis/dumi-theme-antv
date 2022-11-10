@@ -17,7 +17,7 @@ export type PlaygroundProps = {
    */
   rid?: string;
   /**
-   * 预览区、代码区的宽度占比，默认为 0.62
+   * 预览区、代码区的宽度占比，默认为 0.38
    */
   ratio?: number;
   /**
@@ -38,6 +38,7 @@ const Playground: React.FC<PlaygroundProps> = ({ rid, path, ratio, height = 400 
 
   const themeConfig = useSiteData();
   const defaultSize = get(themeConfig, 'editor.playgroundSize', 0.38);
+  const size = isNaN(Number(ratio)) ? defaultSize : Number(ratio);
 
   return (
     <div className={styles.container} style={{ height }}>
@@ -47,7 +48,7 @@ const Playground: React.FC<PlaygroundProps> = ({ rid, path, ratio, height = 400 
         topic={topic}
         example={example}
         demo={demo}
-        size={ratio || defaultSize}
+        size={size}
         replaceId={rid}
       />
     </div>
