@@ -1,5 +1,5 @@
 ---
-title: manual
+title: test
 order: 3
 ---
 manual
