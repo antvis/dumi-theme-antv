@@ -6,7 +6,10 @@
     "jsx": "react",
     "skipLibCheck": true,
     "baseUrl": "./",
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "paths": {
+      "dumi/theme/*": ["src/*"]
+    },
   },
   "include": [
     "src/**/*"
