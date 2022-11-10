@@ -148,6 +148,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
   }, []);
 
   const executeCode = useCallback(debounce((v: string) => {
+    if (currentEditorTab !== EDITOR_TABS.JAVASCRIPT) return;
     if (!v) return;
     
     // 1. 先编译代码
@@ -162,7 +163,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
 
     // 2. 执行代码，try catch 在内部已经做了
     execute(compiled, containerId, playground?.container as string, replaceId);
-  }, 300), [containerId]);
+  }, 300), [containerId, currentEditorTab]);
 
   useEffect(() => {
     setCode(source);
@@ -208,9 +209,8 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
 
   useEffect(() => {
     if (monacoRef.current) {
-      monacoRef.current.setValue(
-        currentEditorTab === EDITOR_TABS.JAVASCRIPT ? code : JSON.stringify(data, null, 2),
-      );
+      const v = currentEditorTab === EDITOR_TABS.JAVASCRIPT ? code : JSON.stringify(data, null, 2);
+      monacoRef.current.setValue(v);
     }
   }, [currentEditorTab]);
 
@@ -218,7 +218,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
     if (currentEditorTab === EDITOR_TABS.JAVASCRIPT) {
       setCode(value)
     }
-  }, []);
+  }, [currentEditorTab]);
 
   return (
     <div className={styles.editor}>
@@ -243,7 +243,8 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
           language={
             currentEditorTab === EDITOR_TABS.JAVASCRIPT ? 'javascript' : 'json'
           }
-          value={code}
+          // value={currentEditorTab === EDITOR_TABS.JAVASCRIPT ? code : JSON.stringify(data, null, 2)}
+          defaultValue={code}
           path={relativePath}
           loading={<Loading />}
           options={{

@@ -23,6 +23,11 @@ export type CodePreviewProps = {
   error: any;
 }
 
+function getErrorMessage(e): string {
+  return (e.reason ? e.reason :
+          e.message ? e.message : e).toString();
+}
+
 /**
  * DEMO 预览页面的预览，主要包含有：
  * 1. 一些 header 菜单
@@ -45,7 +50,7 @@ export const CodePreview: React.FC<CodePreviewProps> = ({ isPlayground, exampleI
               className={styles.result}
               status="error"
               title={useT('演示代码报错，请检查')}
-              subTitle={<pre>{error && (error as any).toString()}</pre>}
+              subTitle={<pre>{getErrorMessage(error)}</pre>}
             /> : null
         }
       </div>
