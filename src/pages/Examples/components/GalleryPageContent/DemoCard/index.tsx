@@ -3,6 +3,7 @@ import { Link, useLocale } from 'dumi';
 import cx from 'classnames';
 import { Badge } from 'antd';
 import { DemoCardProps } from '../../../types';
+import { ic } from '../../../../../slots/hooks';
 import styles from '../../../index.module.less';
 
 /**
@@ -42,7 +43,7 @@ export const DemoCard: React.FC<DemoCardProps> = (props) => {
         </Badge.Ribbon>
       ) : renderCardInternal()
       }
-      <h4>{demo.title[locale.id]}</h4>
+      <h4>{ic(demo.title)}</h4>
     </Link>
   );
 };

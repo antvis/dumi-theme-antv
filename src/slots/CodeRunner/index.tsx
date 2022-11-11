@@ -7,6 +7,7 @@ import { CodePreview } from '../CodePreview';
 import { CodeHeader } from '../CodePreview/CodeHeader';
 import { getDemoInfo } from './utils';
 import { NotFound } from '../404';
+import { ic } from '../hooks';
 import { ExampleTopic } from '../../types';
 
 type CodeRunnerProps = {
@@ -40,7 +41,7 @@ export const CodeRunner: React.FC<CodeRunnerProps> = ({
   const [isFullScreen, setFullscreen] = useState<boolean>(false);
   const locale = useLocale();
 
-  const header = <CodeHeader title={title[locale.id]} relativePath={relativePath} githubUrl={githubUrl} />;
+  const header = <CodeHeader title={ic(title)} relativePath={relativePath} githubUrl={githubUrl} />;
 
   const exampleId = `${topic}_${example}_${demo}`;
 
