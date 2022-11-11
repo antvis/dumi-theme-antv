@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Modal } from 'antd';
 import { CaretRightOutlined } from '@ant-design/icons';
-import { Link, useLocale, useSiteData } from 'dumi'
+import { FormattedMessage, Link, useLocale, useSiteData } from 'dumi'
 import classNames from 'classnames';
 import GitHubButton from 'react-github-button';
 import gh from 'parse-github-url';
@@ -11,7 +11,6 @@ import Notification, { NotificationProps } from './Notification';
 
 import 'video-react/dist/video-react.css';
 import styles from './index.module.less';
-import { useT } from '../hooks';
 
 type BannerButtonShape = 'round' | 'square';
 
@@ -141,7 +140,7 @@ const Banner: React.FC<BannerProps> = ({
               lineHeight: '40px',
             }}
           >
-            {useT('知源・致远')}
+            {<FormattedMessage id='知源・致远'></FormattedMessage>}
           </p>
         </div>
       </div>,
