@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useLocale } from 'dumi';
+import cx from 'classnames';
 import { Badge } from 'antd';
 import { DemoCardProps } from '../../../types';
 import styles from '../../../index.module.less';
@@ -20,9 +21,8 @@ export const DemoCard: React.FC<DemoCardProps> = (props) => {
       'https://gw.alipayobjects.com/os/s/prod/antv/assets/image/screenshot-placeholder-b8e70.png';
     return (
       <>
-        <div style={{
+        <div className={cx('demo-card-screenshot', styles.screenshot)} style={{
           backgroundImage: `url("${img}")`,
-          backgroundSize: 'cover',
         }} />
       </>
     );
