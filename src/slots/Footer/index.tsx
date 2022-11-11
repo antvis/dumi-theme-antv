@@ -8,8 +8,7 @@ import {
 } from '@ant-design/icons';
 import { omit } from 'lodash-es';
 import classnames from 'classnames';
-import { useLocale } from 'dumi';
-import { useT } from '../hooks';
+import { useLocale, FormattedMessage } from 'dumi';
 
 import 'rc-footer/assets/index.less';
 import styles from './index.module.less';
@@ -59,35 +58,35 @@ export const Footer: React.FC<FooterProps> = (props) => {
         },
         {
           title: 'Umi',
-          description: useT('React 应用开发框架'),
+          description: <FormattedMessage id="React 应用开发框架" />,
           url: 'https://umijs.org',
           openExternal: true,
         },
         {
           title: 'Dumi',
-          description: useT('组件/文档研发工具'),
+          description: <FormattedMessage id="组件/文档研发工具" />,
           url: 'https://d.umijs.org',
           openExternal: true,
         },
         {
           title: 'ahooks',
-          description: useT('React Hooks 库'),
+          description: <FormattedMessage id="React Hooks 库" />,
           url: 'https://github.com/alibaba/hooks',
           openExternal: true,
         },
         {
-          title: useT('国内镜像'),
+          title: <FormattedMessage id="国内镜像" />,
           url: 'https://antv.antgroup.com/',
         },
       ],
     };
 
     const col2 = {
-      title: useT('社区'),
+      title: <FormattedMessage id="社区" />,
       items: [
         {
           icon: <ZhihuOutlined style={{ color: '#0084ff' }} />,
-          title: useT('体验科技专栏'),
+          title: <FormattedMessage id="体验科技专栏" />,
           url: 'http://zhuanlan.zhihu.com/xtech',
           openExternal: true,
         },
@@ -99,7 +98,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
             />
           ),
           title: 'SEE Conf',
-          description: useT('蚂蚁体验科技大会'),
+          description: <FormattedMessage id="蚂蚁体验科技大会" />,
           url: 'https://seeconf.antfin.com/',
           openExternal: true,
         },
@@ -107,7 +106,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
     };
 
     const col3 = {
-      title: useT('帮助'),
+      title: <FormattedMessage id="帮助" />,
       items: [
         {
           icon: <GithubOutlined />,
@@ -117,7 +116,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
         },
         {
           icon: <QuestionCircleOutlined />,
-          title: useT('StackOverflow'),
+          title: <FormattedMessage id="StackOverflow" />,
           url: 'http://stackoverflow.com/questions/tagged/antv',
           openExternal: true,
         },
@@ -232,7 +231,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
                 >
                   <GithubOutlined />
                 </a>
-                <a href={`${rootDomain}/${lang}/about`}>{useT('关于我们')}</a>
+                <a href={`${rootDomain}/${lang}/about`}>{<FormattedMessage id="关于我们" />}</a>
               </div>
               <div>
                 © {new Date().getFullYear()} Made with ❤ by{' '}

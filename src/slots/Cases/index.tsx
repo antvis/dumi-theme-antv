@@ -1,11 +1,11 @@
 import React from 'react';
 import { ArrowLeftOutlined, ArrowRightOutlined } from '@ant-design/icons';
-import { Link } from 'dumi';
+import { Link, FormattedMessage } from 'dumi';
 import Slider from 'react-slick';
 import cx from 'classnames';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { useT, ic } from '../hooks';
+import { ic } from '../hooks';
 import { IC } from '../../types';
 import styles from './index.module.less';
 
@@ -71,11 +71,11 @@ export const Cases: React.FC<CasesProps> = ({ cases = [], style = {}, className 
               target='_blank'
               rel='noopener noreferrer'
             >
-              {useT('查看详情')}
+              {<FormattedMessage id="查看详情" />}
             </a>
           ) : (
             <Link className={styles.detail} to={app.link ? app.link : ''}>
-              {useT('查看详情')}
+              {<FormattedMessage id="查看详情" />}
             </Link>
           )}
         </div>

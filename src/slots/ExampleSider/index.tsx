@@ -1,13 +1,12 @@
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import { Input, Menu, Tooltip } from 'antd';
-import { useLocale } from 'dumi';
+import { useLocale, FormattedMessage } from 'dumi';
 import {
   createFromIconfontCN,
   SearchOutlined,
   VerticalAlignTopOutlined
 } from '@ant-design/icons';
 import classNames from 'classnames';
-import { useT } from '../hooks';
 import { filterTreeNode } from '../utils';
 import { Demo, ExampleTopic } from '../../types';
 import styles from './index.module.less';
@@ -197,12 +196,12 @@ export const ExampleSider: React.FC<ExampleSiderProps> = (props) => {
       <div className={styles.searchSider}>
         <Input
           size='small'
-          placeholder={useT('搜索…')}
+          placeholder={<FormattedMessage id="搜索…" />}
           prefix={<SearchOutlined />}
           value={searchValue}
           onChange={(e: any) => setSearchValue(e.target.value)}
         />
-        <Tooltip placement='right' title={useT('收起所有') as React.ReactNode}>
+        <Tooltip placement='right' title={<FormattedMessage id="收起所有" /> as React.ReactNode}>
           <VerticalAlignTopOutlined
             className={styles.searchSiderIcon}
             onClick={() => setOpenKeys([])}

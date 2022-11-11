@@ -1,5 +1,5 @@
 import React from 'react';
-import { useT } from '../../hooks';
+import { FormattedMessage } from 'dumi';
 import { ProductType } from './getProducts';
 import styles from './Product.module.less';
 
@@ -57,7 +57,7 @@ const Product: React.FC<ProductProps> = ({
               target={getTarget(links.home.url || '')}
               key={links.home.url}
             >
-              {links.home.title ?? useT('产品首页')}
+              {links.home.title ?? <FormattedMessage id="产品首页" />}
             </a>
           )}
           {links.example && (
@@ -66,7 +66,7 @@ const Product: React.FC<ProductProps> = ({
               target={getTarget(links.example.url || '')}
               key={links.example.url}
             >
-              {links.example.title ?? useT('图表示例')}
+              {links.example.title ?? <FormattedMessage id="图表示例" />}
             </a>
           )}
         </div>

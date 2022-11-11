@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useMedia } from 'react-use';
 import { useNavigate } from "react-router-dom";
 import cx from 'classnames';
-import { useSiteData, useLocale } from 'dumi';
+import { useSiteData, useLocale, FormattedMessage } from 'dumi';
 import {
   GithubOutlined,
   MenuOutlined,
@@ -21,7 +21,7 @@ import { Navs, INav } from './Navs';
 import { Logo } from './Logo';
 import { LogoWhite } from './LogoWhite';
 import { getLangUrl } from './utils';
-import { ic, useT } from '../hooks';
+import { ic } from '../hooks';
 
 import styles from './index.module.less';
 
@@ -255,7 +255,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
             }
           >
             <span>
-              {useT('周边生态')}
+              {<FormattedMessage id="周边生态" />}
               <DownOutlined style={{ marginLeft: '6px' }} />
             </span>
           </Dropdown>
@@ -369,7 +369,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
         showAntVProductsCard &&
         <li { ...productItemProps }>
           <a>
-              {useT('所有产品')}
+              {<FormattedMessage id="所有产品" />}
             {!isAntVHome ? (
               <img
                 src="https://gw.alipayobjects.com/zos/antfincdn/FLrTNDvlna/antv.png"
