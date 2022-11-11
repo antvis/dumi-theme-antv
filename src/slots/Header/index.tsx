@@ -527,7 +527,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
           <h1>
             <a href={siteUrl}>{img}</a>
           </h1>
-          {subTitle && (
+          {!isAntVHome && subTitle && (
             <>
               <span className={styles.divider} />
               <h2 className={styles.subProduceName}>
@@ -559,6 +559,14 @@ export const Header: React.FC<Partial<HeaderProps>> = (props) => {
   const searchOptions = {
     docsearchOptions
   }
+
+  const locale = useLocale();
+  const path = window.location.pathname;
+  const isHomePage = 
+    path === '/' ||
+    path === `/${locale.id}` ||
+    path === `/${locale.id}/`;
+
   const headerProps = {
     subTitle: title,
     subTitleHref,
@@ -568,7 +576,8 @@ export const Header: React.FC<Partial<HeaderProps>> = (props) => {
     internalSite,
     showSearch, showGithubCorner, showGithubStars, showLanguageSwitcher, showWxQrcode, defaultLanguage, showAntVProductsCard,
     versions, ecosystems, navs, searchOptions,
-    isHomePage: true,
+    isHomePage,
+    transparent: isHomePage && isAntVSite,
   }
 
   return <HeaderComponent { ...Object.assign({} , headerProps, props)} />;
