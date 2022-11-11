@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocale, useSiteData } from 'dumi';
+import { useLocale, useSiteData, FormattedMessage } from 'dumi';
 import { SEO } from '../../slots/SEO';
 import { Header } from '../../slots/Header';
 import { Detail } from '../../slots/Detail';
@@ -7,7 +7,6 @@ import { Features } from '../../slots/Features';
 import { Cases } from '../../slots/Cases';
 import { Companies } from '../../slots/Companies';
 import { Footer } from '../../slots/Footer';
-import { useT } from '../../slots/hooks';
 
 /**
  * Index 路由下的入口
@@ -54,7 +53,7 @@ export const Index = () => {
       { detail && <Detail { ...detailProps } /> }
       { features && <Features { ...featuresProps } /> }
       { cases && <Cases { ...casesProps } /> }
-      <Companies title={useT("感谢信赖")} companies={companies} />
+      <Companies title={<FormattedMessage id="感谢信赖" />} companies={companies} />
       <Footer />
     </>
   );

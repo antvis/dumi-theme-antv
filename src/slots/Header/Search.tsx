@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import { SearchOutlined } from '@ant-design/icons';
 import { DocSearch } from '@docsearch/react';
-import { useLocale } from 'dumi';
-import { useT } from '../hooks';
+import { useLocale, FormattedMessage } from 'dumi';
 
 import '@docsearch/css';
 import styles from './Search.module.less';
@@ -84,7 +83,7 @@ export const Search: React.FC<SearchProps> = ({ docsearchOptions }) => {
           <input
             className={styles.input}
             id="search"
-            placeholder={useT('搜索…')}
+            placeholder={<FormattedMessage id="搜索…" />}
           />
         </>
       )}

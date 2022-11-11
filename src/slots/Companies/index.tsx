@@ -10,7 +10,7 @@ type Company = {
 }
 
 interface CompaniesProps {
-  title: string;
+  title: any;
   companies: Company[];
   className?: string;
   style?: React.CSSProperties;

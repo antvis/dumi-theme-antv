@@ -1,4 +1,4 @@
-import React, { useEffect, useState, lazy } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   CodeSandboxOutlined,
   PlayCircleOutlined,
@@ -7,12 +7,11 @@ import {
   FullscreenOutlined,
 } from '@ant-design/icons';
 import { Typography, Tooltip } from 'antd';
-import { useLocale } from 'dumi';
+import { useLocale, FormattedMessage } from 'dumi';
 import { getParameters } from 'codesandbox/lib/api/define';
 import stackblitzSdk from '@stackblitz/sdk';
 import { ping } from '../utils';
 import { extractImportDeps, getCodeSandboxConfig, getStackblitzConfig, getRiddleConfig } from './utils';
-import { useT } from '../hooks';
 
 import styles from './Toolbar.module.less';
 
@@ -143,7 +142,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
             name='data'
             value={JSON.stringify(riddlePrefillConfig)}
           />
-          <Tooltip title={useT('在 Riddle 中打开')}>
+          <Tooltip title={<FormattedMessage id="在 Riddle 中打开" />}>
             <input
               type='submit'
               value='Create New Riddle with Prefilled Data'
@@ -152,7 +151,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
           </Tooltip>
         </form>
       ) : null}
-      <Tooltip title={useT('在 StackBlitz 中打开')}>
+      <Tooltip title={<FormattedMessage id="在 StackBlitz 中打开" />}>
         <ThunderboltOutlined
           className={styles.stackblitz}
           onClick={() => {
@@ -160,7 +159,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
           }}
         />
       </Tooltip>
-      <Tooltip title={useT('在 CodeSandbox 中打开')}>
+      <Tooltip title={<FormattedMessage id="在 CodeSandbox 中打开" />}>
         <form
           action='https://codesandbox.io/api/v1/sandboxes/define'
           method='POST'
@@ -179,7 +178,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
       <Paragraph copyable={{ text: sourceCode }} style={{ marginLeft: 6 }} />
       {/** 暂时去掉全屏，当前空间已经非常大了 */}
       {/* {onToggleFullscreen ? (
-        <Tooltip title={isFullScreen ? useT('离开全屏') : useT('进入全屏')}>
+        <Tooltip title={isFullScreen ? <FormattedMessage id="离开全屏" /> :<FormattedMessage id="进入全屏" />}>
           {isFullScreen ? (
             <FullscreenExitOutlined
               onClick={onToggleFullscreen}
@@ -193,7 +192,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
           )}
         </Tooltip>
       ) : null} */}
-      <Tooltip title={useT('执行代码')}>
+      <Tooltip title={<FormattedMessage id="执行代码" />}>
         <PlayCircleOutlined
           onClick={onExecuteCode}
           style={{ marginLeft: 12 }}

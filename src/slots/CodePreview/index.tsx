@@ -1,6 +1,6 @@
 import React from 'react';
 import { Result } from 'antd';
-import { useT } from '../hooks';
+import { FormattedMessage } from 'dumi';
 
 import styles from './index.module.less';
 
@@ -49,7 +49,7 @@ export const CodePreview: React.FC<CodePreviewProps> = ({ isPlayground, exampleI
             <Result
               className={styles.result}
               status="error"
-              title={useT('演示代码报错，请检查')}
+              title={<FormattedMessage id="演示代码报错，请检查" />}
               subTitle={<pre>{getErrorMessage(error)}</pre>}
             /> : null
         }

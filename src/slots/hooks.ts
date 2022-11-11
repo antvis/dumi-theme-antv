@@ -20,13 +20,6 @@ export const useScrollToTop = () => {
   document.body.scrollTop = document.documentElement.scrollTop = 0;
 }
 
-export const useT = (transformedMessage: string) => {
-  const intl = useIntl()
-  return intl.formatMessage({
-    id: transformedMessage
-  })
-}
-
 export const useLogoLink = ({
   link = '',
   siteUrl = '',

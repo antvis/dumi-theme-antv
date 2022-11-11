@@ -1,9 +1,6 @@
 import React from 'react';
 import { PageHeader, Tooltip, Space, Divider } from 'antd';
-import { EditOutlined } from '@ant-design/icons';
-
-import { useT } from '../hooks';
-import { getGithubSourceURL } from '../utils';
+import { FormattedMessage } from 'dumi';
 
 import styles from './CodeHeader.module.less';
 
@@ -39,7 +36,7 @@ export const CodeHeader: React.FC<any> = ({
       title={title}
       // todo 编辑地址各种各样，需要有单独的配置，暂时关闭！
       // subTitle={
-      //   <Tooltip title={useT('在 GitHub 上编辑')}>
+      //   <Tooltip title={<FormattedMessage id="在 GitHub 上编辑" />}>
       //     <a
       //       href={getGithubSourceURL(githubUrl, relativePath, 'examples')}
       //       target="_blank"

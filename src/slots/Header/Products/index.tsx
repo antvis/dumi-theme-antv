@@ -1,10 +1,10 @@
 import React from 'react';
 import cx from 'classnames';
+import { useLocale, FormattedMessage } from 'dumi';
 import Product from './Product';
 import { CATEGORIES, getNewProducts, ProductType } from './getProducts';
-import { useChinaMirrorHost, useT } from '../../hooks';
+import { useChinaMirrorHost } from '../../hooks';
 import styles from './Product.module.less';
-import { useLocale } from 'dumi';
 
 interface ProductsProps {
   show: boolean;
@@ -38,7 +38,7 @@ export const Products: React.FC<ProductsProps> = ({ show, language, className })
           {CATEGORIES.map(({ name, type }, idx) => {
             return (
               <React.Fragment key={idx}>
-                <h3>{useT(name)}</h3>
+                <h3><FormattedMessage id={name} /></h3>
                 <ul>
                   {products
                     .filter((item) => item.category === type)
