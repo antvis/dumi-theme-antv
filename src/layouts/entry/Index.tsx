@@ -2,7 +2,7 @@ import React from 'react';
 import { useLocale, useSiteData, FormattedMessage } from 'dumi';
 import { SEO } from '../../slots/SEO';
 import { Header } from '../../slots/Header';
-import { Detail } from '../../slots/Detail';
+import { Detail } from 'dumi/theme/slots/Detail';
 import { Features } from '../../slots/Features';
 import { Cases } from '../../slots/Cases';
 import { Companies } from '../../slots/Companies';
@@ -53,7 +53,7 @@ export const Index = () => {
       { detail && <Detail { ...detailProps } /> }
       { features && <Features { ...featuresProps } /> }
       { cases && <Cases { ...casesProps } /> }
-      <Companies title={<FormattedMessage id="感谢信赖" />} companies={companies} />
+      <Companies title={<FormattedMessage id={isAntVSite ? "2000+ 公司正在使用" : "感谢信赖"} />} companies={companies} />
       <Footer />
     </>
   );
