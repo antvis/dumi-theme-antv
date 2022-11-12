@@ -196,17 +196,17 @@ export default defineConfig({
       buttons: [
         {
           text: {
-            zh: '开始使用',
-            en: 'Getting Started',
+            zh: '示例官网',
+            en: 'Example Site',
           },
-          link: `/tutorials/getting-started`,
+          link: `https://github.com/antvis/antvis.github.io`,
         },
         {
           text: {
             zh: '迁移手册',
             en: 'Migration Manual',
           },
-          link: `/tutorials/migration`,
+          link: `https://www.yuque.com/antv/gpzzmb/cyczx0`,
           type: 'primary',
         },
       ],
