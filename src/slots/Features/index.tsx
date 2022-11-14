@@ -82,7 +82,9 @@ export const Features: React.FC<FeaturesProps> = ({
       )}
       <div
         className={
-          cx(styles.rightbottomWithoutTitle, styles.rightbottom)
+          title
+            ? styles.rightbottom
+            : cx(styles.rightbottomWithoutTitle, styles.rightbottom)
         }
       >
         <div
@@ -131,9 +133,9 @@ export const Features: React.FC<FeaturesProps> = ({
       </div>
       <div className={styles.content}>
         <div key="content">
-          {title && <p key="title" className={styles.title}>
+          <p key="title" className={styles.title}>
             {title}
-          </p>}
+          </p>
           <div key="block" className={styles.cardsContainer}>
             <Row key="cards" className={styles.cards}>
               {getCards()}
@@ -144,4 +146,3 @@ export const Features: React.FC<FeaturesProps> = ({
     </div>
   );
 };
-
