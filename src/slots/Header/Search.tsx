@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { SearchOutlined } from '@ant-design/icons';
 import { DocSearch } from '@docsearch/react';
-import { useLocale, FormattedMessage } from 'dumi';
+import { useLocale, useIntl } from 'dumi';
 
 import '@docsearch/css';
 import styles from './Search.module.less';
@@ -55,7 +55,8 @@ function initDocSearchV2({
 }
 
 export const Search: React.FC<SearchProps> = ({ docsearchOptions }) => {
-  const locale=useLocale()
+  const locale = useLocale()
+  const intl = useIntl()
   const {
     apiKey = '',
     indexName = '',
@@ -83,7 +84,9 @@ export const Search: React.FC<SearchProps> = ({ docsearchOptions }) => {
           <input
             className={styles.input}
             id="search"
-            placeholder={<FormattedMessage id="搜索…" />}
+              placeholder={intl.formatMessage({
+                id: '搜索…'
+            })}
           />
         </>
       )}
