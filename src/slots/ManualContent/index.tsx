@@ -13,7 +13,7 @@ import { SEO } from '../SEO';
 import { getBaseRoute, getIndexRoute, getOpenKeys, getNavigateUrl } from './utils';
 import { NavigatorBanner } from './NavigatorBanner';
 import ReadingTime from './ReadingTime';
-import { TOC } from '../TOC';
+import { ContentTable } from '../ContentTable';
 import { useScrollToTop } from '../hooks';
 
 import 'rc-drawer/assets/index.css';
@@ -328,7 +328,7 @@ const getGithubSourceUrl = ({
           <Affix
             className={styles.toc}
           >
-            <TOC />
+            <ContentTable />
           </Affix>
         </Layout.Sider> : <div></div>}
       </Layout>

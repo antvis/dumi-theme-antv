@@ -6,4 +6,4 @@ import './index.module.less';
 /**
  * 文档右侧的指示器（table of content）
  */
-export const TOC  = Toc;
+export const ContentTable  = Toc;
