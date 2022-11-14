@@ -95,7 +95,7 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
     function fullSidebarDataToMenuData(rootList: SidebarData, hrefId: string, list: SidebarData) {
       // 递归
       rootList.forEach((item: MenuItem) => {
-        const href = !baseRoute.startsWith('/en') ? `/${item.slug}` : `/en/${item.slug}`
+        const href = (!baseRoute.startsWith('/en') ? `/${item.slug}` : `/en/${item.slug}`).toLocaleLowerCase()
         const id = href.split("/").slice(0, href.split("/").length - 1).join("/")
         if (href.includes(baseRoute)) {
           if (id === hrefId) {
