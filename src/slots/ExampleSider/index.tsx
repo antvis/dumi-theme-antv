@@ -1,6 +1,7 @@
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import { Input, Menu, Tooltip } from 'antd';
-import { useLocale, FormattedMessage } from 'dumi';
+import { useLocale, FormattedMessage, useIntl } from 'dumi';
+import { cloneDeep } from 'lodash-es';
 import {
   createFromIconfontCN,
   SearchOutlined,
@@ -53,21 +54,20 @@ export const ExampleSider: React.FC<ExampleSiderProps> = (props) => {
 
   const locale = useLocale();
 
+  const intl = useIntl();
+
   const getCurrentTopics = () => {
-    if (searchValue) {
-      const res = filterTreeNode({
-        id: 'FAKE_ID',
-        childrenKey: 'exampleTopics',
-        title: {
-          'zh': 'FAKE_TITLE',
-          'en': 'FAKE_TITLE'
-        },
-        exampleTopics: exampleTopics
-      }, searchValue, locale.id);
-      return res?.exampleTopics || [];
-    }
-    return exampleTopics;
-  };
+    const res = filterTreeNode({
+      id: 'FAKE_ID',
+      childrenKey: 'exampleTopics',
+      title: {
+        'zh': 'FAKE_TITLE',
+        'en': 'FAKE_TITLE'
+      },
+      exampleTopics: cloneDeep(exampleTopics)
+    }, searchValue, locale.id);
+    return res?.exampleTopics || [];
+  }
 
   // 初始化菜单栏展开keys
   useEffect(() => {
@@ -156,13 +156,13 @@ export const ExampleSider: React.FC<ExampleSiderProps> = (props) => {
           {topic.examples.map((example) => {
             return (
               <Menu.SubMenu
-                key={`EXAMPLE-${example.id}`}
+                key={`EXAMPLE-${topic.id}-${example.id}`}
                 title={example.title[locale.id]}
               >
                 {example.demos.map((demo) => {
                   return (
                     <Menu.Item
-                      key={`DEMO-${demo.id}`}
+                      key={`DEMO-${topic.id}-${example.id}-${demo.id}`}
                       style={{
                         height: 70,
                         padding: 0,
@@ -196,7 +196,7 @@ export const ExampleSider: React.FC<ExampleSiderProps> = (props) => {
       <div className={styles.searchSider}>
         <Input
           size='small'
-          placeholder={<FormattedMessage id="搜索…" />}
+          placeholder={intl.formatMessage({ id: '搜索…' })}
           prefix={<SearchOutlined />}
           value={searchValue}
           onChange={(e: any) => setSearchValue(e.target.value)}

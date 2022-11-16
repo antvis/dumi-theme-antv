@@ -91,6 +91,9 @@ export const usePrevAndNext = (): NavigatorBannerProps['post'][] => {
  */
 export function ic(v: string | object) {
   const locale = useLocale();
+  return icWithLocale(v, locale.id);
+}
 
-  return typeof v === 'object' ? get(v, [locale.id]) : v;
+export function icWithLocale(v: string | object, locale) {
+  return typeof v === 'object' ? get(v, [locale]) : v;
 }
