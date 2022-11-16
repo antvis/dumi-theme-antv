@@ -1,4 +1,5 @@
 import { Status, TreeNode } from '../types';
+import { icWithLocale } from './hooks';
 
 export async function ping(): Promise<Status> {
   const timeout = new Promise<Status>((resolve) => {
@@ -76,9 +77,11 @@ export const filterTreeNode = (
     }
   }
 
-  const isCurrentTreeNodeMatched = treeNode.title[locale]
-    .toLowerCase()
-    .includes(keyValue.toLowerCase());
+  const title = icWithLocale(treeNode.title, locale) || '';
+  const matchFields = [title, treeNode.id, treeNode.filename];
+  
+  const isCurrentTreeNodeMatched = 
+    matchFields.some(f => (f ? f.toLowerCase() : '').includes(keyValue ? keyValue.toLowerCase() : ''));
 
   // 当前节点自身匹配，那么其孩子直接匹配，可以直接返回当前节点
   if (isCurrentTreeNodeMatched) {
