@@ -289,7 +289,8 @@ const getGithubSourceUrl = ({
           <div className={styles.main} >
             <h1 className={styles.contentTitle}>
               {linkoTitle[window.location.pathname]}
-              <Tooltip title={'在 GitHub 上编辑'}>
+      				{/* todo 编辑地址各种各样，需要有单独的配置，暂时关闭！这儿忘关了 */}
+              {/* <Tooltip title={'在 GitHub 上编辑'}>
                 <a
                   href={getGithubSourceUrl({
                     githubUrl,
@@ -302,7 +303,7 @@ const getGithubSourceUrl = ({
                 >
                   <EditOutlined />
                 </a>
-              </Tooltip>
+              </Tooltip> */}
             </h1>
             <div className={styles.readtimeContainer}>
               <ReadingTime readingTime={time} className={styles.readtime}></ReadingTime>
