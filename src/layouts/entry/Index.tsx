@@ -7,6 +7,7 @@ import { Features } from '../../slots/Features';
 import { Cases } from '../../slots/Cases';
 import { Companies } from '../../slots/Companies';
 import { Footer } from '../../slots/Footer';
+import { size } from 'lodash-es';
 
 /**
  * Index 路由下的入口
@@ -50,10 +51,10 @@ export const Index = () => {
     <>
       <SEO title={`${(metaTitle[locale.id])}`} titleSuffix="AntV" lang={locale.id} />
       <Header />
-      { detail && <Detail { ...detailProps } /> }
-      { features && <Features { ...featuresProps } /> }
-      { cases && <Cases { ...casesProps } /> }
-      <Companies title={<FormattedMessage id={isAntVSite ? "2000+ 公司正在使用" : "感谢信赖"} />} companies={companies} />
+      { size(detail) ? <Detail { ...detailProps } /> : null }
+      { size(features) ? <Features { ...featuresProps } /> : null }
+      { size(cases) ? <Cases { ...casesProps } /> : null }
+      { size(companies) ? <Companies title={<FormattedMessage id={isAntVSite ? "2000+ 公司正在使用" : "感谢信赖"} />} companies={companies} /> : null }
       <Footer />
     </>
   );
