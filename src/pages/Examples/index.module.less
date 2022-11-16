@@ -199,6 +199,11 @@
 
 .layout {
   margin: 24px 0 32px;
+  :global {
+    .ant-layout-content {
+      background-color: #ffffff;
+    }
+  }
 }
 
 .main {
@@ -206,6 +211,7 @@
   width: calc(100% - @toc-width);
   padding-left: 48px;
   padding-right: 24px;
+  padding-bottom: 24px;
   overflow: hidden;
 
   .meta {
@@ -521,6 +527,7 @@
       margin-top: 30px;
       padding-left: 24px;
       padding-right: 24px;
+      margin-bottom: 30px;
     }
   }
 }
