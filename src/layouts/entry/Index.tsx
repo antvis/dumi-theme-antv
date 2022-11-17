@@ -34,7 +34,6 @@ export const Index = () => {
   }
 
   const featuresProps = {
-    title,
     features,
     className,
     style,

@@ -134,6 +134,7 @@ export const Features: React.FC<FeaturesProps> = ({
       <div className={styles.content}>
         <div key="content">
           <p key="title" className={styles.title}>
+              {title?title:''}
           </p>
           <div key="block" className={styles.cardsContainer}>
             <Row key="cards" className={styles.cards}>
