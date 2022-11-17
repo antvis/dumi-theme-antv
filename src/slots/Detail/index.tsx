@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import cx from 'classnames';
 import gh from 'parse-github-url';
 import GitHubButton from 'react-github-button';
+import { useLocale } from 'dumi/dist/client/theme-api';
+
 import { ic } from '../hooks';
 import { IC } from '../../types';
 import { News, NewsProps } from './News';
@@ -46,7 +48,8 @@ export const Detail: React.FC<DetailProps> = ({
   news = [],
 }) => {
   const [removeNews, setRemoteNews] = useState<NewsProps[]>([]);
-
+  const lang = useLocale().id
+  
   useEffect(() => {
     fetch(AssetsNewsURL)
       .then((res) => res.json())
@@ -86,7 +89,7 @@ export const Detail: React.FC<DetailProps> = ({
                       borderRadius: shape === 'square' ? '4px' : '1000px',
                       ...style,
                     }}
-                    href={link}
+                    href={link[lang] ? link[lang]: link}
                   >
                     <span className={styles.button}>{ic(text)}</span>
                   </a>

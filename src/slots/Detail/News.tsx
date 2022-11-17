@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'dumi';
+import { Link,useLocale } from 'dumi';
 import { ic } from '../hooks';
 import { IC } from '../../types';
 import styles from './News.module.less';
@@ -24,6 +24,7 @@ export const News: React.FC<NewsProps> = ({
   date,
   link = '',
 }) => {
+  const lang = useLocale().id
   const children = (
     <div className={styles.container}>
       <img
@@ -52,7 +53,7 @@ export const News: React.FC<NewsProps> = ({
     );
   }
   return (
-    <Link to={link} className={styles.news}>
+    <Link to={link[lang] ? link[lang]: link} className={styles.news}>
       {children}
     </Link>
   );

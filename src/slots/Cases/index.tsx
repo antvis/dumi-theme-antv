@@ -3,10 +3,13 @@ import { ArrowLeftOutlined, ArrowRightOutlined } from '@ant-design/icons';
 import { Link, FormattedMessage } from 'dumi';
 import Slider from 'react-slick';
 import cx from 'classnames';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+import { useLocale } from 'dumi'
+
 import { ic } from '../hooks';
 import { IC } from '../../types';
+
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import styles from './index.module.less';
 
 interface Case {
@@ -25,6 +28,7 @@ interface CasesProps {
 }
 
 export const Cases: React.FC<CasesProps> = ({ cases = [], style = {}, className }) => {
+  const lang = useLocale().id
   const slider = React.useRef<any>(null);
 
   const clickPrevious = () => {
@@ -74,7 +78,7 @@ export const Cases: React.FC<CasesProps> = ({ cases = [], style = {}, className 
               {<FormattedMessage id="查看详情" />}
             </a>
           ) : (
-            <Link className={styles.detail} to={app.link ? app.link : ''}>
+            <Link className={styles.detail} to={app.link[lang] ? app.link[lang] : app.link}>
               {<FormattedMessage id="查看详情" />}
             </Link>
           )}

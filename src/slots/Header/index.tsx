@@ -525,7 +525,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
       <div className={styles.container}>
         <div className={styles.left}>
           <h1>
-            <a href={siteUrl}>{img}</a>
+            <a href={siteUrl[lang] ? siteUrl[lang]: siteUrl}>{img}</a>
           </h1>
           {!isAntVHome && subTitle && (
             <>
