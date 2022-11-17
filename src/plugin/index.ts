@@ -108,4 +108,14 @@ export default function ThemeAntVContextWrapper() {
 
   // watch the `examples` folder
   api.addTmpGenerateWatcherPaths(() => [path.resolve(process.cwd(), 'examples')]);
+
+  // add other plugins
+  /**
+   * umi-plugin-antv-cname :
+   *  build 后自动生成 CNAME 文件(1.拷贝项目根目录的 CNAME 文件 2.无文件则自动解析，仅适用于 AntV 官网)
+   */
+  api.registerPlugins([
+    require.resolve('umi-plugin-antv-cname')
+  ])
+
 };
