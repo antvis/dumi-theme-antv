@@ -15,6 +15,8 @@ export default (api: IApi) => {
 
     // mfsu
     memo.mfsu = false;
+    // 部署到 gh-pages 后，打开白屏，怀疑是 gzip 导致，所以换一个混淆器
+    memo.jsMinifier = 'terser';
 
     // 网站 favicon
     memo.favicons = ['https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*7svFR6wkPMoAAAAAAAAAAAAADmJ7AQ/original'];
@@ -116,14 +118,4 @@ export default function ThemeAntVContextWrapper() {
 
   // watch the `examples` folder
   api.addTmpGenerateWatcherPaths(() => [path.resolve(process.cwd(), 'examples')]);
-
-  // add other plugins
-  /**
-   * umi-plugin-antv-cname :
-   *  build 后自动生成 CNAME 文件(1.拷贝项目根目录的 CNAME 文件 2.无文件则自动解析，仅适用于 AntV 官网)
-   */
-  api.registerPlugins([
-    require.resolve('umi-plugin-antv-cname')
-  ])
-
 };
