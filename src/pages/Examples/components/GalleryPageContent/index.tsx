@@ -2,6 +2,7 @@ import React from 'react';
 import { useLocale } from 'dumi';
 import { ExampleWithTopic, GalleryPageContentProps } from '../../types';
 import { DemoCard } from './DemoCard';
+import { getCategoryId } from '../../utils';
 import styles from '../../index.module.less';
 
 /**
@@ -56,14 +57,13 @@ export const GalleryPageContent: React.FC<GalleryPageContentProps> = (props) => 
     return prev.concat(exampleWithTopic);
   }, [] as ExampleWithTopic[]);
 
-
   return (
     <div className={styles.gallery}>
       <div className={styles.galleryContent}>
         {flattenExamples.map((example, i) => {
           return (
             <div key={i}>
-              <h2 id={`category-${example.id.replace(/\s/g, '')}`}>{example.title[locale.id]}</h2>
+              <h2 id={getCategoryId(example.targetTopic.id, example.id)}>{example.title[locale.id]}</h2>
               <ul className={styles.galleryList}>
                 {example.demos.map((demo) => {
                   return (
