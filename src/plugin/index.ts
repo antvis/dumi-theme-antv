@@ -15,6 +15,8 @@ export default (api: IApi) => {
 
     // mfsu
     memo.mfsu = false;
+    // 部署到 gh-pages 后，打开白屏，怀疑是 gzip 导致，所以换一个混淆器
+    memo.jsMinifier = 'terser';
 
     // 网站 favicon
     memo.favicons = ['https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*7svFR6wkPMoAAAAAAAAAAAAADmJ7AQ/original'];
