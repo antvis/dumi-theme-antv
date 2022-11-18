@@ -5,7 +5,7 @@ import Slider from 'react-slick';
 import cx from 'classnames';
 import { useLocale } from 'dumi'
 
-import { ic } from '../hooks';
+import { ic, icWithLocale } from '../hooks';
 import { IC } from '../../types';
 
 import 'slick-carousel/slick/slick.css';
@@ -78,7 +78,7 @@ export const Cases: React.FC<CasesProps> = ({ cases = [], style = {}, className 
               {<FormattedMessage id="查看详情" />}
             </a>
           ) : (
-            <Link className={styles.detail} to={app.link[lang] ? app.link[lang] : app.link}>
+            <Link className={styles.detail} to={icWithLocale(app.link, lang) || ''}>
               {<FormattedMessage id="查看详情" />}
             </Link>
           )}

@@ -286,7 +286,7 @@ export default defineConfig({
           zh: '真实的数据可视化案例，我们将它们归纳为一个个故事性的设计模板，让用户达到开箱即用的效果。',
           en: 'Real data visualization cases, we summarize them into story-based design templates, allowing users to achieve out-of-the-box effects.'
         },
-        link: `/examples/gallery`,
+        // link: `/examples/gallery`,
         image: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*hDrgRb7ma4EAAAAAAAAAAABkARQnAQ'
       },
     ],
