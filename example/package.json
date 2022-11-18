@@ -7,7 +7,8 @@
     "preview": "dumi preview"
   },
   "dependencies": {
-    "@antv/g2": "^5.0.0-alpha.3"
+    "@antv/g2": "^5.0.0-alpha.3",
+    "umi-plugin-antv-cname": "^0.0.1"
   },
   "repository": {
     "type": "git",

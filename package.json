@@ -85,7 +85,6 @@
     "reading-time": "^1.5.0",
     "size-sensor": "^1.0.1",
     "slick-carousel": "^1.8.1",
-    "umi-plugin-antv-cname": "^0.0.1",
     "uri-parse": "^1.0.0",
     "video-react": "^0.16.0"
   },
