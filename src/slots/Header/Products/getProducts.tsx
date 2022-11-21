@@ -64,9 +64,9 @@ export function getNewProducts({
   language: 'zh' | 'en';
   isChinaMirrorHost: boolean;
 }): Promise<ProductType[]> {
-  // 如需要修改产品信息，请到 https://yuyan.antfin-inc.com/datavprod/antv-site-datas/schemas/site-products-h5data/console 修改区块内容
+  // 如需要修改产品信息，请到 https://yuyan.antfin-inc.com/antv/site-data/sprints 修改区块内容
   return fetch(
-    'https://render.alipay.com/p/h5data/antv-site-datas_site-products-h5data.json',
+    'https://site-data-pre.alipay.com/antv/products.json',
   )
     .then((res) => res.json())
     .then((products: ProductType[]) => {
