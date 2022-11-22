@@ -51,7 +51,10 @@ export function getNavigateUrl(pathname: string, first: string, siderbarMenu: an
   if (pathname.includes('/docs/') || pathname.includes('/zh/')) {
     return pathname.replace('/docs/', '/').replace('/zh/','/');
   }
-  if (siderbarMenu.every(item => ![item, `${item}/`].includes(pathname))) {
+  if (siderbarMenu.every(item => {
+    const itemLowerCase = `${item}`.toLowerCase();
+    return ![itemLowerCase, `${itemLowerCase}/`].includes(pathname.toLowerCase())
+  })) {
     return first;
   }
   return pathname;

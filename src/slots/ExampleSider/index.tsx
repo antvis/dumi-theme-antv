@@ -72,7 +72,8 @@ export const ExampleSider: React.FC<ExampleSiderProps> = (props) => {
   // 初始化菜单栏展开keys
   useEffect(() => {
     const { targetExample, targetTopic } = currentDemo;
-    setOpenKeys([`TOPIC-${targetTopic?.id}`, `EXAMPLE-${targetExample?.id}`]);
+    const keys = [`TOPIC-${targetTopic?.id}`, `EXAMPLE-${targetTopic.id}-${targetExample?.id}`];
+    setOpenKeys(keys);
   }, [currentDemo]);
 
   // 初始化滚动到中间
