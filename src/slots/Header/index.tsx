@@ -218,6 +218,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
     ? {
       onMouseEnter: onProductMouseEnter,
       onMouseLeave: onProductMouseLeave,
+      onClick: onToggleProductMenuVisible,
     }
     : {
       onClick: onToggleProductMenuVisible,

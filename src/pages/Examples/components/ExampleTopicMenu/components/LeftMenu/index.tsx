@@ -29,7 +29,7 @@ export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
       <Menu
         mode='inline'
         selectedKeys={selectedKeys}
-        style={{ height: '100%' }}
+        style={{ height: '100vh' }}
         openKeys={openKeys}
         onOpenChange={(currentOpenKeys) =>
           setOpenKeys(currentOpenKeys as string[])

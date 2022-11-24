@@ -25,3 +25,14 @@ export function getLangUrl(url: string, lang: string): string {
 
   return uri.toURI();
 }
+
+/**
+ * /en/api/xxx -> api
+ * /api/xxx -> api
+ * /docs/api/xxx -> api 
+ * api/xxx -> api
+ * @param url 
+ */
+export function getNavCategory(url: string) {
+  return (url || '').split('/').find(d => !['en', 'zh', 'docs', ''].includes(d));
+}
