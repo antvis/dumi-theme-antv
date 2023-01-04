@@ -20,7 +20,7 @@ import { Products } from './Products';
 import { Navs, INav } from './Navs';
 import { Logo } from './Logo';
 import { LogoWhite } from './LogoWhite';
-import { getLangUrl } from './utils';
+import { findVersion, getLangUrl } from './utils';
 import { ic } from '../hooks';
 
 import styles from './index.module.less';
@@ -74,6 +74,10 @@ export type HeaderProps = {
   rootDomain?: string;
   /** 是否显示 AntV 产品卡片 */
   showAntVProductsCard?: boolean;
+  /**
+   * 当前版本
+   */
+  version?: string;
   /** 展示版本切换 */
   versions?: { [key: string]: string };
   /** 展示周边生态 */
@@ -121,6 +125,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
   isHomePage,
   isAntVSite = false,
   rootDomain = '',
+  version,
   versions,
   internalSite,
   ecosystems,
@@ -402,7 +407,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
         versions &&
         <li>
           <Select
-            defaultValue={Object.keys(versions)[0]}
+            defaultValue={versions[findVersion(version, Object.keys(versions))]}
             className={styles.versions}
             bordered={false}
             size="small"
@@ -555,7 +560,7 @@ export const Header: React.FC<Partial<HeaderProps>> = (props) => {
   const {
     title, siteUrl, githubUrl, isAntVSite, subTitleHref, internalSite,
     showSearch, showGithubCorner, showGithubStars, showLanguageSwitcher, showWxQrcode, defaultLanguage, showAntVProductsCard,
-    versions, ecosystems, navs, docsearchOptions
+    version, versions, ecosystems, navs, docsearchOptions
   } = themeConfig;
   const searchOptions = {
     docsearchOptions
@@ -576,7 +581,7 @@ export const Header: React.FC<Partial<HeaderProps>> = (props) => {
     siteUrl,
     internalSite,
     showSearch, showGithubCorner, showGithubStars, showLanguageSwitcher, showWxQrcode, defaultLanguage, showAntVProductsCard,
-    versions, ecosystems, navs, searchOptions,
+    version, versions, ecosystems, navs, searchOptions,
     isHomePage,
     transparent: isHomePage && isAntVSite,
   }

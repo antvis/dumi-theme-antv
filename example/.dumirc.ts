@@ -25,9 +25,10 @@ export default defineConfig({
     showChartResize: true,                                              // 是否在 demo 页展示图表视图切换
     showAPIDoc: true,                                                   // 是否在 demo 页展示API文档
     themeSwitcher: 'g2',
+    version,
     versions: {                                                         // 历史版本以及切换下拉菜单
-      [version]: 'https://antv.vision/',
-      '0.2.x': 'https://antv.vision/',
+      '0.3.x': 'https://g.antv.vision/',
+      '0.2.x': 'https://g2.antv.vision/',
     },
     internalSite: {
       url: 'https://antv.antgroup.com',
