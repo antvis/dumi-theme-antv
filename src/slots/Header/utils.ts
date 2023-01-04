@@ -1,4 +1,5 @@
 import URI from 'uri-parse';
+import semver from 'semver';
 
 /*
  * parse url like this
@@ -35,4 +36,9 @@ export function getLangUrl(url: string, lang: string): string {
  */
 export function getNavCategory(url: string) {
   return (url || '').split('/').find(d => !['en', 'zh', 'docs', ''].includes(d));
+}
+
+export function findVersion(v: string, versions: string[]) {
+  const version = versions.find((version) => semver.satisfies(v, version));
+  return version ? version : versions[0];
 }
