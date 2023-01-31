@@ -9,6 +9,9 @@ export default (api: IApi) => {
   api.modifyDefaultConfig((memo) => {
     // use passive mode for code blocks of markdown, to avoid dumi compile theme as react component
     memo.resolve.codeBlockMode = 'passive';
+    
+    // disable force kebab-case routing, respect naming from file system
+    memo.resolve.forceKebabCaseRoutes = false;
 
     // add exportStatic .html
     memo.exportStatic.extraRoutePaths = getExamplePaths();
