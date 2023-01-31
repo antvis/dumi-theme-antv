@@ -11,7 +11,7 @@ export default (api: IApi) => {
     memo.resolve.codeBlockMode = 'passive';
     
     // disable force kebab-case routing, respect naming from file system
-    memo.resolve.forceKebabCaseRoutes = false;
+    memo.resolve.forceKebabCaseRouting = false;
 
     // add exportStatic .html
     memo.exportStatic.extraRoutePaths = getExamplePaths();
