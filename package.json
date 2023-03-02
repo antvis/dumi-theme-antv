@@ -1,6 +1,6 @@
 {
   "name": "@antv/dumi-theme-antv",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "description": "AntV website theme based on dumi2.",
   "types": "dist/types.d.ts",
   "scripts": {
