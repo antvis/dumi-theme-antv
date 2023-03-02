@@ -181,9 +181,8 @@ try {
 export function compile(value: string, relativePath: string) {
   const { code } = transform(value, {
     filename: relativePath,
-    presets: ['react', 'typescript', 'es2015', 'stage-3'],
+    presets: ['react', 'typescript', 'es2015', ['stage-3', { decoratorsBeforeExport: true }]],
     plugins: ['transform-modules-umd'],
-    
   });
   return code;
 }
