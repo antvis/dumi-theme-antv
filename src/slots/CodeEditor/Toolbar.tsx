@@ -159,7 +159,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
           }}
         />
       </Tooltip>
-      <Tooltip title={<FormattedMessage id="在 CodeSandbox 中打开" />}>
+      <Tooltip title={<FormattedMessage id="在 CodeSandbox 中打开" />}  placement="left">
         <form
           action='https://codesandbox.io/api/v1/sandboxes/define'
           method='POST'
