@@ -1,17 +1,20 @@
-import React, { useEffect, useState } from 'react';
 import {
   CodeSandboxOutlined,
   PlayCircleOutlined,
   ThunderboltOutlined,
-  FullscreenExitOutlined,
-  FullscreenOutlined,
 } from '@ant-design/icons';
-import { Typography, Tooltip } from 'antd';
-import { useLocale, FormattedMessage } from 'dumi';
-import { getParameters } from 'codesandbox/lib/api/define';
 import stackblitzSdk from '@stackblitz/sdk';
+import { Tooltip, Typography } from 'antd';
+import { getParameters } from 'codesandbox/lib/api/define';
+import { FormattedMessage, useLocale } from 'dumi';
+import React, { useEffect, useState } from 'react';
 import { ping } from '../utils';
-import { extractImportDeps, getCodeSandboxConfig, getStackblitzConfig, getRiddleConfig } from './utils';
+import {
+  extractImportDeps,
+  getCodeSandboxConfig,
+  getRiddleConfig,
+  getStackblitzConfig,
+} from './utils';
 
 import styles from './Toolbar.module.less';
 
@@ -19,6 +22,7 @@ const { Paragraph } = Typography;
 
 export enum EDITOR_TABS {
   JAVASCRIPT = 'JavaScript',
+  SPEC = 'Spec',
   DATA = 'Data',
 }
 
@@ -36,9 +40,9 @@ type ToolbarProps = {
    */
   title:
     | {
-    zh?: string;
-    en?: string;
-  }
+        zh?: string;
+        en?: string;
+      }
     | string;
   location?: Location;
   /**
@@ -83,7 +87,7 @@ type ToolbarProps = {
    * 执行代码
    */
   onExecuteCode: () => void;
-}
+};
 
 export const Toolbar: React.FC<ToolbarProps> = ({
   sourceCode,
@@ -99,8 +103,9 @@ export const Toolbar: React.FC<ToolbarProps> = ({
   onExecuteCode,
 }) => {
   const locale = useLocale();
-  const exampleTitle =
-    (typeof title === 'object' ? title[locale.id as 'zh' | 'en'] : title) as string;
+  const exampleTitle = (
+    typeof title === 'object' ? title[locale.id as 'zh' | 'en'] : title
+  ) as string;
 
   // 使用 playground.dependencies 定义的版本号
   const dependencies = {
@@ -109,9 +114,30 @@ export const Toolbar: React.FC<ToolbarProps> = ({
   };
   const devDependencies = playground.devDependencies || {};
 
-  const codeSandboxConfig = getCodeSandboxConfig(exampleTitle, sourceCode, fileExtension, dependencies, devDependencies, playground);
-  const riddlePrefillConfig = getRiddleConfig(exampleTitle, sourceCode, fileExtension, dependencies, devDependencies, playground);
-  const stackblitzPrefillConfig = getStackblitzConfig(exampleTitle, sourceCode, fileExtension, dependencies, devDependencies, playground);
+  const codeSandboxConfig = getCodeSandboxConfig(
+    exampleTitle,
+    sourceCode,
+    fileExtension,
+    dependencies,
+    devDependencies,
+    playground,
+  );
+  const riddlePrefillConfig = getRiddleConfig(
+    exampleTitle,
+    sourceCode,
+    fileExtension,
+    dependencies,
+    devDependencies,
+    playground,
+  );
+  const stackblitzPrefillConfig = getStackblitzConfig(
+    exampleTitle,
+    sourceCode,
+    fileExtension,
+    dependencies,
+    devDependencies,
+    playground,
+  );
   // const htmlCode = getHtmlCodeTemplate(exampleTitle, sourceCode, fileExtension, dependencies, devDependencies, playground);
 
   const [riddleVisible, updateRiddleVisible] = useState(false);
@@ -135,19 +161,19 @@ export const Toolbar: React.FC<ToolbarProps> = ({
       </div>
       {riddleVisible ? (
         <form
-          action='//riddle.alibaba-inc.com/riddles/define'
-          method='POST'
-          target='_blank'
+          action="//riddle.alibaba-inc.com/riddles/define"
+          method="POST"
+          target="_blank"
         >
           <input
-            type='hidden'
-            name='data'
+            type="hidden"
+            name="data"
             value={JSON.stringify(riddlePrefillConfig)}
           />
           <Tooltip title={<FormattedMessage id="在 Riddle 中打开" />}>
             <input
-              type='submit'
-              value='Create New Riddle with Prefilled Data'
+              type="submit"
+              value="Create New Riddle with Prefilled Data"
               className={styles.riddle}
             />
           </Tooltip>
@@ -163,16 +189,16 @@ export const Toolbar: React.FC<ToolbarProps> = ({
       </Tooltip>
       <Tooltip title={<FormattedMessage id="在 CodeSandbox 中打开" />}>
         <form
-          action='https://codesandbox.io/api/v1/sandboxes/define'
-          method='POST'
-          target='_blank'
+          action="https://codesandbox.io/api/v1/sandboxes/define"
+          method="POST"
+          target="_blank"
         >
           <input
-            type='hidden'
-            name='parameters'
+            type="hidden"
+            name="parameters"
             value={getParameters(codeSandboxConfig)}
           />
-          <button type='submit' className={styles.codesandbox}>
+          <button type="submit" className={styles.codesandbox}>
             <CodeSandboxOutlined style={{ marginLeft: 8 }} />
           </button>
         </form>
