@@ -116,7 +116,9 @@ export const Toolbar: React.FC<ToolbarProps> = ({
 
   const [riddleVisible, updateRiddleVisible] = useState(false);
   useEffect(() => {
-    ping().then(status => updateRiddleVisible(status === 'responded'));
+    ping()
+      .then(status => updateRiddleVisible(status === 'responded'))
+      .catch(() => updateRiddleVisible(false));
   }, []);
   return (
     <div className={styles.toolbar}>
