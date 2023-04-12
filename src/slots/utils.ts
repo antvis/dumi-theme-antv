@@ -16,7 +16,7 @@ export async function ping(): Promise<Status> {
 
   const network = fetch(url).then((resp) => resp.status === 200 ? 'responded' : 'error');
 
-  return Promise.race([timeout, network]);
+  return Promise.race([timeout, network]).catch(r => 'error');
 }
 
 export const getChinaMirrorHost = (host?: string): string => {
