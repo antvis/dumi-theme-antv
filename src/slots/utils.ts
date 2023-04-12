@@ -15,16 +15,7 @@ export async function ping(): Promise<Status> {
     'objects.alip' +
     'ay.com/alip' +
     'ay-rmsdeploy-image/rmsportal/RKuAiriJqrUhyqW.png';
-    const img = new Image();
-    img.onload = () => {
-      img.src = '';
-      resolve('responded');
-    };
-    img.onerror = () => {
-      img.src = '';
-      resolve('error');
-    };
-    img.src = url;
+    fetch(url).then((resp) => resolve(resp.status === 200 ? 'responded' : 'error'))
   });
 
   return Promise.race([timeout, network]);
