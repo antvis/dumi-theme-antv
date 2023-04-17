@@ -46,7 +46,14 @@ export function extractImportDeps(sourceCode: string) {
   return deps;
 }
 
-export function getCodeSandboxConfig(title: string, sourceCode: string, fileExtension: string, deps: any, devDependencies: any, playground: any) {
+export function getCodeSandboxConfig(
+  title: string,
+  sourceCode: string,
+  fileExtension: string,
+  deps: any,
+  devDependencies: any,
+  playground: any,
+) {
   return {
     files: {
       'package.json': {
@@ -65,10 +72,17 @@ export function getCodeSandboxConfig(title: string, sourceCode: string, fileExte
     } as {
       [key: string]: any;
     },
-  }
+  };
 }
 
-export function getRiddleConfig(title: string, sourceCode: string, fileExtension: string, deps: any, devDependencies: any, playground: any) {
+export function getRiddleConfig(
+  title: string,
+  sourceCode: string,
+  fileExtension: string,
+  deps: any,
+  devDependencies: any,
+  playground: any,
+) {
   return {
     title,
     js: sourceCode,
@@ -82,7 +96,14 @@ export function getRiddleConfig(title: string, sourceCode: string, fileExtension
   };
 }
 
-export function getStackblitzConfig(title: string, sourceCode: string, fileExtension: string, deps: any, devDependencies: any, playground: any) {
+export function getStackblitzConfig(
+  title: string,
+  sourceCode: string,
+  fileExtension: string,
+  deps: any,
+  devDependencies: any,
+  playground: any,
+) {
   return {
     title: title || '',
     description: '',
@@ -95,7 +116,14 @@ export function getStackblitzConfig(title: string, sourceCode: string, fileExten
   };
 }
 
-export function getHtmlCodeTemplate(title: string, sourceCode: string, fileExtension: string, deps: any, devDependencies: any, playground: any) {
+export function getHtmlCodeTemplate(
+  title: string,
+  sourceCode: string,
+  fileExtension: string,
+  deps: any,
+  devDependencies: any,
+  playground: any,
+) {
   const { htmlCodeTemplate = '', container = '' } = playground;
   const insertCssMatcher = /insertCss\(`\s*(.*)\s*`\);/;
   const code = replaceFetchUrl(sourceCode)
@@ -109,30 +137,23 @@ export function getHtmlCodeTemplate(title: string, sourceCode: string, fileExten
   if (customStyles && customStyles[1]) {
     result = result.replace(
       '</head>',
-      `  <style>\n${indentString(
-        customStyles[1],
-        4,
-      )}\n    </style>\n  </head>`,
+      `  <style>\n${indentString(customStyles[1], 4)}\n    </style>\n  </head>`,
     );
   }
   if (container) {
-    result = result.replace(
-      '<body>',
-      `<body>\n${indentString(container, 4)}`,
-    );
+    result = result.replace('<body>', `<body>\n${indentString(container, 4)}`);
   }
   return result;
 }
 
-
 export function replaceInsertCss(str: string, lang: string) {
   const comment =
     lang === 'zh'
-    ? `// 我们用 insert-css 演示引入自定义样式
+      ? `// 我们用 insert-css 演示引入自定义样式
 // 推荐将样式添加到自己的样式文件中
 // 若拷贝官方代码，别忘了 npm install insert-css
 insertCss(`
-    : `// We use 'insert-css' to insert custom styles
+      : `// We use 'insert-css' to insert custom styles
 // It is recommended to add the style to your own style sheet files
 // If you want to copy the code directly, please remember to install the npm package 'insert-css
 insertCss(`;
@@ -148,7 +169,12 @@ insertCss(`;
  * @param replaceId rid
  * @param cb 回调错误
  */
-export function execute(code: string, playgroundScriptContainer: string, container: string, replaceId = 'container') {
+export function execute(
+  code: string,
+  playgroundScriptContainer: string,
+  container: string,
+  replaceId = 'container',
+) {
   const node = document.getElementById(playgroundScriptContainer);
   const script = document.createElement('script');
   // replace container id in case of multi demos in document
@@ -170,7 +196,8 @@ try {
 }
   `;
   // 追加图表容器
-  node.innerHTML = container || `<div id=${replaceId} class="playgroundCodeContainer" />`;
+  node.innerHTML =
+    container || `<div id=${replaceId} class="playgroundCodeContainer" />`;
   // 运行 script
   node!.appendChild(script);
 }
@@ -178,10 +205,15 @@ try {
 /**
  * 编译代码
  */
-export function compile(value: string, relativePath: string) {
+export function compile(value: string, relativePath: string, es5 = true) {
   const { code } = transform(value, {
     filename: relativePath,
-    presets: ['react', 'typescript', 'es2015', ['stage-3', { decoratorsBeforeExport: true }]],
+    presets: [
+      'react',
+      'typescript',
+      es5 ? 'es2015' : 'es2016',
+      ['stage-3', { decoratorsBeforeExport: true }],
+    ],
     plugins: ['transform-modules-umd'],
   });
   return code;
