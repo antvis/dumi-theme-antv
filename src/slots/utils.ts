@@ -7,14 +7,27 @@ export async function ping(): Promise<Status> {
       resolve('timeout');
     }, 1500);
   });
-  const url =
+
+  const network = new Promise<Status>((resolve) => {
+    const url =
     'https://private-a' +
     'lipay' +
     'objects.alip' +
     'ay.com/alip' +
     'ay-rmsdeploy-image/rmsportal/RKuAiriJqrUhyqW.png';
-
-  const network = fetch(url).then((resp) => resp.status === 200 ? 'responded' : 'error');
+    const img = new Image();
+    img.onload = () => {
+      img.onload = null;
+      img.onerror = null;
+      resolve('responded');
+    };
+    img.onerror = () => {
+      img.onload = null;
+      img.onerror = null;
+      resolve('error');
+    };
+    img.src = url;
+  });
 
   return Promise.race([timeout, network]).catch(r => 'error');
 }
