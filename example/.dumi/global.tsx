@@ -1,8 +1,13 @@
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+
 /**
  * 增加自己的全局变量，用于 DEMO 中的依赖，以 G2 为例
  */
 if (window) {
-  // (window as any).g2 = extendG2(require('@antv/g2/lib/index.js'));
+  (window as any).g2 = extendG2(require('@antv/g2/lib/index.js'));
+  (window as any).globalAdd = (x, y) => x + y;
+  (window as any).globalCard = globalCard;
 }
 
 // 对 G2 的 Chart 对象进行扩展
@@ -69,4 +74,29 @@ function extendG2(g2) {
     }
   }
   return { ...rest, Chart };
+}
+
+function globalCard(text) {
+  const container = document.createElement('div');
+  const root = createRoot(container);
+  root.render(<Card>{text}</Card>);
+  return container;
+}
+
+function Card({ children }) {
+  return (
+    <div
+      style={{
+        width: '100%',
+        height: 100,
+        background: 'steelblue',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 10,
+      }}
+    >
+      <span style={{ color: 'white', fontSize: 30 }}>{children}</span>
+    </div>
+  );
 }
