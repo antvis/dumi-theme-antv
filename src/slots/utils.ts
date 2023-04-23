@@ -17,17 +17,19 @@ export async function ping(): Promise<Status> {
     'ay-rmsdeploy-image/rmsportal/RKuAiriJqrUhyqW.png';
     const img = new Image();
     img.onload = () => {
-      img.src = '';
+      img.onload = null;
+      img.onerror = null;
       resolve('responded');
     };
     img.onerror = () => {
-      img.src = '';
+      img.onload = null;
+      img.onerror = null;
       resolve('error');
     };
     img.src = url;
   });
 
-  return Promise.race([timeout, network]);
+  return Promise.race([timeout, network]).catch(r => 'error');
 }
 
 export const getChinaMirrorHost = (host?: string): string => {

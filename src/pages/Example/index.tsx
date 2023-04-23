@@ -1,23 +1,23 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { useParams, useLocation, useNavigate } from 'react-router-dom';
-import { get } from 'lodash-es';
 import { Layout } from 'antd';
 import { useLocale, useSiteData } from 'dumi';
-import { SEO } from '../../slots/SEO';
-import { Header } from '../../slots/Header';
-import { ExampleSider } from '../../slots/ExampleSider';
+import { get } from 'lodash-es';
+import React, { useContext, useEffect, useState } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { ThemeAntVContext } from '../../context';
 import { CodeRunner } from '../../slots/CodeRunner';
 import { getDemoInfo } from '../../slots/CodeRunner/utils';
-import { ThemeAntVContext } from '../../context';
-import { ExampleTopic, Demo } from '../../types';
+import { ExampleSider } from '../../slots/ExampleSider';
+import { Header } from '../../slots/Header';
+import { SEO } from '../../slots/SEO';
+import { Demo, ExampleTopic } from '../../types';
 import styles from './index.module.less';
 import { getCurrentTitle } from './utils';
 
 const { Sider, Content } = Layout;
 
 type title = {
-  [key: string]: string
-}
+  [key: string]: string;
+};
 type ExampleParams = {
   /**
    * 多语言
@@ -44,7 +44,7 @@ const Example: React.FC = () => {
   /** 示例页面的元数据信息 */
   const metaData: any = useContext(ThemeAntVContext);
   const locale = useLocale();
-  const { themeConfig } = useSiteData()
+  const { themeConfig } = useSiteData();
 
   const exampleTopics: ExampleTopic[] = metaData.meta.exampleTopics;
   const demo = hash.slice(1);
@@ -53,13 +53,13 @@ const Example: React.FC = () => {
 
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
 
-  const [title, setTitle] = useState<title>({})
-  
+  const [title, setTitle] = useState<title>({});
+
   useEffect(() => {
     if (topic && example && demo) {
       const targetDemoInfo = getDemoInfo(exampleTopics, topic, example, demo);
       setCurrentDemo(targetDemoInfo);
-      setTitle(getCurrentTitle(exampleTopics, topic, example))
+      setTitle(getCurrentTitle(exampleTopics, topic, example));
     }
   }, [topic, example, hash]);
   return (
@@ -74,7 +74,7 @@ const Example: React.FC = () => {
           collapsible
           collapsed={isCollapsed}
           className={styles.menuSider}
-          theme='light'
+          theme="light"
         >
           {currentDemo && (
             <ExampleSider

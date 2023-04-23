@@ -1,7 +1,9 @@
 import * as path from 'path';
 import type { IApi } from 'dumi';
+import { winPath } from 'dumi/plugin-utils';
 import { getExamplesPageTopics, getExamplePaths } from './examples';
-import { myResolve } from './utils';
+
+const ALIAS_PAGES_KEY = '@/antv__theme__pages';
 
 export default (api: IApi) => {
   api.describe({ key: `dumi-theme:${require('../../package.json').name}` });
@@ -20,6 +22,9 @@ export default (api: IApi) => {
 
     // 网站 favicon
     memo.favicons = ['https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*7svFR6wkPMoAAAAAAAAAAAAADmJ7AQ/original'];
+
+    // internal pages alias, make chunk name clean
+    memo.alias[ALIAS_PAGES_KEY] = path.join(__dirname, '../pages');
 
     return memo;
   });
@@ -41,27 +46,25 @@ export default (api: IApi) => {
     {
       id: 'dumi-theme-antv-example-list-zh',
       absPath: '/examples',
-      file: myResolve('../pages/Examples/index.tsx'),
+      file: `${ALIAS_PAGES_KEY}/Examples`,
     },
     {
       id: 'dumi-theme-antv-example-list-lang',
       absPath: '/:language/examples',
-      file: myResolve('../pages/Examples/index.tsx'),
+      file: `${ALIAS_PAGES_KEY}/Examples`,
     },
     // single example preview page.
-    // {
-    //   id: 'dumi-theme-antv-single-example-zh',
-    //   absPath: '/examples/:topic/:example',
-    //   file: myResolve('../pages/Example/index.tsx'),
-    // },
-    // {
-    //   id: 'dumi-theme-antv-single-example-lang',
-    //   absPath: '/:language/examples/:topic/:example',
-    //   file: myResolve('../pages/Example/index.tsx'),
-    // },
+    {
+      id: 'dumi-theme-antv-single-example-zh',
+      absPath: '/examples/:topic/:example',
+      file: `${ALIAS_PAGES_KEY}/Example`,
+    },
+    {
+      id: 'dumi-theme-antv-single-example-lang',
+      absPath: '/:language/examples/:topic/:example',
+      file: `${ALIAS_PAGES_KEY}/Example`,
+    },
   ];
-  // FIXME: wrap winPath for windows when dumi exported
-  const contextFilePath = myResolve('../context.ts');
 
   api.onGenerateFiles(() => {
     // write context provider when generate tmp file
@@ -71,7 +74,7 @@ export default (api: IApi) => {
       content: `
 import React from 'react';
 import { useOutlet, useSiteData } from 'dumi';
-import { ThemeAntVContext } from '${contextFilePath}';
+import { ThemeAntVContext } from '${winPath(path.join(__dirname, '../context'))}';
 
 export default function ThemeAntVContextWrapper() {
   const outlet = useOutlet();
@@ -111,7 +114,7 @@ export default function ThemeAntVContextWrapper() {
     });
 
     // replace default 404
-    routes['404'].file = myResolve('../pages/404.tsx');
+    routes['404'].file = `${ALIAS_PAGES_KEY}/404`;
 
     return routes;
   });

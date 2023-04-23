@@ -23,8 +23,10 @@ export default defineConfig({
     showLanguageSwitcher: true,                                         // 是否显示官网语言切换
     showWxQrcode: true,                                                 // 是否显示头部菜单的微信公众号
     showChartResize: true,                                              // 是否在 demo 页展示图表视图切换
-    showAPIDoc: true,                                                   // 是否在 demo 页展示API文档
+    showAPIDoc: true,   
+    showSpecTab: true,                                                // 是否在 demo 页展示API文档
     themeSwitcher: 'g2',
+    es5: false,
     version,
     versions: {                                                         // 历史版本以及切换下拉菜单
       '0.3.x': 'https://g.antv.vision/',
