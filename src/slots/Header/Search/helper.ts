@@ -8,8 +8,9 @@ import type { ISearchResult } from './SearchResult';
 export function getSearchResults(dumiResults: any[]): ISearchResult[] {
   const hints = dumiResults.map(r => r.hints).flat();
 
-  return hints.map(({ pageTitle = '', highlightTitleTexts, highlightTexts }) => {
+  return hints.map(({ pageTitle = '', highlightTitleTexts, highlightTexts, link }) => {
     return {
+      link,
       subject: pageTitle,
       tilte: highlightTitleTexts,
       description: highlightTexts,

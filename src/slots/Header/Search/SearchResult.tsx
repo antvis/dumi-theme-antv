@@ -32,14 +32,14 @@ export const SearchResult = ({ results }) => {
     <div className={styles.searchResult} >
       {results.map((r) => {
         return (
-          <div className={styles.item}>
+          <a className={styles.item} href={r.link} >
             <div className={styles.subject} >{r.subject}</div>
             <div className={styles.br} />
             <div className={styles.result}>
               <div className={styles.title}>{getHighlightInfo(r.tilte)}</div>
               <div className={styles.description}>{getHighlightInfo(r.description)}</div>
             </div>
-          </div>
+          </a>
         )
       })}
     </div>

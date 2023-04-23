@@ -49,16 +49,16 @@ export default (api: IApi) => {
       file: myResolve('../pages/Examples/index.tsx'),
     },
     // single example preview page.
-    {
-      id: 'dumi-theme-antv-single-example-zh',
-      absPath: '/examples/:topic/:example',
-      file: myResolve('../pages/Example/index.tsx'),
-    },
-    {
-      id: 'dumi-theme-antv-single-example-lang',
-      absPath: '/:language/examples/:topic/:example',
-      file: myResolve('../pages/Example/index.tsx'),
-    },
+    // {
+    //   id: 'dumi-theme-antv-single-example-zh',
+    //   absPath: '/examples/:topic/:example',
+    //   file: myResolve('../pages/Example/index.tsx'),
+    // },
+    // {
+    //   id: 'dumi-theme-antv-single-example-lang',
+    //   absPath: '/:language/examples/:topic/:example',
+    //   file: myResolve('../pages/Example/index.tsx'),
+    // },
   ];
   // FIXME: wrap winPath for windows when dumi exported
   const contextFilePath = myResolve('../context.ts');
