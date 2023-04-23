@@ -1,0 +1,61 @@
+.searchResult {
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 486px;
+  max-width: 512px;
+  max-height: 50vh;
+  overflow-y: auto;
+
+  .item {
+    width: 100%;
+    display: flex;
+    margin: 6px 0;
+    cursor: pointer;
+    position: relative;
+
+    .subject {
+      width: 20%;
+      min-width: 120px;
+      text-align: right;
+      padding: 4px;
+      flex: 1;
+      color: rgb(160, 161, 167);
+    }
+
+    .br {
+      width: 1px;
+      margin: 0 6px;
+      background-color: #873bf4;
+      opacity: 0.2;
+    }
+
+    .result {
+      flex: 4;
+      min-width: 300px;
+      padding: 4px 0 4px 6px;
+      border-radius: 4px;
+
+      &:hover {
+        background-color: #f9f0ff;
+      }
+
+      .title {
+        font-weight: 500;
+        color: #000;
+      }
+
+      .description {
+        font-size: 11px;
+        color: rgb(160, 161, 167);
+        max-height: 55px;
+        overflow: hidden;
+      }
+
+      .highlighted {
+        color: #873bf4;
+      }
+    }
+  }
+}
