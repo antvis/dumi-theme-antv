@@ -13,12 +13,14 @@ export type ISearchResult = {
   subject: string;
   tilte: ITextSegment[];
   description?: ITextSegment[];
+  link: string;
 }
 
 const getHighlightInfo = (textSegments: ITextSegment[]) => {
   return <>
     {
-      textSegments.map(segment => <span className={segment.highlighted ? styles.highlighted : ''} >{segment.text}</span>)
+      textSegments.map(
+        segment => <span className={`${styles.segment} ${segment.highlighted ? styles.highlighted : ''}`} >{segment.text}</span>)
     }
   </>;
 }
@@ -27,19 +29,19 @@ const getHighlightInfo = (textSegments: ITextSegment[]) => {
  * 展示搜索结果
  * @returns
  */
-export const SearchResult = ({ results }) => {
+export const SearchResult: React.FC<{results: ISearchResult[]}> = ({ results }) => {
   return (
     <div className={styles.searchResult} >
       {results.map((r) => {
         return (
-          <a className={styles.item} href={r.link} >
+          <div className={styles.item}>
             <div className={styles.subject} >{r.subject}</div>
             <div className={styles.br} />
-            <div className={styles.result}>
+            <a className={styles.result} href={r.link}>
               <div className={styles.title}>{getHighlightInfo(r.tilte)}</div>
               <div className={styles.description}>{getHighlightInfo(r.description)}</div>
-            </div>
-          </a>
+            </a>
+          </div>
         )
       })}
     </div>

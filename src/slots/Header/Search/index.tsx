@@ -27,7 +27,7 @@ export const Search = () => {
           className={styles.input}
           id="search"
           value={keywords}
-          onBlur={() => onClose()}
+          // onBlur={() => onClose()}
           onFocus={() => setOpen(!!result?.length)}
           onChange={(e) => setKeywords(e.target.value)}
           placeholder={intl.formatMessage({

@@ -6,6 +6,7 @@
   min-width: 486px;
   max-width: 512px;
   max-height: 50vh;
+  overflow-x: hidden;
   overflow-y: auto;
 
   .item {
@@ -16,26 +17,25 @@
     position: relative;
 
     .subject {
-      width: 20%;
-      min-width: 120px;
       text-align: right;
       padding: 4px;
-      flex: 1;
+      flex-basis: 120px;
       color: rgb(160, 161, 167);
     }
 
     .br {
-      width: 1px;
+      flex-basis: 1px;
       margin: 0 6px;
       background-color: #873bf4;
       opacity: 0.2;
     }
 
     .result {
-      flex: 4;
+      flex: 1;
       min-width: 300px;
       padding: 4px 0 4px 6px;
       border-radius: 4px;
+      overflow: hidden;
 
       &:hover {
         background-color: #f9f0ff;
@@ -51,6 +51,10 @@
         color: rgb(160, 161, 167);
         max-height: 55px;
         overflow: hidden;
+        .segment {
+          padding-left: 1px;
+          padding-right: 1px;
+        }
       }
 
       .highlighted {
