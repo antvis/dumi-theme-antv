@@ -4,6 +4,7 @@ import { winPath } from 'dumi/plugin-utils';
 import { getExamplesPageTopics, getExamplePaths } from './examples';
 
 const ALIAS_PAGES_KEY = '@/antv__theme__pages';
+const MOCK_META = { frontmatter: { title: 'mock-meta' }, texts: [], toc: [] };
 
 export default (api: IApi) => {
   api.describe({ key: `dumi-theme:${require('../../package.json').name}` });
@@ -110,11 +111,13 @@ export default function ThemeAntVContextWrapper() {
         absPath: page.absPath,
         file: page.file,
         parentId: 'DocLayout',
+        meta: MOCK_META,
       };
     });
 
     // replace default 404
     routes['404'].file = `${ALIAS_PAGES_KEY}/404`;
+    routes['404'].meta = MOCK_META;
 
     return routes;
   });
