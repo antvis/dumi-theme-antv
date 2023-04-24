@@ -11,13 +11,12 @@ import styles from './index.module.less';
 export const Search = () => {
   const intl = useIntl();
   const [open, setOpen] = useState<boolean>(false);
-  const { keywords, setKeywords, result, loading } = useSiteSearch();
-
-  const onClose = useCallback(debounce(() => setOpen(false), 200), []);
+  const onClose = useCallback(() => setTimeout(() => setOpen(false), 60), []);
+  const { keywords, setKeywords, result } = useSiteSearch();
 
   useEffect(() => {
     setOpen(!!result?.length);
-  }, [result])
+  }, [result]);
 
   return (
     <Popover open={open} placement="topLeft" content={<SearchResult results={getSearchResults(result)} />}>
@@ -25,9 +24,9 @@ export const Search = () => {
         <SearchOutlined className={styles.icon} />
         <input
           className={styles.input}
-          id="search"
           value={keywords}
-          // onBlur={() => onClose()}
+          autoComplete="off"
+          onBlur={() => onClose}
           onFocus={() => setOpen(!!result?.length)}
           onChange={(e) => setKeywords(e.target.value)}
           placeholder={intl.formatMessage({
