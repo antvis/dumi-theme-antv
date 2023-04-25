@@ -1,10 +1,18 @@
 import React, { useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Preview } from './Preview';
+import { safeEval } from './utils';
 
 function optionsOf(p) {
-  const keys = ['_pin', '_only'];
-  return Object.fromEntries(keys.map((key) => [key, p.getAttribute(key)]));
+  try {
+    const meta = p.getAttribute('meta');
+    const options = meta.match(/\|\s*ob\s*({.*})/)?.[1];
+    if (!options) return {};
+    return safeEval(options);
+  } catch (e) {
+    console.error(e);
+    return {};
+  }
 }
 
 function sourceOf(block: Element) {
@@ -18,9 +26,7 @@ function sourceOf(block: Element) {
 export function usePreview(options = {}) {
   useEffect(() => {
     const blocks = Array.from(
-      document.querySelectorAll(
-        '.markdown .preview + .dumi-default-source-code',
-      ),
+      document.querySelectorAll('.ob-codeblock .dumi-default-source-code'),
     );
 
     // 过滤实际展示的 block
@@ -28,8 +34,8 @@ export function usePreview(options = {}) {
     const OI = I.filter((i) => {
       const p = blocks[i].previousSibling;
       const options = optionsOf(p);
-      const { _only } = options;
-      return _only === 'true';
+      const { only = false } = options;
+      return only === true;
     });
     const FI = OI.length === 0 ? I : OI;
 
