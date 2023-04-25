@@ -66,6 +66,7 @@
     "front-matter": "^4.0.2",
     "fs-extra": "^10.1.0",
     "glob": "^8.0.3",
+    "hast": "^1.0.0",
     "indent-string": "^5.0.0",
     "insert-css": "^2.0.0",
     "lodash-es": "^4.17.21",
@@ -86,6 +87,8 @@
     "semver": "^7.3.8",
     "size-sensor": "^1.0.1",
     "slick-carousel": "^1.8.1",
+    "unified": "^10.1.2",
+    "unist-util-visit": "^4.1.2",
     "uri-parse": "^1.0.0",
     "video-react": "^0.16.0"
   },

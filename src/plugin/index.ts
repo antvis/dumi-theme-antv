@@ -1,7 +1,8 @@
-import * as path from 'path';
 import type { IApi } from 'dumi';
 import { winPath } from 'dumi/plugin-utils';
-import { getExamplesPageTopics, getExamplePaths } from './examples';
+import * as path from 'path';
+import { getExamplePaths, getExamplesPageTopics } from './examples';
+import rehypeObservable from './rehypeObservable';
 
 const ALIAS_PAGES_KEY = '@/antv__theme__pages';
 const MOCK_META = { frontmatter: { title: 'mock-meta' }, texts: [], toc: [] };
@@ -22,10 +23,15 @@ export default (api: IApi) => {
     memo.jsMinifier = 'terser';
 
     // 网站 favicon
-    memo.favicons = ['https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*7svFR6wkPMoAAAAAAAAAAAAADmJ7AQ/original'];
+    memo.favicons = [
+      'https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*7svFR6wkPMoAAAAAAAAAAAAADmJ7AQ/original',
+    ];
 
     // internal pages alias, make chunk name clean
     memo.alias[ALIAS_PAGES_KEY] = path.join(__dirname, '../pages');
+
+    // observable demo
+    memo.extraRehypePlugins = [rehypeObservable];
 
     return memo;
   });
@@ -39,7 +45,7 @@ export default (api: IApi) => {
       id: 'dumi-theme-antv-en-homepage',
       absPath: '/en/',
     },
-     {
+    {
       id: 'dumi-theme-antv-zh-homepage',
       absPath: '/zh/',
     },
@@ -75,7 +81,9 @@ export default (api: IApi) => {
       content: `
 import React from 'react';
 import { useOutlet, useSiteData } from 'dumi';
-import { ThemeAntVContext } from '${winPath(path.join(__dirname, '../context'))}';
+import { ThemeAntVContext } from '${winPath(
+        path.join(__dirname, '../context'),
+      )}';
 
 export default function ThemeAntVContextWrapper() {
   const outlet = useOutlet();
@@ -84,7 +92,9 @@ export default function ThemeAntVContextWrapper() {
     <ThemeAntVContext.Provider
       value={{
         meta: ${JSON.stringify({
-          exampleTopics: getExamplesPageTopics(api.config.themeConfig.examples || []),
+          exampleTopics: getExamplesPageTopics(
+            api.config.themeConfig.examples || [],
+          ),
         })}
       }}
     >
@@ -123,5 +133,7 @@ export default function ThemeAntVContextWrapper() {
   });
 
   // watch the `examples` folder
-  api.addTmpGenerateWatcherPaths(() => [path.resolve(process.cwd(), 'examples')]);
+  api.addTmpGenerateWatcherPaths(() => [
+    path.resolve(process.cwd(), 'examples'),
+  ]);
 };

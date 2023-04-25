@@ -3,9 +3,7 @@ order: 4
 title: Codeblock
 ---
 
-## Basic
-
-<p class="preview"></p>
+## Pure
 
 ```js
 (() => {
@@ -17,11 +15,21 @@ title: Codeblock
 })();
 ```
 
+## Basic
+
+```js | ob
+(() => {
+  const div = document.createElement('div');
+  div.style.width = '100px';
+  div.style.height = '100px';
+  div.style.background = 'red';
+  return div;
+})();
+```
+
 ## Clear
 
-<p class="preview"></p>
-
-```js
+```js | ob
 (() => {
   const span = document.createElement('span');
   span.textContent = 1;
@@ -42,9 +50,7 @@ title: Codeblock
 
 ## Pin
 
-<p class="preview" _pin="false"></p>
-
-```js
+```js | ob {pin: false}
 (() => {
   const div = document.createElement('div');
   div.style.width = '100px';
@@ -56,9 +62,7 @@ title: Codeblock
 
 ## Promise
 
-<p class="preview" ></p>
-
-```js
+```js | ob
 (() => {
   const div = document.createElement('div');
   div.style.width = '100px';
@@ -74,9 +78,7 @@ title: Codeblock
 
 ## Error
 
-<p class="preview" ></p>
-
-```js
+```js | ob
 (() => {
   const div = document.createElement('div');
   console.log(a);
@@ -86,9 +88,7 @@ title: Codeblock
 
 ## Reject
 
-<p class="preview" ></p>
-
-```js
+```js | ob
 (() => {
   const div = document.createElement('div');
   div.style.width = '100px';
@@ -104,9 +104,7 @@ title: Codeblock
 
 ## Comments
 
-<p class="preview"></p>
-
-```js
+```js | ob
 (() => {
   // 第一行注释
   const div = document.createElement('div');
@@ -132,9 +130,7 @@ title: Codeblock
 
 ## Non-DOM
 
-<p class="preview"></p>
-
-```js
+```js | ob
 function add(x, y) {
   return x + y;
 }
@@ -142,27 +138,22 @@ function add(x, y) {
 
 ## Global
 
-<p class="preview"></p>
-
-```js
+```js | ob
 globalAdd(1, 2);
 ```
 
 ## React
 
-<p class="preview"></p>
-
-```js
+```js | ob
 globalCard('world');
 ```
 
 ## G2
 
-<p class="preview" ></p>
-
-```js
+```js | ob
 (() => {
   const chart = new g2.Chart({ theme: 'classic' });
+
   chart
     .interval()
     .data([
@@ -174,6 +165,7 @@ globalCard('world');
     ])
     .encode('x', 'genre')
     .encode('y', 'sold');
+
   return chart.render().then((chart) => {
     const container = chart.getContainer();
     container.clear = () => chart.destroy();

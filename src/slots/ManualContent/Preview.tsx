@@ -1,6 +1,7 @@
 import { PlayCircleOutlined, PushpinOutlined } from '@ant-design/icons';
 import React, { FC, useEffect, useRef, useState } from 'react';
 import styles from './Preview.module.less';
+import { safeEval } from './utils';
 
 type ClearableDOM = (HTMLElement | SVGElement) & { clear?: any };
 
@@ -13,10 +14,6 @@ function normalizeDOM(node): ClearableDOM {
   const span = document.createElement('span');
   span.textContent = node.toString();
   return span;
-}
-
-function safeEval(source) {
-  return new Function(`return ${source}`)();
 }
 
 function sizeOf(dom) {
@@ -33,11 +30,11 @@ function sizeOf(dom) {
 
 export type PreviewProps = {
   source: string;
-  pin: string;
+  pin: boolean;
   code: HTMLDivElement;
 };
 
-export const Preview: FC<any> = ({ source, code, _pin }) => {
+export const Preview: FC<any> = ({ source, code, pin = true }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const ulRef = useRef<HTMLUListElement>(null);
   const nodeRef = useRef<ClearableDOM>(null);
@@ -109,9 +106,9 @@ export const Preview: FC<any> = ({ source, code, _pin }) => {
 
   // 是否需要隐藏代码
   useEffect(() => {
-    if (_pin !== 'false') return;
+    if (pin !== false) return;
     code.style.display = 'none';
-  }, [_pin]);
+  }, [pin]);
 
   // 暂时和隐藏 toolbar
   useEffect(() => {
