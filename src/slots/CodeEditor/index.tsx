@@ -175,7 +175,6 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
         playground?.container as string,
         replaceId,
       );
-
     }, 300),
     [exampleId, currentEditorTab],
   );
@@ -208,6 +207,11 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
   // 案例变化的时候，修改代码
   useEffect(() => {
     setCode(source);
+
+    // 清空 data 和 spec
+    // 放在该案例运行错误，返回之前案例的 data 和 spec
+    setData(null);
+    if (showSpecTab) setSpec(null);
   }, [exampleId]);
 
   // 代码变化的时候，运行代码
@@ -274,9 +278,10 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
   // hook 用户的数据
   useEffect(() => {
     // 需要匹配首位的换行符，以及 ' 和 "
-    const dataFileMatch = source.match(/fetch\(\s*["|'](.*)["|']\s*\)/);
+    const match = source.matchAll(/fetch\(\s*["|'](.*)["|'],*\s*\)/g);
+    const dataFileMatch = Array.from(match);
     if (dataFileMatch && dataFileMatch.length > 0) {
-      fetchData([dataFileMatch[1].trim()]).then((data) => {
+      fetchData(dataFileMatch.map((d) => d[1].trim())).then((data) => {
         updateData(data);
       });
     } else {
@@ -325,7 +330,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
   );
 
   const parseFunction = (string) => {
-    return string.replace(/"\<func\>(.*)\<\/func\>"/g, (_, code) => code);
+    return string.replace(/"\<func\>(.*?)\<\/func\>"/g, (_, code) => code);
   };
 
   // 序列化 JavaScript 对象的时候对 function 进行特殊的标注，
