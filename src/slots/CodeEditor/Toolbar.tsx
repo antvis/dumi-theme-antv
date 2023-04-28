@@ -7,7 +7,7 @@ import stackblitzSdk from '@stackblitz/sdk';
 import { Tooltip, Typography } from 'antd';
 import { getParameters } from 'codesandbox/lib/api/define';
 import { FormattedMessage, useLocale } from 'dumi';
-import React, { useEffect, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import { ping } from '../utils';
 import {
   extractImportDeps,
@@ -87,6 +87,10 @@ type ToolbarProps = {
    * 执行代码
    */
   onExecuteCode: () => void;
+  /**
+   * Tab 的附加内容
+   */
+  slots: Record<string, ReactElement>;
 };
 
 export const Toolbar: React.FC<ToolbarProps> = ({
@@ -97,6 +101,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
   title = '',
   isFullScreen = false,
   editorTabs,
+  slots,
   currentEditorTab,
   onEditorTabChange,
   onToggleFullscreen = null,
@@ -143,21 +148,24 @@ export const Toolbar: React.FC<ToolbarProps> = ({
   const [riddleVisible, updateRiddleVisible] = useState(false);
   useEffect(() => {
     ping()
-      .then(status => updateRiddleVisible(status === 'responded'))
+      .then((status) => updateRiddleVisible(status === 'responded'))
       .catch(() => updateRiddleVisible(false));
   }, []);
   return (
     <div className={styles.toolbar}>
       <div className={styles.editortabs}>
-        {editorTabs.map((tab, index) => (
-          <span
-            key={index}
-            className={tab === currentEditorTab ? styles.current : ''}
-            onClick={() => onEditorTabChange(tab)}
-          >
-            {tab}
-          </span>
-        ))}
+        {editorTabs.map((tab, index) => {
+          const slot = slots[tab];
+          return (
+            <span
+              key={index}
+              className={tab === currentEditorTab ? styles.current : ''}
+              onClick={() => onEditorTabChange(tab)}
+            >
+              {tab} {slot && slot}
+            </span>
+          );
+        })}
       </div>
       {riddleVisible ? (
         <form
