@@ -8,6 +8,7 @@ if (window) {
   (window as any).g2 = extendG2(require('@antv/g2/lib/index.js'));
   (window as any).globalAdd = (x, y) => x + y;
   (window as any).globalCard = globalCard;
+  (window as any).d3Regression = require('d3-regression');
 }
 
 // 对 G2 的 Chart 对象进行扩展
@@ -55,9 +56,9 @@ function extendG2(g2) {
     options() {
       if (arguments.length !== 0) return super.options(...arguments);
       const options = super.options();
-      const { type, children = [], key, ...rest } = options;
+      const { type, children, key, ...rest } = options;
       const topLevel =
-        type === 'view' && children.length === 1
+        type === 'view' && Array.isArray(children) && children.length === 1
           ? { ...children[0], ...rest }
           : { type, children, ...rest };
       return sortKeys(topLevel);

@@ -1,4 +1,5 @@
 import MonacoEditor, { loader } from '@monaco-editor/react';
+import { Switch } from 'antd';
 import { autoType as d3AutoType, dsvFormat } from 'd3-dsv';
 import { useLocale, useSiteData } from 'dumi';
 import { debounce, noop } from 'lodash-es';
@@ -104,6 +105,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
   const [data, setData] = useState(null);
   const [spec, setSpec] = useState(null);
   const [code, setCode] = useState(source);
+  const [full, setFull] = useState(false);
   // monaco instance
   const monacoRef = useRef<any>(null);
   // 文件后缀
@@ -211,7 +213,10 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
     // 清空 data 和 spec
     // 放在该案例运行错误，返回之前案例的 data 和 spec
     setData(null);
-    if (showSpecTab) setSpec(null);
+    if (showSpecTab) {
+      setSpec(null);
+      setFull(false);
+    }
   }, [exampleId]);
 
   // 代码变化的时候，运行代码
@@ -330,7 +335,9 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
   );
 
   const parseFunction = (string) => {
-    return string.replace(/"\<func\>(.*?)\<\/func\>"/g, (_, code) => code);
+    return string.replace(/"\<func\>(.*?)\<\/func\>"/g, (_, code) =>
+      code.replace(/\\n/g, '\n').replace(/\\"/g, '"'),
+    );
   };
 
   // 序列化 JavaScript 对象的时候对 function 进行特殊的标注，
@@ -338,7 +345,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
   // { add: (x, y) => x + y } => '{ add: <func>(x, y) => x + y</func> }'
   const withFunction = (_: string, value: any) => {
     if (typeof value !== 'function') return value;
-    return `<func>${value.toString().replace(/\n/g, '')}</func>`;
+    return `<func>${value.toString()}</func>`;
   };
 
   const languageOf = (tab) => {
@@ -357,13 +364,22 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
     switch (tab) {
       case EDITOR_TABS.JAVASCRIPT:
         return code;
-      case EDITOR_TABS.SPEC:
-        return format(
-          parseFunction(`(${JSON.stringify(spec, withFunction)})`),
-          {
-            plugins: [parserBabel],
-          },
-        );
+      case EDITOR_TABS.SPEC: {
+        const code = (spec) => {
+          if (!full) return `(${spec})`;
+          return `import { Chart } from '@antv/g2';
+          
+          const chart = new Chart({container:'container'});
+
+          chart.options(${spec});
+
+          chart.render();
+          `;
+        };
+        return format(parseFunction(code(JSON.stringify(spec, withFunction))), {
+          plugins: [parserBabel],
+        });
+      }
       case EDITOR_TABS.DATA:
         return JSON.stringify(data, null, 2);
       default:
@@ -394,6 +410,18 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
         onExecuteCode={() => executeCode(code)}
         onEditorTabChange={onTabChange}
         onToggleFullscreen={onFullscreen}
+        slots={{
+          Spec: (
+            <span style={{ paddingLeft: '0.25em', paddingRight: 0 }}>
+              <Switch
+                style={{ width: 30 }}
+                size="small"
+                onChange={(checked) => setFull(checked)}
+                checked={full}
+              />
+            </span>
+          ),
+        }}
       />
       {editorTabs.map((tab) => (
         <div
