@@ -56,9 +56,9 @@ function extendG2(g2) {
     options() {
       if (arguments.length !== 0) return super.options(...arguments);
       const options = super.options();
-      const { type, children = [], key, ...rest } = options;
+      const { type, children, key, ...rest } = options;
       const topLevel =
-        type === 'view' && children.length === 1
+        type === 'view' && Array.isArray(children) && children.length === 1
           ? { ...children[0], ...rest }
           : { type, children, ...rest };
       return sortKeys(topLevel);
