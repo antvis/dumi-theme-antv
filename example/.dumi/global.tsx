@@ -8,6 +8,7 @@ if (window) {
   (window as any).g2 = extendG2(require('@antv/g2/lib/index.js'));
   (window as any).globalAdd = (x, y) => x + y;
   (window as any).globalCard = globalCard;
+  (window as any).d3Regression = require('d3-regression');
 }
 
 // 对 G2 的 Chart 对象进行扩展

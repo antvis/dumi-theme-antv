@@ -330,7 +330,9 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
   );
 
   const parseFunction = (string) => {
-    return string.replace(/"\<func\>(.*?)\<\/func\>"/g, (_, code) => code);
+    return string.replace(/"\<func\>(.*?)\<\/func\>"/g, (_, code) =>
+      code.replace(/\\n/g, '\n').replace(/\\"/g, '"'),
+    );
   };
 
   // 序列化 JavaScript 对象的时候对 function 进行特殊的标注，
@@ -338,7 +340,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
   // { add: (x, y) => x + y } => '{ add: <func>(x, y) => x + y</func> }'
   const withFunction = (_: string, value: any) => {
     if (typeof value !== 'function') return value;
-    return `<func>${value.toString().replace(/\n/g, '')}</func>`;
+    return `<func>${value.toString()}</func>`;
   };
 
   const languageOf = (tab) => {
