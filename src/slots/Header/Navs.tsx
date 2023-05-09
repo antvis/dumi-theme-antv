@@ -10,9 +10,10 @@ import styles from './index.module.less';
 type dropdownItem = {
   name: {
     [key: string]: string;
-  },
-  url: string
-}
+  };
+  url: string;
+  target?: '_blank';
+};
 
 export type INav = {
   slug?: string;
@@ -52,44 +53,52 @@ export const Navs: React.FC<NavProps> = ({ navs, path }) => {
           className = cx('header-menu-item-active', {
             [styles.activeItem]: getNavCategory(path) === getNavCategory(href)
           });
-       }
+        }
         return (
           size(nav.dropdownItems) ? 
             (
-              <li key={title} className={className}>
-                <Dropdown
-                  className={styles.ecoSystems}
-                  placement="bottom"
-                  overlay={
-                    <Menu>
-                      {nav.dropdownItems.map(({ name, url }) => (
-                        <Menu.Item key={url}>
-                          <a target="_blank" rel="noreferrer" href={url}>
-                            {name[locale.id]} <LinkOutlined />
+          <li key={title} className={className}>
+            <Dropdown
+              className={styles.ecoSystems}
+              placement="bottom"
+              overlay={
+                <Menu>
+                  {nav.dropdownItems.map(({ name, url, target }) => {
+                    const displayName = name[locale.id];
+                    return (
+                      <Menu.Item key={url}>
+                        {target === '_blank' || url.startsWith('http') ? (
+                          <a href={url} target="_blank" rel="noreferrer">
+                            {displayName}
+                            <LinkOutlined />
                           </a>
-                        </Menu.Item>
-                      ))}
-                    </Menu>
-                  }
-                >
-                  <span>
-                    {title}
-                    <DownOutlined />
-                  </span>
-                </Dropdown>
-            </li>
+                        ) : (
+                          <Link to={url}>{displayName}</Link>
+                        )}
+                      </Menu.Item>
+                    );
+                  })}
+                </Menu>
+              }
+            >
+              <span>
+                {title}
+                <DownOutlined />
+              </span>
+            </Dropdown>
+          </li>
             )
             :
            ( <li key={title} className={className}>
-              {nav.target === '_blank' || href.startsWith('http') ? (
+            {nav.target === '_blank' || href.startsWith('http') ? (
               <a href={href} target='_blank' rel='noreferrer'>
                 {title}
                 <LinkOutlined />
               </a>
-              ) : (
-               <Link to={href}>{title}</Link>
-             )}
-              </li>
+            ) : (
+              <Link to={href}>{title}</Link>
+            )}
+          </li>
             )
           )
       })}
