@@ -11,12 +11,21 @@ import styles from './index.module.less';
 export const Search = () => {
   const intl = useIntl();
   const [open, setOpen] = useState<boolean>(false);
-  const onClose = useCallback(() => setTimeout(() => setOpen(false), 150), []);
   const { keywords, setKeywords, result } = useSiteSearch();
 
   useEffect(() => {
     setOpen(!!result?.length);
   }, [result]);
+
+  useEffect(() => {
+    if (window) {
+      window.onclick = (e) => {
+        if (!e.target?.className?.match(styles.input)) {
+          setOpen(false);
+        }
+      }
+    }
+  }, []);
 
   return (
     <Popover open={open} placement="topLeft" content={<SearchResult results={getSearchResults(result)} />}>
@@ -26,7 +35,6 @@ export const Search = () => {
           className={styles.input}
           value={keywords}
           autoComplete="off"
-          onBlur={() => onClose()}
           onFocus={() => setOpen(!!result?.length)}
           onChange={(e) => setKeywords(e.target.value)}
           placeholder={intl.formatMessage({
