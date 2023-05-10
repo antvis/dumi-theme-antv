@@ -11,7 +11,7 @@ import styles from './index.module.less';
 export const Search = () => {
   const intl = useIntl();
   const [open, setOpen] = useState<boolean>(false);
-  const onClose = useCallback(() => setTimeout(() => setOpen(false), 100), []);
+  const onClose = useCallback(() => setTimeout(() => setOpen(false), 150), []);
   const { keywords, setKeywords, result } = useSiteSearch();
 
   useEffect(() => {
