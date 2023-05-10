@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Popover } from 'antd';
-import { debounce } from 'lodash';
 import { useIntl, useSiteSearch } from 'dumi';
 import { SearchOutlined } from '@ant-design/icons';
 import { SearchResult } from './SearchResult';
@@ -18,17 +17,23 @@ export const Search = () => {
   }, [result]);
 
   useEffect(() => {
-    if (window) {
-      window.onclick = (e) => {
-        if (!e.target?.className?.match(styles.input)) {
-          setOpen(false);
-        }
+    const close = (e: any) => {
+      if (!e.target?.className?.match(styles.input)) {
+        setOpen(false);
       }
+    }
+    if (window) {
+      window.addEventListener('click', close);
+    }
+    return () => {
+      window.removeEventListener('click', close);
     }
   }, []);
 
+  const searchResults = useMemo(() => getSearchResults(result), [result]);
+
   return (
-    <Popover open={open} placement="topLeft" content={<SearchResult results={getSearchResults(result)} />}>
+    <Popover open={open} placement="topLeft" destroyTooltipOnHide={{ keepParent: false }} content={<SearchResult results={searchResults} />}>
       <label className={styles.search} >
         <SearchOutlined className={styles.icon} />
         <input
