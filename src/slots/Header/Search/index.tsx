@@ -11,7 +11,7 @@ import styles from './index.module.less';
 export const Search = () => {
   const intl = useIntl();
   const [open, setOpen] = useState<boolean>(false);
-  const onClose = useCallback(() => setTimeout(() => setOpen(false), 60), []);
+  const onClose = useCallback(() => setTimeout(() => setOpen(false), 100), []);
   const { keywords, setKeywords, result } = useSiteSearch();
 
   useEffect(() => {
@@ -30,7 +30,7 @@ export const Search = () => {
           onFocus={() => setOpen(!!result?.length)}
           onChange={(e) => setKeywords(e.target.value)}
           placeholder={intl.formatMessage({
-            id: '搜索…'
+            id: '搜索…',
           })}
         />
       </label >
