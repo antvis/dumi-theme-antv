@@ -215,32 +215,32 @@ export default defineConfig({
       ],
     },
     /** 新闻公告，优先选择配置的，如果没有配置则使用远程的！ */
-    news: [
-      {
-        type: {
-          zh: '论坛',
-          en: 'Forum',
-        },
-        title: {
-          zh: 'AntV 芒种日 图新物：GraphInsight 发布',
-          en: 'AntV Seeds Day Graph New: GraphInsight Released',
-        },
-        date: '2022.06.06',
-        link: 'https://github.com/antvis/GraphInsight',
-      },
-      {
-        type: {
-          zh: '论坛',
-          en: 'Forum',
-        },
-        title: {
-          zh: 'SEE Conf 2022 支付宝体验科技大会',
-          en: 'SEE Conf 2022 Alipay Experience Technology Conference',
-        },
-        date: '2022.01.08',
-        link: 'https://seeconf.antfin.com/',
-      },
-    ],
+    // news: [
+    //   {
+    //     type: {
+    //       zh: '论坛',
+    //       en: 'Forum',
+    //     },
+    //     title: {
+    //       zh: 'AntV 芒种日 图新物：GraphInsight 发布',
+    //       en: 'AntV Seeds Day Graph New: GraphInsight Released',
+    //     },
+    //     date: '2022.06.06',
+    //     link: 'https://github.com/antvis/GraphInsight',
+    //   },
+    //   {
+    //     type: {
+    //       zh: '论坛',
+    //       en: 'Forum',
+    //     },
+    //     title: {
+    //       zh: 'SEE Conf 2022 支付宝体验科技大会',
+    //       en: 'SEE Conf 2022 Alipay Experience Technology Conference',
+    //     },
+    //     date: '2022.01.08',
+    //     link: 'https://seeconf.antfin.com/',
+    //   },
+    // ],
     /** 首页特性介绍 */
     features: [
       {
