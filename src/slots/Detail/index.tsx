@@ -63,8 +63,6 @@ export const Detail: React.FC<DetailProps> = ({
   const githubObj = gh(githubUrl);
   const showGitHubStarsButton = showGithubStars && githubObj && githubObj.owner && githubObj.name;
 
-  console.log(1111, news, remoteNews);
-
   return (
     <section className={cx(styles.wrapper, className)} style={style}>
       <div className={styles.content}>
