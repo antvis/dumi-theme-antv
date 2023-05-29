@@ -8,8 +8,7 @@
   },
   "dependencies": {
     "@antv/g2": "^5.0.0-alpha.3",
-    "d3-regression": "^1.3.10",
-    "umi-plugin-antv-cname": "^0.0.1"
+    "d3-regression": "^1.3.10"
   },
   "repository": {
     "type": "git",

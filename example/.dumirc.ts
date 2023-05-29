@@ -321,7 +321,7 @@ export default defineConfig({
   // tnpm 安装的目录会导致 webpack 缓存快照 OOM，暂时禁用
   // 只有主题包开发需要用，其他技术栈使用的时候，不需要！
   chainWebpack(memo) { memo.delete('cache'); return memo },
-  plugins: ['umi-plugin-antv-cname'],
+  plugins: [],
   links: [
   ],
   scripts: [
