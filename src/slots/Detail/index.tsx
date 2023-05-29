@@ -45,9 +45,9 @@ export const Detail: React.FC<DetailProps> = ({
   githubUrl,
   showGithubStars = true,
   buttons = [],
-  news = [],
+  news,
 }) => {
-  const [removeNews, setRemoteNews] = useState<NewsProps[]>([]);
+  const [remoteNews, setRemoteNews] = useState<NewsProps[]>([]);
   const lang = useLocale().id
   
   useEffect(() => {
@@ -111,7 +111,7 @@ export const Detail: React.FC<DetailProps> = ({
         {/** 新闻公告 */}
         <div className={cx(styles.news, 'news')}>
           {
-            ( news || removeNews).slice(0, 2).map((n, i) => (<News key={i} index={i} {...n} />))
+            ( news || remoteNews).slice(0, 2).map((n, i) => (<News key={i} index={i} {...n} />))
           }
         </div>
         {/** image */}
