@@ -18,7 +18,8 @@ export const Search = () => {
 
   useEffect(() => {
     const close = (e: any) => {
-      if (!e.target?.className?.match(styles.input)) {
+      const className = e.target?.className;
+      if (!(typeof className === 'string' && className.match(styles.input))) {
         setOpen(false);
       }
     }
