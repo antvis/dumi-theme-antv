@@ -1,7 +1,7 @@
-import React from 'react';
 import { FormattedMessage } from 'dumi';
-import { ProductType } from './getProducts';
+import React from 'react';
 import styles from './Product.module.less';
+import { ProductType } from './getProducts';
 
 interface ProductProps {
   name?: string;
@@ -16,8 +16,8 @@ interface ProductProps {
 
 const getTarget = (url: string) =>
   url.startsWith('http') &&
-    !url.includes('gitee.io') &&
-    !url.includes('antv.vision')
+  !url.includes('gitee.io') &&
+  !url.includes('antv.vision')
     ? '_blank'
     : '_self';
 
@@ -31,7 +31,6 @@ const Product: React.FC<ProductProps> = ({
   style,
   language,
 }) => {
-
   return (
     <li className={styles.product} style={style}>
       <a href={url} target={getTarget(url)}>
@@ -52,11 +51,7 @@ const Product: React.FC<ProductProps> = ({
         <div className={styles.productDescription}>{description}</div>
         <div className={styles.productLinks}>
           {links.home && (
-            <a
-              href={links.home.url}
-              target={getTarget(links.home.url || '')}
-              key={links.home.url}
-            >
+            <a href={links.home.url} target={getTarget(links.home.url || '')}>
               {links.home.title ?? <FormattedMessage id="产品首页" />}
             </a>
           )}
@@ -64,7 +59,6 @@ const Product: React.FC<ProductProps> = ({
             <a
               href={links.example.url}
               target={getTarget(links.example.url || '')}
-              key={links.example.url}
             >
               {links.example.title ?? <FormattedMessage id="图表示例" />}
             </a>
