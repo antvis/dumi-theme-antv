@@ -23,11 +23,16 @@ function sourceOf(block: Element) {
   return cloned.textContent;
 }
 
-export function usePreview(options = {}) {
+function blockOf() {
+  return Array.from(
+    document.querySelectorAll('.ob-codeblock .dumi-default-source-code'),
+  );
+}
+
+export function usePreview(options = {}, select) {
+  const key = select + ',' + blockOf().length;
   useEffect(() => {
-    const blocks = Array.from(
-      document.querySelectorAll('.ob-codeblock .dumi-default-source-code'),
-    );
+    const blocks = blockOf();
 
     // 过滤实际展示的 block
     const I = Array.from({ length: blocks.length }, (_, i) => i);
@@ -66,5 +71,5 @@ export function usePreview(options = {}) {
         wrapper.replaceWith(p);
       }
     };
-  });
+  }, [key]);
 }

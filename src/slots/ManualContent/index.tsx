@@ -183,7 +183,7 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
     navigate(e.key);
     useScrollToTop();
   };
-  const [defaultSelectedKey, setDefaultSelectedKey] = useState<[string]>();
+  const [defaultSelectedKey, setDefaultSelectedKey] = useState<string>();
   //上一夜下一页
   const [prev, setPrev] = useState<PreAndNext | undefined>(undefined);
   const [next, setNext] = useState<PreAndNext | undefined>(undefined);
@@ -206,7 +206,7 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
     if (window.location.pathname == indexRoute) {
       setDefaultOpenKeys(getOpenKeys());
     }
-    setDefaultSelectedKey([window.location.pathname]);
+    setDefaultSelectedKey(window.location.pathname);
   }, [window.location.pathname]);
 
   useEffect(() => {
@@ -214,7 +214,7 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
     getPreAndNext();
   }, [defaultSelectedKey]);
 
-  usePreview();
+  usePreview({}, defaultSelectedKey);
 
   function getPreAndNext() {
     const menuNodes = document.querySelectorAll('aside .ant-menu-item');
@@ -274,7 +274,7 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
       onOpenChange={(openKeys) => {
         setDefaultOpenKeys(openKeys);
       }}
-      selectedKeys={defaultSelectedKey}
+      selectedKeys={[defaultSelectedKey]}
       openKeys={defaultOpenKeys}
       mode="inline"
       items={renderSidebar}
