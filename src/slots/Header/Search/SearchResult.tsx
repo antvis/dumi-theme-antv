@@ -1,4 +1,6 @@
 import React from 'react';
+import { useIntl } from 'dumi';
+import { InboxOutlined } from '@ant-design/icons';
 import styles from './SearchResult.module.less';
 
 export type ITextSegment = {
@@ -29,21 +31,27 @@ const getHighlightInfo = (textSegments: ITextSegment[]) => {
  * 展示搜索结果
  * @returns
  */
-export const SearchResult: React.FC<{results: ISearchResult[]}> = ({ results }) => {
+export const SearchResult: React.FC<{ results: ISearchResult[] }> = ({ results }) => {
+  const intl = useIntl();
   return (
     <div className={styles.searchResult} >
-      {results.map((r) => {
-        return (
-          <div className={styles.item}>
-            <div className={styles.subject} >{r.subject}</div>
-            <div className={styles.br} />
-            <a className={styles.result} href={r.link}>
-              <div className={styles.title}>{getHighlightInfo(r.tilte)}</div>
-              <div className={styles.description}>{getHighlightInfo(r.description)}</div>
-            </a>
-          </div>
-        )
-      })}
+      {
+        results?.length ? results.map((r) => {
+          return (
+            <div className={styles.item}>
+              <div className={styles.subject} >{r.subject}</div>
+              <div className={styles.br} />
+              <a className={styles.result} href={r.link}>
+                <div className={styles.title}>{getHighlightInfo(r.tilte)}</div>
+                <div className={styles.description}>{getHighlightInfo(r.description)}</div>
+              </a>
+            </div>
+          )
+        }) : <div className={styles.empty}>
+          <InboxOutlined style={{ fontSize: 20 }} />
+          <div>{intl.formatMessage({ id: '没有找到查询结果' })}</div>
+        </div>
+      }
     </div>
   );
 }

@@ -10,11 +10,15 @@ import styles from './index.module.less';
 export const Search = () => {
   const intl = useIntl();
   const [open, setOpen] = useState<boolean>(false);
-  const { keywords, setKeywords, result } = useSiteSearch();
+  // useSiteSearch 错误 keywords 为空时 loading 为 true
+  const { keywords, setKeywords, result, loading } = useSiteSearch();
 
   useEffect(() => {
-    setOpen(!!result?.length);
-  }, [result]);
+    // keywords 为空 或 loading 为 false 查找结束， 进行开关
+    if (!keywords || !loading) {
+      setOpen(!!keywords);
+    }
+  }, [keywords, loading]);
 
   useEffect(() => {
     const close = (e: any) => {
