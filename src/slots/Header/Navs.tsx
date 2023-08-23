@@ -46,61 +46,65 @@ export const Navs: React.FC<NavProps> = ({ navs, path }) => {
           href = nav.slug.startsWith('http')
             ? nav.slug
             : `/${nav.slug}`;
-          if (locale.id == 'en' && !href.startsWith('http') ) {
+
+          // 去除 docs 防止新页面 404 和 本页重新刷新。
+          href = href.replace('/docs', '');
+
+          if (locale.id == 'en' && !href.startsWith('http')) {
             href = `/en${href}`;
           }
-          // 去除 docs  防止二次点击相同 nav 跳转出现04
+
           className = cx('header-menu-item-active', {
             [styles.activeItem]: getNavCategory(path) === getNavCategory(href)
           });
         }
         return (
-          size(nav.dropdownItems) ? 
+          size(nav.dropdownItems) ?
             (
-          <li key={title} className={className}>
-            <Dropdown
-              className={styles.ecoSystems}
-              placement="bottom"
-              overlay={
-                <Menu>
-                  {nav.dropdownItems.map(({ name, url, target }) => {
-                    const displayName = name[locale.id];
-                    return (
-                      <Menu.Item key={url}>
-                        {target === '_blank' || url.startsWith('http') ? (
-                          <a href={url} target="_blank" rel="noreferrer">
-                            {displayName}
-                            <LinkOutlined />
-                          </a>
-                        ) : (
-                          <Link to={url}>{displayName}</Link>
-                        )}
-                      </Menu.Item>
-                    );
-                  })}
-                </Menu>
-              }
-            >
-              <span>
-                {title}
-                <DownOutlined />
-              </span>
-            </Dropdown>
-          </li>
+              <li key={title} className={className}>
+                <Dropdown
+                  className={styles.ecoSystems}
+                  placement="bottom"
+                  overlay={
+                    <Menu>
+                      {nav.dropdownItems.map(({ name, url, target }) => {
+                        const displayName = name[locale.id];
+                        return (
+                          <Menu.Item key={url}>
+                            {target === '_blank' || url.startsWith('http') ? (
+                              <a href={url} target="_blank" rel="noreferrer">
+                                {displayName}
+                                <LinkOutlined />
+                              </a>
+                            ) : (
+                              <Link to={url}>{displayName}</Link>
+                            )}
+                          </Menu.Item>
+                        );
+                      })}
+                    </Menu>
+                  }
+                >
+                  <span>
+                    {title}
+                    <DownOutlined />
+                  </span>
+                </Dropdown>
+              </li>
             )
             :
-           ( <li key={title} className={className}>
-            {nav.target === '_blank' || href.startsWith('http') ? (
-              <a href={href} target='_blank' rel='noreferrer'>
-                {title}
-                <LinkOutlined />
-              </a>
-            ) : (
-              <Link to={href}>{title}</Link>
-            )}
-          </li>
+            (<li key={title} className={className}>
+              {nav.target === '_blank' || href.startsWith('http') ? (
+                <a href={href} target='_blank' rel='noreferrer'>
+                  {title}
+                  <LinkOutlined />
+                </a>
+              ) : (
+                <Link to={href}>{title}</Link>
+              )}
+            </li>
             )
-          )
+        )
       })}
     </>
   );
