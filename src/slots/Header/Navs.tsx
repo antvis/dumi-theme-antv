@@ -48,7 +48,7 @@ export const Navs: React.FC<NavProps> = ({ navs, path }) => {
             : `/${nav.slug}`;
 
           // 去除 docs 防止新页面 404 和 本页重新刷新。
-          href = href.replace('/docs', '');
+          href = href.replace(/^\/docs(?=\/)/, '');
 
           if (locale.id == 'en' && !href.startsWith('http')) {
             href = `/en${href}`;
