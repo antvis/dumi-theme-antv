@@ -116,10 +116,13 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
         const href = (
           !baseRoute.startsWith('/en') ? `/${item.slug}` : `/en/${item.slug}`
         ).toLocaleLowerCase();
-        const id = href
-          .split('/')
-          .slice(0, href.split('/').length - 1)
-          .join('/');
+
+        const id = '/' + href.split('/')[1];
+        // const id = href
+        //   .split('/')
+        //   .slice(0, href.split('/').length - 1)
+        //   .join('/');
+
         if (href.includes(baseRoute)) {
           if (id === hrefId) {
             list.push({
@@ -130,9 +133,11 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
           }
         }
       });
+
       for (const item of list) {
         item.children = [];
         fullSidebarDataToMenuData(rootList, item.key, item.children);
+
         funllSidebarData[item.key] &&
           funllSidebarData[item.key][0].children?.forEach((itemChild) => {
             const label = itemChild.title as unknown as string;
@@ -167,6 +172,7 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
         return list;
       }
     }
+
     return fullSidebarDataToMenuData(rootList, hrefId, list);
   }
 
