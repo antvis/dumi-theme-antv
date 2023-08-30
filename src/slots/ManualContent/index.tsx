@@ -117,11 +117,9 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
           !baseRoute.startsWith('/en') ? `/${item.slug}` : `/en/${item.slug}`
         ).toLocaleLowerCase();
 
-        const id = '/' + href.split('/')[1];
-        // const id = href
-        //   .split('/')
-        //   .slice(0, href.split('/').length - 1)
-        //   .join('/');
+        const hasPrefix = hrefId.startsWith('/en') || href.startsWith('/zh');
+        const splitCount = hasPrefix ? 3 : 2;
+        const id = href.split('/').splice(0, splitCount).join('/');
 
         if (href.includes(baseRoute)) {
           if (id === hrefId) {
