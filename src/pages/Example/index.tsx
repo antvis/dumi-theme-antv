@@ -1,7 +1,7 @@
 import { Layout } from 'antd';
 import { useLocale, useSiteData } from 'dumi';
 import { get, find } from 'lodash-es';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useMemo } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { ThemeAntVContext } from '../../context';
 import { CodeRunner } from '../../slots/CodeRunner';
@@ -47,7 +47,7 @@ const Example: React.FC = () => {
   const { themeConfig } = useSiteData();
 
   const exampleTopics: ExampleTopic[] = metaData.meta.exampleTopics;
-  const demo = hash.slice(1);
+  const demo = useMemo(() => hash.slice(1) || get(find(get(exampleTopics, ['0', 'examples']), ({ id }) => id === example), ['demos', '0', 'id']), [hash, exampleTopics]);
 
   const [currentDemo, setCurrentDemo] = useState<Demo>();
 
@@ -56,18 +56,10 @@ const Example: React.FC = () => {
   const [title, setTitle] = useState<title>({});
 
   useEffect(() => {
-    if (topic && example) {
-      if (demo) {
-        const targetDemoInfo = getDemoInfo(exampleTopics, topic, example, demo);
-        setCurrentDemo(targetDemoInfo);
-        setTitle(getCurrentTitle(exampleTopics, topic, example));
-      } else {
-        // examples/case/id -> examples/case/id#id1
-        const hash = get(find(get(exampleTopics, ['0', 'examples']), ({ id }) => id === example), ['demos', '0', 'id']);
-        if (hash) {
-          window.location.hash = hash;
-        }
-      }
+    if (topic && example && demo) {
+      const targetDemoInfo = getDemoInfo(exampleTopics, topic, example, demo);
+      setCurrentDemo(targetDemoInfo);
+      setTitle(getCurrentTitle(exampleTopics, topic, example));
     }
   }, [topic, example, hash]);
   return (
