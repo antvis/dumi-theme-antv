@@ -1,6 +1,6 @@
 import { Layout } from 'antd';
 import { useLocale, useSiteData } from 'dumi';
-import { get } from 'lodash-es';
+import { get, find } from 'lodash-es';
 import React, { useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { ThemeAntVContext } from '../../context';
@@ -56,10 +56,18 @@ const Example: React.FC = () => {
   const [title, setTitle] = useState<title>({});
 
   useEffect(() => {
-    if (topic && example && demo) {
-      const targetDemoInfo = getDemoInfo(exampleTopics, topic, example, demo);
-      setCurrentDemo(targetDemoInfo);
-      setTitle(getCurrentTitle(exampleTopics, topic, example));
+    if (topic && example) {
+      if (demo) {
+        const targetDemoInfo = getDemoInfo(exampleTopics, topic, example, demo);
+        setCurrentDemo(targetDemoInfo);
+        setTitle(getCurrentTitle(exampleTopics, topic, example));
+      } else {
+        // examples/case/id -> examples/case/id#id1
+        const hash = get(find(get(exampleTopics, ['0', 'examples']), ({ id }) => id === example), ['demos', '0', 'id']);
+        if (hash) {
+          window.location.hash = hash;
+        }
+      }
     }
   }, [topic, example, hash]);
   return (
