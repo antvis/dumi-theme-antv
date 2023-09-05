@@ -1,7 +1,7 @@
 import { Layout } from 'antd';
 import { useLocale, useSiteData } from 'dumi';
-import { get } from 'lodash-es';
-import React, { useContext, useEffect, useState } from 'react';
+import { get, find } from 'lodash-es';
+import React, { useContext, useEffect, useState, useMemo } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { ThemeAntVContext } from '../../context';
 import { CodeRunner } from '../../slots/CodeRunner';
@@ -47,7 +47,12 @@ const Example: React.FC = () => {
   const { themeConfig } = useSiteData();
 
   const exampleTopics: ExampleTopic[] = metaData.meta.exampleTopics;
-  const demo = hash.slice(1);
+  const demo = useMemo(() => {
+    const examples = get(exampleTopics, ['0', 'examples']);
+    const exampleDemo = find(examples, ({ id }) => id === example);
+    // examples/case/id hash 为空，可以默认第一个 example 对应的 demo
+    return hash.slice(1) || get(exampleDemo, ['demos', '0', 'id']);
+  }, [hash, exampleTopics, example]);
 
   const [currentDemo, setCurrentDemo] = useState<Demo>();
 
