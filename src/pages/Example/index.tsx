@@ -47,7 +47,12 @@ const Example: React.FC = () => {
   const { themeConfig } = useSiteData();
 
   const exampleTopics: ExampleTopic[] = metaData.meta.exampleTopics;
-  const demo = useMemo(() => hash.slice(1) || get(find(get(exampleTopics, ['0', 'examples']), ({ id }) => id === example), ['demos', '0', 'id']), [hash, exampleTopics]);
+  const demo = useMemo(() => {
+    const examples = get(exampleTopics, ['0', 'examples']);
+    const exampleDemo = find(examples, ({ id }) => id === example);
+    // examples/case/id hash 为空，可以默认第一个 example 对应的 demo
+    return hash.slice(1) || get(exampleDemo, ['demos', '0', 'id']);
+  }, [hash, exampleTopics, example]);
 
   const [currentDemo, setCurrentDemo] = useState<Demo>();
 
