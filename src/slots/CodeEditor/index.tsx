@@ -10,7 +10,6 @@ import { bind, clear } from 'size-sensor';
 import { Loading } from '../Loading';
 import { EDITOR_TABS, Toolbar } from './Toolbar';
 import styles from './index.module.less';
-import { compile, execute, replaceInsertCss } from './utils';
 
 loader.config({
   'vs/nls': {
@@ -65,6 +64,12 @@ export type CodeEditorProps = {
    */
   onError: (e: any) => void;
   /**
+   * 当执行代码时
+   * @param source 
+   * @returns 
+   */
+  onExecute: (source: string) => void;
+  /**
    * playground 的一些配置
    */
   playground: {
@@ -96,6 +101,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
   onDestroy = noop,
   onError = noop,
   onFullscreen = noop,
+  onExecute,
 }) => {
   const locale = useLocale();
   const { themeConfig } = useSiteData();
@@ -126,57 +132,12 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
     window.dispatchEvent(e);
   };
 
-  const reportError = useCallback((e) => {
-    if (e) {
-      console.log(e);
-      onError(e);
-      e.preventDefault && e.preventDefault();
-    } else {
-      onError(null);
-    }
-  }, []);
-
-  useEffect(() => {
-    // 用于上报错误信息，使用 script 执行代码
-    if (typeof window !== 'undefined') {
-      // Cath error of code.
-      (window as any).__reportErrorInPlayground = reportError;
-      // Catch error of timeout/raf.
-      window.onerror = reportError;
-      // Catch error of  promise.
-      window.addEventListener('unhandledrejection', reportError);
-    }
-    return () => {
-      if (window) {
-        (window as any).__reportErrorInPlayground = undefined;
-        window.onerror = undefined;
-        window.removeEventListener('unhandledrejection', reportError);
-      }
-    };
-  }, []);
-
   const executeCode = useCallback(
     debounce((v: string) => {
       if (currentEditorTab !== EDITOR_TABS.JAVASCRIPT) return;
       if (!v) return;
 
-      // 1. 先编译代码
-      let compiled;
-      try {
-        compiled = compile(replaceInsertCss(v, locale.id), relativePath, es5);
-      } catch (e) {
-        reportError(e);
-        // 执行出错，后面的步骤不用做了！
-        return;
-      }
-
-      // 2. 执行代码，try catch 在内部已经做了
-      execute(
-        compiled,
-        containerId,
-        playground?.container as string,
-        replaceId,
-      );
+      onExecute(v)
     }, 300),
     [exampleId, currentEditorTab],
   );
@@ -376,9 +337,13 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
           chart.render();
           `;
         };
-        return format(parseFunction(code(JSON.stringify(spec, withFunction))), {
-          plugins: [parserBabel],
-        });
+        try {
+          return format(parseFunction(code(JSON.stringify(spec, withFunction))), {
+            plugins: [parserBabel],
+          });
+        } catch (e) {
+          return '';
+        }
       }
       case EDITOR_TABS.DATA:
         return JSON.stringify(data, null, 2);

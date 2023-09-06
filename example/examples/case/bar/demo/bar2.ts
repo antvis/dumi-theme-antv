@@ -7,7 +7,7 @@ fetch(
   .then((data) => data.map((d) => ({ ...d, Date: new Date(d.Date) })))
   .then((data) => {
     const chart = new Chart({
-      container: 'container',
+      container: document.getElementById('container'),
       autoFit: true,
       theme: 'classic',
     });
@@ -23,25 +23,8 @@ fetch(
       chart.interaction('tooltip', {
         position: 'auto',
         render: (event, { title, items }) => `
-        <div
-          style="
-            width: 300px;
-            background: #f2f2f2;
-            border-radius: 10px;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 10px;
-            margin: -12px;
-          "
-        >
-          <h2
-            style="
-              margin-bottom: 9px; 
-              font-size: 18px; 
-              line-height: 30px; 
-              font-weight: 500px"
-          >
+        <div style="width: 300px;background: #f2f2f2;border-radius: 10px;flex-direction: column;justify-content: center;align-items: center;padding: 10px;margin: -12px;">
+          <h2 style="margin-bottom: 9px;font-size: 18px;line-height: 30px; font-weight: 500px">
             Letter: ${title}
           </h2>
           ${items.map(

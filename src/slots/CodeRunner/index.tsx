@@ -9,6 +9,7 @@ import { getDemoInfo } from './utils';
 import { NotFound } from '../404';
 import { ic } from '../hooks';
 import { ExampleTopic } from '../../types';
+import { compile, replaceInsertCss } from './utils';
 
 type CodeRunnerProps = {
   isPlayground?: boolean;
@@ -18,7 +19,15 @@ type CodeRunnerProps = {
   exampleTopics: ExampleTopic[];
   size?: number;
   replaceId?: string;
-  notFound?: React.Element;
+  notFound?: React.JSX.Element;
+}
+
+function processCode(code: string, locale: string, relativePath: string): string {
+  try {
+    return compile(replaceInsertCss(code, locale), relativePath, true);
+  } catch (e) {
+    return '';
+  }
 }
 
 /**
@@ -39,6 +48,9 @@ export const CodeRunner: React.FC<CodeRunnerProps> = ({
   const { githubUrl, playground } = themeConfig;
   const [error, setError] = useState<Error>();
   const [isFullScreen, setFullscreen] = useState<boolean>(false);
+
+  const [code, setCode] = useState(source);
+
   const locale = useLocale();
 
   const header = <CodeHeader title={ic(title)} relativePath={relativePath} githubUrl={githubUrl} />;
@@ -49,6 +61,7 @@ export const CodeRunner: React.FC<CodeRunnerProps> = ({
     <SplitPane split='vertical' defaultSize={`${(1 - size) * 100}%`} minSize={100}>
       <CodePreview
         exampleId={exampleId}
+        source={processCode(code, locale.id, relativePath)}
         error={error}
         header={header}
         isPlayground={isPlayground}
@@ -62,6 +75,9 @@ export const CodeRunner: React.FC<CodeRunnerProps> = ({
         onFullscreen={setFullscreen}
         onDestroy={noop}
         onReady={noop}
+        onExecute={(source) => {
+          setCode(source);
+        }}
         playground={playground}
       />
     </SplitPane>

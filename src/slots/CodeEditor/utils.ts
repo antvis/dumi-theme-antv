@@ -1,6 +1,4 @@
 import path from 'path';
-// @ts-ignore
-import { transform } from '@babel/standalone';
 import indentString from 'indent-string';
 
 export function replaceFetchUrl(sourceCode: string) {
@@ -144,77 +142,4 @@ export function getHtmlCodeTemplate(
     result = result.replace('<body>', `<body>\n${indentString(container, 4)}`);
   }
   return result;
-}
-
-export function replaceInsertCss(str: string, lang: string) {
-  const comment =
-    lang === 'zh'
-      ? `// 我们用 insert-css 演示引入自定义样式
-// 推荐将样式添加到自己的样式文件中
-// 若拷贝官方代码，别忘了 npm install insert-css
-insertCss(`
-      : `// We use 'insert-css' to insert custom styles
-// It is recommended to add the style to your own style sheet files
-// If you want to copy the code directly, please remember to install the npm package 'insert-css
-insertCss(`;
-  // 统一增加对 insert-css 的使用注释
-  return str.replace(/^insertCss\(/gm, comment);
-}
-
-/**
- * 执行代码
- * @param code 运行的代码
- * @param playgroundScriptContainer 运行的节点
- * @param container 代码中 container dom
- * @param replaceId rid
- * @param cb 回调错误
- */
-export function execute(
-  code: string,
-  playgroundScriptContainer: string,
-  container: string,
-  replaceId = 'container',
-) {
-  const node = document.getElementById(playgroundScriptContainer);
-  const script = document.createElement('script');
-  // replace container id in case of multi demos in document
-  const newCode = code.replace(/'container'|"container"/, `'${replaceId}'`);
-  script.innerHTML = `
-// Can only have one anonymous define call per script file
-// 和 monaco loader 加载冲突
-var __runnerDefine = window['define'];
-window['define'] = null;
-try {
-  ${newCode}
-
-  // 清除显示的错误
-  window.__reportErrorInPlayground && window.__reportErrorInPlayground(null);
-} catch(e) {
-  window.__reportErrorInPlayground && window.__reportErrorInPlayground(e);
-} finally {
-  window['define'] = __runnerDefine;
-}
-  `;
-  // 追加图表容器
-  node.innerHTML =
-    container || `<div id=${replaceId} class="playgroundCodeContainer" />`;
-  // 运行 script
-  node!.appendChild(script);
-}
-
-/**
- * 编译代码
- */
-export function compile(value: string, relativePath: string, es5 = true) {
-  const { code } = transform(value, {
-    filename: relativePath,
-    presets: [
-      'react',
-      'typescript',
-      es5 ? 'es2015' : 'es2016',
-      ['stage-3', { decoratorsBeforeExport: true }],
-    ],
-    plugins: ['transform-modules-umd'],
-  });
-  return code;
 }
