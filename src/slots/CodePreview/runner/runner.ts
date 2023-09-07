@@ -28,6 +28,7 @@ export class Runner {
   public css(css: string) {
     const style = document.createElement('style');
     style.innerHTML = css;
+    this.iframe.contentDocument!.head.innerHTML = '';
     this.iframe.contentDocument!.head.appendChild(style);
   }
 

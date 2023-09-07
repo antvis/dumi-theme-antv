@@ -45,10 +45,6 @@ export const CodePreview: React.FC<CodePreviewProps> = ({ isPlayground, exampleI
 
   useEffect(() => {
     runner.current = new Runner(iframe.current);
-
-    return () => {
-      console.log('destroy runner');
-    }
   }, []);
 
   useEffect(() => {
@@ -68,7 +64,6 @@ export const CodePreview: React.FC<CodePreviewProps> = ({ isPlayground, exampleI
       d3Regression: (window as any).d3Regression,
     });
     runner.current.exec(source);
-    console.log(111, 'exec', source);
   }, [source]);
 
   return (

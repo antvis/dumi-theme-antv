@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSiteData, useLocale } from 'dumi';
 import { noop } from 'lodash-es';
 import SplitPane from 'react-split-pane';
@@ -50,12 +50,13 @@ export const CodeRunner: React.FC<CodeRunnerProps> = ({
   const [isFullScreen, setFullscreen] = useState<boolean>(false);
 
   const [code, setCode] = useState(source);
-
   const locale = useLocale();
-
   const header = <CodeHeader title={ic(title)} relativePath={relativePath} githubUrl={githubUrl} />;
-
   const exampleId = `${topic}_${example}_${demo}`;
+
+  useEffect(() => {
+    setCode(source);
+  }, [source]);
 
   return (
     <SplitPane split='vertical' defaultSize={`${(1 - size) * 100}%`} minSize={100}>
@@ -71,13 +72,10 @@ export const CodeRunner: React.FC<CodeRunnerProps> = ({
         source={source}
         relativePath={relativePath}
         replaceId={replaceId}
-        onError={setError}
         onFullscreen={setFullscreen}
         onDestroy={noop}
         onReady={noop}
-        onExecute={(source) => {
-          setCode(source);
-        }}
+        onExecute={(source) => setCode(source)}
         playground={playground}
       />
     </SplitPane>

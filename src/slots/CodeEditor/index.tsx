@@ -60,10 +60,6 @@ export type CodeEditorProps = {
    */
   onDestroy: () => void;
   /**
-   * 执行出错的时候，回调，方便上层做显示
-   */
-  onError: (e: any) => void;
-  /**
    * 当执行代码时
    * @param source 
    * @returns 
@@ -99,7 +95,6 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
   exampleId,
   onReady = noop,
   onDestroy = noop,
-  onError = noop,
   onFullscreen = noop,
   onExecute,
 }) => {
