@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Result } from 'antd';
 import { FormattedMessage } from 'dumi';
 
@@ -26,6 +26,8 @@ export type CodePreviewProps = {
    * 需要展示的错误信息
    */
   error: any;
+
+  onError: (error: ErrorEvent) => void;
 }
 
 function getErrorMessage(e): string {
@@ -39,15 +41,20 @@ function getErrorMessage(e): string {
  * 1. 一些 header 菜单
  * 2. 错误预览
  */
-export const CodePreview: React.FC<CodePreviewProps> = ({ isPlayground, exampleId, source, header, error }) => {
+export const CodePreview: React.FC<CodePreviewProps> = ({ isPlayground, exampleId, source, header, error, onError }) => {
   const iframe = useRef(null);
-  let runner = useRef(null);
 
+  let runner = useRef(null);
   useEffect(() => {
     runner.current = new Runner(iframe.current);
   }, []);
 
   useEffect(() => {
+    runner.current.onerror((e) => {
+      console.log('execute error', e); // for debugger
+      onError(e);
+    });
+
     runner.current.html(`<div id="container"></div>`);
     runner.current.css(`
       body {

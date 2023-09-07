@@ -1,4 +1,4 @@
-import { wrapper } from "./wrapper";
+import { wrapper } from './wrapper';
 
 export class Runner {
   /**
@@ -11,6 +11,14 @@ export class Runner {
    */
   constructor(iframe: string | HTMLIFrameElement) {
     this.iframe = typeof iframe === 'string' ? document.getElementById(iframe) as HTMLIFrameElement : iframe;
+  }
+
+  /**
+   * Catch all the error in iframe.
+   * @param callback 
+   */
+  public onerror(callback: (error: ErrorEvent) => void) {
+    this.iframe.contentWindow!.onerror = callback;
   }
 
   /**

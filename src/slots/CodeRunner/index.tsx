@@ -22,14 +22,6 @@ type CodeRunnerProps = {
   notFound?: React.JSX.Element;
 }
 
-function processCode(code: string, locale: string, relativePath: string): string {
-  try {
-    return compile(replaceInsertCss(code, locale), relativePath, true);
-  } catch (e) {
-    return '';
-  }
-}
-
 /**
  * 代码编辑器 + 代码预览区域
  */
@@ -46,10 +38,11 @@ export const CodeRunner: React.FC<CodeRunnerProps> = ({
 
   const { themeConfig } = useSiteData();
   const { githubUrl, playground } = themeConfig;
-  const [error, setError] = useState<Error>();
+  const [error, setError] = useState<ErrorEvent>();
   const [isFullScreen, setFullscreen] = useState<boolean>(false);
 
   const [code, setCode] = useState(source);
+  const [compileCode, setCompileCode] = useState(null);
   const locale = useLocale();
   const header = <CodeHeader title={ic(title)} relativePath={relativePath} githubUrl={githubUrl} />;
   const exampleId = `${topic}_${example}_${demo}`;
@@ -58,14 +51,25 @@ export const CodeRunner: React.FC<CodeRunnerProps> = ({
     setCode(source);
   }, [source]);
 
+  useEffect(() => {
+    try {
+      setError(null);
+      setCompileCode(compile(replaceInsertCss(code, locale.id), relativePath, true));
+    } catch(e) {
+      console.log('compile error', e); // for debugger
+      setError(e);
+    }
+  }, [code]);
+
   return (
     <SplitPane split='vertical' defaultSize={`${(1 - size) * 100}%`} minSize={100}>
       <CodePreview
         exampleId={exampleId}
-        source={processCode(code, locale.id, relativePath)}
-        error={error}
+        source={compileCode}
         header={header}
         isPlayground={isPlayground}
+        error={error}
+        onError={setError}
       />
       <CodeEditor
         exampleId={exampleId}
