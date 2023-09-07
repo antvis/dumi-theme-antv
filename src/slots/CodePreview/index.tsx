@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Result } from 'antd';
 import { FormattedMessage } from 'dumi';
 
@@ -23,11 +23,9 @@ export type CodePreviewProps = {
    */
   header?: React.ReactElement;
   /**
-   * 需要展示的错误信息
+   * 需要展示的编译错误信息
    */
-  error: any;
-
-  onError: (error: ErrorEvent) => void;
+  compileError: any;
 }
 
 function getErrorMessage(e): string {
@@ -41,8 +39,10 @@ function getErrorMessage(e): string {
  * 1. 一些 header 菜单
  * 2. 错误预览
  */
-export const CodePreview: React.FC<CodePreviewProps> = ({ isPlayground, exampleId, source, header, error, onError }) => {
+export const CodePreview: React.FC<CodePreviewProps> = ({ isPlayground, exampleId, source, header, compileError }) => {
   const iframe = useRef(null);
+
+  const [execError, setExecError] = useState(null);
 
   let runner = useRef(null);
   useEffect(() => {
@@ -50,9 +50,10 @@ export const CodePreview: React.FC<CodePreviewProps> = ({ isPlayground, exampleI
   }, []);
 
   useEffect(() => {
+    setExecError(null);
     runner.current.onerror((e) => {
       console.log('execute error', e); // for debugger
-      onError(e);
+      setExecError(e);
     });
 
     runner.current.html(`<div id="container"></div>`);
@@ -85,12 +86,12 @@ export const CodePreview: React.FC<CodePreviewProps> = ({ isPlayground, exampleI
           {/** 这里是 script 标签运行的环境  */}
         </iframe>
         {
-          error ?
+          (compileError || execError) ?
             <Result
               className={styles.result}
               status="error"
               title={<FormattedMessage id="演示代码报错，请检查" />}
-              subTitle={<pre>{getErrorMessage(error)}</pre>}
+              subTitle={<pre>{getErrorMessage(compileError || execError)}</pre>}
             /> : null
         }
       </div>

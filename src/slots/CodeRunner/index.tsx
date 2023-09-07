@@ -38,7 +38,7 @@ export const CodeRunner: React.FC<CodeRunnerProps> = ({
 
   const { themeConfig } = useSiteData();
   const { githubUrl, playground } = themeConfig;
-  const [error, setError] = useState<ErrorEvent>();
+  const [compileError, setCompileError] = useState<ErrorEvent>();
   const [isFullScreen, setFullscreen] = useState<boolean>(false);
 
   const [code, setCode] = useState(source);
@@ -53,11 +53,11 @@ export const CodeRunner: React.FC<CodeRunnerProps> = ({
 
   useEffect(() => {
     try {
-      setError(null);
       setCompileCode(compile(replaceInsertCss(code, locale.id), relativePath, true));
+      setCompileError(null);
     } catch(e) {
       console.log('compile error', e); // for debugger
-      setError(e);
+      setCompileError(e);
     }
   }, [code]);
 
@@ -68,8 +68,7 @@ export const CodeRunner: React.FC<CodeRunnerProps> = ({
         source={compileCode}
         header={header}
         isPlayground={isPlayground}
-        error={error}
-        onError={setError}
+        compileError={compileError}
       />
       <CodeEditor
         exampleId={exampleId}

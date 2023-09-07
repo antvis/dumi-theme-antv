@@ -5,7 +5,7 @@ import { Chart } from '@antv/g2';
 import { regressionLinear } from 'd3-regression';
 
 const chart = new Chart({
-  container: document.getElementById('container'),
+  container: 'container',
   theme: 'classic',
   autoFit: true,
 });

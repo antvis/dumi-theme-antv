@@ -7,7 +7,7 @@ fetch(
   .then((data) => data.map((d) => ({ ...d, Date: new Date(d.Date) })))
   .then((data) => {
     const chart = new Chart({
-      container: document.getElementById('container'),
+      container: 'container',
       autoFit: true,
       theme: 'classic',
     });
