@@ -66,10 +66,7 @@ export const CodePreview: React.FC<CodePreviewProps> = ({ isPlayground, exampleI
         height: 100%;
       }
     `);
-    runner.current.dependencies({
-      g2: (window as any).g2,
-      d3Regression: (window as any).d3Regression,
-    });
+    runner.current.dependencies((window as any).__iframeDependencies);
     runner.current.exec(source);
   }, [source]);
 
