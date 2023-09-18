@@ -13,7 +13,7 @@ import {
   LinkOutlined,
   CheckOutlined,
 } from '@ant-design/icons';
-import { Modal, Button, Popover, Menu, Dropdown, Select } from 'antd';
+import { Alert, Modal, Button, Popover, Menu, Dropdown, Select } from 'antd';
 import { get, map, size } from 'lodash-es';
 import { Search } from './Search';
 import { Products } from './Products';
@@ -100,6 +100,14 @@ function redirectChinaMirror(chinaMirrorOrigin: string) {
   window.location.href = window.location.href.replace(window.location.origin, chinaMirrorOrigin);
 }
 
+function fetchBanner() {
+  return fetch(
+    'https://assets.antv.antgroup.com/antv/banner.json', // 生产环境
+    // 'https://site-data-pre.alipay.com/antv/banner.json', // 预发测试
+  ).then((res) => res.json());
+}
+
+
 /**
  * 头部菜单
  */
@@ -132,6 +140,25 @@ const HeaderComponent: React.FC<HeaderProps> = ({
   searchOptions
 }) => {
   const isAntVHome = isAntVSite && isHomePage; // 是否为AntV官网首页
+
+  const [bannerVisible, setBannerVisible] = useState(false);
+  const [banner, setBanner] = useState<{ id: string; html: string }>(null);
+  useEffect(() => {
+    fetchBanner().then(({ id, html }) => {
+      if (id && html) {
+        setBanner({ id, html });
+        setBannerVisible(localStorage.getItem(id) !== 'x');
+      }
+    }).catch(() => {
+      setBanner(null);
+      setBannerVisible(false);
+    });
+  }, []);
+
+  function onBannerClose() {
+    localStorage.setItem(banner.id, 'x');
+    setBannerVisible(false);
+  }
 
   const showChinaMirror: boolean = !!internalSite;
   const chinaMirrorUrl: string = get(internalSite, 'url');
@@ -528,6 +555,21 @@ const HeaderComponent: React.FC<HeaderProps> = ({
         [styles.fixed]: popupMenuVisible,
       })}
     >
+      {
+        bannerVisible &&
+        <Alert
+          className={styles.banner}
+          message={
+            <div dangerouslySetInnerHTML={{ __html: banner.html }} />
+          }
+          type="info"
+          banner
+          closable
+          showIcon={false}
+          onClose={onBannerClose}
+        />
+      }
+      
       <div className={styles.container}>
         <div className={styles.left}>
           <h1>
