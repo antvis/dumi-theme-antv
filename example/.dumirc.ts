@@ -5,12 +5,12 @@ export default defineConfig({
   locales: [{ id: 'zh', name: '中文' }, { id: 'en', name: 'English' }],
   title: 'dumi-theme-antv 主题包',                                        // 网站header标题
   favicons: ['https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*7svFR6wkPMoAAAAAAAAAAAAADmJ7AQ/original'], // 网站 favicon
-  metas: [                                                              // 自定义 meta 标签  
+  metas: [                                                              // 自定义 meta 标签
     { name: 'keywords', content: 'dumi-theme-antv' },
     { name: 'description', content: '基于 dumi2 的 AntV 官网主题包' },
   ],
   themeConfig: {
-    title: 'dumi-theme-antv', 
+    title: 'dumi-theme-antv',
     description: '基于 dumi2 的 AntV 官网主题包',
     defaultLanguage: 'zh',                                              // 默认语言
     isAntVSite: false,                                                  // 是否是 AntV 的大官网
@@ -23,7 +23,7 @@ export default defineConfig({
     showLanguageSwitcher: true,                                         // 是否显示官网语言切换
     showWxQrcode: true,                                                 // 是否显示头部菜单的微信公众号
     showChartResize: true,                                              // 是否在 demo 页展示图表视图切换
-    showAPIDoc: true,   
+    showAPIDoc: true,
     showSpecTab: true,                                                // 是否在 demo 页展示API文档
     themeSwitcher: 'g2',
     es5: false,
@@ -324,6 +324,7 @@ export default defineConfig({
   plugins: [],
   links: [
   ],
+  mfsu:false,
   scripts: [
   ],
 });
