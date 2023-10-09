@@ -4,7 +4,7 @@ import * as path from 'path';
 import { getExamplePaths, getExamplesPageTopics } from './examples';
 import rehypeObservable from './rehypeObservable';
 
-const ALIAS_PAGES_KEY = '@/antv__theme__pages';
+const PAGES_DIR = winPath(path.join(__dirname, '../pages'));
 const MOCK_META = { frontmatter: { title: 'mock-meta' }, texts: [], toc: [] };
 
 export default (api: IApi) => {
@@ -26,9 +26,6 @@ export default (api: IApi) => {
     memo.favicons = [
       'https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*7svFR6wkPMoAAAAAAAAAAAAADmJ7AQ/original',
     ];
-
-    // internal pages alias, make chunk name clean
-    memo.alias[ALIAS_PAGES_KEY] = path.join(__dirname, '../pages');
 
     // observable demo
     memo.extraRehypePlugins = [rehypeObservable];
@@ -53,23 +50,23 @@ export default (api: IApi) => {
     {
       id: 'dumi-theme-antv-example-list-zh',
       absPath: '/examples',
-      file: `${ALIAS_PAGES_KEY}/Examples`,
+      file: `${PAGES_DIR}/Examples`,
     },
     {
       id: 'dumi-theme-antv-example-list-lang',
       absPath: '/:language/examples',
-      file: `${ALIAS_PAGES_KEY}/Examples`,
+      file: `${PAGES_DIR}/Examples`,
     },
     // single example preview page.
     {
       id: 'dumi-theme-antv-single-example-zh',
       absPath: '/examples/:topic/:example',
-      file: `${ALIAS_PAGES_KEY}/Example`,
+      file: `${PAGES_DIR}/Example`,
     },
     {
       id: 'dumi-theme-antv-single-example-lang',
       absPath: '/:language/examples/:topic/:example',
-      file: `${ALIAS_PAGES_KEY}/Example`,
+      file: `${PAGES_DIR}/Example`,
     },
   ];
 
@@ -126,7 +123,7 @@ export default function ThemeAntVContextWrapper() {
     });
 
     // replace default 404
-    routes['404'].file = `${ALIAS_PAGES_KEY}/404`;
+    routes['404'].file = `${PAGES_DIR}/404`;
     routes['404'].meta = MOCK_META;
 
     return routes;
