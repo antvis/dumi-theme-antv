@@ -50,18 +50,74 @@
       a,
       span,
       .versions {
-        color: rgba(255, 255, 255, 0.8) !important;
-
-        &:hover {
-          color: rgba(255, 255, 255, 1) !important;
-        }
+        color: #424E66 !important;
       }
 
       .translation {
-        fill: rgba(255, 255, 255, 0.8) !important;
+        fill: #424E66 !important;
+      }
+    }
+  }
 
-        &:hover {
-          fill: rgba(255, 255, 255, 1) !important;
+  &.isAntVHome {
+    .container {
+      max-width: 100%;
+      padding: 0 20px;
+      border-bottom: 1px solid rgba(0,0,0,0.10);
+    }
+
+    .nav {
+      .menu {
+
+        >li {
+          margin-right: 8px;
+          font-size: 16px;
+
+          >:first-child {
+            display: flex;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 12px;
+            height: 32px;
+            line-height: 32px;
+            border-radius: 6px;
+            color: #424E66;
+
+            &:hover {
+              background: #fff;
+              box-shadow: 0 2px 5px 0 rgba(0,0,0,0.10);
+            }
+          }
+        }
+
+        .navIcon {
+          >:first-child {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 32px;
+            padding: 0;
+          }
+        }
+
+        .versions {
+          margin-right: 0;
+        }
+
+        .languageSwitcher {
+          position: relative;
+          top: 1px;
+        }
+
+        .wxQrcode {
+          position: relative;
+          top: 2px;
+        }
+
+        .githubCorner {
+          position: relative;
+          top: 4px;
         }
       }
     }

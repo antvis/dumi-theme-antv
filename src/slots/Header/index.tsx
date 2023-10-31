@@ -92,7 +92,7 @@ export type HeaderProps = {
       apiKey: string;
       indexName: string;
       appId: string;
-   }
+    }
   }
 }
 
@@ -214,7 +214,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
   };
 
   const { img, link } = {
-    img: isAntVHome ? <LogoWhite style={{}} /> : <Logo style={{}} />,
+    img: <Logo style={{}} />,
     link: '',
     ...logo,
   };
@@ -266,33 +266,33 @@ const HeaderComponent: React.FC<HeaderProps> = ({
       {
         /** 最左侧的菜单，一般是 教程、API、示例，或者其他自定义，有配置文件中的 `navs` 决定 */
         size(navs) ?
-        <Navs navs={navs} path={window.location.pathname} /> : null
+          <Navs navs={navs} path={window.location.pathname} /> : null
       }
 
       {
         /** 生态产品 */
         size(ecosystems) ?
-        <li>
-          <Dropdown
-            className={styles.ecoSystems}
-            overlay={
-              <Menu>
-                {map(ecosystems, ({ url, name: ecosystemName }) => (
-                  <Menu.Item key={ecosystemName?.[lang]}>
-                    <a target="_blank" rel="noreferrer" href={url}>
-                      {ecosystemName?.[lang]} <LinkOutlined />
-                    </a>
-                  </Menu.Item>
-                ))}
-              </Menu>
-            }
-          >
-            <span>
-              {<FormattedMessage id="周边生态" />}
-              <DownOutlined style={{ marginLeft: '6px' }} />
-            </span>
-          </Dropdown>
-        </li> : null
+          <li>
+            <Dropdown
+              className={styles.ecoSystems}
+              overlay={
+                <Menu>
+                  {map(ecosystems, ({ url, name: ecosystemName }) => (
+                    <Menu.Item key={ecosystemName?.[lang]}>
+                      <a target="_blank" rel="noreferrer" href={url}>
+                        {ecosystemName?.[lang]} <LinkOutlined />
+                      </a>
+                    </Menu.Item>
+                  ))}
+                </Menu>
+              }
+            >
+              <span>
+                {<FormattedMessage id="周边生态" />}
+                <DownOutlined style={{ marginLeft: '6px' }} />
+              </span>
+            </Dropdown>
+          </li> : null
       }
 
 
@@ -365,7 +365,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
           onCancel={() => {
             updateChinaMirrorHintVisible(false);
           }}
-          onOk={() => redirectChinaMirror(chinaMirrorUrl) }
+          onOk={() => redirectChinaMirror(chinaMirrorUrl)}
           cancelButtonProps={{
             onClick: () => {
               localStorage.setItem(
@@ -400,9 +400,9 @@ const HeaderComponent: React.FC<HeaderProps> = ({
       {
         /** 产品列表 */
         showAntVProductsCard &&
-        <li { ...productItemProps }>
+        <li {...productItemProps}>
           <a>
-              {<FormattedMessage id="所有产品" />}
+            {<FormattedMessage id="所有产品" />}
             {!isAntVHome ? (
               <img
                 src="https://gw.alipayobjects.com/zos/antfincdn/FLrTNDvlna/antv.png"
@@ -460,63 +460,63 @@ const HeaderComponent: React.FC<HeaderProps> = ({
       {
         /** 切换网站语言 */
         showLanguageSwitcher && (
-        <li>
-          <Dropdown
-            placement="bottomRight"
-            overlay={
-              <Menu
-                defaultSelectedKeys={[lang]}
-                selectable
-                onSelect={({ key }) => {
-                  if (key === lang) {
-                    return;
-                  }
-                  setLang(key)
-                  if (onLanguageChange) {
-                    onLanguageChange(key.toString());
-                    return;
-                  }
-                  const newUrl = getLangUrl(window.location.href, key);
-                  nav(newUrl.replace(window.location.origin, ''))
-                }}
+          <li className={cx(styles.navIcon, styles.languageSwitcher)}>
+            <Dropdown
+              placement="bottomRight"
+              overlay={
+                <Menu
+                  defaultSelectedKeys={[lang]}
+                  selectable
+                  onSelect={({ key }) => {
+                    if (key === lang) {
+                      return;
+                    }
+                    setLang(key)
+                    if (onLanguageChange) {
+                      onLanguageChange(key.toString());
+                      return;
+                    }
+                    const newUrl = getLangUrl(window.location.href, key);
+                    nav(newUrl.replace(window.location.origin, ''))
+                  }}
+                >
+                  <Menu.Item key="en">
+                    <CheckOutlined
+                      style={{
+                        visibility: lang === 'en' ? 'visible' : 'hidden',
+                        color: '#52c41a',
+                      }}
+                    />
+                    English
+                  </Menu.Item>
+                  <Menu.Item key="zh">
+                    <CheckOutlined
+                      style={{
+                        visibility: lang === 'zh' ? 'visible' : 'hidden',
+                        color: '#52c41a',
+                      }}
+                    />
+                    简体中文
+                  </Menu.Item>
+                </Menu>
+              }
+              className={styles.translation}
+            >
+              <a
+                className="ant-dropdown-link"
+                onClick={(e) => e.preventDefault()}
               >
-                <Menu.Item key="en">
-                  <CheckOutlined
-                    style={{
-                      visibility: lang === 'en' ? 'visible' : 'hidden',
-                      color: '#52c41a',
-                    }}
-                  />
-                  English
-                </Menu.Item>
-                <Menu.Item key="zh">
-                  <CheckOutlined
-                    style={{
-                      visibility: lang === 'zh' ? 'visible' : 'hidden',
-                      color: '#52c41a',
-                    }}
-                  />
-                  简体中文
-                </Menu.Item>
-              </Menu>
-            }
-            className={styles.translation}
-          >
-            <a
-              className="ant-dropdown-link"
-              onClick={(e) => e.preventDefault()}
-              >
-                <svg className={styles.translation}  xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z" /></svg>
-            </a>
-          </Dropdown>
-        </li>
-      )
+                <svg className={styles.translation} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z" /></svg>
+              </a>
+            </Dropdown>
+          </li>
+        )
       }
 
       {
         /** 微信公众号 */
         showWxQrcode &&
-        <li className={styles.wxQrcode}>
+        <li className={cx(styles.navIcon, styles.wxQrcode)}>
           <Popover
             content={
               <img width="100%" height="100%" src="https://gw.alipayobjects.com/zos/antfincdn/ZKlx96dsfs/qrcode_for_gh_f52d8b6aa591_258.jpg" alt="wx-qrcode" />
@@ -534,7 +534,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
       {
         /** GitHub icon */
         showGithubCorner &&
-        <li className={styles.githubCorner}>
+        <li className={cx(styles.navIcon, styles.githubCorner)}>
           <a
             href={githubUrl}
             target="_blank" rel="noreferrer"
@@ -552,6 +552,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
         [styles.transparent]: !!transparent && !productMenuVisible,
         [styles.isHomePage]: !!isHomePage && !isAntVHome,
         [styles.lightTheme]: !!isAntVHome && !productMenuVisible && isWide,
+        [styles.isAntVHome]: !!isAntVHome,
         [styles.fixed]: popupMenuVisible,
       })}
     >
@@ -573,19 +574,19 @@ const HeaderComponent: React.FC<HeaderProps> = ({
       <div className={styles.container}>
         <div className={styles.left}>
           <h1>
-            <a href={siteUrl[lang] ? siteUrl[lang]: siteUrl}>{img}</a>
+            <a href={siteUrl[lang] ? siteUrl[lang] : siteUrl}>{img}</a>
           </h1>
           {!isAntVHome && subTitle && (
             <>
               <span className={styles.divider} />
               <h2 className={styles.subProduceName}>
-                <a href={(window.location.pathname.startsWith('/en')?'/en':'/')}>{subTitle}</a>
+                <a href={(window.location.pathname.startsWith('/en') ? '/en' : '/')}>{subTitle}</a>
               </h2>
             </>
           )}
           {
             showSearch && !isAntVHome &&
-            <Search {...searchOptions}  />
+            <Search {...searchOptions} />
           }
         </div>
         <nav className={styles.nav}>
@@ -610,7 +611,7 @@ export const Header: React.FC<Partial<HeaderProps>> = (props) => {
 
   const locale = useLocale();
   const path = window.location.pathname;
-  const isHomePage = 
+  const isHomePage =
     path === '/' ||
     path === `/${locale.id}` ||
     path === `/${locale.id}/`;
@@ -628,5 +629,5 @@ export const Header: React.FC<Partial<HeaderProps>> = (props) => {
     transparent: isHomePage && isAntVSite,
   }
 
-  return <HeaderComponent { ...Object.assign({} , headerProps, props)} />;
+  return <HeaderComponent {...Object.assign({}, headerProps, props)} />;
 }
