@@ -6,7 +6,10 @@
     "jsx": "react",
     "skipLibCheck": true,
     "baseUrl": "./",
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "paths": {
+      "@@/*": ["example/.dumi/tmp/*"]
+    }
   },
   "include": [
     "src/**/*"
