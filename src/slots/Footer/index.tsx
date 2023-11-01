@@ -6,9 +6,10 @@ import {
   ZhihuOutlined,
   QuestionCircleOutlined,
 } from '@ant-design/icons';
+import cx from 'classnames';
 import { omit } from 'lodash-es';
 import classnames from 'classnames';
-import { useLocale, FormattedMessage } from 'dumi';
+import { useLocale, FormattedMessage, useSiteData } from 'dumi';
 
 import 'rc-footer/assets/index.less';
 import styles from './index.module.less';
@@ -31,15 +32,17 @@ export const Footer: React.FC<FooterProps> = (props) => {
   const {
     columns,
     bottom,
-    theme = 'dark',
     language,
     isDynamicFooter,
     rootDomain = '',
     className,
     ...restProps
   } = props;
+  const { themeConfig } = useSiteData();
   const locale = useLocale();
   const lang = locale.id;
+  const { footerTheme = 'dark' } = themeConfig;
+  const { theme = footerTheme } = restProps;
 
   const getColumns = () => {
     // 如果外部没有传入 columns，则默认展示 antv footer
@@ -208,35 +211,45 @@ export const Footer: React.FC<FooterProps> = (props) => {
       bottom={
         bottom || (
           <>
-            <div className={styles.bottom}>
-              <div>
-                <a
-                  href='https://weibo.com/antv2017'
-                  target='_blank'
-                  rel='noopener noreferrer'
-                >
-                  <WeiboOutlined />
-                </a>
-                <a
-                  href='https://zhuanlan.zhihu.com/aiux-antv'
-                  target='_blank'
-                  rel='noopener noreferrer'
-                >
-                  <ZhihuOutlined />
-                </a>
-                <a
-                  href='https://github.com/antvis'
-                  target='_blank'
-                  rel='noopener noreferrer'
-                >
-                  <GithubOutlined />
-                </a>
-                <a href={`${rootDomain}/${lang}/about`}>{<FormattedMessage id="关于我们" />}</a>
-              </div>
-              <div>
-                © {new Date().getFullYear()} Made with ❤ by{' '}
-                <a href='https://xtech.antfin.com/'>AntV</a>
-              </div>
+            <div
+              className={cx(styles.bottom, {
+                [styles.light]: theme === 'light',
+              })}
+            >
+              {
+                theme === 'light' ?
+                  '© Copyright 2022 Ant Group Co., Ltd..备案号：京ICP备15032932号-38' :
+                  <>
+                    <div>
+                      <a
+                        href='https://weibo.com/antv2017'
+                        target='_blank'
+                        rel='noopener noreferrer'
+                      >
+                        <WeiboOutlined />
+                      </a>
+                      <a
+                        href='https://zhuanlan.zhihu.com/aiux-antv'
+                        target='_blank'
+                        rel='noopener noreferrer'
+                      >
+                        <ZhihuOutlined />
+                      </a>
+                      <a
+                        href='https://github.com/antvis'
+                        target='_blank'
+                        rel='noopener noreferrer'
+                      >
+                        <GithubOutlined />
+                      </a>
+                      <a href={`${rootDomain}/${lang}/about`}>{<FormattedMessage id="关于我们" />}</a>
+                    </div>
+                    <div>
+                      © {new Date().getFullYear()} Made with ❤ by{' '}
+                      <a href='https://xtech.antfin.com/'>AntV</a>
+                    </div>
+                  </>
+              }
             </div>
           </>
         )

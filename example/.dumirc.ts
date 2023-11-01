@@ -14,6 +14,7 @@ export default defineConfig({
     description: '基于 dumi2 的 AntV 官网主题包',
     defaultLanguage: 'zh',                                              // 默认语言
     isAntVSite: false,                                                  // 是否是 AntV 的大官网
+    footerTheme: 'light',
     siteUrl: 'https://antv.vision',                                     // 官网地址
     githubUrl: repository.url,                                          // GitHub 地址
     showSearch: true,                                                   // 是否显示搜索框
