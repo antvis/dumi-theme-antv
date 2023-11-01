@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link,useLocale } from 'dumi';
+import { Link, useLocale } from 'dumi';
 import { ic } from '../hooks';
 import { IC } from '../../types';
 import styles from './News.module.less';
