@@ -36,8 +36,8 @@ export const Features: React.FC<FeaturesProps> = ({
   };
 
   // for small screen
-  const getDots = () => {
-    const dots: Array<Record<string, any>> = [];
+  const getDots = (): React.ReactElement[] => {
+    const dots: Array<React.ReactElement> = [];
     const { length } = features;
     const startTop = 45;
     const cardHeight = 350;

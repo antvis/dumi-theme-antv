@@ -586,7 +586,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
           )}
           {
             showSearch && !isAntVHome &&
-            <Search {...searchOptions} />
+            <Search />
           }
         </div>
         <nav className={styles.nav}>

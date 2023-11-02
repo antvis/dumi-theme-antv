@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "father dev",
     "dev:example-site": "cd example && npm run start",
-    "build": "father build",
+    "build": "npm run prepare && father build",
     "prepare": "father link-dev-theme",
     "lint": "npm run lint:es && npm run lint:css",
     "lint:css": "stylelint \"{src,test}/**/*.{css,less}\"",
