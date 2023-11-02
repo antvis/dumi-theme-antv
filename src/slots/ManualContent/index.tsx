@@ -42,6 +42,7 @@ type linkToTitle = {
 };
 
 type MenuItem = {
+  type: any;
   key: string;
   label?: string;
   slug?: string;
