@@ -2,7 +2,7 @@ import React from 'react';
 import { useLocale, useSiteData, FormattedMessage } from 'dumi';
 import { SEO } from '../../slots/SEO';
 import { Header } from '../../slots/Header';
-import { Detail } from 'dumi/theme/slots/Detail';
+import { Detail } from '../../slots/Detail';
 import { Features } from '../../slots/Features';
 import { Cases } from '../../slots/Cases';
 import { Companies } from '../../slots/Companies';

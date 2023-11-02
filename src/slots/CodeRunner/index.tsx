@@ -18,7 +18,7 @@ type CodeRunnerProps = {
   exampleTopics: ExampleTopic[];
   size?: number;
   replaceId?: string;
-  notFound?: React.Element;
+  notFound?: React.ReactElement;
 }
 
 /**
@@ -46,6 +46,7 @@ export const CodeRunner: React.FC<CodeRunnerProps> = ({
   const exampleId = `${topic}_${example}_${demo}`;
 
   return (
+    // @ts-ignore
     <SplitPane split='vertical' defaultSize={`${(1 - size) * 100}%`} minSize={100}>
       <CodePreview
         exampleId={exampleId}
