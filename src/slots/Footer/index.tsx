@@ -206,6 +206,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
       theme={theme}
       columns={columns || getColumns()}
       className={classnames(styles.footer, className, {
+        [styles.light]: theme === 'light',
         [styles.withMenu]: isDynamicFooter,
       })}
       bottom={
