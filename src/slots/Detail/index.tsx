@@ -52,7 +52,7 @@ export const Detail: React.FC<DetailProps> = ({
 }) => {
   const [remoteNews, setRemoteNews] = useState<NewsProps[]>([]);
   const lang = useLocale().id
-  console.log(v);
+
   useEffect(() => {
     fetch(AssetsNewsURL)
       .then((res) => res.json())
