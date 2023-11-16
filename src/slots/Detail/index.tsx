@@ -22,6 +22,7 @@ type DetailProps = {
   className?: string;
   style?: React.CSSProperties;
   title: IC;
+  engine?: IC;
   description: IC;
   image?: string;
   buttons?: DetailButtonProps[];
@@ -40,16 +41,18 @@ export const Detail: React.FC<DetailProps> = ({
   className,
   style,
   title,
+  engine,
   description,
   image,
   githubUrl,
   showGithubStars = true,
   buttons = [],
   news,
+  ...v
 }) => {
   const [remoteNews, setRemoteNews] = useState<NewsProps[]>([]);
   const lang = useLocale().id
-  
+  console.log(v);
   useEffect(() => {
     fetch(AssetsNewsURL)
       .then((res) => res.json())
@@ -63,12 +66,14 @@ export const Detail: React.FC<DetailProps> = ({
   const githubObj = gh(githubUrl);
   const showGitHubStarsButton = showGithubStars && githubObj && githubObj.owner && githubObj.name;
 
+  const engineText = ic(engine);
+
   return (
     <section className={cx(styles.wrapper, className)} style={style}>
       <div className={styles.content}>
         <div className={styles.text}>
           <div className={cx(styles.title, 'detail-title')}>
-            {ic(title)}
+            <span className={cx(styles.engine, 'detail-engine')}>{engineText}</span>{ic(title).replace(engineText, '')}
           </div>
           <div className={cx(styles.description, 'detail-description')}>
             {ic(description)}
@@ -86,11 +91,12 @@ export const Detail: React.FC<DetailProps> = ({
                       type === 'primary' ? 'primary-button' : 'common-button'
                     )}
                     style={{
-                      borderRadius: shape === 'square' ? '4px' : '1000px',
+                      borderRadius: shape === 'round' ? '1000px' : '12px',
                       ...style,
                     }}
-                    href={link[lang] ? link[lang]: link}
+                    href={link[lang] ? link[lang] : link}
                   >
+                    <div className={styles.icon} />
                     <span className={styles.button}>{ic(text)}</span>
                   </a>
                 )
@@ -111,7 +117,7 @@ export const Detail: React.FC<DetailProps> = ({
         {/** 新闻公告 */}
         <div className={cx(styles.news, 'news')}>
           {
-            ( news || remoteNews).slice(0, 2).map((n, i) => (<News key={i} index={i} {...n} />))
+            (news || remoteNews).slice(0, 2).map((n, i) => (<News key={i} index={i} {...n} />))
           }
         </div>
         {/** image */}
