@@ -555,22 +555,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
         [styles.isAntVHome]: !!isAntVHome,
         [styles.fixed]: popupMenuVisible,
       })}
-    >
-      {
-        bannerVisible &&
-        <Alert
-          className={styles.banner}
-          message={
-            <div dangerouslySetInnerHTML={{ __html: banner.html }} />
-          }
-          type="info"
-          banner
-          closable
-          showIcon={false}
-          onClose={onBannerClose}
-        />
-      }
-      
+    > 
       <div className={styles.container}>
         <div className={styles.left}>
           <h1>
