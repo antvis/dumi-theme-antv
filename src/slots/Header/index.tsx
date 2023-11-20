@@ -18,8 +18,6 @@ import { get, map, size } from 'lodash-es';
 import { Search } from './Search';
 import { Products } from './Products';
 import { Navs, INav } from './Navs';
-import { Logo } from './Logo';
-import { LogoWhite } from './LogoWhite';
 import { findVersion, getLangUrl } from './utils';
 import { ic } from '../hooks';
 
@@ -214,7 +212,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
   };
 
   const { img, link } = {
-    img: <Logo style={{}} />,
+    img: <img src='https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*A-lcQbVTpjwAAAAAAAAAAAAADmJ7AQ/original' alt='logo' />,
     link: '',
     ...logo,
   };
