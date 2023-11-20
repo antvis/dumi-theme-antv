@@ -16,6 +16,7 @@ type DetailButtonProps = {
   style?: React.CSSProperties;
   type?: string;
   shape?: 'round' | 'square';
+  icon?: string;
 }
 
 type DetailProps = {
@@ -25,6 +26,7 @@ type DetailProps = {
   engine?: IC;
   description: IC;
   image?: string;
+  imageStyle?: React.CSSProperties;
   buttons?: DetailButtonProps[];
   githubUrl: string;
   showGithubStars?: boolean;
@@ -44,6 +46,7 @@ export const Detail: React.FC<DetailProps> = ({
   engine,
   description,
   image,
+  imageStyle,
   githubUrl,
   showGithubStars = true,
   buttons = [],
@@ -52,7 +55,7 @@ export const Detail: React.FC<DetailProps> = ({
 }) => {
   const [remoteNews, setRemoteNews] = useState<NewsProps[]>([]);
   const lang = useLocale().id
-
+  console.log(buttons,'buttons');
   useEffect(() => {
     fetch(AssetsNewsURL)
       .then((res) => res.json())
@@ -81,7 +84,7 @@ export const Detail: React.FC<DetailProps> = ({
           {/** buttons  */}
           <div className={cx(styles.buttons, 'detail-buttons')}>
             {
-              buttons.map(({ type, style, text, link, shape }) => {
+              buttons.map(({ type, style, text, link, shape, icon }) => {
                 return (
                   <a
                     key={ic(text)}
@@ -96,7 +99,7 @@ export const Detail: React.FC<DetailProps> = ({
                     }}
                     href={link[lang] ? link[lang] : link}
                   >
-                    <div className={styles.icon} />
+                    <div className={styles.icon} style={icon ? { backgroundImage: `url(${icon})` } : {}} />
                     <span className={styles.button}>{ic(text)}</span>
                   </a>
                 )
@@ -123,7 +126,7 @@ export const Detail: React.FC<DetailProps> = ({
         {/** image */}
         <div className={cx(styles.teaser, 'teaser')}>
           <div className={cx(styles.teaserimg, 'teaser-img')}>
-            <img width="100%" style={{ marginLeft: '100px', marginTop: '40px' }} src={image} />
+            <img width="100%" style={{ marginLeft: '100px', marginTop: '40px', ...imageStyle }} src={image} />
           </div>
         </div>
         <img
