@@ -99,7 +99,7 @@ export const Detail: React.FC<DetailProps> = ({
                     }}
                     href={link[lang] ? link[lang] : link}
                   >
-                    <div className={styles.icon} style={icon ? { backgroundImage: `url(${icon})` } : {}} />
+                    {icon !== null && <div className={styles.icon} style={icon ? { backgroundImage: `url(${icon})` } : {}} />}
                     <span className={styles.button}>{ic(text)}</span>
                   </a>
                 )
