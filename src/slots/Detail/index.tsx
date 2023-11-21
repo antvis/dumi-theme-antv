@@ -55,7 +55,7 @@ export const Detail: React.FC<DetailProps> = ({
 }) => {
   const [remoteNews, setRemoteNews] = useState<NewsProps[]>([]);
   const lang = useLocale().id
-  console.log(buttons,'buttons');
+
   useEffect(() => {
     fetch(AssetsNewsURL)
       .then((res) => res.json())
@@ -99,7 +99,7 @@ export const Detail: React.FC<DetailProps> = ({
                     }}
                     href={link[lang] ? link[lang] : link}
                   >
-                    <div className={styles.icon} style={icon ? { backgroundImage: `url(${icon})` } : {}} />
+                    {icon !== null && <div className={styles.icon} style={icon ? { backgroundImage: `url(${icon})` } : {}} />}
                     <span className={styles.button}>{ic(text)}</span>
                   </a>
                 )
