@@ -219,7 +219,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
             >
               {
                 theme === 'light' ?
-                  '© Copyright 2022 Ant Group Co., Ltd..备案号：京ICP备15032932号-38' :
+                  `© Copyright ${new Date().getFullYear()} Ant Group Co., Ltd..备案号：京ICP备15032932号-38` :
                   <>
                     <div>
                       <a
