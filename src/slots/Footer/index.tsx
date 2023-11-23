@@ -55,8 +55,8 @@ export const Footer: React.FC<FooterProps> = (props) => {
           openExternal: true,
         },
         {
-          title: 'Ant Design Mobile',
-          url: 'https://mobile.ant.design',
+          title: 'Galacea Effects',
+          url: 'https://galacean.antgroup.com/effects/',
           openExternal: true,
         },
         {
@@ -76,10 +76,6 @@ export const Footer: React.FC<FooterProps> = (props) => {
           description: <FormattedMessage id="React Hooks 库" />,
           url: 'https://github.com/alibaba/hooks',
           openExternal: true,
-        },
-        {
-          title: <FormattedMessage id="国内镜像" />,
-          url: 'https://antv.antgroup.com/',
         },
       ],
     };
