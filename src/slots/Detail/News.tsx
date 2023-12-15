@@ -27,11 +27,6 @@ export const News: React.FC<NewsProps> = ({
   const lang = useLocale().id
   const children = (
     <div className={styles.container}>
-      <img
-        className={styles.number}
-        src={numberImages[index]}
-        alt={index.toString()}
-      />
       <div className={styles.content}>
         <p className={styles.description}>
           {ic(type)} ‧ {ic(title)}

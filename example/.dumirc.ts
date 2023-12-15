@@ -10,7 +10,7 @@ export default defineConfig({
     { name: 'description', content: '基于 dumi2 的 AntV 官网主题包' },
   ],
   themeConfig: {
-    title: 'dumi-theme-antv', 
+    title: 'dumi-theme-antv',
     description: '基于 dumi2 的 AntV 官网主题包',
     defaultLanguage: 'zh',                                              // 默认语言
     isAntVSite: false,                                                  // 是否是 AntV 的大官网
@@ -24,7 +24,7 @@ export default defineConfig({
     showLanguageSwitcher: true,                                         // 是否显示官网语言切换
     showWxQrcode: true,                                                 // 是否显示头部菜单的微信公众号
     showChartResize: true,                                              // 是否在 demo 页展示图表视图切换
-    showAPIDoc: true,   
+    showAPIDoc: true,
     showSpecTab: true,                                                // 是否在 demo 页展示API文档
     themeSwitcher: 'g2',
     es5: false,
@@ -247,41 +247,47 @@ export default defineConfig({
     //   },
     // ],
     /** 首页特性介绍 */
-    features: [
-      {
-        icon: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*4x_KTKyqwJgAAAAAAAAAAABkARQnAQ',
-        title: {
-          zh: '千变万化，自由组合',
-          en: 'The ever-changing, free combination',
-        },
-        description: {
-          zh: '任何图表，都可以基于图形语法灵活绘制，满足你无限的创意',
-          en: 'Any chart can be drawn flexibly based on graphic syntax to satisfy your unlimited creativity',
-        },
+    features: {
+      title: {
+        zh: '我们的优势',
+        en: 'Our advantage'
       },
-      {
-        icon: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*ELYbTIVCgPoAAAAAAAAAAABkARQnAQ',
-        title: {
-          zh: '专业完备',
-          en: 'Professional complete',
+      cards: [
+        {
+          icon: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*4x_KTKyqwJgAAAAAAAAAAABkARQnAQ',
+          title: {
+            zh: '千变万化，自由组合',
+            en: 'The ever-changing, free combination',
+          },
+          description: {
+            zh: '任何图表，都可以基于图形语法灵活绘制，满足你无限的创意',
+            en: 'Any chart can be drawn flexibly based on graphic syntax to satisfy your unlimited creativity',
+          },
         },
-        description: {
-          zh: '大量产品实践之上，提供绘图引擎、完备图形语法、专业设计规范',
-          en: 'On top of a large number of product practices, it provides a drawing engine, a complete graphics grammar, and professional design rules',
+        {
+          icon: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*ELYbTIVCgPoAAAAAAAAAAABkARQnAQ',
+          title: {
+            zh: '专业完备',
+            en: 'Professional complete',
+          },
+          description: {
+            zh: '大量产品实践之上，提供绘图引擎、完备图形语法、专业设计规范',
+            en: 'On top of a large number of product practices, it provides a drawing engine, a complete graphics grammar, and professional design rules',
+          },
         },
-      },
-      {
-        icon: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*_riSQZrgczgAAAAAAAAAAABkARQnAQ',
-        title: {
-          zh: '生动，可交互',
-          en: 'Vivid, interactive',
+        {
+          icon: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*_riSQZrgczgAAAAAAAAAAABkARQnAQ',
+          title: {
+            zh: '生动，可交互',
+            en: 'Vivid, interactive',
+          },
+          description: {
+            zh: '强大的交互语法，助力可视分析，让图表栩栩如生',
+            en: 'owerful interactive syntax to help visual analysis and make charts come alive',
+          }
         },
-        description: {
-          zh: '强大的交互语法，助力可视分析，让图表栩栩如生',
-          en: 'owerful interactive syntax to help visual analysis and make charts come alive',
-        }
-      },
-    ],
+      ]
+    },
     /** 首页案例 */
     cases: [
       {

@@ -28,7 +28,6 @@ export const Companies: React.FC<CompaniesProps> = ({
         <p key="title" className={styles.title}>
           {title}
         </p>
-        <div key="slicer" className={styles.slicer} />
         <div key="companies-container" className={styles.companiesContainer}>
           <Row
             key="companies"

@@ -192,12 +192,14 @@
   }
 
   .news {
-    width: 80%;
+    width: 100%;
     display: flex;
     bottom: 40px;
     position: absolute;
     z-index: 3;
-    margin-left: 4.5%;
+    height: 108px;
+    box-sizing: border-box;
+    padding: 0 4.5%;
   }
 
   .teaser {
@@ -284,11 +286,11 @@
     }
 
     .news {
-      width: 100%;
+      width: 91%;
+      padding: 0;
       display: block;
-      bottom: 20px;
-      height: 44px;
-      overflow: hidden;
+      bottom: 10x;
+      left: 4.5%;
     }
 
     .teaser {
@@ -328,9 +330,15 @@
     .text {
       .buttons {
         margin-top: 70%;
+        position: relative;
+        top: -170px;
 
         .githubWrapper {
           display: none;
+        }
+
+        .buttonLink:nth-child(2) {
+          margin-right: 0;
         }
       }
     }
@@ -354,20 +362,14 @@
   .wrapper {
     .text {
       height: 70%;
+    }
 
-      .buttons {
-        bottom: 10px;
-        margin-top: unset;
-        z-index: 1;
-        position: absolute;
-        left: 0;
-        width: 100%;
-        justify-content: center;
-      }
+    .news {
+      height: 160px;
     }
 
     .teaser {
-      top: 14%;
+      top: 10%;
     }
   }
 }
