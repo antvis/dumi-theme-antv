@@ -5,8 +5,9 @@
   margin: auto;
   position: relative;
   flex-direction: column;
-  padding: 0;
-  background: rgb(240, 245, 250);
+  padding-top: 120px;
+  top: -90px;
+  background: #fff;
   height: auto;
   overflow-x: hidden;
 
@@ -14,65 +15,24 @@
     width: 95.8%;
     height: 100%;
     margin-left: 4.2%;
-    margin-bottom: 5%;
     position: relative;
     .container1440;
   }
 
   .title {
-    font-size: 2.8em;
-    padding-left: 4.06%;
     font-weight: 500;
     margin: 17px 0 0 0;
     position: relative;
+    font-family: AlibabaPuHuiTiB;
+    font-size: 40px;
+    text-align: center;
+    color: #1D2129;
     height: min-content;
-    color: #fff;
-  }
-
-  .slicerbarv {
-    display: none;
-  }
-
-  .slicerbarv2 {
-    display: none;
-  }
-
-  .lefttop {
-    background: linear-gradient(130deg,
-        fade(@primary-color, 70%),
-        shade(@primary-color, 20%));
-    width: 100%;
-    top: 0;
-    position: absolute;
-  }
-
-  .lefttopWithTitle {
-    height: 60%;
-  }
-
-  .lefttopWithoutTitle {
-    height: 75%;
-  }
-
-  .rightbottom {
-    position: absolute;
-    width: 95.83%;
-    left: 4.17%;
-    top: 88px;
-    background: #fff;
-    height: 65%;
-    box-shadow: -5px 5px 15px rgba(0, 0, 0, 0.1);
-  }
-
-  .rightbottomWithoutTitle {
-    top: 48px;
-    height: 75%;
   }
 
   .cardsContainer {
     width: 100%;
     height: 65%;
-    margin-top: 48px;
     position: relative;
 
     .cards {
@@ -81,120 +41,54 @@
       position: relative;
       width: -webkit-fill-available;
       flex-wrap: wrap;
-      margin-left: 4.06%;
+      box-sizing: border-box;
+      padding: 0 4.5%;
 
       .cardWrapper {
-        margin: 68px 0 93px 0;
-        border-right: 1px solid rgba(0, 0, 0, 0.1);
+        margin: 48px 0 30px 0;
+        background-color: #FFFFFF;
+        border: 1px solid #E5E8EF;
+        box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.03);
+        border-radius: 16px;
+        overflow: hidden;
+        margin-right: 29px;
+        flex: 1;
 
         &:last-child {
-          border-right: 0px;
+          margin-right: 0;
         }
       }
     }
   }
 }
 
-.dot {
-  position: absolute;
-  width: 3px;
-  height: 3px;
-  border-radius: 50%;
-  background: #d8d8d8;
-  display: none;
-}
-
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .wrapper {
     width: 100%;
 
-    .lefttop {
-      left: 0px;
-      height: 100%;
-      width: 100%;
-    }
-
-    .rightbottom {
-      height: 79.5%;
-      margin-top: 48px;
-
-      .slicerbarv {
-        position: absolute;
-        background-color: #f2f4f5;
-        width: 1px;
-        height: 100%;
-        margin-left: 3%;
-        display: block;
-        z-index: 1;
-      }
-
-      .slicerbarv2 {
-        margin-left: 92.2%; // 1 - (0.96 * 0.04 + 0.04)
-      }
-
-      .slicerbarh {
-        position: absolute;
-        background-color: #f2f4f5;
-        width: 100%;
-        height: 1px;
-        display: block;
-        margin-top: 45px;
-      }
-
-      .slicerbarh2 {
-        margin-top: 395px;
-      }
-
-      .slicerbarh3 {
-        margin-top: 745px;
-      }
-
-      .slicerbarh4 {
-        margin-top: 1095px;
-      }
-    }
-
-    .rightbottomWithoutTitle {
-      top: 48px;
-      height: 86.5%;
-    }
-
-    .lefttopWithTitle {
-      height: 95.73%;
-    }
-
-    .lefttopWithoutTitle {
-      height: 95.73%;
-    }
-
     .content {
+      width: 91.46%;
+
       .title {
         font-size: 2.143rem;
-        margin: 80px 0 60px 0;
       }
 
       .cardsContainer {
-        margin-bottom: 70px;
-
         .cards {
-          margin-top: 60px;
-          margin-left: 3.34%;
-          padding-top: 45px;
-          padding-bottom: 45px;
+          margin-top: 48px;
 
           .cardWrapper {
-            margin: 68px 0 68px 0;
+            flex: none;
+            margin: 0 0 28px 0;
             width: 100%;
-            height: 216px;
-            border-right: 0px;
+            max-width: 100%;
+
+            &:last-child {
+              margin: 0 0 30px 0;
+            }
           }
         }
       }
     }
-  }
-
-  .dot {
-    display: block;
-    z-index: 2;
   }
 }
