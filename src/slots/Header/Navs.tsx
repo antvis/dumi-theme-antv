@@ -87,7 +87,7 @@ export const Navs: React.FC<NavProps> = ({ navs, path }) => {
                 >
                   <span>
                     {title}
-                    <DownOutlined />
+                    <DownOutlined style={{ marginLeft: '6px' }} />
                   </span>
                 </Dropdown>
               </li>
