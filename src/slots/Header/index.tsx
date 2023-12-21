@@ -349,7 +349,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
               }}
             >
               {ic(get(internalSite, 'name'))}
-              {!isAntVHome && <LinkOutlined />}
+              {!isAntVHome && <LinkOutlined style={{ marginLeft: '6px' }} />}
             </a>
           </li>
         </Popover>
@@ -388,7 +388,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
               className={styles.remindHref}
             >
               {ic(get(internalSite, 'name'))}
-              <LinkOutlined />
+              <LinkOutlined style={{ marginLeft: '6px' }} />
             </a>
             <span> 站点。</span>
           </div>
@@ -408,6 +408,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
                 className={cx(styles.arrow, {
                   [styles.open]: productMenuVisible,
                 })}
+                style={{ marginLeft: '6px' }} 
               />
             ) : (
               <CaretDownFilled
