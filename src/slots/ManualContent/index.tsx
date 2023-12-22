@@ -359,9 +359,9 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
         {/** @toc-width: 260px; */}
         {is991Wide ? (
           <Layout.Sider theme="light" width={260}>
-            <Affix className={styles.toc}>
+            <div className={styles.toc}>
               <ContentTable />
-            </Affix>
+            </div>
           </Layout.Sider>
         ) : (
           <div></div>
