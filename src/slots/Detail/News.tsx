@@ -10,6 +10,8 @@ export interface NewsProps {
   title: IC;
   date: string;
   link: string;
+  subTitle?: string;
+  img?: string;
 }
 
 const numberImages = [
@@ -22,6 +24,8 @@ export const News: React.FC<NewsProps> = ({
   type,
   title,
   date,
+  subTitle,
+  img,
   link = '',
 }) => {
   const lang = useLocale().id
@@ -29,9 +33,11 @@ export const News: React.FC<NewsProps> = ({
     <div className={styles.container}>
       <div className={styles.content}>
         <p className={styles.description}>
-          {ic(type)} ‧ {ic(title)}
+          {img && <img src={img} alt='message_title' />}
+          {type ? `${ic(type)} ‧ ` : ''}{ic(title)}
         </p>
-        <p className={styles.date}>{date}</p>
+        {date && <p className={styles.date}>{date}</p>}
+        {subTitle && <p className={styles.subTitle}>{ic(subTitle)}</p>}
       </div>
     </div>
   );
@@ -48,7 +54,7 @@ export const News: React.FC<NewsProps> = ({
     );
   }
   return (
-    <Link to={link[lang] ? link[lang]: link} className={styles.news}>
+    <Link to={link[lang] ? link[lang] : link} className={styles.news}>
       {children}
     </Link>
   );

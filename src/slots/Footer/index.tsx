@@ -129,7 +129,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
           alt='more products'
         />
       ),
-      title: '更多产品',
+      title: <FormattedMessage id="更多产品" />,
       items: [
         {
           icon: (
@@ -140,7 +140,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
           ),
           title: 'Ant Design',
           url: 'https://ant.design',
-          description: '企业级 UI 设计语言',
+          description: <FormattedMessage id="企业级 UI 设计语言" />,
           openExternal: true,
         },
         {
@@ -150,9 +150,9 @@ export const Footer: React.FC<FooterProps> = (props) => {
               alt='yuque'
             />
           ),
-          title: '语雀',
+          title: <FormattedMessage id="语雀" />,
           url: 'https://yuque.com',
-          description: '知识创作与分享工具',
+          description: <FormattedMessage id="知识创作与分享工具" />,
           openExternal: true,
         },
         {
@@ -164,7 +164,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
           ),
           title: 'Egg',
           url: 'https://eggjs.org',
-          description: '企业级 Node 开发框架',
+          description: <FormattedMessage id="企业级 Node 开发框架" />,
           openExternal: true,
         },
         {
@@ -175,7 +175,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
             />
           ),
           title: 'Kitchen',
-          description: 'Sketch 工具集',
+          description: <FormattedMessage id="Sketch 工具集" />,
           url: 'https://kitchen.alipay.com',
           openExternal: true,
         },
@@ -186,7 +186,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
               alt='xtech'
             />
           ),
-          title: '蚂蚁体验科技',
+          title: <FormattedMessage id="蚂蚁体验科技" />,
           url: 'https://xtech.antfin.com/',
           openExternal: true,
         },
