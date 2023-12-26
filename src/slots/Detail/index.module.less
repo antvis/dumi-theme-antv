@@ -66,11 +66,17 @@
       font-family: AlibabaPuHuiTiR;
       font-size: 18px;
       color: #424E66;
+      max-height: 145px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      -webkit-line-clamp: 4;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
     }
 
     .buttons {
       display: flex;
-      margin-top: 5.56%;
+      margin-top: max(3%, 40px);
 
       .buttonLink {
         display: flex;
@@ -83,7 +89,8 @@
         transition: all 0.3s;
         text-align: center;
         height: 54px;
-        width: 166px;
+        min-width: 166px;
+        padding: 0 10px;
         box-shadow: 0 8px 28px 0 rgba(0, 0, 0, 0.10);
         background-color: #691EFF;
         font-size: 18px;
@@ -194,10 +201,10 @@
   .news {
     width: 100%;
     display: flex;
-    bottom: 40px;
+    bottom: 30px;
     position: absolute;
     z-index: 3;
-    height: 108px;
+    height: 128px;
     box-sizing: border-box;
     padding: 0 4.5%;
   }

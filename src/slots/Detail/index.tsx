@@ -33,8 +33,6 @@ type DetailProps = {
   news: NewsProps[];
 }
 
-const AssetsNewsURL = 'https://assets.antv.antgroup.com/antv/news.json';
-
 /**
  * Index.技术栈的描述区域！
  * 各自配置
@@ -57,7 +55,7 @@ export const Detail: React.FC<DetailProps> = ({
   const lang = useLocale().id
 
   useEffect(() => {
-    fetch(AssetsNewsURL)
+    fetch('https://site-data-pre.alipay.com/antv/banner-messages.json')
       .then((res) => res.json())
       .then((data) => {
         setRemoteNews(data);
@@ -120,7 +118,7 @@ export const Detail: React.FC<DetailProps> = ({
         {/** 新闻公告 */}
         <div className={cx(styles.news, 'news')}>
           {
-            (news || remoteNews).slice(0, 2).map((n, i) => (<News key={i} index={i} {...n} />))
+            (news || remoteNews).slice(0, 3).map((n, i) => (<News key={i} index={i} {...n} />))
           }
         </div>
         {/** image */}
