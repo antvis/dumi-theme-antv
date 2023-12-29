@@ -183,8 +183,18 @@ export default defineConfig({
         </html>`,
     },
     announcement: {
-      zh: '',
-      en: '',
+      icon: 'https://gw.alipayobjects.com/zos/rmsportal/XuVpGqBFxXplzvLjJBZB.svg',
+      title: {
+        zh: '语雀公益计划：大学生认证教育邮箱，即可免费获得语雀会员。语雀，支付宝匠心打造的在线文档平台',
+        en: '语雀公益计划：大学生认证教育邮箱，即可免费获得语雀会员。语雀，支付宝匠心打造的在线文档平台',
+      },
+      link: {
+        text: {
+          zh: '更多内容',
+          en: 'more',
+        },
+        url: 'https://www.yuque.com/yuque/blog/welfare-edu?source=antv',
+      },
     },
     /** 首页技术栈介绍 */
     detail: {
