@@ -2,34 +2,41 @@ import { defineConfig } from 'dumi';
 import { repository, version } from './package.json';
 
 export default defineConfig({
-  locales: [{ id: 'zh', name: '中文' }, { id: 'en', name: 'English' }],
-  title: 'dumi-theme-antv 主题包',                                        // 网站header标题
-  favicons: ['https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*7svFR6wkPMoAAAAAAAAAAAAADmJ7AQ/original'], // 网站 favicon
-  metas: [                                                              // 自定义 meta 标签  
+  locales: [
+    { id: 'zh', name: '中文' },
+    { id: 'en', name: 'English' },
+  ],
+  title: 'dumi-theme-antv 主题包', // 网站header标题
+  favicons: [
+    'https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*7svFR6wkPMoAAAAAAAAAAAAADmJ7AQ/original',
+  ], // 网站 favicon
+  metas: [
+    // 自定义 meta 标签
     { name: 'keywords', content: 'dumi-theme-antv' },
     { name: 'description', content: '基于 dumi2 的 AntV 官网主题包' },
   ],
   themeConfig: {
     title: 'dumi-theme-antv',
     description: '基于 dumi2 的 AntV 官网主题包',
-    defaultLanguage: 'zh',                                              // 默认语言
-    isAntVSite: false,                                                  // 是否是 AntV 的大官网
+    defaultLanguage: 'zh', // 默认语言
+    isAntVSite: false, // 是否是 AntV 的大官网
     footerTheme: 'light',
-    siteUrl: 'https://antv.vision',                                     // 官网地址
-    githubUrl: repository.url,                                          // GitHub 地址
-    showSearch: true,                                                   // 是否显示搜索框
-    showGithubCorner: true,                                             // 是否显示头部的 GitHub icon
-    showGithubStars: true,                                              // 是否显示 GitHub star 数量
-    showAntVProductsCard: true,                                         // 是否显示 AntV 产品汇总的卡片
-    showLanguageSwitcher: true,                                         // 是否显示官网语言切换
-    showWxQrcode: true,                                                 // 是否显示头部菜单的微信公众号
-    showChartResize: true,                                              // 是否在 demo 页展示图表视图切换
+    siteUrl: 'https://antv.vision', // 官网地址
+    githubUrl: repository.url, // GitHub 地址
+    showSearch: true, // 是否显示搜索框
+    showGithubCorner: true, // 是否显示头部的 GitHub icon
+    showGithubStars: true, // 是否显示 GitHub star 数量
+    showAntVProductsCard: true, // 是否显示 AntV 产品汇总的卡片
+    showLanguageSwitcher: true, // 是否显示官网语言切换
+    showWxQrcode: true, // 是否显示头部菜单的微信公众号
+    showChartResize: true, // 是否在 demo 页展示图表视图切换
     showAPIDoc: true,
-    showSpecTab: true,                                                // 是否在 demo 页展示API文档
+    showSpecTab: true, // 是否在 demo 页展示API文档
     themeSwitcher: 'g2',
     es5: false,
     version,
-    versions: {                                                         // 历史版本以及切换下拉菜单
+    versions: {
+      // 历史版本以及切换下拉菜单
       '0.3.x': 'https://g.antv.vision/',
       '0.2.x': 'https://g2.antv.vision/',
     },
@@ -40,7 +47,8 @@ export default defineConfig({
         en: 'China Mirror',
       },
     },
-    docsearchOptions: {                                                 // 头部搜索框配置
+    docsearchOptions: {
+      // 头部搜索框配置
       versionV3: true,
       apiKey: '90c9a5dbf6e5ea7058cc32bcde8e94b2',
       indexName: 's2-antv-vision',
@@ -49,7 +57,8 @@ export default defineConfig({
     /**
      *  tips: 文档列表类型的路由导航(nav) 请以 docs/* 格式命名
      */
-    navs: [                                                             // 头部的菜单列表
+    navs: [
+      // 头部的菜单列表
       {
         slug: 'docs/manual/concepts/grammar-of-graphics',
         title: {
@@ -83,15 +92,16 @@ export default defineConfig({
           {
             name: {
               zh: 'Dumi 2.x',
-              en: 'Dumi 2.x'
+              en: 'Dumi 2.x',
             },
             url: 'https://github.com/umijs/dumi',
-          }
+          },
         ],
         order: 0,
       },
     ],
-    ecosystems: [                                                       // 头部的菜单中的「周边生态」
+    ecosystems: [
+      // 头部的菜单中的「周边生态」
       {
         name: {
           zh: 'G2 官网',
@@ -105,7 +115,7 @@ export default defineConfig({
           en: 'G6 website',
         },
         url: 'https://g6.antv.vision',
-      }
+      },
     ],
     docs: [
       {
@@ -159,7 +169,7 @@ export default defineConfig({
           en: 'Show Case',
         },
         icon: 'gallery',
-      }
+      },
     ],
     playground: {
       devDependencies: {
@@ -200,7 +210,8 @@ export default defineConfig({
         zh: '基于 dumi2 封装，提供灵活多变的 slots 插槽，抽取大量配置，一秒搭建 AntV 的各个技术栈官网。',
         en: 'Based on the dumi2 package, it provides flexible and changeable slots, extracts a large number of configurations, and builds the official website of each technology stack of AntV in one second.',
       },
-      image: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*wo_LToatmbwAAAAAAAAAAABkARQnAQ',
+      image:
+        'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*wo_LToatmbwAAAAAAAAAAABkARQnAQ',
       buttons: [
         {
           text: {
@@ -250,7 +261,7 @@ export default defineConfig({
     features: {
       title: {
         zh: '我们的优势',
-        en: 'Our advantage'
+        en: 'Our advantage',
       },
       cards: [
         {
@@ -284,9 +295,9 @@ export default defineConfig({
           description: {
             zh: '强大的交互语法，助力可视分析，让图表栩栩如生',
             en: 'owerful interactive syntax to help visual analysis and make charts come alive',
-          }
+          },
         },
-      ]
+      ],
     },
     /** 首页案例 */
     cases: [
@@ -298,43 +309,70 @@ export default defineConfig({
         },
         description: {
           zh: '真实的数据可视化案例，我们将它们归纳为一个个故事性的设计模板，让用户达到开箱即用的效果。',
-          en: 'Real data visualization cases, we summarize them into story-based design templates, allowing users to achieve out-of-the-box effects.'
+          en: 'Real data visualization cases, we summarize them into story-based design templates, allowing users to achieve out-of-the-box effects.',
         },
         // link: `/examples/gallery`,
-        image: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*hDrgRb7ma4EAAAAAAAAAAABkARQnAQ'
+        image:
+          'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*hDrgRb7ma4EAAAAAAAAAAABkARQnAQ',
       },
     ],
     /** 首页合作公司 */
     companies: [
-      { name: '阿里云', img: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*V_xMRIvw2iwAAAAAAAAAAABkARQnAQ' },
-      { name: '支付宝', img: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*lYDrRZvcvD4AAAAAAAAAAABkARQnAQ', },
-      { name: '天猫', img: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*BQrxRK6oemMAAAAAAAAAAABkARQnAQ', },
-      { name: '淘宝网', img: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*1l8-TqUr7UcAAAAAAAAAAABkARQnAQ', },
-      { name: '网上银行', img: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*ZAKFQJ5Bz4MAAAAAAAAAAABkARQnAQ', },
-      { name: '京东', img: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*yh-HRr3hCpgAAAAAAAAAAABkARQnAQ', },
-      { name: 'yunos', img: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*_js7SaNosUwAAAAAAAAAAABkARQnAQ', },
-      { name: '菜鸟', img: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*TgV-RZDODJIAAAAAAAAAAABkARQnAQ', },
+      {
+        name: '阿里云',
+        img: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*V_xMRIvw2iwAAAAAAAAAAABkARQnAQ',
+      },
+      {
+        name: '支付宝',
+        img: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*lYDrRZvcvD4AAAAAAAAAAABkARQnAQ',
+      },
+      {
+        name: '天猫',
+        img: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*BQrxRK6oemMAAAAAAAAAAABkARQnAQ',
+      },
+      {
+        name: '淘宝网',
+        img: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*1l8-TqUr7UcAAAAAAAAAAABkARQnAQ',
+      },
+      {
+        name: '网上银行',
+        img: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*ZAKFQJ5Bz4MAAAAAAAAAAABkARQnAQ',
+      },
+      {
+        name: '京东',
+        img: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*yh-HRr3hCpgAAAAAAAAAAABkARQnAQ',
+      },
+      {
+        name: 'yunos',
+        img: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*_js7SaNosUwAAAAAAAAAAABkARQnAQ',
+      },
+      {
+        name: '菜鸟',
+        img: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*TgV-RZDODJIAAAAAAAAAAABkARQnAQ',
+      },
     ],
     // 代码编辑器设置
     editor: {
-      size: 0.4,   // 代码区占比
+      size: 0.4, // 代码区占比
       playgroundSize: 0.38, // 文档中的代码区占比
-    }
+    },
   },
   analytics: {
     // google analytics 的 key (GA 4)
     // ga_v2: 'G-abcdefg',
     // 若你在使用 GA v1 旧版本，请使用 `ga` 来配置
-    ga: 'ga_old_key'
+    ga: 'ga_old_key',
     // 百度统计的 key
     // baidu: 'baidu_tongji_key',
   },
   // tnpm 安装的目录会导致 webpack 缓存快照 OOM，暂时禁用
   // 只有主题包开发需要用，其他技术栈使用的时候，不需要！
-  chainWebpack(memo) { memo.delete('cache'); return memo },
+  chainWebpack(memo) {
+    memo.delete('cache');
+    return memo;
+  },
   plugins: [],
-  links: [
-  ],
-  scripts: [
-  ],
+  links: [],
+  scripts: [],
+  mfsu: false,
 });

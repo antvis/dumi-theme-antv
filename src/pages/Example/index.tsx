@@ -1,15 +1,19 @@
 import { Layout } from 'antd';
 import { useLocale, useSiteData } from 'dumi';
-import { get, find } from 'lodash-es';
-import React, { useContext, useEffect, useState, useMemo } from 'react';
+import { every, find, get } from 'lodash-es';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useSnapshot } from 'valtio';
 import { ThemeAntVContext } from '../../context';
+import { store } from '../../model';
+import { API } from '../../slots/API';
 import { CodeRunner } from '../../slots/CodeRunner';
 import { getDemoInfo } from '../../slots/CodeRunner/utils';
 import { ExampleSider } from '../../slots/ExampleSider';
 import { Header } from '../../slots/Header';
 import { SEO } from '../../slots/SEO';
 import { Demo, ExampleTopic } from '../../types';
+import { CollapsedIcon } from './components/CollapsedIcon';
 import styles from './index.module.less';
 import { getCurrentTitle } from './utils';
 
@@ -55,8 +59,7 @@ const Example: React.FC = () => {
   }, [hash, exampleTopics, example]);
 
   const [currentDemo, setCurrentDemo] = useState<Demo>();
-
-  const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
+  const state = useSnapshot(store);
 
   const [title, setTitle] = useState<title>({});
 
@@ -67,6 +70,12 @@ const Example: React.FC = () => {
       setTitle(getCurrentTitle(exampleTopics, topic, example));
     }
   }, [topic, example, hash]);
+
+  const showAPI = every(
+    [get(themeConfig, 'showAPIDoc'), topic, example],
+    Boolean,
+  );
+
   return (
     <div className={styles.example}>
       <SEO title={title[locale.id]} lang={locale.id} />
@@ -77,7 +86,7 @@ const Example: React.FC = () => {
           width={250}
           trigger={null}
           collapsible
-          collapsed={isCollapsed}
+          collapsed={state.hideMenu}
           className={styles.menuSider}
           theme="light"
         >
@@ -94,6 +103,13 @@ const Example: React.FC = () => {
               exampleTopics={exampleTopics}
             />
           )}
+          <CollapsedIcon
+            isCollapsed={state.hideMenu}
+            onClick={(show) => {
+              store.hideMenu = show;
+            }}
+            style={{ bottom: 0, right: state.hideMenu ? -24 : 0 }}
+          />
         </Sider>
         {/*//FIXME: 待 ANTD bug 修复后，可以使用下面的代码*/}
         {/*<LeftOutlined
@@ -116,6 +132,15 @@ const Example: React.FC = () => {
             />
           )}
         </Content>
+        {showAPI && (
+          <API
+            exampleTopics={exampleTopics}
+            topic={topic}
+            example={example}
+            demo={demo}
+            language={locale.id}
+          />
+        )}
       </Layout>
     </div>
   );
