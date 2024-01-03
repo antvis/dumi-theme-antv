@@ -9,7 +9,7 @@ import { Demo, ExampleTopic } from '../../types';
 export function getExampleTopicMap(exampleTopics: ExampleTopic[]) {
   const exampleTopicMap = new Map<string, Demo>();
 
-  map(exampleTopics, ((topic) => {
+  map(exampleTopics, (topic) => {
     map(topic.examples, (example) => {
       map(example.demos, (demo) => {
         exampleTopicMap.set(`${topic.id}-${example.id}-${demo.id}`, {
@@ -17,10 +17,11 @@ export function getExampleTopicMap(exampleTopics: ExampleTopic[]) {
           relativePath: `${topic.id}/${example.id}/demo/${demo.filename}`,
           targetExample: example,
           targetTopic: topic,
+          api: example.api,
         });
       });
     });
-  }));
+  });
 
   return exampleTopicMap;
 }
@@ -28,7 +29,12 @@ export function getExampleTopicMap(exampleTopics: ExampleTopic[]) {
 /**
  * 从 Context 信息中，获取到 Example 相关的信息，用于页面渲染
  */
-export function getDemoInfo(exampleTopics: ExampleTopic[], topic: string, example: string, demo: string) {
+export function getDemoInfo(
+  exampleTopics: ExampleTopic[],
+  topic: string,
+  example: string,
+  demo: string,
+) {
   const m = getExampleTopicMap(exampleTopics);
 
   return m.get(`${topic}-${example}-${demo}`);

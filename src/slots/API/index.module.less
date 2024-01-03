@@ -1,0 +1,39 @@
+.api {
+  height: 100%;
+
+  .header {
+    position: relative;
+    height: 36px;
+    background-color: #f8f9fc;
+    display: flex;
+    justify-content: end;
+    overflow: hidden;
+    padding-right: 12px;
+
+    .zoom {
+      font-size: 18px;
+      color: #777;
+      line-height: 36px;
+    }
+  }
+
+  .content {
+    overflow: hidden;
+    padding: 12px;
+    border-left: 1px solid #ececec;
+    height: calc(100% - 36px);
+    overflow-y: scroll;
+
+    > div {
+      overflow: hidden;
+
+      > p:first-child {
+        display: none;
+      }
+    }
+  }
+
+  img {
+    max-width: 100%;
+  }
+}

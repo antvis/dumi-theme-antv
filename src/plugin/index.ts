@@ -91,6 +91,7 @@ export default function ThemeAntVContextWrapper() {
         meta: ${JSON.stringify({
           exampleTopics: getExamplesPageTopics(
             api.config.themeConfig.examples || [],
+            api.userConfig.themeConfig.showAPIDoc,
           ),
         })}
       }}

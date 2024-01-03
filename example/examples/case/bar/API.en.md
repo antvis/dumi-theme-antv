@@ -1,1 +1,1 @@
-`markdown:docs/common/api.en.md`
+`markdown:docs/plots/bar.en.md`
