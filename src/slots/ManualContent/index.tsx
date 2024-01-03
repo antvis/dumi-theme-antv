@@ -3,6 +3,7 @@ import {
   MenuUnfoldOutlined,
   VerticalAlignTopOutlined,
 } from '@ant-design/icons';
+import { get } from 'lodash';
 import { Affix, BackTop, Layout, Menu } from 'antd';
 import { useFullSidebarData, useLocale, useRouteMeta, useSiteData } from 'dumi';
 import Drawer from 'rc-drawer';
@@ -44,7 +45,7 @@ type linkToTitle = {
 type MenuItem = {
   type: any;
   key: string;
-  label?: string;
+  label?: string | React.ReactNode;
   slug?: string;
   title: {
     zh: string;
@@ -138,9 +139,13 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
           funllSidebarData[item.key][0].children?.forEach((itemChild) => {
             const label = itemChild.title as unknown as string;
             const key = itemChild.link as string;
+            const tag = get(itemChild, ['frontmatter', 'tag']);
             item.children!.push({
               ...itemChild,
-              label,
+              label: tag ? <div className={styles.memuLabel}>
+                {label}
+                <div className={styles.tag}>{tag}</div>
+              </div> : label,
               key,
             });
           });
@@ -237,17 +242,17 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
     setPrev(
       prevNode
         ? {
-            slug: prevNode.getAttribute('link') || undefined,
-            title: prevNode.textContent || undefined,
-          }
+          slug: prevNode.getAttribute('link') || undefined,
+          title: prevNode.textContent || undefined,
+        }
         : undefined,
     );
     setNext(
       nextNode
         ? {
-            slug: nextNode.getAttribute('link') || undefined,
-            title: nextNode.textContent || undefined,
-          }
+          slug: nextNode.getAttribute('link') || undefined,
+          title: nextNode.textContent || undefined,
+        }
         : undefined,
     );
   }

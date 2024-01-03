@@ -1,5 +1,5 @@
 // import { navigate } from 'gatsby';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useMedia } from 'react-use';
 import { useNavigate } from "react-router-dom";
 import cx from 'classnames';
@@ -20,6 +20,8 @@ import { Products } from './Products';
 import { Navs, INav } from './Navs';
 import { findVersion, getLangUrl } from './utils';
 import { ic } from '../hooks';
+
+import type { IC } from '../../types';
 
 import styles from './index.module.less';
 
@@ -91,6 +93,14 @@ export type HeaderProps = {
       indexName: string;
       appId: string;
     }
+  };
+  announcement?: {
+    title: IC,
+    icon: string;
+    link: {
+      url: string,
+      text: IC,
+    };
   }
 }
 
@@ -98,24 +108,15 @@ function redirectChinaMirror(chinaMirrorOrigin: string) {
   window.location.href = window.location.href.replace(window.location.origin, chinaMirrorOrigin);
 }
 
-function fetchBanner() {
-  return fetch(
-    'https://assets.antv.antgroup.com/antv/banner.json', // 生产环境
-    // 'https://site-data-pre.alipay.com/antv/banner.json', // 预发测试
-  ).then((res) => res.json());
-}
-
+const ANNOUNCEMENT_LOCALSTORAGE_ID = 'ANNOUNCEMENT_LOCALSTORAGE_ID';
 
 /**
  * 头部菜单
  */
 const HeaderComponent: React.FC<HeaderProps> = ({
   subTitle = '',
-  subTitleHref,
-  pathPrefix = '',
   navs = [],
   showSearch = true,
-  showGithubStar = false,
   showGithubCorner = true,
   showAntVProductsCard = true,
   showLanguageSwitcher = true,
@@ -126,7 +127,6 @@ const HeaderComponent: React.FC<HeaderProps> = ({
   siteUrl,
   githubUrl = 'https://github.com/antvis',
   defaultLanguage,
-  Link = 'a',
   transparent,
   isHomePage,
   isAntVSite = false,
@@ -135,26 +135,18 @@ const HeaderComponent: React.FC<HeaderProps> = ({
   versions,
   internalSite,
   ecosystems,
-  searchOptions
+  announcement,
 }) => {
   const isAntVHome = isAntVSite && isHomePage; // 是否为AntV官网首页
 
   const [bannerVisible, setBannerVisible] = useState(false);
-  const [banner, setBanner] = useState<{ id: string; html: string }>(null);
+
   useEffect(() => {
-    fetchBanner().then(({ id, html }) => {
-      if (id && html) {
-        setBanner({ id, html });
-        setBannerVisible(localStorage.getItem(id) !== 'x');
-      }
-    }).catch(() => {
-      setBanner(null);
-      setBannerVisible(false);
-    });
-  }, []);
+    setBannerVisible(localStorage.getItem(ANNOUNCEMENT_LOCALSTORAGE_ID) !== 'true');
+  }, [announcement]);
 
   function onBannerClose() {
-    localStorage.setItem(banner.id, 'x');
+    localStorage.setItem(ANNOUNCEMENT_LOCALSTORAGE_ID, 'true');
     setBannerVisible(false);
   }
 
@@ -545,6 +537,9 @@ const HeaderComponent: React.FC<HeaderProps> = ({
     </ul>
   );
 
+  const announcementTitle = useMemo(() => get(announcement, ['title', lang]), [announcement, lang]);
+  const announcementLinkTitle = useMemo(() => get(announcement, ['link', 'text', lang]), [announcement, lang]);
+
   return (
     <header
       className={cx(styles.header, {
@@ -554,7 +549,25 @@ const HeaderComponent: React.FC<HeaderProps> = ({
         [styles.isAntVHome]: !!isAntVHome,
         [styles.fixed]: popupMenuVisible,
       })}
-    > 
+    >
+      {
+        bannerVisible && announcementTitle &&
+        <Alert
+          className={styles.banner}
+          message={
+            <div className={styles.topAlert}>
+              {announcement.icon && <img src={announcement.icon} />}
+              <div>{announcementTitle}</div>
+              {announcementLinkTitle  && <a href={announcement.link.url} >{ announcementLinkTitle}</a>}
+            </div>
+          }
+          type="info"
+          banner
+          closable
+          showIcon={false}
+          onClose={onBannerClose}
+        />
+      }
       <div className={styles.container}>
         <div className={styles.left}>
           <h1>
@@ -587,7 +600,7 @@ export const Header: React.FC<Partial<HeaderProps>> = (props) => {
   const {
     title, siteUrl, githubUrl, isAntVSite, subTitleHref, internalSite,
     showSearch, showGithubCorner, showGithubStars, showLanguageSwitcher, showWxQrcode, defaultLanguage, showAntVProductsCard,
-    version, versions, ecosystems, navs, docsearchOptions
+    version, versions, ecosystems, navs, docsearchOptions, announcement
   } = themeConfig;
   const searchOptions = {
     docsearchOptions
@@ -611,6 +624,7 @@ export const Header: React.FC<Partial<HeaderProps>> = (props) => {
     version, versions, ecosystems, navs, searchOptions,
     isHomePage,
     transparent: isHomePage && isAntVSite,
+    announcement,
   }
 
   return <HeaderComponent {...Object.assign({}, headerProps, props)} />;
