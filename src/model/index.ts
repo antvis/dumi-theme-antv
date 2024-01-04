@@ -7,5 +7,5 @@ export const store = proxy<{
 }>({
   hideMenu: false,
   showAPI: false,
-  apiContainerWidth: 300,
+  apiContainerWidth: 420,
 });
