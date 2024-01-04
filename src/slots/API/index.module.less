@@ -45,6 +45,27 @@
        margin-top: 0;
      }
     }
+
+    .border() {
+      border-width: 1px;
+      border-color: #ececec
+    }
+
+    table {
+      .border();
+
+      border-right-style: solid;
+      border-top-style: solid;
+    }
+
+    td, th {
+      .border();
+
+      text-align: left;
+      border-left-style: solid;
+      border-bottom-style: solid;
+      padding: 4px;
+    }
   }
 
   img {

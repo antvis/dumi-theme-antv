@@ -1,7 +1,7 @@
 import * as fs from 'fs-extra';
 
-const MARKDOWN_REG_SIGN = /`markdown:([^`]*)`/g;
-const EMBED_REG_SIGN = /<embed[^>]*src=["']([^"']*)["'][^>]*[>\/>]/g;
+const MARKDOWN_REG_SIGN = /`markdown:([^`]*)`/;
+const EMBED_REG_SIGN = /<embed[^>]*src=["']([^"']*)["'][^>]*[>/>]/;
 
 const getContent = (filePath: string) => {
   let content: string = '';
@@ -9,7 +9,7 @@ const getContent = (filePath: string) => {
     const currentContent = fs.readFileSync(filePath).toString();
     const lines = currentContent.split('\n');
     let isTitle = false;
-    lines.forEach((line, index) => {
+    lines.forEach((line) => {
       /**
        * @description 示例页面无需 title 信息，冗余
        * @example

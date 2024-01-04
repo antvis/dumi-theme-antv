@@ -3,6 +3,7 @@ import { Collapse, Popover } from 'antd';
 import { get } from 'lodash-es';
 import React from 'react';
 import Markdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import { useSnapshot } from 'valtio';
 import { store } from '../../model';
@@ -67,12 +68,11 @@ export const API = ({
 
     const MarkdownComponent = ({ content }) => (
       <Markdown
-        rehypePlugins={[rehypeRaw]}
+        rehypePlugins={[rehypeRaw, remarkGfm]}
         components={{
           // @ts-expect-error
           description(props) {
-            const { node, ...rest } = props;
-            return <span style={{ fontSize: 12, color: '#777' }} {...rest} />;
+            return <span style={{ fontSize: 12, color: '#777' }} {...props} />;
           },
         }}
       >
@@ -99,7 +99,9 @@ export const API = ({
                 : result[index + 1].start;
             return (
               <Panel
-                header={<b style={{ lineHeight: '22px' }}>{header}</b>}
+                header={
+                  <b style={{ lineHeight: '22px', fontSize: 16 }}>{header}</b>
+                }
                 key={header}
               >
                 <MarkdownComponent
