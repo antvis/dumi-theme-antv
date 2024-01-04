@@ -1,31 +1,35 @@
 {
   "name": "@antv/dumi-theme-antv",
-  "version": "0.4.6",
+  "version": "0.5.0",
   "description": "AntV website theme based on dumi2.",
-  "types": "dist/types.d.ts",
-  "scripts": {
-    "start": "cd example && npm run start",
-    "dev": "father dev",
-    "build": "npm run prepare && father build",
-    "prepare": "father link-dev-theme",
-    "lint": "npm run lint:es && npm run lint:css",
-    "lint:css": "stylelint \"{src,test}/**/*.{css,less}\"",
-    "lint:es": "eslint \"{src,test}/**/*.{js,jsx,ts,tsx}\"",
-    "prepublishOnly": "npm run build"
-  },
   "keywords": [
     "dumi",
     "dumi-theme",
     "dumi-theme-antv"
   ],
-  "authors": [
-    "dumi",
-    "antv"
-  ],
+  "homepage": "https://github.com/antvis/dumi-theme-antv#readme",
+  "bugs": {
+    "url": "https://github.com/antvis/dumi-theme-antv/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/antvis/dumi-theme-antv"
+  },
   "license": "MIT",
+  "types": "dist/types.d.ts",
   "files": [
     "dist"
   ],
+  "scripts": {
+    "build": "npm run prepare && father build",
+    "dev": "father dev",
+    "lint": "npm run lint:es && npm run lint:css",
+    "lint:css": "stylelint \"{src,test}/**/*.{css,less}\"",
+    "lint:es": "eslint \"{src,test}/**/*.{js,jsx,ts,tsx}\"",
+    "prepare": "father link-dev-theme",
+    "prepublishOnly": "npm run build",
+    "start": "cd example && npm run start"
+  },
   "commitlint": {
     "extends": [
       "@commitlint/config-conventional"
@@ -48,9 +52,6 @@
       "prettier --parser=typescript --write"
     ]
   },
-  "publishConfig": {
-    "access": "public"
-  },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "@babel/plugin-syntax-unicode-sets-regex": "^7.18.6",
@@ -71,7 +72,6 @@
     "indent-string": "^5.0.0",
     "insert-css": "^2.0.0",
     "lodash-es": "^4.17.21",
-    "markdown-to-jsx": "^7.3.2",
     "monaco-editor": "^0.25.0",
     "parse-github-url": "^1.0.2",
     "prettier": "^2.7.1",
@@ -82,11 +82,13 @@
     "react-error-boundary": "^3.1.4",
     "react-github-button": "^0.1.11",
     "react-helmet": "^6.1.0",
+    "react-markdown": "^9.0.1",
     "react-router-dom": "^6.4.2",
     "react-slick": "^0.29.0",
     "react-split-pane": "^0.1.92",
     "react-use": "^17.4.0",
     "reading-time": "^1.5.0",
+    "rehype-raw": "^7.0.0",
     "semver": "^7.3.8",
     "size-sensor": "^1.0.1",
     "slick-carousel": "^1.8.1",
@@ -95,11 +97,6 @@
     "uri-parse": "^1.0.0",
     "valtio": "^1.12.1",
     "video-react": "^0.16.0"
-  },
-  "peerDependencies": {
-    "dumi": "^2.0.0",
-    "react": ">=16.9.0",
-    "react-dom": ">=16.9.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.1.2",
@@ -125,12 +122,16 @@
     "react-dom": "^18.0.0",
     "stylelint": "^14.9.1"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/antvis/dumi-theme-antv"
+  "peerDependencies": {
+    "dumi": "^2.0.0",
+    "react": ">=16.9.0",
+    "react-dom": ">=16.9.0"
   },
-  "bugs": {
-    "url": "https://github.com/antvis/dumi-theme-antv/issues"
+  "publishConfig": {
+    "access": "public"
   },
-  "homepage": "https://github.com/antvis/dumi-theme-antv#readme"
+  "authors": [
+    "dumi",
+    "antv"
+  ]
 }
