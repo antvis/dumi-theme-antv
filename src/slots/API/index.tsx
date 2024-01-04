@@ -1,6 +1,6 @@
 import { ZoomInOutlined, ZoomOutOutlined } from '@ant-design/icons';
 import { Collapse, Popover } from 'antd';
-import { get } from 'lodash-es';
+import { get, uniq, sortBy } from 'lodash-es';
 import React from 'react';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -37,13 +37,69 @@ export const API = ({
   const demoInfo = getDemoInfo(exampleTopics, topic, example, demo);
   const APIContent = get(demoInfo, ['api', language]);
 
-  /** 从 MD 中解析出最短标题(eg: #、##、###)作为折叠分组条件 */
-  const findShortestHashTag = (lines: string[]) => {
+  /** 从 MD 中解析出层级数据(eg: #、##、###)作为折叠分组条件 */
+  const findHashTag = (lines: string[]) => {
     const tagLines = lines.filter((line) => line.startsWith('#'));
     const tagReg = /^#+/g;
     const tagLengths = tagLines.map((line) => line.match(tagReg)[0].length);
-    return Math.min(...tagLengths);
+    return sortBy(uniq(tagLengths));
   };
+
+  const getRegex = (tagLength: number) => {
+    return new RegExp(
+      `^${new Array(tagLength).fill('#').join('')}\\s+([^\\n]*)`,
+    );
+  };
+
+  /** 根据正则将内容切片 */
+  const setIndexTag = (lines: string[], regex: RegExp, start = 0) => {
+    const result = [];
+    lines.forEach((line, index) => {
+      if (regex.exec(line)) {
+        const header = regex.exec(line)[1];
+        result.push({
+          header,
+          start: index + start,
+          maxEndIndex: start + lines.length,
+        });
+      }
+    });
+    return result;
+  };
+
+  /** 从 MD 中解析出嵌套结构, 最多支持 2 层 */
+  const getNestedDOM = (lines: string[]) => {
+    const tags = findHashTag(lines);
+    let result = setIndexTag(lines, getRegex(tags[0]));
+    if (tags.length > 2) {
+      result = result.map((item, index) => {
+        const { start } = item;
+        return {
+          ...item,
+          children: setIndexTag(
+            lines.slice(start + 1, result[index + 1]?.start),
+            getRegex(tags[1]),
+            start + 1,
+          ),
+        };
+      });
+    }
+    return result;
+  };
+
+  const MarkdownComponent = ({ content }) => (
+    <Markdown
+      rehypePlugins={[rehypeRaw, remarkGfm]}
+      components={{
+        // @ts-expect-error
+        description(props) {
+          return <span style={{ fontSize: 12, color: '#777' }} {...props} />;
+        },
+      }}
+    >
+      {content}
+    </Markdown>
+  );
 
   /** 将扁平状态的 MD 解析为嵌套结构 */
   const renderNestedDom = (content: string) => {
@@ -51,36 +107,9 @@ export const API = ({
       return null;
     }
     const lines = content.split('\n');
-    const result = [];
-    const tagLengths = findShortestHashTag(lines);
-    const regex = new RegExp(
-      `^${new Array(tagLengths).fill('#').join('')}\\s+([^\\n]*)`,
-    );
-    lines.forEach((line, index) => {
-      if (regex.exec(line)) {
-        const header = regex.exec(line)[1];
-        result.push({
-          start: index,
-          header,
-        });
-      }
-    });
+    const result = getNestedDOM(lines);
 
-    const MarkdownComponent = ({ content }) => (
-      <Markdown
-        rehypePlugins={[rehypeRaw, remarkGfm]}
-        components={{
-          // @ts-expect-error
-          description(props) {
-            return <span style={{ fontSize: 12, color: '#777' }} {...props} />;
-          },
-        }}
-      >
-        {content}
-      </Markdown>
-    );
-
-    /** 避免无标题的情况内容丢失 */
+    /** 避免无标题的情况内容丢失，内层嵌套的不做处理（不合理） */
     const minStart = get(result, [0, 'start']);
 
     return (
@@ -92,7 +121,7 @@ export const API = ({
         )}
         <Collapse bordered={false} defaultActiveKey={[result[0]?.header]} ghost>
           {result.map((item, index) => {
-            const { start, header } = item;
+            const { start, header, children = [] } = item;
             const end =
               index === result.length - 1
                 ? lines.length
@@ -104,9 +133,45 @@ export const API = ({
                 }
                 key={header}
               >
-                <MarkdownComponent
-                  content={lines.slice(start + 1, end).join('\n')}
-                />
+                {children.length > 0 ? (
+                  <Collapse
+                    bordered={false}
+                    defaultActiveKey={[children[0]?.header]}
+                    ghost
+                  >
+                    {children.map((nestedItem, nestedIndex) => {
+                      const {
+                        start: nestedStart,
+                        header: nestedHeader,
+                        maxEndIndex,
+                      } = nestedItem;
+                      const nestEnd =
+                        nestedIndex === children.length - 1
+                          ? maxEndIndex
+                          : children[nestedIndex + 1].start;
+                      return (
+                        <Panel
+                          header={
+                            <b style={{ lineHeight: '22px', fontSize: 14 }}>
+                              {nestedHeader}
+                            </b>
+                          }
+                          key={nestedHeader}
+                        >
+                          <MarkdownComponent
+                            content={lines
+                              .slice(nestedStart + 1, nestEnd)
+                              .join('\n')}
+                          />
+                        </Panel>
+                      );
+                    })}
+                  </Collapse>
+                ) : (
+                  <MarkdownComponent
+                    content={lines.slice(start + 1, end).join('\n')}
+                  />
+                )}
               </Panel>
             );
           })}
