@@ -36,6 +36,15 @@
     opacity: 1;
   }
 
+  &.bannerVisible {
+    max-height: calc(100vh - 102px);
+    top: 102px;
+  }
+
+  &.bannerVisible+.mask {
+    top: 102px;
+  }
+
   h3 {
     font-size: 14px;
     line-height: 22px;

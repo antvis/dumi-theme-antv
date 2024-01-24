@@ -142,7 +142,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
   const [bannerVisible, setBannerVisible] = useState(false);
 
   useEffect(() => {
-    setBannerVisible(localStorage.getItem(ANNOUNCEMENT_LOCALSTORAGE_ID) !== 'true');
+    setBannerVisible(localStorage.getItem(ANNOUNCEMENT_LOCALSTORAGE_ID) === 'true');
   }, [announcement]);
 
   function onBannerClose() {
@@ -413,6 +413,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
           </a>
           <Products
             className={styles.productsMenu}
+            bannerVisible={bannerVisible}
             show={productMenuVisible}
             rootDomain={rootDomain}
             language={defaultLanguage}

@@ -11,10 +11,11 @@ interface ProductsProps {
   rootDomain: string;
   language?: 'zh' | 'en';
   className?: string;
+  bannerVisible?: boolean;
 }
 
-export const Products: React.FC<ProductsProps> = ({ show, language, className }) => {
-  const locale = useLocale()
+export const Products: React.FC<ProductsProps> = ({ show, language, className, bannerVisible }) => {
+  const locale = useLocale();
   const [isChinaMirrorHost] = useChinaMirrorHost();
   const [products, setProducts] = React.useState<ProductType[]>([]);
   const lang = locale.id === 'zh' ? 'zh' : 'en';
@@ -32,6 +33,7 @@ export const Products: React.FC<ProductsProps> = ({ show, language, className })
       <div
         className={cx(styles.products, className, {
           [styles.show]: !!show,
+          [styles.bannerVisible]: !!bannerVisible,
         })}
       >
         <div className={styles.container}>
