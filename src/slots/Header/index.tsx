@@ -141,15 +141,6 @@ const HeaderComponent: React.FC<HeaderProps> = ({
 
   const [bannerVisible, setBannerVisible] = useState(false);
 
-  useEffect(() => {
-    setBannerVisible(localStorage.getItem(ANNOUNCEMENT_LOCALSTORAGE_ID) === 'true');
-  }, [announcement]);
-
-  function onBannerClose() {
-    localStorage.setItem(ANNOUNCEMENT_LOCALSTORAGE_ID, 'true');
-    setBannerVisible(false);
-  }
-
   const showChinaMirror: boolean = !!internalSite;
   const chinaMirrorUrl: string = get(internalSite, 'url');
   const [chinaMirrorHintVisible, updateChinaMirrorHintVisible] = useState(false);
@@ -169,9 +160,21 @@ const HeaderComponent: React.FC<HeaderProps> = ({
   });
 
   const locale = useLocale();
-  const nav = useNavigate()
+  const nav = useNavigate();
 
-  const [lang, setLang] = useState(locale.id)
+  const [lang, setLang] = useState(locale.id);
+
+  const announcementTitle = useMemo(() => get(announcement, ['title', lang]), [announcement, lang]);
+  const announcementLinkTitle = useMemo(() => get(announcement, ['link', 'text', lang]), [announcement, lang]);
+
+  useEffect(() => {
+    setBannerVisible(!!announcementTitle && localStorage.getItem(ANNOUNCEMENT_LOCALSTORAGE_ID) !== 'true');
+  }, [announcementTitle]);
+
+  function onBannerClose() {
+    localStorage.setItem(ANNOUNCEMENT_LOCALSTORAGE_ID, 'true');
+    setBannerVisible(false);
+  }
 
   const [productMenuVisible, setProductMenuVisible] = useState(false);
   let productMenuHovering = false;
@@ -400,7 +403,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
                 className={cx(styles.arrow, {
                   [styles.open]: productMenuVisible,
                 })}
-                style={{ marginLeft: '6px' }} 
+                style={{ marginLeft: '6px' }}
               />
             ) : (
               <CaretDownFilled
@@ -538,9 +541,6 @@ const HeaderComponent: React.FC<HeaderProps> = ({
     </ul>
   );
 
-  const announcementTitle = useMemo(() => get(announcement, ['title', lang]), [announcement, lang]);
-  const announcementLinkTitle = useMemo(() => get(announcement, ['link', 'text', lang]), [announcement, lang]);
-
   return (
     <header
       className={cx(styles.header, {
@@ -559,7 +559,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
             <div className={styles.topAlert}>
               {announcement.icon && <img src={announcement.icon} />}
               <div>{announcementTitle}</div>
-              {announcementLinkTitle  && <a href={announcement.link.url} >{ announcementLinkTitle}</a>}
+              {announcementLinkTitle && <a href={announcement.link.url} >{announcementLinkTitle}</a>}
             </div>
           }
           type="info"
