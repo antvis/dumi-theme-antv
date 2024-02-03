@@ -55,8 +55,8 @@ export const Detail: React.FC<DetailProps> = ({
   const lang = useLocale().id
 
   useEffect(() => {
-    fetch('https://assets.antv.antgroup.com/antv/products.json', // 生产环境
-          // 'https://site-data-pre.alipay.com/antv/products.json', // 预发测试
+    fetch('https://assets.antv.antgroup.com/antv/banner-messages.json', // 生产环境
+         // 'https://site-data-pre.alipay.com/antv/banner-messages.json', // 预发测试
     )
       .then((res) => res.json())
       .then((data) => {
