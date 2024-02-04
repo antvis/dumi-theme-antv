@@ -182,6 +182,20 @@ export const Footer: React.FC<FooterProps> = (props) => {
         {
           icon: (
             <img
+              src='https://mdn.alipayobjects.com/huamei_j9rjmc/afts/img/A*3ittT5OEo2gAAAAAAAAAAAAADvGmAQ/original'
+              width={16}
+              height={16}
+              alt="Galacean"
+            />
+          ),
+          title: "Galacean",
+          description: "互动图形解决方案",
+          url: 'https://galacean.antgroup.com/',
+          openExternal: true,
+        },
+        {
+          icon: (
+            <img
               src='https://gw.alipayobjects.com/zos/rmsportal/nBVXkrFdWHxbZlmMbsaH.svg'
               alt='xtech'
             />
