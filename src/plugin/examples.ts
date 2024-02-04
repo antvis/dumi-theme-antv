@@ -1,10 +1,10 @@
 import fm from 'front-matter';
+import { winPath } from 'dumi/plugin-utils';
 import * as fs from 'fs-extra';
 import * as glob from 'glob';
 import * as path from 'path';
 import { Demo, Example, ExampleTopic } from '../types';
 import { getExampleAPI } from './api';
-import { winPath } from 'dumi/plugin-utils';
 const examplesBaseDir = path.resolve(process.cwd(), 'examples');
 
 /**
