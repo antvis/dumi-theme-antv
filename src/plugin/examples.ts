@@ -48,9 +48,11 @@ const getExampleDemos = (exampleDir: string) => {
  * @author YuZhanglong <loveyzl1123@gmail.com>
  */
 const getTopicExamples = (topicPath: string, showAPIDoc: boolean) => {
-  const examplePaths = glob.sync(`${topicPath}/*`).filter((item) => {
-    return !item.endsWith('.js');
-  });
+  const examplePaths = glob
+    .sync(`${topicPath.replace(/\\/g, '/')}/*`)
+    .filter((item) => {
+      return !item.endsWith('.js');
+    });
 
   return examplePaths
     .map((item) => {
