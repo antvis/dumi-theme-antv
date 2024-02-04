@@ -1,8 +1,8 @@
 {
   "version": "0.2.1",
   "scripts": {
-    "start": "../node_modules/.bin/dumi dev",
-    "build": "../node_modules/.bin/dumi build",
+    "dev": "dumi dev",
+    "build": "dumi build",
     "deploy": "gh-pages -d dist",
     "preview": "dumi preview"
   },
