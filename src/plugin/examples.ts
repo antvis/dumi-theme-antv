@@ -4,6 +4,7 @@ import * as glob from 'glob';
 import * as path from 'path';
 import { Demo, Example, ExampleTopic } from '../types';
 import { getExampleAPI } from './api';
+import { winPath } from 'dumi/plugin-utils';
 const examplesBaseDir = path.resolve(process.cwd(), 'examples');
 
 /**
@@ -48,11 +49,9 @@ const getExampleDemos = (exampleDir: string) => {
  * @author YuZhanglong <loveyzl1123@gmail.com>
  */
 const getTopicExamples = (topicPath: string, showAPIDoc: boolean) => {
-  const examplePaths = glob
-    .sync(`${topicPath.replace(/\\/g, '/')}/*`)
-    .filter((item) => {
-      return !item.endsWith('.js');
-    });
+  const examplePaths = glob.sync(`${winPath(topicPath)}/*`).filter((item) => {
+    return !item.endsWith('.js');
+  });
 
   return examplePaths
     .map((item) => {
