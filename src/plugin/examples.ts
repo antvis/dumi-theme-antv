@@ -1,4 +1,5 @@
 import fm from 'front-matter';
+import { winPath } from 'dumi/plugin-utils';
 import * as fs from 'fs-extra';
 import * as glob from 'glob';
 import * as path from 'path';
@@ -48,11 +49,9 @@ const getExampleDemos = (exampleDir: string) => {
  * @author YuZhanglong <loveyzl1123@gmail.com>
  */
 const getTopicExamples = (topicPath: string, showAPIDoc: boolean) => {
-  const examplePaths = glob
-    .sync(`${topicPath.replace(/\\/g, '/')}/*`)
-    .filter((item) => {
-      return !item.endsWith('.js');
-    });
+  const examplePaths = glob.sync(`${winPath(topicPath)}/*`).filter((item) => {
+    return !item.endsWith('.js');
+  });
 
   return examplePaths
     .map((item) => {
