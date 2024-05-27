@@ -4,7 +4,7 @@ import styles from './index.module.less';
 /**
  * Loading
  */
-const Loading: React.FC = () => (
+const Loading = () => (
   <div
     style={{
       position: 'relative',
@@ -52,10 +52,4 @@ const Loading: React.FC = () => (
   </div>
 );
 
-const PageLoading: React.FC = () => (
-  <div style={{ height: '100vh' }}>
-    <Loading />
-  </div>
-);
-
-export { Loading, PageLoading };
+export default Loading;

@@ -7,7 +7,7 @@ import { format } from 'prettier';
 import parserBabel from 'prettier/parser-babel';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { bind, clear } from 'size-sensor';
-import { Loading } from '../Loading';
+import Loading from '../Loading';
 import { EDITOR_TABS, Toolbar } from './Toolbar';
 import styles from './index.module.less';
 import { compile, execute, replaceInsertCss } from './utils';
