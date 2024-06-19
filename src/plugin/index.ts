@@ -27,6 +27,16 @@ export default (api: IApi) => {
       'https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*7svFR6wkPMoAAAAAAAAAAAAADmJ7AQ/original',
     ];
 
+    memo.headScripts = [
+      { src: 'https://ur.alipay.com/tracert_a369.js', async: true },
+      { content: `
+          window.TracertCmdCache=window.TracertCmdCache||[];var t=window.Tracert||{_isRenderInit:!0,call:function(){window.TracertCmdCache.push(arguments)}},f=["call","start","config","logPv","info","err","click","expo","pageName","pageState","time","timeEnd","parse","checkExpo","stringify","report","set","before"];for(let i=0;i<f.length;i++){(function(fn){t[fn]=function(){var a=[],l=arguments.length;for (var j=0;j<l;j++) {a.push(arguments[j])}a.unshift(fn);window.TracertCmdCache.push(a)}})(f[i])}window.Tracert=t;window._to=window._to||{};
+          window.Tracert.start({});
+        `,
+        charset: 'utf-8'
+      },
+    ];
+
     // observable demo
     memo.extraRehypePlugins = [rehypeObservable];
 
