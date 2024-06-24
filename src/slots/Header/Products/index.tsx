@@ -2,7 +2,7 @@ import React from 'react';
 import cx from 'classnames';
 import { useLocale, FormattedMessage } from 'dumi';
 import Product from './Product';
-import { CATEGORIES, getNewProducts, ProductType } from './getProducts';
+import { CATEGORIES, getNewProducts, ProductCategory } from './getProducts';
 import { useChinaMirrorHost } from '../../hooks';
 import styles from './Product.module.less';
 
@@ -17,14 +17,23 @@ interface ProductsProps {
 export const Products: React.FC<ProductsProps> = ({ show, language, className, bannerVisible }) => {
   const locale = useLocale();
   const [isChinaMirrorHost] = useChinaMirrorHost();
-  const [products, setProducts] = React.useState<ProductType[]>([]);
+  const [productsCategoty, setProducts] = React.useState<ProductCategory[]>(CATEGORIES);
   const lang = locale.id === 'zh' ? 'zh' : 'en';
+
   React.useEffect(() => {
     getNewProducts({
       language: lang,
       isChinaMirrorHost,
     }).then((data) => {
-      setProducts(data);
+      const newProducts = CATEGORIES.map(({ name, type }) => {
+        return {
+          name,
+          type,
+          products: data.filter((item) => item.category === type),
+        };
+      })
+
+      setProducts(newProducts);
     });
   }, [lang, isChinaMirrorHost]);
 
@@ -37,13 +46,12 @@ export const Products: React.FC<ProductsProps> = ({ show, language, className, b
         })}
       >
         <div className={styles.container}>
-          {CATEGORIES.map(({ name, type }, idx) => {
+          {productsCategoty.map(({ name, type, products }, idx) => {
             return (
-              <React.Fragment key={idx}>
+              products.length ? <React.Fragment key={idx}>
                 <h3><FormattedMessage id={name} /></h3>
                 <ul>
                   {products
-                    .filter((item) => item.category === type)
                     .map((product) => (
                       <Product
                         key={product.title}
@@ -57,7 +65,7 @@ export const Products: React.FC<ProductsProps> = ({ show, language, className, b
                       />
                     ))}
                 </ul>
-              </React.Fragment>
+              </React.Fragment> : null
             );
           })}
         </div>

@@ -16,6 +16,11 @@ const tuple = <T extends string[]>(...args: T) => args;
 const Categories = tuple('basic', 'extension', 'ecology');
 const Link = tuple('home', 'example', 'api');
 
+export interface ProductCategory {
+  type: (typeof CATEGORY_TYPE)[number];
+  name: string;
+  products: ProductType[];
+}
 export interface ProductItem {
   title: string;
   icon?: React.ReactNode;
@@ -35,15 +40,12 @@ const ANTV_DOMAIN = 'antv.vision';
 export type ValuesOf<T extends any[]> = T[number];
 
 const CATEGORY_TYPE = tuple('basic', 'extension', 'mobile', 'ecology');
-export const CATEGORIES: Array<{
-  type: typeof CATEGORY_TYPE[number];
-  name: string;
-}> = [
-    { type: 'basic', name: '标准版基础产品' },
-    { type: 'extension', name: '标准版扩展产品' },
-    { type: 'mobile', name: '移动定制（F版）产品' },
-    { type: 'ecology', name: '周边生态' },
-  ];
+export const CATEGORIES: Array<ProductCategory> = [
+  { type: 'basic', name: '标准版基础产品', products: [] },
+  { type: 'extension', name: '标准版扩展产品', products: [] },
+  { type: 'mobile', name: '移动定制（F版）产品', products: [] },
+  { type: 'ecology', name: '周边生态', products: [] },
+];
 
 export type ProductType = {
   links: {
