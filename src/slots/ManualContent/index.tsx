@@ -29,7 +29,7 @@ import {
 import 'rc-drawer/assets/index.css';
 import styles from './index.module.less';
 
-export type ManualContent = {
+export type ManualContentProps = {
   readonly children: any;
 };
 
@@ -54,6 +54,10 @@ type MenuItem = {
   order: number;
   link?: string;
   children?: MenuItem[];
+  /**
+   * 是否显示文章目录
+   */
+  showToc?: boolean;
 };
 
 type FullSidebarData = {
@@ -65,13 +69,12 @@ type SidebarData = MenuItem[];
 /**
  * 文档的结构
  */
-export const ManualContent: React.FC<ManualContent> = ({ children }) => {
+export const ManualContent: React.FC<ManualContentProps> = ({ children }) => {
   const locale = useLocale();
   const currentLocale: string = locale.id;
 
-  const {
-    themeConfig: { githubUrl, relativePath, docs },
-  } = useSiteData();
+  const { themeConfig: { docs } } = useSiteData();
+
   const sidebar = useFullSidebarData() as unknown as FullSidebarData;
 
   const is767Wide = useMedia('(min-width: 767.99px)', true);
@@ -81,17 +84,15 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
   const navigate = useNavigate();
 
   // 获取阅读时间
-  const mdInfo = useRouteMeta();
-  const text = mdInfo.texts.reduce((prev, next) => {
-    return prev + next.value;
-  }, '');
+  const meta = useRouteMeta();
+  const text = meta.texts.reduce((prev, next) => prev + next.value, '');
   const { time } = readingTime(text);
 
-  // linkoTitle用来映射路由和Title
-  const linkoTitle: linkToTitle = {};
+  // linkToTitle 用来映射路由和Title
+  const linkToTitle: linkToTitle = {};
   for (const route of Object.values(sidebar)) {
     route[0].children.forEach((item) => {
-      linkoTitle[item.link] = item.title as unknown as string;
+      linkToTitle[item.link] = item.title as unknown as string;
     });
   }
   /**
@@ -102,6 +103,7 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
 
   // 获取最终的 MenuData
   const renderSidebar = getMenuData(sidebar, docs, baseRoute, []);
+
   function getMenuData(
     funllSidebarData: FullSidebarData,
     rootList: SidebarData,
@@ -156,7 +158,7 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
         }
       }
 
-      if (hrefId == baseRoute) {
+      if (hrefId === baseRoute) {
         funllSidebarData[baseRoute] &&
           funllSidebarData[baseRoute][0].children?.forEach((itemChild) => {
             const key = itemChild.link!;
@@ -177,9 +179,7 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
   }
 
   // 获取打开的菜单栏
-  const [defaultOpenKeys, setDefaultOpenKeys] = useState<string[]>(() =>
-    getOpenKeys(),
-  );
+  const [defaultOpenKeys, setDefaultOpenKeys] = useState<string[]>(() => getOpenKeys());
 
   // 获取第一个md文件的路由
   const indexRoute = getIndexRoute(renderSidebar);
@@ -189,6 +189,7 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
     navigate(e.key);
     useScrollToTop();
   };
+
   const [defaultSelectedKey, setDefaultSelectedKey] = useState<string>();
   //上一夜下一页
   const [prev, setPrev] = useState<PreAndNext | undefined>(undefined);
@@ -196,7 +197,7 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
 
   // 所有的 sidebar 路由
   const sidebarRoutes = [];
-  for (const route of Object.keys(linkoTitle)) {
+  for (const route of Object.keys(linkToTitle)) {
     sidebarRoutes.push(route);
   }
 
@@ -209,7 +210,7 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
 
   // 改变菜单栏选中和 openKeys 状态
   useEffect(() => {
-    if (window.location.pathname == indexRoute) {
+    if (window.location.pathname === indexRoute) {
       setDefaultOpenKeys(getOpenKeys());
     }
     setDefaultSelectedKey(window.location.pathname);
@@ -224,9 +225,7 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
 
   function getPreAndNext() {
     const menuNodes = document.querySelectorAll('aside .ant-menu-item');
-    const currentMenuNode = document.querySelector(
-      'aside .ant-menu-item-selected',
-    );
+    const currentMenuNode = document.querySelector('aside .ant-menu-item-selected');
     // @ts-ignore
     const currentIndex = Array.from(menuNodes).findIndex(
       (node) => node === currentMenuNode,
@@ -256,24 +255,7 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
         : undefined,
     );
   }
-  const getGithubSourceUrl = ({
-    githubUrl,
-    relativePath,
-    prefix,
-  }: {
-    githubUrl: string;
-    relativePath: string;
-    prefix: string;
-  }): string => {
-    // https://github.com/antvis/x6/tree/master/packages/x6-sites
-    if (githubUrl.includes('/tree/master/')) {
-      return `${githubUrl.replace(
-        '/tree/master/',
-        '/edit/master/',
-      )}/${prefix}/${relativePath}`;
-    }
-    return `${githubUrl}/edit/master/${prefix}/${relativePath}`;
-  };
+
   const menu = (
     <Menu
       onClick={onClick}
@@ -293,7 +275,7 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
 
   return (
     <>
-      <SEO title={linkoTitle[window.location.pathname]} lang={locale.id} />
+      <SEO title={meta.frontmatter.title} lang={locale.id} />
       <Layout style={{ background: '#fff' }} hasSider className={styles.layout}>
         <Affix
           offsetTop={0}
@@ -324,28 +306,10 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
         <Layout.Content className={styles.content}>
           <div className={styles.main}>
             <h1 className={styles.contentTitle}>
-              {linkoTitle[window.location.pathname]}
-              {/* todo 编辑地址各种各样，需要有单独的配置，暂时关闭！这儿忘关了 */}
-              {/* <Tooltip title={'在 GitHub 上编辑'}>
-                <a
-                  href={getGithubSourceUrl({
-                    githubUrl,
-                    relativePath,
-                    prefix: 'docs',
-                  })}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.editOnGtiHubButton}
-                >
-                  <EditOutlined />
-                </a>
-              </Tooltip> */}
+              {meta.frontmatter.title}
             </h1>
             <div className={styles.readtimeContainer}>
-              <ReadingTime
-                readingTime={time}
-                className={styles.readtime}
-              ></ReadingTime>
+              <ReadingTime readingTime={time} className={styles.readtime} />
             </div>
             <div className={styles.markdown}>{children}</div>
             <div>
@@ -361,16 +325,13 @@ export const ManualContent: React.FC<ManualContent> = ({ children }) => {
             </div>
           </div>
         </Layout.Content>
-        {/** @toc-width: 260px; */}
-        {is991Wide ? (
+        {is991Wide && (meta.frontmatter.showToc !== false) ? (
           <Layout.Sider theme="light" width={260}>
             <div className={styles.toc}>
               <ContentTable />
             </div>
           </Layout.Sider>
-        ) : (
-          <div></div>
-        )}
+        ) : null}
       </Layout>
     </>
   );
