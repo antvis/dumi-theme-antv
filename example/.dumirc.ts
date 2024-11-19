@@ -385,4 +385,5 @@ export default defineConfig({
   links: [],
   scripts: [],
   mfsu: false,
+  mako: {}
 });

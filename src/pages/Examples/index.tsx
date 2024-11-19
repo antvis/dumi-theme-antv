@@ -3,7 +3,6 @@ import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BackTop, Layout as AntLayout } from 'antd';
 import { useLocale } from 'dumi';
-import { SEO } from '../../slots/SEO';
 import { Header } from '../../slots/Header';
 import { Footer } from '../../slots/Footer';
 import NavigatorBanner from '../../slots/Header/Products/NavigatorBanner';
@@ -15,6 +14,7 @@ import { usePrevAndNext } from '../../slots/hooks';
 import { ThemeAntVContext } from '../../context';
 import { ExampleTopic } from '../../types';
 import styles from './index.module.less';
+import SEO from '../../common/SEO';
 
 
 /**
@@ -32,21 +32,18 @@ const Example = () => {
 
   const [prev, next] = usePrevAndNext();
 
-  const title = {
-    zh: '所有图表',
-    en: "Gallery"
+  const title = { zh: '所有图表', en: "Gallery" }[locale.id];
 
-  }
   // 为 zh 做兜底
   useEffect(() => {
     const p = window.location.pathname
     if (p.includes('/zh/')) {
-      nav(p.replace('/zh/','/'))
-  }
-  },[])
+      nav(p.replace('/zh/', '/'))
+    }
+  }, [])
   return (
     <>
-      <SEO title={title[locale.id]} />
+      <SEO title={title} />
       <Header isHomePage={false} />
       <AntLayout
         hasSider

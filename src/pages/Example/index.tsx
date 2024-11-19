@@ -4,6 +4,7 @@ import { every, find, get } from 'lodash-es';
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useSnapshot } from 'valtio';
+import SEO from '../../common/SEO';
 import { ThemeAntVContext } from '../../context';
 import { store } from '../../model';
 import { API } from '../../slots/API';
@@ -11,7 +12,6 @@ import { CodeRunner } from '../../slots/CodeRunner';
 import { getDemoInfo } from '../../slots/CodeRunner/utils';
 import { ExampleSider } from '../../slots/ExampleSider';
 import { Header } from '../../slots/Header';
-import { SEO } from '../../slots/SEO';
 import { Demo, ExampleTopic } from '../../types';
 import { CollapsedIcon } from './components/CollapsedIcon';
 import styles from './index.module.less';
@@ -71,14 +71,11 @@ const Example: React.FC = () => {
     }
   }, [topic, example, hash]);
 
-  const showAPI = every(
-    [get(themeConfig, 'showAPIDoc'), topic, example],
-    Boolean,
-  );
+  const showAPI = every([get(themeConfig, 'showAPIDoc'), topic, example], Boolean);
 
   return (
     <div className={styles.example}>
-      <SEO title={title[locale.id]} lang={locale.id} />
+      <SEO title={title[locale.id]} />
       <Header isHomePage={false} />
       <Layout className={styles.container}>
         <Sider
@@ -133,13 +130,7 @@ const Example: React.FC = () => {
           )}
         </Content>
         {showAPI && (
-          <API
-            exampleTopics={exampleTopics}
-            topic={topic}
-            example={example}
-            demo={demo}
-            language={locale.id}
-          />
+          <API exampleTopics={exampleTopics} topic={topic} example={example} demo={demo} language={locale.id} />
         )}
       </Layout>
     </div>

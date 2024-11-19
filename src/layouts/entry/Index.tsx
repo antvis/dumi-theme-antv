@@ -1,13 +1,13 @@
+import { FormattedMessage, useSiteData } from 'dumi';
+import { get, isArray, size } from 'lodash-es';
 import React from 'react';
-import { useLocale, useSiteData, FormattedMessage } from 'dumi';
-import { SEO } from '../../slots/SEO';
-import { Header } from '../../slots/Header';
-import { Detail } from '../../slots/Detail';
-import { Features } from '../../slots/Features';
+import SEO from '../../common/SEO';
 import { Cases } from '../../slots/Cases';
 import { Companies } from '../../slots/Companies';
+import { Detail } from '../../slots/Detail';
+import { Features } from '../../slots/Features';
 import { Footer } from '../../slots/Footer';
-import { isArray, size, get } from 'lodash-es';
+import { Header } from '../../slots/Header';
 
 /**
  * Index 路由下的入口
@@ -15,15 +15,20 @@ import { isArray, size, get } from 'lodash-es';
  * - 组合 slots 下的木偶组件
  */
 export const Index = () => {
-  const locale = useLocale()
   const { themeConfig } = useSiteData();
   const {
-    title, siteUrl, githubUrl, isAntVSite,
-    showSearch, showGithubCorner, showGithubStars, showLanguageSwitcher, showWxQrcode, defaultLanguage, showAntVProductsCard,
-    versions, ecosystems, navs,
-    detail, news, companies, features, cases, className,
+    title,
+    githubUrl,
+    isAntVSite,
+    showGithubStars,
+    detail,
+    news,
+    companies,
+    features,
+    cases,
+    className,
     style,
-    id
+    id,
   } = themeConfig;
 
   const detailProps = {
@@ -31,7 +36,7 @@ export const Index = () => {
     showGithubStars,
     news,
     ...detail,
-  }
+  };
 
   const featuresProps = {
     title: get(features, ['title']),
@@ -39,22 +44,23 @@ export const Index = () => {
     className,
     style,
     id,
-  }
+  };
 
-  const casesProps = {
-    cases, style, className
-  }
-
-  const metaTitle = detailProps.title
+  const casesProps = { cases, style, className };
 
   return (
     <>
-      <SEO title={`${(metaTitle[locale.id])}`} titleSuffix="AntV" lang={locale.id} />
+      <SEO title={title} titleSuffix="AntV" />
       <Header />
       {size(detail) ? <Detail {...detailProps} /> : null}
       {size(featuresProps.features) ? <Features {...featuresProps} /> : null}
       {size(cases) ? <Cases {...casesProps} /> : null}
-      {size(companies) ? <Companies title={<FormattedMessage id={isAntVSite ? "2000+ 公司正在使用" : "感谢信赖"} />} companies={companies} /> : null}
+      {size(companies) ? (
+        <Companies
+          title={<FormattedMessage id={isAntVSite ? '2000+ 公司正在使用' : '感谢信赖'} />}
+          companies={companies}
+        />
+      ) : null}
       <Footer />
     </>
   );

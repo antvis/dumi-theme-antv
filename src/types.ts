@@ -102,3 +102,25 @@ export interface ExampleTopic extends TreeNode {
    */
   examples: Example[];
 }
+
+export type MenuItem = {
+  type: any;
+  key: string;
+  label?: string | React.ReactNode;
+  slug?: string;
+  title: string;
+  order: number;
+  link?: string;
+  children?: MenuItem[];
+  /**
+   * 是否显示文章目录
+   */
+  showToc?: boolean;
+};
+
+
+export type SidebarData = MenuItem[];
+
+export type FullSidebarData = {
+  [key: string]: SidebarData;
+};

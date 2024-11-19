@@ -1,21 +1,19 @@
-import React from 'react';
-import { ManualContent } from '../../slots/ManualContent';
-import { Header } from '../../slots/Header';
+import React, { PropsWithChildren } from 'react';
+import SEO from '../../common/SEO';
 import { Footer } from '../../slots/Footer';
-
-export type ManualProps = {
-  readonly children: any;
-}
+import { Header } from '../../slots/Header';
+import { ManualContent } from '../../slots/ManualContent';
 
 /**
  * Manual 路由下的入口
  */
-export const Manual: React.FC<ManualProps> = ({ children }) => {
+export const Manual: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <>
+      <SEO />
       <Header isHomePage={false} />
-      <ManualContent> {children} </ManualContent>
-      <Footer isDynamicFooter></Footer>
+      <ManualContent>{children}</ManualContent>
+      <Footer isDynamicFooter />
     </>
   );
-}
+};

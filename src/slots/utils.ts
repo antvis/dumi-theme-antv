@@ -1,5 +1,13 @@
+import { useSidebarData } from 'dumi';
 import { Status, TreeNode } from '../types';
 import { icWithLocale } from './hooks';
+
+/**
+ * 统一去掉中英文前缀
+ */
+export function getCurrentPathname(): string {
+  return window.location.pathname.replace('/zh/', '/').replace('/en/', '/');
+}
 
 export async function ping(): Promise<Status> {
   const timeout = new Promise<Status>((resolve) => {
@@ -10,11 +18,11 @@ export async function ping(): Promise<Status> {
 
   const network = new Promise<Status>((resolve) => {
     const url =
-    'https://private-a' +
-    'lipay' +
-    'objects.alip' +
-    'ay.com/alip' +
-    'ay-rmsdeploy-image/rmsportal/RKuAiriJqrUhyqW.png';
+      'https://private-a' +
+      'lipay' +
+      'objects.alip' +
+      'ay.com/alip' +
+      'ay-rmsdeploy-image/rmsportal/RKuAiriJqrUhyqW.png';
     const img = new Image();
     img.onload = () => {
       img.onload = null;
@@ -81,8 +89,8 @@ export const filterTreeNode = (
 
   const title = icWithLocale(treeNode.title, locale) || '';
   const matchFields = [title, treeNode.id, treeNode.filename];
-  
-  const isCurrentTreeNodeMatched = 
+
+  const isCurrentTreeNodeMatched =
     matchFields.some(f => (f ? f.toLowerCase() : '').includes(keyValue ? keyValue.toLowerCase() : ''));
 
   // 当前节点自身匹配，那么其孩子直接匹配，可以直接返回当前节点
