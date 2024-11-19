@@ -7,11 +7,16 @@
     "skipLibCheck": true,
     "baseUrl": "./",
     "noImplicitAny": false,
+    "isolatedModules": true,
+    "noEmit": true,
+    "allowJs": true,
+    "target": "es5",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "downlevelIteration": true,
     "paths": {
       "@@/*": ["example/.dumi/tmp/*"]
     }
-  },
-  "include": [
-    "src/**/*"
-  ]
+  }
 }
