@@ -1,7 +1,6 @@
 # @antv/dumi-theme-antv
 
-[![NPM version](https://img.shields.io/npm/v/@antv/dumi-theme-antv.svg?style=flat)](https://npmjs.org/package/@antv/dumi-theme-antv)
-[![NPM downloads](http://img.shields.io/npm/dm/@antv/dumi-theme-antv.svg?style=flat)](https://npmjs.org/package/@antv/dumi-theme-antv)
+[![NPM version](https://img.shields.io/npm/v/@antv/dumi-theme-antv.svg?style=flat)](https://npmjs.org/package/@antv/dumi-theme-antv) [![NPM downloads](http://img.shields.io/npm/dm/@antv/dumi-theme-antv.svg?style=flat)](https://npmjs.org/package/@antv/dumi-theme-antv)
 
 A theme package for the [dumi](https://next.d.umijs.org) framework.
 
@@ -30,6 +29,11 @@ That's all, now you can execute `dumi dev` and enjoy this theme.
 ## Options
 
 TODO
+
+`themeConfig.docsearchOptions.sort` 用于配置搜索结果的排序规则。可以通过字符串数组来定义排序逻辑。
+
+- 每个字符串可以是一个路径片段，用于匹配搜索结果的链接。
+- 如果字符串以 `!` 开头，则表示不包含该路径片段的结果应排在包含该路径片段的结果之前。
 
 ## Development
 
