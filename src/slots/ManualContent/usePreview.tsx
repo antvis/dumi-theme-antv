@@ -24,9 +24,7 @@ function sourceOf(block: Element) {
 }
 
 function blockOf() {
-  return Array.from(
-    document.querySelectorAll('.ob-codeblock .dumi-default-source-code'),
-  );
+  return Array.from(document.querySelectorAll('.ob-codeblock .dumi-default-source-code'));
 }
 
 export function usePreview(options = {}, select) {

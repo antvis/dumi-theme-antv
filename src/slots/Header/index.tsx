@@ -1,25 +1,25 @@
 // import { navigate } from 'gatsby';
-import React, { useState, useEffect, useMemo } from 'react';
-import { useMedia } from 'react-use';
-import { useNavigate } from "react-router-dom";
-import cx from 'classnames';
-import { useSiteData, useLocale, FormattedMessage } from 'dumi';
 import {
-  GithubOutlined,
-  MenuOutlined,
   CaretDownFilled,
-  DownOutlined,
-  WechatOutlined,
-  LinkOutlined,
   CheckOutlined,
+  DownOutlined,
+  GithubOutlined,
+  LinkOutlined,
+  MenuOutlined,
+  WechatOutlined,
 } from '@ant-design/icons';
-import { Alert, Modal, Button, Popover, Menu, Dropdown, Select } from 'antd';
+import { Alert, Button, Dropdown, Menu, Modal, Popover, Select } from 'antd';
+import cx from 'classnames';
+import { FormattedMessage, useLocale, useSiteData } from 'dumi';
 import { get, map, size } from 'lodash-es';
-import { Search } from './Search';
-import { Products } from './Products';
-import { Navs, INav } from './Navs';
-import { findVersion, getLangUrl } from './utils';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useMedia } from 'react-use';
 import { ic } from '../hooks';
+import { INav, Navs } from './Navs';
+import { Products } from './Products';
+import { Search } from './Search';
+import { findVersion, getLangUrl } from './utils';
 
 import type { IC } from '../../types';
 
@@ -47,7 +47,7 @@ export type HeaderProps = {
   internalSite?: {
     url: string;
     name: object;
-  },
+  };
   /** 切换语言的回调 */
   onLanguageChange?: (language: string) => void;
   /** 是否二维码 */
@@ -92,17 +92,17 @@ export type HeaderProps = {
       apiKey: string;
       indexName: string;
       appId: string;
-    }
+    };
   };
   announcement?: {
-    title: IC,
+    title: IC;
     icon: string;
     link: {
-      url: string,
-      text: IC,
+      url: string;
+      text: IC;
     };
-  }
-}
+  };
+};
 
 function redirectChinaMirror(chinaMirrorOrigin: string) {
   window.location.href = window.location.href.replace(window.location.origin, chinaMirrorOrigin);
@@ -147,9 +147,10 @@ const HeaderComponent: React.FC<HeaderProps> = ({
   useEffect(() => {
     const timeout = setTimeout(() => {
       if (
-        showChinaMirror && lang === 'zh'
-        && !localStorage.getItem('china-mirror-no-more-hint')
-        && window.location.host.includes('antv.vision')
+        showChinaMirror &&
+        lang === 'zh' &&
+        !localStorage.getItem('china-mirror-no-more-hint') &&
+        window.location.host.includes('antv.vision')
       ) {
         updateChinaMirrorHintVisible(true);
       }
@@ -207,7 +208,12 @@ const HeaderComponent: React.FC<HeaderProps> = ({
   };
 
   const { img, link } = {
-    img: <img src='https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*A-lcQbVTpjwAAAAAAAAAAAAADmJ7AQ/original' alt='logo' />,
+    img: (
+      <img
+        src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*A-lcQbVTpjwAAAAAAAAAAAAADmJ7AQ/original"
+        alt="logo"
+      />
+    ),
     link: '',
     ...logo,
   };
@@ -232,22 +238,17 @@ const HeaderComponent: React.FC<HeaderProps> = ({
 
   const isWide = useMedia('(min-width: 767.99px)', true);
 
-  const menuIcon = !isWide ? (
-    <MenuOutlined
-      className={styles.menuIcon}
-      onClick={onTogglePopupMenuVisible}
-    />
-  ) : null;
+  const menuIcon = !isWide ? <MenuOutlined className={styles.menuIcon} onClick={onTogglePopupMenuVisible} /> : null;
 
   const productItemProps = isWide
     ? {
-      onMouseEnter: onProductMouseEnter,
-      onMouseLeave: onProductMouseLeave,
-      onClick: onToggleProductMenuVisible,
-    }
+        onMouseEnter: onProductMouseEnter,
+        onMouseLeave: onProductMouseLeave,
+        onClick: onToggleProductMenuVisible,
+      }
     : {
-      onClick: onToggleProductMenuVisible,
-    };
+        onClick: onToggleProductMenuVisible,
+      };
 
   const menu = (
     <ul
@@ -258,13 +259,12 @@ const HeaderComponent: React.FC<HeaderProps> = ({
     >
       {
         /** 最左侧的菜单，一般是 教程、API、示例，或者其他自定义，有配置文件中的 `navs` 决定 */
-        size(navs) ?
-          <Navs navs={navs} path={window.location.pathname} /> : null
+        size(navs) ? <Navs navs={navs} path={window.location.pathname} /> : null
       }
 
       {
         /** 生态产品 */
-        size(ecosystems) ?
+        size(ecosystems) ? (
           <li>
             <Dropdown
               className={styles.ecoSystems}
@@ -285,9 +285,9 @@ const HeaderComponent: React.FC<HeaderProps> = ({
                 <DownOutlined style={{ marginLeft: '6px' }} />
               </span>
             </Dropdown>
-          </li> : null
+          </li>
+        ) : null
       }
-
 
       {showChinaMirror && isWide ? (
         <Popover
@@ -295,32 +295,20 @@ const HeaderComponent: React.FC<HeaderProps> = ({
           content={
             <div style={{ width: 300 }}>
               <div>
-                <span
-                  role="img"
-                  aria-labelledby="中国"
-                  style={{ marginRight: '8px' }}
-                >
+                <span role="img" aria-labelledby="中国" style={{ marginRight: '8px' }}>
                   🇨🇳
                 </span>
-                AntV 系列网站部署在 gh-pages
-                上，若访问速度不佳，可以前往国内镜像站点。
+                AntV 系列网站部署在 gh-pages 上，若访问速度不佳，可以前往国内镜像站点。
               </div>
               <div style={{ marginTop: 16, textAlign: 'right' }}>
-                <Button
-                  onClick={() => updateChinaMirrorHintVisible(false)}
-                  size="small"
-                  style={{ marginRight: 8 }}
-                >
+                <Button onClick={() => updateChinaMirrorHintVisible(false)} size="small" style={{ marginRight: 8 }}>
                   暂时关闭
                 </Button>
                 <Button
                   type="primary"
                   size="small"
                   onClick={() => {
-                    localStorage.setItem(
-                      'china-mirror-no-more-hint',
-                      Date.now().toString(),
-                    );
+                    localStorage.setItem('china-mirror-no-more-hint', Date.now().toString());
                     updateChinaMirrorHintVisible(false);
                   }}
                 >
@@ -361,10 +349,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
           onOk={() => redirectChinaMirror(chinaMirrorUrl)}
           cancelButtonProps={{
             onClick: () => {
-              localStorage.setItem(
-                'china-mirror-no-more-hint',
-                Date.now().toString(),
-              );
+              localStorage.setItem('china-mirror-no-more-hint', Date.now().toString());
               updateChinaMirrorHintVisible(false);
             },
           }}
@@ -392,64 +377,66 @@ const HeaderComponent: React.FC<HeaderProps> = ({
 
       {
         /** 产品列表 */
-        showAntVProductsCard &&
-        <li {...productItemProps}>
-          <a>
-            {<FormattedMessage id="所有产品" />}
-            {!isAntVHome ? (
-              <img
-                src="https://gw.alipayobjects.com/zos/antfincdn/FLrTNDvlna/antv.png"
-                alt="antv logo arrow"
-                className={cx(styles.arrow, {
-                  [styles.open]: productMenuVisible,
-                })}
-                style={{ marginLeft: '6px' }}
-              />
-            ) : (
-              <CaretDownFilled
-                style={{ top: '1px', color: '#fff' }}
-                className={cx(styles.arrow, {
-                  [styles.open]: productMenuVisible,
-                })}
-              />
-            )}
-          </a>
-          <Products
-            className={styles.productsMenu}
-            bannerVisible={bannerVisible}
-            show={productMenuVisible}
-            rootDomain={rootDomain}
-            language={defaultLanguage}
-          />
-        </li>
+        showAntVProductsCard && (
+          <li {...productItemProps}>
+            <a>
+              {<FormattedMessage id="所有产品" />}
+              {!isAntVHome ? (
+                <img
+                  src="https://gw.alipayobjects.com/zos/antfincdn/FLrTNDvlna/antv.png"
+                  alt="antv logo arrow"
+                  className={cx(styles.arrow, {
+                    [styles.open]: productMenuVisible,
+                  })}
+                  style={{ marginLeft: '6px' }}
+                />
+              ) : (
+                <CaretDownFilled
+                  style={{ top: '1px', color: '#fff' }}
+                  className={cx(styles.arrow, {
+                    [styles.open]: productMenuVisible,
+                  })}
+                />
+              )}
+            </a>
+            <Products
+              className={styles.productsMenu}
+              bannerVisible={bannerVisible}
+              show={productMenuVisible}
+              rootDomain={rootDomain}
+              language={defaultLanguage}
+            />
+          </li>
+        )
       }
 
       {
         /** 版本列表 */
-        versions &&
-        <li>
-          <Select
-            defaultValue={versions[findVersion(version, Object.keys(versions))]}
-            className={styles.versions}
-            bordered={false}
-            size="small"
-            onChange={(value: string) => {
-              window.location.href = value;
-            }}
-          >
-            {Object.keys(versions).map((version: string) => {
-              const url = versions[version];
-              if (url.startsWith('http')) {
-                return (
-                  <Select.Option key={url} value={url}>
-                    {version}
-                  </Select.Option>
-                );
-              }
-              return null;
-            })}
-          </Select>
-        </li>
+        versions && (
+          <li>
+            <Select
+              defaultValue={versions[findVersion(version, Object.keys(versions))]}
+              className={styles.versions}
+              bordered={false}
+              size="small"
+              onChange={(value: string) => {
+                window.location.href = value;
+              }}
+            >
+              {Object.keys(versions).map((version: string) => {
+                const url = versions[version];
+                if (url.startsWith('http')) {
+                  return (
+                    <Select.Option key={url} value={url}>
+                      {version}
+                    </Select.Option>
+                  );
+                }
+                return null;
+              })}
+            </Select>
+          </li>
+        )
       }
 
       {
@@ -466,13 +453,13 @@ const HeaderComponent: React.FC<HeaderProps> = ({
                     if (key === lang) {
                       return;
                     }
-                    setLang(key)
+                    setLang(key);
                     if (onLanguageChange) {
                       onLanguageChange(key.toString());
                       return;
                     }
                     const newUrl = getLangUrl(window.location.href, key);
-                    nav(newUrl.replace(window.location.origin, ''))
+                    nav(newUrl.replace(window.location.origin, ''));
                   }}
                 >
                   <Menu.Item key="en">
@@ -497,11 +484,16 @@ const HeaderComponent: React.FC<HeaderProps> = ({
               }
               className={styles.translation}
             >
-              <a
-                className="ant-dropdown-link"
-                onClick={(e) => e.preventDefault()}
-              >
-                <svg className={styles.translation} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z" /></svg>
+              <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
+                <svg
+                  className={styles.translation}
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z" />
+                </svg>
               </a>
             </Dropdown>
           </li>
@@ -510,33 +502,37 @@ const HeaderComponent: React.FC<HeaderProps> = ({
 
       {
         /** 微信公众号 */
-        showWxQrcode &&
-        <li className={cx(styles.navIcon, styles.wxQrcode)}>
-          <Popover
-            content={
-              <img width="100%" height="100%" src="https://gw.alipayobjects.com/zos/antfincdn/ZKlx96dsfs/qrcode_for_gh_f52d8b6aa591_258.jpg" alt="wx-qrcode" />
-            }
-            title="微信扫一扫关注"
-            overlayClassName="wx-qrcode-popover"
-            overlayStyle={{ width: 128, height: 128 }}
-            overlayInnerStyle={{ padding: 2 }}
-          >
-            <WechatOutlined />
-          </Popover>
-        </li>
+        showWxQrcode && (
+          <li className={cx(styles.navIcon, styles.wxQrcode)}>
+            <Popover
+              content={
+                <img
+                  width="100%"
+                  height="100%"
+                  src="https://gw.alipayobjects.com/zos/antfincdn/ZKlx96dsfs/qrcode_for_gh_f52d8b6aa591_258.jpg"
+                  alt="wx-qrcode"
+                />
+              }
+              title="微信扫一扫关注"
+              overlayClassName="wx-qrcode-popover"
+              overlayStyle={{ width: 128, height: 128 }}
+              overlayInnerStyle={{ padding: 2 }}
+            >
+              <WechatOutlined />
+            </Popover>
+          </li>
+        )
       }
 
       {
         /** GitHub icon */
-        showGithubCorner &&
-        <li className={cx(styles.navIcon, styles.githubCorner)}>
-          <a
-            href={githubUrl}
-            target="_blank" rel="noreferrer"
-          >
-            <GithubOutlined />
-          </a>
-        </li>
+        showGithubCorner && (
+          <li className={cx(styles.navIcon, styles.githubCorner)}>
+            <a href={githubUrl} target="_blank" rel="noreferrer">
+              <GithubOutlined />
+            </a>
+          </li>
+        )
       }
     </ul>
   );
@@ -551,15 +547,14 @@ const HeaderComponent: React.FC<HeaderProps> = ({
         [styles.fixed]: popupMenuVisible,
       })}
     >
-      {
-        bannerVisible && announcementTitle &&
+      {bannerVisible && announcementTitle && (
         <Alert
           className={styles.banner}
           message={
             <div className={styles.topAlert}>
               {announcement.icon && <img src={announcement.icon} />}
               <div>{announcementTitle}</div>
-              {announcementLinkTitle && <a href={announcement.link.url} >{announcementLinkTitle}</a>}
+              {announcementLinkTitle && <a href={announcement.link.url}>{announcementLinkTitle}</a>}
             </div>
           }
           type="info"
@@ -568,7 +563,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
           showIcon={false}
           onClose={onBannerClose}
         />
-      }
+      )}
       <div className={styles.container}>
         <div className={styles.left}>
           <h1>
@@ -578,14 +573,11 @@ const HeaderComponent: React.FC<HeaderProps> = ({
             <>
               <span className={styles.divider} />
               <h2 className={styles.subProduceName}>
-                <a href={(window.location.pathname.startsWith('/en') ? '/en' : '/')}>{subTitle}</a>
+                <a href={window.location.pathname.startsWith('/en') ? '/en' : '/'}>{subTitle}</a>
               </h2>
             </>
           )}
-          {
-            showSearch && !isAntVHome &&
-            <Search />
-          }
+          {showSearch && !isAntVHome && <Search />}
         </div>
         <nav className={styles.nav}>
           {menu}
@@ -599,20 +591,33 @@ const HeaderComponent: React.FC<HeaderProps> = ({
 export const Header: React.FC<Partial<HeaderProps>> = (props) => {
   const { themeConfig } = useSiteData();
   const {
-    title, siteUrl, githubUrl, isAntVSite, subTitleHref, internalSite,
-    showSearch, showGithubCorner, showGithubStars, showLanguageSwitcher, showWxQrcode, defaultLanguage, showAntVProductsCard,
-    version, versions, ecosystems, navs, docsearchOptions, announcement
+    title,
+    siteUrl,
+    githubUrl,
+    isAntVSite,
+    subTitleHref,
+    internalSite,
+    showSearch,
+    showGithubCorner,
+    showGithubStars,
+    showLanguageSwitcher,
+    showWxQrcode,
+    defaultLanguage,
+    showAntVProductsCard,
+    version,
+    versions,
+    ecosystems,
+    navs,
+    docsearchOptions,
+    announcement,
   } = themeConfig;
   const searchOptions = {
-    docsearchOptions
-  }
+    docsearchOptions,
+  };
 
   const locale = useLocale();
   const path = window.location.pathname;
-  const isHomePage =
-    path === '/' ||
-    path === `/${locale.id}` ||
-    path === `/${locale.id}/`;
+  const isHomePage = path === '/' || path === `/${locale.id}` || path === `/${locale.id}/`;
 
   const headerProps = {
     subTitle: title,
@@ -621,12 +626,22 @@ export const Header: React.FC<Partial<HeaderProps>> = (props) => {
     isAntVSite,
     siteUrl,
     internalSite,
-    showSearch, showGithubCorner, showGithubStars, showLanguageSwitcher, showWxQrcode, defaultLanguage, showAntVProductsCard,
-    version, versions, ecosystems, navs, searchOptions,
+    showSearch,
+    showGithubCorner,
+    showGithubStars,
+    showLanguageSwitcher,
+    showWxQrcode,
+    defaultLanguage,
+    showAntVProductsCard,
+    version,
+    versions,
+    ecosystems,
+    navs,
+    searchOptions,
     isHomePage,
     transparent: isHomePage && isAntVSite,
     announcement,
-  }
+  };
 
   return <HeaderComponent {...Object.assign({}, headerProps, props)} />;
-}
+};

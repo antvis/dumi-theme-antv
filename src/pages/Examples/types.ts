@@ -1,5 +1,5 @@
 import React from 'react';
-import { ExampleTopic, Example, Demo } from '../../types';
+import { Demo, Example, ExampleTopic } from '../../types';
 
 export interface AnnouncementProps {
   message: React.ReactNode;
@@ -38,4 +38,3 @@ export interface LeftMenuProps {
    */
   exampleTopics: ExampleTopic[];
 }
-

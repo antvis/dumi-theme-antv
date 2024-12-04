@@ -109,14 +109,11 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
   // monaco instance
   const monacoRef = useRef<any>(null);
   // 文件后缀
-  const fileExtension =
-    relativePath.split('.')[relativePath.split('.').length - 1] || 'js';
+  const fileExtension = relativePath.split('.')[relativePath.split('.').length - 1] || 'js';
   // 菜单栏
   const [editorTabs, setEditorTabs] = useState<EDITOR_TABS[]>([]);
   // 当前选中菜单栏
-  const [currentEditorTab, setCurrentEditorTab] = useState(
-    EDITOR_TABS.JAVASCRIPT,
-  );
+  const [currentEditorTab, setCurrentEditorTab] = useState(EDITOR_TABS.JAVASCRIPT);
 
   const containerId = `playgroundScriptContainer_${exampleId}`;
 
@@ -171,12 +168,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
       }
 
       // 2. 执行代码，try catch 在内部已经做了
-      execute(
-        compiled,
-        containerId,
-        playground?.container as string,
-        replaceId,
-      );
+      execute(compiled, containerId, playground?.container as string, replaceId);
     }, 300),
     [exampleId, currentEditorTab],
   );
@@ -290,9 +282,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
         updateData(data);
       });
     } else {
-      const tabs = showSpecTab
-        ? [EDITOR_TABS.JAVASCRIPT, EDITOR_TABS.SPEC]
-        : [EDITOR_TABS.JAVASCRIPT];
+      const tabs = showSpecTab ? [EDITOR_TABS.JAVASCRIPT, EDITOR_TABS.SPEC] : [EDITOR_TABS.JAVASCRIPT];
       setEditorTabs(tabs);
     }
   }, [exampleId]);
@@ -335,9 +325,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
   );
 
   const parseFunction = (string) => {
-    return string.replace(/"\<func\>(.*?)\<\/func\>"/g, (_, code) =>
-      code.replace(/\\n/g, '\n').replace(/\\"/g, '"'),
-    );
+    return string.replace(/"\<func\>(.*?)\<\/func\>"/g, (_, code) => code.replace(/\\n/g, '\n').replace(/\\"/g, '"'));
   };
 
   // 序列化 JavaScript 对象的时候对 function 进行特殊的标注，
@@ -413,12 +401,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
         slots={{
           Spec: (
             <span style={{ paddingLeft: '0.25em', paddingRight: 0 }}>
-              <Switch
-                style={{ width: 30 }}
-                size="small"
-                onChange={(checked) => setFull(checked)}
-                checked={full}
-              />
+              <Switch style={{ width: 30 }} size="small" onChange={(checked) => setFull(checked)} checked={full} />
             </span>
           ),
         }}

@@ -7,10 +7,12 @@ export type Status = 'responded' | 'error' | 'timeout';
 /**
  * 配置文件中的国际化配置
  */
-export type IC = string | {
-  zh: string;
-  en: string;
-}
+export type IC =
+  | string
+  | {
+      zh: string;
+      en: string;
+    };
 
 export interface TreeNode {
   /**
@@ -117,7 +119,6 @@ export type MenuItem = {
    */
   showToc?: boolean;
 };
-
 
 export type SidebarData = MenuItem[];
 

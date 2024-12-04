@@ -14,9 +14,7 @@ const examplesBaseDir = path.resolve(process.cwd(), 'examples');
  * @author YuZhanglong <loveyzl1123@gmail.com>
  */
 const getExampleDemos = (exampleDir: string) => {
-  const demoMetaJSON = fs
-    .readFileSync(path.resolve(exampleDir, 'demo', 'meta.json'))
-    .toString();
+  const demoMetaJSON = fs.readFileSync(path.resolve(exampleDir, 'demo', 'meta.json')).toString();
   const demoMeta: any[] = JSON.parse(demoMetaJSON).demos;
   const demos: Demo[] = demoMeta.map((item) => {
     const { title, screenshot, filename, new: isNew } = item;
@@ -28,9 +26,7 @@ const getExampleDemos = (exampleDir: string) => {
     return {
       id,
       screenshot,
-      source: fs
-        .readFileSync(path.resolve(exampleDir, 'demo', filename))
-        .toString(),
+      source: fs.readFileSync(path.resolve(exampleDir, 'demo', filename)).toString(),
       title,
       filename,
       isNew: !!isNew,
@@ -48,20 +44,14 @@ const getExampleDemos = (exampleDir: string) => {
  * @author YuZhanglong <loveyzl1123@gmail.com>
  */
 const getTopicExamples = (topicPath: string, showAPIDoc: boolean) => {
-  const examplePaths = glob
-    .sync(`${topicPath.replace(/\\/g, '/')}/*`)
-    .filter((item) => {
-      return !item.endsWith('.js');
-    });
+  const examplePaths = glob.sync(`${topicPath.replace(/\\/g, '/')}/*`).filter((item) => {
+    return !item.endsWith('.js');
+  });
 
   return examplePaths
     .map((item) => {
-      const exampleMetaZh = fs
-        .readFileSync(path.resolve(item, 'index.zh.md'))
-        .toString();
-      const exampleMetaEn = fs
-        .readFileSync(path.resolve(item, 'index.en.md'))
-        .toString();
+      const exampleMetaZh = fs.readFileSync(path.resolve(item, 'index.zh.md')).toString();
+      const exampleMetaEn = fs.readFileSync(path.resolve(item, 'index.en.md')).toString();
       let api: null | { zh: string; en: string } = null;
       if (showAPIDoc) {
         api = {
@@ -96,10 +86,7 @@ const getTopicExamples = (topicPath: string, showAPIDoc: boolean) => {
  * @returns {ExampleTopic[]} 案例主题列表
  * @author YuZhanglong <loveyzl1123@gmail.com>
  */
-export const getExamplesPageTopics = (
-  exampleTopics: ExampleTopic[],
-  showAPIDoc: boolean,
-) => {
+export const getExamplesPageTopics = (exampleTopics: ExampleTopic[], showAPIDoc: boolean) => {
   return exampleTopics.map(({ id, slug, title, icon }: ExampleTopic) => {
     const nid = (id || slug) as string;
     let examples: Example[] = [];
@@ -125,9 +112,5 @@ export const getExamplesPageTopics = (
 export function getExamplePaths() {
   const exampleTopicPaths = glob.sync(`${examplesBaseDir}/*/*`);
   const paths = exampleTopicPaths.map((p) => p.replace(process.cwd(), ''));
-  return [
-    ...paths,
-    ...paths.map((p) => `/zh${p}`),
-    ...paths.map((p) => `/en${p}`),
-  ];
+  return [...paths, ...paths.map((p) => `/zh${p}`), ...paths.map((p) => `/en${p}`)];
 }

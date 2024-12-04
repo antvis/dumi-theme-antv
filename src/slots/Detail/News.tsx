@@ -1,7 +1,7 @@
-import React from 'react';
 import { Link, useLocale } from 'dumi';
-import { ic } from '../hooks';
+import React from 'react';
 import { IC } from '../../types';
+import { ic } from '../hooks';
 import styles from './News.module.less';
 
 export interface NewsProps {
@@ -19,22 +19,15 @@ const numberImages = [
   'https://gw.alipayobjects.com/zos/antfincdn/3fG1Iqjfnz/2.png',
 ];
 
-export const News: React.FC<NewsProps> = ({
-  index = 0,
-  type,
-  title,
-  date,
-  subTitle,
-  img,
-  link = '',
-}) => {
-  const lang = useLocale().id
+export const News: React.FC<NewsProps> = ({ index = 0, type, title, date, subTitle, img, link = '' }) => {
+  const lang = useLocale().id;
   const children = (
     <div className={styles.container}>
       <div className={styles.content}>
         <p className={styles.description}>
-          {img && <img src={img} alt='message_title' />}
-          {type ? `${ic(type)} ‧ ` : ''}{ic(title)}
+          {img && <img src={img} alt="message_title" />}
+          {type ? `${ic(type)} ‧ ` : ''}
+          {ic(title)}
         </p>
         {date && <p className={styles.date}>{date}</p>}
         {subTitle && <p className={styles.subTitle}>{ic(subTitle)}</p>}
@@ -43,12 +36,7 @@ export const News: React.FC<NewsProps> = ({
   );
   if (link.startsWith('http')) {
     return (
-      <a
-        href={link}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={styles.news}
-      >
+      <a href={link} target="_blank" rel="noopener noreferrer" className={styles.news}>
         {children}
       </a>
     );

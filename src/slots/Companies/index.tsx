@@ -1,13 +1,13 @@
-import React from 'react';
-import { Row, Col } from 'antd';
+import { Col, Row } from 'antd';
 import cx from 'classnames';
+import React from 'react';
 
 import styles from './index.module.less';
 
 type Company = {
   name: string;
   img: string;
-}
+};
 
 interface CompaniesProps {
   title: any;
@@ -16,12 +16,7 @@ interface CompaniesProps {
   style?: React.CSSProperties;
 }
 
-export const Companies: React.FC<CompaniesProps> = ({
-  title,
-  companies = [],
-  className,
-  style,
-}) => {
+export const Companies: React.FC<CompaniesProps> = ({ title, companies = [], className, style }) => {
   return (
     <div className={cx(styles.wrapper, className)} style={style}>
       <div key="content" className={styles.content}>
@@ -35,13 +30,11 @@ export const Companies: React.FC<CompaniesProps> = ({
             wrap={true}
             className={styles.companies}
           >
-            {
-              companies.map(company => (
-                <Col key={company.name} className={styles.company} md={6} sm={8} xs={12}>
-                  <img className={styles.companyimg} src={company.img} alt={company.name} />
-                </Col>
-              ))
-            }
+            {companies.map((company) => (
+              <Col key={company.name} className={styles.company} md={6} sm={8} xs={12}>
+                <img className={styles.companyimg} src={company.img} alt={company.name} />
+              </Col>
+            ))}
           </Row>
         </div>
       </div>

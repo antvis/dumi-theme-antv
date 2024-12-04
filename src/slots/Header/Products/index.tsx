@@ -1,10 +1,10 @@
-import React from 'react';
 import cx from 'classnames';
-import { useLocale, FormattedMessage } from 'dumi';
-import Product from './Product';
-import { CATEGORIES, getNewProducts, ProductCategory } from './getProducts';
+import { FormattedMessage, useLocale } from 'dumi';
+import React from 'react';
 import { useChinaMirrorHost } from '../../hooks';
+import Product from './Product';
 import styles from './Product.module.less';
+import { CATEGORIES, getNewProducts, ProductCategory } from './getProducts';
 
 interface ProductsProps {
   show: boolean;
@@ -31,7 +31,7 @@ export const Products: React.FC<ProductsProps> = ({ show, language, className, b
           type,
           products: data.filter((item) => item.category === type),
         };
-      })
+      });
 
       setProducts(newProducts);
     });
@@ -47,26 +47,27 @@ export const Products: React.FC<ProductsProps> = ({ show, language, className, b
       >
         <div className={styles.container}>
           {productsCategoty.map(({ name, type, products }, idx) => {
-            return (
-              products.length ? <React.Fragment key={idx}>
-                <h3><FormattedMessage id={name} /></h3>
+            return products.length ? (
+              <React.Fragment key={idx}>
+                <h3>
+                  <FormattedMessage id={name} />
+                </h3>
                 <ul>
-                  {products
-                    .map((product) => (
-                      <Product
-                        key={product.title}
-                        name={product.title}
-                        slogan={product.slogan || ''}
-                        description={product.description}
-                        url={product.links?.home?.url}
-                        icon={product.icon as string}
-                        links={product.links}
-                        language={language || locale.id}
-                      />
-                    ))}
+                  {products.map((product) => (
+                    <Product
+                      key={product.title}
+                      name={product.title}
+                      slogan={product.slogan || ''}
+                      description={product.description}
+                      url={product.links?.home?.url}
+                      icon={product.icon as string}
+                      links={product.links}
+                      language={language || locale.id}
+                    />
+                  ))}
                 </ul>
-              </React.Fragment> : null
-            );
+              </React.Fragment>
+            ) : null;
           })}
         </div>
       </div>
@@ -74,4 +75,3 @@ export const Products: React.FC<ProductsProps> = ({ show, language, className, b
     </>
   );
 };
-
