@@ -1,4 +1,4 @@
-import type { SidebarData } from "../types";
+import type { SidebarData } from '../types';
 
 export const getAncestorMenuItems = (items: SidebarData, key: string) => {
   if (!items) return [];

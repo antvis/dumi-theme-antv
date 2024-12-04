@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { Affix, Layout as AntLayout } from 'antd';
 import Drawer from 'rc-drawer';
-import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
+import React, { useState } from 'react';
 import { useMedia } from 'react-use';
+import styles from '../../index.module.less';
 import { LeftMenuProps } from '../../types';
 import { LeftMenu } from './components/LeftMenu';
-import styles from '../../index.module.less';
 
 /**
  * Examples 左侧 LeftMenu
@@ -20,14 +20,10 @@ export const ExampleTopicMenu: React.FC<LeftMenuProps> = (props) => {
   const [drawOpen, setDrawOpen] = useState(false);
 
   return (
-    <Affix
-      offsetTop={0}
-      className={styles.affix}
-      style={{ height: isWide ? '100vh' : 'inherit' }}
-    >
+    <Affix offsetTop={0} className={styles.affix} style={{ height: isWide ? '100vh' : 'inherit' }}>
       {isWide ? (
         <div>
-          <AntLayout.Sider width='auto' theme='light' className={styles.sider}>
+          <AntLayout.Sider width="auto" theme="light" className={styles.sider}>
             <LeftMenu exampleTopics={exampleTopics} />
           </AntLayout.Sider>
         </div>

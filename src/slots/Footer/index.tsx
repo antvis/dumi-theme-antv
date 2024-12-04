@@ -1,15 +1,9 @@
-import React from 'react';
-import { default as RCFooter, FooterProps as RcFooterProps } from 'rc-footer';
-import {
-  GithubOutlined,
-  WeiboOutlined,
-  ZhihuOutlined,
-  QuestionCircleOutlined,
-} from '@ant-design/icons';
-import cx from 'classnames';
+import { GithubOutlined, QuestionCircleOutlined, WeiboOutlined, ZhihuOutlined } from '@ant-design/icons';
+import { default as classnames, default as cx } from 'classnames';
+import { FormattedMessage, useLocale, useSiteData } from 'dumi';
 import { omit } from 'lodash-es';
-import classnames from 'classnames';
-import { useLocale, FormattedMessage, useSiteData } from 'dumi';
+import { default as RCFooter, FooterProps as RcFooterProps } from 'rc-footer';
+import React from 'react';
 
 import 'rc-footer/assets/index.less';
 import styles from './index.module.less';
@@ -29,15 +23,7 @@ interface FooterProps extends RcFooterProps {
  * @returns
  */
 export const Footer: React.FC<FooterProps> = (props) => {
-  const {
-    columns,
-    bottom,
-    language,
-    isDynamicFooter,
-    rootDomain = '',
-    className,
-    ...restProps
-  } = props;
+  const { columns, bottom, language, isDynamicFooter, rootDomain = '', className, ...restProps } = props;
   const { themeConfig } = useSiteData();
   const locale = useLocale();
   const lang = locale.id;
@@ -90,12 +76,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
           openExternal: true,
         },
         {
-          icon: (
-            <img
-              src='https://gw.alipayobjects.com/zos/rmsportal/mZBWtboYbnMkTBaRIuWQ.png'
-              alt='seeconf'
-            />
-          ),
+          icon: <img src="https://gw.alipayobjects.com/zos/rmsportal/mZBWtboYbnMkTBaRIuWQ.png" alt="seeconf" />,
           title: 'SEE Conf',
           description: <FormattedMessage id="蚂蚁体验科技大会" />,
           url: 'https://seeconf.antfin.com/',
@@ -123,33 +104,18 @@ export const Footer: React.FC<FooterProps> = (props) => {
     };
 
     const more = {
-      icon: (
-        <img
-          src='https://gw.alipayobjects.com/zos/rmsportal/nBVXkrFdWHxbZlmMbsaH.svg'
-          alt='more products'
-        />
-      ),
+      icon: <img src="https://gw.alipayobjects.com/zos/rmsportal/nBVXkrFdWHxbZlmMbsaH.svg" alt="more products" />,
       title: <FormattedMessage id="更多产品" />,
       items: [
         {
-          icon: (
-            <img
-              src='https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg'
-              alt='Ant Design'
-            />
-          ),
+          icon: <img src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg" alt="Ant Design" />,
           title: 'Ant Design',
           url: 'https://ant.design',
           description: <FormattedMessage id="企业级 UI 设计语言" />,
           openExternal: true,
         },
         {
-          icon: (
-            <img
-              src='https://gw.alipayobjects.com/zos/rmsportal/XuVpGqBFxXplzvLjJBZB.svg'
-              alt='yuque'
-            />
-          ),
+          icon: <img src="https://gw.alipayobjects.com/zos/rmsportal/XuVpGqBFxXplzvLjJBZB.svg" alt="yuque" />,
           title: <FormattedMessage id="语雀" />,
           url: 'https://yuque.com',
           description: <FormattedMessage id="知识创作与分享工具" />,
@@ -158,8 +124,8 @@ export const Footer: React.FC<FooterProps> = (props) => {
         {
           icon: (
             <img
-              src='https://gw.alipayobjects.com/zos/antfincdn/v2%24rh7lqpu/82f338dd-b0a6-41bc-9a86-58aaa9df217b.png'
-              alt='Egg'
+              src="https://gw.alipayobjects.com/zos/antfincdn/v2%24rh7lqpu/82f338dd-b0a6-41bc-9a86-58aaa9df217b.png"
+              alt="Egg"
             />
           ),
           title: 'Egg',
@@ -168,12 +134,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
           openExternal: true,
         },
         {
-          icon: (
-            <img
-              src='https://gw.alipayobjects.com/zos/rmsportal/DMDOlAUhmktLyEODCMBR.ico'
-              alt='kitchen'
-            />
-          ),
+          icon: <img src="https://gw.alipayobjects.com/zos/rmsportal/DMDOlAUhmktLyEODCMBR.ico" alt="kitchen" />,
           title: 'Kitchen',
           description: <FormattedMessage id="Sketch 工具集" />,
           url: 'https://kitchen.alipay.com',
@@ -182,24 +143,19 @@ export const Footer: React.FC<FooterProps> = (props) => {
         {
           icon: (
             <img
-              src='https://mdn.alipayobjects.com/huamei_j9rjmc/afts/img/A*3ittT5OEo2gAAAAAAAAAAAAADvGmAQ/original'
+              src="https://mdn.alipayobjects.com/huamei_j9rjmc/afts/img/A*3ittT5OEo2gAAAAAAAAAAAAADvGmAQ/original"
               width={16}
               height={16}
               alt="Galacean"
             />
           ),
-          title: "Galacean",
-          description: "互动图形解决方案",
+          title: 'Galacean',
+          description: '互动图形解决方案',
           url: 'https://galacean.antgroup.com/',
           openExternal: true,
         },
         {
-          icon: (
-            <img
-              src='https://gw.alipayobjects.com/zos/rmsportal/nBVXkrFdWHxbZlmMbsaH.svg'
-              alt='xtech'
-            />
-          ),
+          icon: <img src="https://gw.alipayobjects.com/zos/rmsportal/nBVXkrFdWHxbZlmMbsaH.svg" alt="xtech" />,
           title: <FormattedMessage id="蚂蚁体验科技" />,
           url: 'https://xtech.antfin.com/',
           openExternal: true,
@@ -227,40 +183,27 @@ export const Footer: React.FC<FooterProps> = (props) => {
                 [styles.light]: theme === 'light',
               })}
             >
-              {
-                theme === 'light' ?
-                  `© Copyright ${new Date().getFullYear()} Ant Group Co., Ltd..备案号：京ICP备15032932号-38` :
-                  <>
-                    <div>
-                      <a
-                        href='https://weibo.com/antv2017'
-                        target='_blank'
-                        rel='noopener noreferrer'
-                      >
-                        <WeiboOutlined />
-                      </a>
-                      <a
-                        href='https://zhuanlan.zhihu.com/aiux-antv'
-                        target='_blank'
-                        rel='noopener noreferrer'
-                      >
-                        <ZhihuOutlined />
-                      </a>
-                      <a
-                        href='https://github.com/antvis'
-                        target='_blank'
-                        rel='noopener noreferrer'
-                      >
-                        <GithubOutlined />
-                      </a>
-                      <a href={`${rootDomain}/${lang}/about`}>{<FormattedMessage id="关于我们" />}</a>
-                    </div>
-                    <div>
-                      © {new Date().getFullYear()} Made with ❤ by{' '}
-                      <a href='https://xtech.antfin.com/'>AntV</a>
-                    </div>
-                  </>
-              }
+              {theme === 'light' ? (
+                `© Copyright ${new Date().getFullYear()} Ant Group Co., Ltd..备案号：京ICP备15032932号-38`
+              ) : (
+                <>
+                  <div>
+                    <a href="https://weibo.com/antv2017" target="_blank" rel="noopener noreferrer">
+                      <WeiboOutlined />
+                    </a>
+                    <a href="https://zhuanlan.zhihu.com/aiux-antv" target="_blank" rel="noopener noreferrer">
+                      <ZhihuOutlined />
+                    </a>
+                    <a href="https://github.com/antvis" target="_blank" rel="noopener noreferrer">
+                      <GithubOutlined />
+                    </a>
+                    <a href={`${rootDomain}/${lang}/about`}>{<FormattedMessage id="关于我们" />}</a>
+                  </div>
+                  <div>
+                    © {new Date().getFullYear()} Made with ❤ by <a href="https://xtech.antfin.com/">AntV</a>
+                  </div>
+                </>
+              )}
             </div>
           </>
         )

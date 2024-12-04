@@ -1,6 +1,6 @@
-import React from 'react';
 import classNames from 'classnames';
-import { Link, FormattedMessage } from 'dumi';
+import { FormattedMessage, Link } from 'dumi';
+import React from 'react';
 import styles from './NavigatorBanner.module.less';
 
 export interface NavigatorBannerProps {

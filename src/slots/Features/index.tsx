@@ -1,9 +1,9 @@
-import React from 'react';
-import { Row, Col } from 'antd';
+import { Col, Row } from 'antd';
 import cx from 'classnames';
+import React from 'react';
+import { ic } from '../hooks';
 import FeatureCard from './FeatureCard';
 import styles from './index.module.less';
-import { ic } from '../hooks';
 
 interface Card {
   icon: string;
@@ -19,15 +19,9 @@ interface FeaturesProps {
   id?: string;
 }
 
-export const Features: React.FC<FeaturesProps> = ({
-  title,
-  features = [],
-  className,
-  style,
-  id,
-}) => {
+export const Features: React.FC<FeaturesProps> = ({ title, features = [], className, style, id }) => {
   const getCards = () => {
-    const children = features.map(card => (
+    const children = features.map((card) => (
       <Col className={styles.cardWrapper} key={ic(card.title)} md={8} xs={24}>
         <FeatureCard {...card} />
       </Col>
@@ -36,11 +30,7 @@ export const Features: React.FC<FeaturesProps> = ({
   };
 
   return (
-    <div
-      id={id}
-      className={cx(styles.wrapper, className)}
-      style={style}
-    >
+    <div id={id} className={cx(styles.wrapper, className)} style={style}>
       <div className={styles.content}>
         <div key="content">
           <p key="title" className={styles.title}>

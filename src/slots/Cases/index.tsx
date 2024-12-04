@@ -1,15 +1,14 @@
-import React from 'react';
 import { ArrowLeftOutlined, ArrowRightOutlined } from '@ant-design/icons';
-import { Link, FormattedMessage } from 'dumi';
-import Slider from 'react-slick';
 import cx from 'classnames';
-import { useLocale } from 'dumi'
+import { FormattedMessage, Link, useLocale } from 'dumi';
+import React from 'react';
+import Slider from 'react-slick';
 
-import { ic, icWithLocale } from '../hooks';
 import { IC } from '../../types';
+import { ic, icWithLocale } from '../hooks';
 
-import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import 'slick-carousel/slick/slick.css';
 import styles from './index.module.less';
 
 interface Case {
@@ -28,7 +27,7 @@ interface CasesProps {
 }
 
 export const Cases: React.FC<CasesProps> = ({ cases = [], style = {}, className }) => {
-  const lang = useLocale().id
+  const lang = useLocale().id;
   const slider = React.useRef<any>(null);
 
   const clickPrevious = () => {
@@ -44,37 +43,19 @@ export const Cases: React.FC<CasesProps> = ({ cases = [], style = {}, className 
       buttons = (
         <div className={styles.buttons}>
           <div className={styles.controlButton} onClick={clickPrevious}>
-            <ArrowLeftOutlined
-              className={styles.controlButtonIcon}
-              style={{ fontSize: '16px' }}
-            />
+            <ArrowLeftOutlined className={styles.controlButtonIcon} style={{ fontSize: '16px' }} />
           </div>
-          <div
-            className={styles.controlButton}
-            onClick={clickNext}
-            style={{ marginLeft: '-1px' }}
-          >
-            <ArrowRightOutlined
-              className={styles.controlButtonIcon}
-              style={{ fontSize: '16px' }}
-            />
+          <div className={styles.controlButton} onClick={clickNext} style={{ marginLeft: '-1px' }}>
+            <ArrowRightOutlined className={styles.controlButtonIcon} style={{ fontSize: '16px' }} />
           </div>
         </div>
       );
     }
     const children = cases.map((app) => {
       const linkDiv = (
-        <div
-          className={styles.detailWrapper}
-          style={{ display: app.link ? 'block' : 'none' }}
-        >
+        <div className={styles.detailWrapper} style={{ display: app.link ? 'block' : 'none' }}>
           {app.link && app.link.startsWith('http') ? (
-            <a
-              className={styles.detail}
-              href={app.link}
-              target='_blank'
-              rel='noopener noreferrer'
-            >
+            <a className={styles.detail} href={app.link} target="_blank" rel="noopener noreferrer">
               {<FormattedMessage id="查看详情" />}
             </a>
           ) : (
@@ -93,12 +74,10 @@ export const Cases: React.FC<CasesProps> = ({ cases = [], style = {}, className 
               <img
                 className={cx(styles.appLogo, 'index-case-logo')}
                 src={app.logo}
-                alt='logo'
+                alt="logo"
                 style={{
                   borderRadius: app.isAppLogo ? '15px' : '0px',
-                  boxShadow: app.isAppLogo
-                    ? '0px 12px 24px #CED4D9'
-                    : '0px 0px 0px',
+                  boxShadow: app.isAppLogo ? '0px 12px 24px #CED4D9' : '0px 0px 0px',
                 }}
               />
               <p className={styles.appTitle}>{ic(app.title)}</p>
@@ -127,11 +106,7 @@ export const Cases: React.FC<CasesProps> = ({ cases = [], style = {}, className 
   };
   return (
     <div className={cx(styles.wrapper, className)} style={style}>
-      <Slider
-        {...sliderSettings}
-        className={styles.slider}
-        ref={slider}
-      >
+      <Slider {...sliderSettings} className={styles.slider} ref={slider}>
         {getCases()}
       </Slider>
     </div>

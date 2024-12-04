@@ -1,8 +1,8 @@
 import React from 'react';
+import SEO from '../common/SEO';
 import { NotFound as NotFoundPage } from '../slots/404';
 import { Footer } from '../slots/Footer';
 import { Header } from '../slots/Header';
-import SEO from '../common/SEO';
 /**
  * 404 页面
  */

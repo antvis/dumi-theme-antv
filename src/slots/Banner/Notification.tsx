@@ -1,5 +1,5 @@
+import { Link } from 'dumi';
 import React from 'react';
-import { Link } from 'dumi'
 import styles from './Notification.module.less';
 
 export interface NotificationProps {
@@ -15,20 +15,10 @@ const numberImages = [
   'https://gw.alipayobjects.com/zos/antfincdn/3fG1Iqjfnz/2.png',
 ];
 
-const Notification: React.FC<NotificationProps> = ({
-  index = 0,
-  type,
-  title,
-  date,
-  link = '',
-}) => {
+const Notification: React.FC<NotificationProps> = ({ index = 0, type, title, date, link = '' }) => {
   const children = (
     <div className={styles.container}>
-      <img
-        className={styles.number}
-        src={numberImages[index]}
-        alt={index.toString()}
-      />
+      <img className={styles.number} src={numberImages[index]} alt={index.toString()} />
       <div className={styles.content}>
         <p className={styles.description}>
           {type} ‧ {title}
@@ -39,12 +29,7 @@ const Notification: React.FC<NotificationProps> = ({
   );
   if (link.startsWith('http')) {
     return (
-      <a
-        href={link}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={styles.notification}
-      >
+      <a href={link} target="_blank" rel="noopener noreferrer" className={styles.notification}>
         {children}
       </a>
     );

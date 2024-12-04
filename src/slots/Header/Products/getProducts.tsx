@@ -1,16 +1,5 @@
-import React from 'react';
-import {
-  AreaChartOutlined,
-  DingdingOutlined,
-  GithubOutlined,
-  HistoryOutlined,
-  HomeOutlined,
-  PieChartOutlined,
-  ReadOutlined,
-  YuqueOutlined,
-} from '@ant-design/icons';
 import { each } from 'lodash-es';
-import { getChinaMirrorHost } from '../../utils';
+import React from 'react';
 
 const tuple = <T extends string[]>(...args: T) => args;
 const Categories = tuple('basic', 'extension', 'ecology');
@@ -26,7 +15,7 @@ export interface ProductItem {
   icon?: React.ReactNode;
   slogan?: string;
   description: string;
-  category: typeof Categories[number];
+  category: (typeof Categories)[number];
   links?: Array<{
     icon?: React.ReactNode;
     title: React.ReactNode;
@@ -76,22 +65,16 @@ export function getNewProducts({
       return products
         .filter((d) => d.lang === language)
         .map((d) => {
-          const links =
-            typeof d.links === 'string' ? JSON.parse(d.links) : { ...d.links };
+          const links = typeof d.links === 'string' ? JSON.parse(d.links) : { ...d.links };
           const newLinks: any = {};
 
           each(links, (value, k: string) => {
             let actualUrl = value?.url || '';
             if (isChinaMirrorHost) {
               // g2plot.antv.vision => antv-g2plot.gitee.io
-              const match = actualUrl.match(
-                /([http|https]):\/\/(.*)\.antv\.vision/,
-              );
+              const match = actualUrl.match(/([http|https]):\/\/(.*)\.antv\.vision/);
               if (match && match[2]) {
-                actualUrl = actualUrl.replace(
-                  `${match[2]}.antv.vision`,
-                  `antv-${match[2]}.gitee.io`,
-                );
+                actualUrl = actualUrl.replace(`${match[2]}.antv.vision`, `antv-${match[2]}.gitee.io`);
               }
             }
             newLinks[k] = { ...value, url: actualUrl };
@@ -100,4 +83,3 @@ export function getNewProducts({
         });
     });
 }
-

@@ -23,6 +23,7 @@
   "scripts": {
     "build": "npm run prepare && father build",
     "dev": "father dev",
+    "fix": "prettier ./src --write",
     "lint": "npm run lint:es && npm run lint:css",
     "lint:css": "stylelint \"{src,test}/**/*.{css,less}\"",
     "lint:es": "eslint \"{src,test}/**/*.{js,jsx,ts,tsx}\"",

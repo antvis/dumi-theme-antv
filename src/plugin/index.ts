@@ -23,9 +23,7 @@ export default (api: IApi) => {
     memo.jsMinifier = 'terser';
 
     // 网站 favicon
-    memo.favicons = [
-      'https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*7svFR6wkPMoAAAAAAAAAAAAADmJ7AQ/original',
-    ];
+    memo.favicons = ['https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*7svFR6wkPMoAAAAAAAAAAAAADmJ7AQ/original'];
 
     // observable demo
     memo.extraRehypePlugins = [rehypeObservable];
@@ -78,9 +76,7 @@ export default (api: IApi) => {
       content: `
 import React from 'react';
 import { useOutlet, useSiteData } from 'dumi';
-import { ThemeAntVContext } from '${winPath(
-        path.join(__dirname, '../context'),
-      )}';
+import { ThemeAntVContext } from '${winPath(path.join(__dirname, '../context'))}';
 
 export default function ThemeAntVContextWrapper() {
   const outlet = useOutlet();
@@ -131,7 +127,5 @@ export default function ThemeAntVContextWrapper() {
   });
 
   // watch the `examples` folder
-  api.addTmpGenerateWatcherPaths(() => [
-    path.resolve(process.cwd(), 'examples'),
-  ]);
+  api.addTmpGenerateWatcherPaths(() => [path.resolve(process.cwd(), 'examples')]);
 };
