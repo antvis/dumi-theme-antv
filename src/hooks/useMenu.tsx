@@ -93,7 +93,8 @@ export const useMenu = () => {
   let selectedKey = pathname;
   // 如果当前路径不在菜单中，选中第一个菜单项
   if (!flattedMenuData.find((item) => item.link === selectedKey)) {
-    navigate(flattedMenuData[0].link);
+    const firstValidMenuItem = flattedMenuData.find((item) => item.link);
+    navigate(firstValidMenuItem.link);
   }
 
   return [menuData, selectedKey, flattedMenuData] as const;
