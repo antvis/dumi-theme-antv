@@ -13,7 +13,7 @@ export type ISearchResult = {
    * 搜索结果的主题，显示在最左边，一般是页面的标题。
    */
   subject: string;
-  tilte: ITextSegment[];
+  title: ITextSegment[];
   description?: ITextSegment[];
   link: string;
 }
@@ -42,7 +42,7 @@ export const SearchResult: React.FC<{ results: ISearchResult[] }> = ({ results }
               <div className={styles.subject} >{r.subject}</div>
               <div className={styles.br} />
               <a className={styles.result} href={r.link}>
-                <div className={styles.title}>{getHighlightInfo(r.tilte)}</div>
+                <div className={styles.title}>{getHighlightInfo(r.title)}</div>
                 <div className={styles.description}>{getHighlightInfo(r.description)}</div>
               </a>
             </div>

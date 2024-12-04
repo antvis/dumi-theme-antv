@@ -16,7 +16,8 @@
     "allowSyntheticDefaultImports": true,
     "downlevelIteration": true,
     "paths": {
-      "@@/*": ["example/.dumi/tmp/*"]
+      "@@/*": ["example/.dumi/tmp/*"],
+      "*.less": ["types/less.d.ts"]
     }
   }
 }

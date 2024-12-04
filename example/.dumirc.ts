@@ -7,9 +7,7 @@ export default defineConfig({
     { id: 'en', name: 'English' },
   ],
   title: 'dumi-theme-antv 主题包', // 网站header标题
-  favicons: [
-    'https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*7svFR6wkPMoAAAAAAAAAAAAADmJ7AQ/original',
-  ], // 网站 favicon
+  favicons: ['https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*7svFR6wkPMoAAAAAAAAAAAAADmJ7AQ/original'], // 网站 favicon
   metas: [
     // 自定义 meta 标签
     { name: 'keywords', content: 'dumi-theme-antv' },
@@ -53,6 +51,7 @@ export default defineConfig({
       apiKey: '90c9a5dbf6e5ea7058cc32bcde8e94b2',
       indexName: 's2-antv-vision',
       appId: 'D73DOU8RXD',
+      sort: ['!/api'],
     },
     /**
      *  tips: 文档列表类型的路由导航(nav) 请以 docs/* 格式命名
@@ -220,8 +219,7 @@ export default defineConfig({
         zh: '基于 dumi2 封装，提供灵活多变的 slots 插槽，抽取大量配置，一秒搭建 AntV 的各个技术栈官网。',
         en: 'Based on the dumi2 package, it provides flexible and changeable slots, extracts a large number of configurations, and builds the official website of each technology stack of AntV in one second.',
       },
-      image:
-        'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*wo_LToatmbwAAAAAAAAAAABkARQnAQ',
+      image: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*wo_LToatmbwAAAAAAAAAAABkARQnAQ',
       buttons: [
         {
           text: {
@@ -322,8 +320,7 @@ export default defineConfig({
           en: 'Real data visualization cases, we summarize them into story-based design templates, allowing users to achieve out-of-the-box effects.',
         },
         // link: `/examples/gallery`,
-        image:
-          'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*hDrgRb7ma4EAAAAAAAAAAABkARQnAQ',
+        image: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*hDrgRb7ma4EAAAAAAAAAAABkARQnAQ',
       },
     ],
     /** 首页合作公司 */
@@ -384,6 +381,6 @@ export default defineConfig({
   plugins: [],
   links: [],
   scripts: [],
-  mfsu: false,
-  mako: {}
+  mfsu: true,
+  mako: {},
 });
