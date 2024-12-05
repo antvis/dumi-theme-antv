@@ -126,7 +126,8 @@
     "lint-staged": "^13.3.0",
     "prettier-plugin-organize-imports": "^3.2.4",
     "prettier-plugin-packagejson": "^2.5.3",
-    "stylelint": "^14.16.1"
+    "stylelint": "^14.16.1",
+    "sylvanas": "^0.6.1"
   },
   "peerDependencies": {
     "dumi": "^2.0.0",
