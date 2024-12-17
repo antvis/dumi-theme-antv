@@ -90,12 +90,5 @@ export const useMenu = () => {
   // 将菜单数据扁平化
   const flattedMenuData = useMemo(() => flattenMenu(menuData), [menuData]);
 
-  let selectedKey = pathname;
-  // 如果当前路径不在菜单中，选中第一个菜单项
-  if (!flattedMenuData.find((item) => item.link === selectedKey)) {
-    const firstValidMenuItem = flattedMenuData.find((item) => item.link);
-    navigate(firstValidMenuItem.link);
-  }
-
-  return [menuData, selectedKey, flattedMenuData] as const;
+  return [menuData, pathname, flattedMenuData] as const;
 };
