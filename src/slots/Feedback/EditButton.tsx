@@ -27,7 +27,7 @@ export const EditButton: React.FC<EditButtonProps> = ({ style }) => {
       icon={<GithubOutlined style={{ fontSize: 18, transform: 'translateY(1px)' }} />}
       onClick={() => window.open(url, '_blank')}
     >
-      <span style={{ textDecoration: 'underline' }}>{formatMessage({ id: '帮助改进此页面' })}</span>
+      <span style={{ textDecoration: 'underline' }}>{formatMessage({ id: '帮助改进此文档' })}</span>
     </Button>
   );
 };
