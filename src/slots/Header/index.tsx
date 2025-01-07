@@ -1,4 +1,3 @@
-// import { navigate } from 'gatsby';
 import {
   CaretDownFilled,
   CheckOutlined,
@@ -23,6 +22,8 @@ import { findVersion, getLangUrl } from './utils';
 
 import type { IC } from '../../types';
 
+import { Assistant } from '@petercatai/assistant';
+import '@petercatai/assistant/style';
 import styles from './index.module.less';
 
 export type HeaderProps = {
@@ -94,6 +95,11 @@ export type HeaderProps = {
       appId: string;
       sort?: string[];
     };
+  };
+  /** petercat 配置 */
+  petercat?: {
+    token: string;
+    show: boolean;
   };
   announcement?: {
     title: IC;
@@ -611,6 +617,7 @@ export const Header: React.FC<Partial<HeaderProps>> = (props) => {
     navs,
     docsearchOptions,
     announcement,
+    petercat,
   } = themeConfig;
   const searchOptions = {
     docsearchOptions,
@@ -642,7 +649,13 @@ export const Header: React.FC<Partial<HeaderProps>> = (props) => {
     isHomePage,
     transparent: isHomePage && isAntVSite,
     announcement,
+    petercat,
   };
 
-  return <HeaderComponent {...Object.assign({}, headerProps, props)} />;
+  return (
+    <>
+      <HeaderComponent {...Object.assign({}, headerProps, props)} />
+      {petercat?.show && <Assistant token={petercat?.token} apiDomain="https://api.petercat.ai" />}
+    </>
+  );
 };

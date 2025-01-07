@@ -67,6 +67,7 @@
     "d3-dsv": "^3.0.1",
     "docsearch.js": "^2.6.3",
     "front-matter": "^4.0.2",
+    "@petercatai/assistant": "^2.0.17",
     "fs-extra": "^10.1.0",
     "glob": "^8.1.0",
     "hast": "^1.0.0",

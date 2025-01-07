@@ -32,6 +32,10 @@ export default defineConfig({
     showSpecTab: true, // 是否在 demo 页展示API文档
     themeSwitcher: 'g2',
     es5: false,
+    petercat: {
+      show: true,
+      token: '26c62f06-1155-4b2c-8f4b-aa443d4af2c6',
+    },
     version,
     versions: {
       // 历史版本以及切换下拉菜单
