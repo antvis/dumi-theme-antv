@@ -2,11 +2,31 @@
 
 @primary-color: #873bf4;
 
+.ant-btn,
+.ant-input {
+  border-radius: 8px !important;
+}
+
+// 段落反馈
+.comment-link {
+  float: right;
+  width: 16px;
+  height: 16px;
+  color: #6d7c92;
+  transition: background 0.3s, color 0.3s;
+
+  &:hover {
+    color: #873bf4;
+    background-color: #f8f1ff;
+    cursor: pointer;
+  }
+}
+
 .container1440() {
   width: 1440px;
   max-width: calc(100% - 80px);
-  margin-left: auto;
   margin-right: auto;
+  margin-left: auto;
 
   @media only screen and (max-width: 931.99px) {
     & {
@@ -30,23 +50,23 @@
   }
 
   .Resizer {
-    background: #000;
-    opacity: 0.1;
     z-index: 1;
     box-sizing: border-box;
+    background: #000;
     background-clip: padding-box;
+    opacity: 0.1;
 
     &:hover {
       transition: all 2s ease;
     }
 
     &.horizontal {
+      width: 100%;
       height: 11px;
       margin: -5px 0;
       border-top: 5px solid rgba(255, 255, 255, 0);
       border-bottom: 5px solid rgba(255, 255, 255, 0);
       cursor: row-resize;
-      width: 100%;
 
       &:hover {
         border-top: 5px solid rgba(0, 0, 0, 0.5);
@@ -57,8 +77,8 @@
     &.vertical {
       width: 11px;
       margin: 0 -5px;
-      border-left: 5px solid rgba(255, 255, 255, 0);
       border-right: 5px solid rgba(255, 255, 255, 0);
+      border-left: 5px solid rgba(255, 255, 255, 0);
       cursor: col-resize;
 
       Pane2 {
@@ -66,8 +86,8 @@
       }
 
       &:hover {
-        border-left: 5px solid rgba(0, 0, 0, 0.5);
         border-right: 5px solid rgba(0, 0, 0, 0.5);
+        border-left: 5px solid rgba(0, 0, 0, 0.5);
       }
     }
 

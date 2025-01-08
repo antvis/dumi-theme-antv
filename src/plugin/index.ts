@@ -4,6 +4,7 @@ import * as path from 'path';
 import { AntVReactTechStack } from './antVReactTechStack';
 import { getExamplePaths, getExamplesPageTopics } from './examples';
 import rehypeObservable from './rehypeObservable';
+import remarkFeedback from './remarkFeedback';
 
 const PAGES_DIR = winPath(path.join(__dirname, '../pages'));
 const MOCK_META = { frontmatter: { title: 'mock-meta' }, texts: [], toc: [] };
@@ -25,6 +26,9 @@ export default (api: IApi) => {
 
     // 网站 favicon
     memo.favicons = ['https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*7svFR6wkPMoAAAAAAAAAAAAADmJ7AQ/original'];
+
+    // 配置额外的 remark 插件，用于处理 Markdown 语法树的编译
+    memo.extraRemarkPlugins = [remarkFeedback];
 
     // observable demo
     memo.extraRehypePlugins = [rehypeObservable];

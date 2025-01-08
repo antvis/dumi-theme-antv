@@ -1,4 +1,6 @@
 {
+  "yes": "Yes",
+  "no": "No",
   "header.search.placeholder": "Type keywords...",
   "header.color.mode.light": "Light Mode",
   "header.color.mode.dark": "Dark Mode",
@@ -140,7 +142,10 @@
   "更多产品": "More Productions",
   "帮助改进此文档": "Edit this page",
   "文档贡献者": "Contributors",
-  "此页面有帮助吗？": "Was this page helpful?",
+  "此文档有帮助吗？": "Was this page helpful?",
+  "如果遇到问题或发现某些功能无法正常工作，请通过": "If something is broken or if you need a reply to a problem you've encountered, please ",
+  "提交问题报告": "open an issue instead",
+  "来反馈。否则，团队将无法提供进一步的答复或获取更多信息。": ". Otherwise, the team won't be able to answer back or ask for more information.",
   "上一篇": "Previous",
   "下一篇": "Next",
   "演示代码报错，请检查": "演示代码报错，请检查",
