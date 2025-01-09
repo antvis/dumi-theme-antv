@@ -1,6 +1,6 @@
 import { SmileOutlined } from '@ant-design/icons';
 import { Alert, Button, Divider, Form, Input, notification } from 'antd';
-import { useIntl, useLocale } from 'dumi';
+import { useIntl, useLocale, useLocation } from 'dumi';
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
@@ -36,6 +36,7 @@ export const FeedbackMessage: React.FC = () => {
   const locale = useLocale();
   const currentLocale = locale.id;
   const feedbackState = useSnapshot(feedbackStore);
+  const location = useLocation();
 
   const alertMsg = (
     <div>
@@ -90,7 +91,7 @@ export const FeedbackMessage: React.FC = () => {
         button.removeEventListener('click', focusCommentInput);
       });
     };
-  }, [form]);
+  }, [form, location]);
 
   const showAlert = feedbackState.rating !== '1';
 
