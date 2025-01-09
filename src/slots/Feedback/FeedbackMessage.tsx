@@ -80,7 +80,6 @@ export const FeedbackMessage: React.FC = () => {
       version: lastVersion,
       title: meta.frontmatter.title,
     };
-    console.log(params);
     submitFeedback(params)
       .then((f) => {
         resetFeedbackState(false);
