@@ -18,18 +18,16 @@ const StyledWrapper = styled.div`
 export const Feedback: React.FC = () => {
   const meta = useRouteMeta();
 
-  if (meta.frontmatter.readonly) {
-    return null;
-  }
+  const editable = !meta.frontmatter.readonly;
 
   return (
     <StyledWrapper>
       <div className="buttons">
-        <EditButton style={{ transform: 'translateX(-12px)' }} />
+        {editable ? <EditButton style={{ transform: 'translateX(-12px)' }} /> : <div />}
         <VoteButtons />
       </div>
       <FeedbackMessage />
-      <Contributors filename={meta.frontmatter.filename} />
+      {editable ? <Contributors filename={meta.frontmatter.filename} /> : null}
     </StyledWrapper>
   );
 };

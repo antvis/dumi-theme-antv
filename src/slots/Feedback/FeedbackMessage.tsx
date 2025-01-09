@@ -61,7 +61,7 @@ export const FeedbackMessage: React.FC = () => {
     notification.info({
       message: formatMessage({ id: success ? '反馈已提交' : '报错了，请稍后再试' }),
       description: formatMessage({
-        id: success ? '我们会尽快处理你的反馈，感谢你的支持！' : '如果问题持续，请前往 GitHub 提交 issue。',
+        id: success ? '感谢你的支持！' : '如果问题持续，请前往 GitHub 提交 issue。',
       }),
       icon: success ? <SmileOutlined style={{ color: '#873bf4' }} /> : <MehOutlined style={{ color: '#873bf4' }} />,
       placement: 'bottomLeft',
