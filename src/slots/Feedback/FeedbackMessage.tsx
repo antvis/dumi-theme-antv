@@ -2,7 +2,6 @@ import { MehOutlined, SmileOutlined } from '@ant-design/icons';
 import { Alert, Button, Divider, Form, Input, notification, Switch } from 'antd';
 import { useIntl, useLocale, useRouteMeta } from 'dumi';
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
 import useSWR from 'swr';
 import { useSnapshot } from 'valtio';
@@ -50,9 +49,9 @@ export const FeedbackMessage: React.FC = () => {
   const alertMsg = (
     <div>
       {formatMessage({ id: '如果遇到问题或发现某些功能无法正常工作，请通过' })}
-      <Link to={issueUrl} className="alert-link">
+      <a onClick={() => window.open(issueUrl, '_blank')} className="alert-link">
         {formatMessage({ id: '提交问题报告' })}
-      </Link>
+      </a>
       {formatMessage({ id: '来反馈。否则，团队将无法提供进一步的答复或获取更多信息。' })}
     </div>
   );
