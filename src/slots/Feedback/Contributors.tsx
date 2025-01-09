@@ -3,15 +3,16 @@ import path from 'path';
 import React from 'react';
 import styled from 'styled-components';
 import ContributorsList from '../../common/AvatarList';
+import { useGithubRepo } from '../../utils/github';
 import { ContributorAvatar } from './ContributorAvatar';
 
 const StyledContributorsWrapper = styled.div`
   margin-top: 80px;
 
   .title {
-    font-size: 13px;
-    color: #bfbfbf;
     margin-bottom: 12px;
+    color: #bfbfbf;
+    font-size: 13px;
   }
 
   .list {
@@ -37,11 +38,8 @@ interface ContributorsProps {
 
 export const Contributors: React.FC<ContributorsProps> = ({ filename }) => {
   const { formatMessage } = useIntl();
-  const { themeConfig } = useSiteData();
-  const { githubUrl, branch = 'main', siteRelativePath } = themeConfig;
-
-  const regex = /https:\/\/github\.com\/([^\/]+)\/([^\/]+)/;
-  const [, owner, repo] = githubUrl.match(regex);
+  const { branch = 'main', siteRelativePath } = useSiteData().themeConfig;
+  const { owner, repo } = useGithubRepo();
 
   if (!filename) {
     return null;

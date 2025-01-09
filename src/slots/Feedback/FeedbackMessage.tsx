@@ -1,11 +1,14 @@
-import { SmileOutlined } from '@ant-design/icons';
+import { MehOutlined, SmileOutlined } from '@ant-design/icons';
 import { Alert, Button, Divider, Form, Input, notification } from 'antd';
-import { useIntl, useLocale, useLocation } from 'dumi';
+import { useIntl, useLocale, useRouteMeta } from 'dumi';
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
+import useSWR from 'swr';
 import { useSnapshot } from 'valtio';
 import { feedbackStore, invokeSectionFeedback, resetFeedbackState } from '../../model/feedback';
+import { getLatestVersion, useGithubRepo } from '../../utils/github';
+import { submitFeedback, type FeedbackApiParams } from './service';
 
 const StyledFeedbackMessageWrapper = styled.div<{ $show: boolean }>`
   display: ${(props) => (props.$show ? 'block' : 'none')};
@@ -36,7 +39,8 @@ export const FeedbackMessage: React.FC = () => {
   const locale = useLocale();
   const currentLocale = locale.id;
   const feedbackState = useSnapshot(feedbackStore);
-  const location = useLocation();
+  const { owner, repo } = useGithubRepo();
+  const meta = useRouteMeta();
 
   const alertMsg = (
     <div>
@@ -48,22 +52,44 @@ export const FeedbackMessage: React.FC = () => {
     </div>
   );
 
-  const openNotification = () => {
+  const openNotification = (success: boolean) => {
     notification.info({
-      message: '反馈已提交',
-      icon: <SmileOutlined style={{ color: '#873bf4' }} />,
+      message: formatMessage({ id: success ? '反馈已提交' : '报错了，请稍后再试' }),
+      description: formatMessage({
+        id: success ? '我们会尽快处理你的反馈，感谢你的支持！' : '如果问题持续，请前往 GitHub 提交 issue。',
+      }),
+      icon: success ? <SmileOutlined style={{ color: '#873bf4' }} /> : <MehOutlined style={{ color: '#873bf4' }} />,
       placement: 'bottomLeft',
     });
   };
 
-  const onFinish = (values: any) => {
-    const params = {
-      ...values,
-      ...(feedbackState.rating ? { rating: feedbackState.rating } : {}),
-      ...(feedbackState.section ? { section: feedbackState.section } : {}),
+  const { data: lastVersion } = useSWR(`https://api.github.com/repos/${owner}/${repo}/releases/latest`, () =>
+    getLatestVersion(owner, repo),
+  );
+
+  const onFinish = async (values: any) => {
+    const params: FeedbackApiParams = {
+      comment: values.comment,
+      locale: currentLocale,
+      url: window.location.href,
+      rating: feedbackState.rating,
+      repo: `${owner}/${repo}`,
+      section: feedbackState.section,
+      ua: navigator.userAgent,
+      userId: 'anonymous',
+      version: lastVersion,
+      title: meta.frontmatter.title,
     };
-    console.log('Received values:', params);
-    openNotification();
+    console.log(params);
+    submitFeedback(params)
+      .then((f) => {
+        resetFeedbackState(false);
+        form.resetFields();
+        openNotification(true);
+      })
+      .catch(() => {
+        openNotification(false);
+      });
   };
 
   const onCancel = () => {
@@ -71,32 +97,46 @@ export const FeedbackMessage: React.FC = () => {
   };
 
   useEffect(() => {
-    const buttons = document.querySelectorAll('.comment-link');
-    if (!buttons || buttons.length === 0) return;
+    const observer = new MutationObserver(() => {
+      const buttons = document.querySelectorAll('.comment-link');
+      if (!buttons || buttons.length === 0) return;
 
-    const focusCommentInput = (e) => {
-      const button = e.target.closest('.comment-link');
-      invokeSectionFeedback(button.getAttribute('data-feedback-hash'));
-      setTimeout(() => {
-        form.scrollToField('comment', { behavior: 'smooth', block: 'center' });
-      }, 0);
-    };
+      const focusCommentInput = (e) => {
+        const button = e.target.closest('.comment-link');
+        invokeSectionFeedback(button.getAttribute('data-feedback-hash'));
+      };
 
-    buttons.forEach((button) => {
-      button.addEventListener('click', focusCommentInput);
+      buttons.forEach((button) => {
+        button.addEventListener('click', focusCommentInput);
+      });
+
+      return () => {
+        buttons.forEach((button) => {
+          button.removeEventListener('click', focusCommentInput);
+        });
+      };
     });
 
+    observer.observe(document.body, { childList: true, subtree: true });
+
     return () => {
-      buttons.forEach((button) => {
-        button.removeEventListener('click', focusCommentInput);
-      });
+      observer.disconnect();
     };
-  }, [form, location]);
+  }, []);
+
+  useEffect(() => {
+    if (!feedbackState.show) {
+      form.resetFields();
+    }
+  }, [feedbackState.show]);
+
+  useEffect(() => {
+    if (feedbackState.section) {
+      form.scrollToField('comment', { behavior: 'smooth', block: 'center' });
+    }
+  }, [feedbackState.section]);
 
   const showAlert = feedbackState.rating !== '1';
-
-  const leftQuote = currentLocale === 'zh' ? '「' : '"';
-  const rightQuote = currentLocale === 'zh' ? '」' : '"';
 
   const getCommentFieldLabel = () => {
     if (feedbackState.rating === '1') {
@@ -104,6 +144,9 @@ export const FeedbackMessage: React.FC = () => {
     } else if (feedbackState.rating === '0') {
       return formatMessage({ id: '你觉得我们可以如何改进此页面？（可选）' });
     } else {
+      const leftQuote = currentLocale === 'zh' ? '「' : '"';
+      const rightQuote = currentLocale === 'zh' ? '」' : '"';
+
       return (
         <div>
           {formatMessage({ id: '你认为该' })}{' '}
@@ -117,12 +160,6 @@ export const FeedbackMessage: React.FC = () => {
       );
     }
   };
-
-  useEffect(() => {
-    if (!feedbackState.show) {
-      form.resetFields();
-    }
-  }, [feedbackState.show]);
 
   return (
     <StyledFeedbackMessageWrapper $show={feedbackState.show}>
