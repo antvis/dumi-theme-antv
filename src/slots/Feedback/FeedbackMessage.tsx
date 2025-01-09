@@ -36,17 +36,21 @@ const StyledFeedbackMessageWrapper = styled.div<{ $show: boolean }>`
 export const FeedbackMessage: React.FC = () => {
   const { formatMessage } = useIntl();
   const [form] = Form.useForm();
-  const locale = useLocale();
-  const currentLocale = locale.id;
   const feedbackState = useSnapshot(feedbackStore);
   const { owner, repo } = useGithubRepo();
   const meta = useRouteMeta();
   const [enableRealName, setEnableRealName] = useState(false);
+  const pageUrl = window.location.href;
+
+  const locale = useLocale();
+  const currentLocale = locale.id;
+
+  const issueUrl = `https://github.com/${owner}/${repo}/issues/new?labels=status%3A+waiting+for+maintainer%2Cdocs-feedback&template=docs-feedback.yml&title=[docs]+&page-url=${pageUrl}`;
 
   const alertMsg = (
     <div>
       {formatMessage({ id: '如果遇到问题或发现某些功能无法正常工作，请通过' })}
-      <Link to={''} className="alert-link">
+      <Link to={issueUrl} className="alert-link">
         {formatMessage({ id: '提交问题报告' })}
       </Link>
       {formatMessage({ id: '来反馈。否则，团队将无法提供进一步的答复或获取更多信息。' })}
@@ -72,7 +76,7 @@ export const FeedbackMessage: React.FC = () => {
     const params: FeedbackApiParams = {
       comment: values.comment,
       locale: currentLocale,
-      url: window.location.href,
+      url: pageUrl,
       rating: feedbackState.rating,
       repo: `${owner}/${repo}`,
       section: feedbackState.section,
