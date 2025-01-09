@@ -1,7 +1,7 @@
 import { MehOutlined, SmileOutlined } from '@ant-design/icons';
-import { Alert, Button, Divider, Form, Input, notification } from 'antd';
+import { Alert, Button, Divider, Form, Input, notification, Switch } from 'antd';
 import { useIntl, useLocale, useRouteMeta } from 'dumi';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
 import useSWR from 'swr';
@@ -41,6 +41,7 @@ export const FeedbackMessage: React.FC = () => {
   const feedbackState = useSnapshot(feedbackStore);
   const { owner, repo } = useGithubRepo();
   const meta = useRouteMeta();
+  const [enableRealName, setEnableRealName] = useState(false);
 
   const alertMsg = (
     <div>
@@ -76,14 +77,14 @@ export const FeedbackMessage: React.FC = () => {
       repo: `${owner}/${repo}`,
       section: feedbackState.section,
       ua: navigator.userAgent,
-      userId: 'anonymous',
+      userId: enableRealName ? values.userId : 'anonymous',
       version: lastVersion,
       title: meta.frontmatter.title,
     };
+
     submitFeedback(params)
       .then((f) => {
-        resetFeedbackState(false);
-        form.resetFields();
+        form.setFieldValue('comment', '');
         openNotification(true);
       })
       .catch(() => {
@@ -125,7 +126,8 @@ export const FeedbackMessage: React.FC = () => {
 
   useEffect(() => {
     if (!feedbackState.show) {
-      form.resetFields();
+      form.setFieldValue('comment', '');
+      setEnableRealName(false);
     }
   }, [feedbackState.show]);
 
@@ -165,6 +167,18 @@ export const FeedbackMessage: React.FC = () => {
       <Divider dashed />
       <div className="form">
         <Form form={form} name="comment" onFinish={onFinish} layout="vertical">
+          <Switch
+            checkedChildren="实名"
+            unCheckedChildren="匿名"
+            checked={enableRealName}
+            onChange={setEnableRealName}
+            style={{ marginBottom: 16 }}
+          />
+          {enableRealName && (
+            <Form.Item name="userId" label={formatMessage({ id: 'Github ID' })}>
+              <Input style={{ width: '220px' }} />
+            </Form.Item>
+          )}
           <Form.Item name="comment" label={getCommentFieldLabel()}>
             <Input.TextArea rows={5} />
           </Form.Item>

@@ -8,8 +8,8 @@ export const feedbackStore = proxy<{
   show: false,
 });
 
-export const resetFeedbackState = (force = true) => {
-  feedbackStore.show = !force;
+export const resetFeedbackState = () => {
+  feedbackStore.show = false;
   feedbackStore.rating = undefined;
   feedbackStore.section = undefined;
 };
