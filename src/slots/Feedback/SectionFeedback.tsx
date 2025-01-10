@@ -59,7 +59,8 @@ export const SectionFeedback: React.FC = () => {
 
       if (!feedbackState.section || !closestCommentLink) return;
 
-      const elements = document.querySelectorAll(`.comment-link[data-feedback-hash=${feedbackState.section}]`);
+      const escapedSection = CSS.escape(feedbackState.section);
+      const elements = document.querySelectorAll(`.comment-link[data-feedback-hash=${escapedSection}]`);
 
       const closestElement = findClosetElement(e, elements);
       if (closestElement) {
