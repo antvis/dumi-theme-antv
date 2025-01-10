@@ -7,11 +7,7 @@ import { styled } from 'styled-components';
 
 const StyledWrapper = styled.div`
   .button {
-    color: rgba(0, 0, 0, 0.8);
-
-    &-text {
-      color: rgba(0, 0, 0, 0.65);
-    }
+    color: rgba(0, 0, 0, 0.65);
   }
 `;
 
@@ -37,7 +33,7 @@ export const EditButton: React.FC<EditButtonProps> = ({ style }) => {
         type="text"
         className="button"
         style={style}
-        icon={<EditOutlined style={{ fontSize: 18, transform: 'translateY(2px)' }} />}
+        icon={<EditOutlined style={{ fontSize: 16, transform: 'translateY(2px)' }} />}
         onClick={() => window.open(url, '_blank')}
       >
         <span className="button-text">{formatMessage({ id: '帮助改进此文档' })}</span>
