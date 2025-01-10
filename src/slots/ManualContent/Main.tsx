@@ -37,7 +37,7 @@ export const Main: React.FC<PropsWithChildren> = ({ children }) => {
           <Feedback />
           <PrevAndNext />
         </div>
-        <BackTop style={{ right: 32 }}>
+        <BackTop style={{ right: 32, bottom: 100 }}>
           <div className={styles.backTop}>
             <VerticalAlignTopOutlined />
           </div>

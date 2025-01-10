@@ -4,16 +4,17 @@ import { useIntl } from 'dumi';
 import React from 'react';
 import { styled } from 'styled-components';
 import { useSnapshot } from 'valtio';
-import { feedbackStore, invokePageFeedback } from '../../model/feedback';
+import { feedbackStore, invokePageFeedback, resetFeedbackState, resetPageFeedback } from '../../model/feedback';
 
 const StyledVoteButtonsWrapper = styled.div`
   color: rgba(0, 0, 0, 0.65);
   display: flex;
   align-items: center;
   gap: 4px;
+  font-weight: 500;
 
   .button {
-    color: rgba(0, 0, 0, 0.8);
+    color: rgba(0, 0, 0, 0.65);
   }
 
   .active-button {
@@ -22,7 +23,7 @@ const StyledVoteButtonsWrapper = styled.div`
   }
 `;
 
-export const VoteButtons: React.FC = () => {
+export const PageFeedbackVoteButtons: React.FC = () => {
   const { formatMessage } = useIntl();
   const feedbackState = useSnapshot(feedbackStore);
 
@@ -30,20 +31,32 @@ export const VoteButtons: React.FC = () => {
     {
       title: formatMessage({ id: 'yes' }),
       icon: <LikeFilled />,
-      onClick: () => invokePageFeedback(true),
+      onClick: () => {
+        if (feedbackState.rating === '1') {
+          resetPageFeedback();
+        } else {
+          invokePageFeedback(true);
+        }
+      },
       isActive: feedbackState.rating === '1',
     },
     {
       title: formatMessage({ id: 'no' }),
       icon: <DislikeFilled />,
-      onClick: () => invokePageFeedback(false),
+      onClick: () => {
+        if (feedbackState.rating === '0') {
+          resetPageFeedback();
+        } else {
+          invokePageFeedback(false);
+        }
+      },
       isActive: feedbackState.rating === '0',
     },
   ];
 
   return (
     <StyledVoteButtonsWrapper>
-      <span>{formatMessage({ id: '此文档有帮助吗？' })}</span>
+      <span>{formatMessage({ id: '这个页面对你有帮助吗？' })}</span>
       {items.map(({ title, icon, onClick, isActive }) => (
         <Tooltip key={title} title={title}>
           <Button className={`button ${isActive ? 'active-button' : ''}`} type="text" icon={icon} onClick={onClick} />

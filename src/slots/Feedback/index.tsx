@@ -3,16 +3,11 @@ import React from 'react';
 import { styled } from 'styled-components';
 import { Contributors } from './Contributors';
 import { EditButton } from './EditButton';
-import { FeedbackMessage } from './FeedbackMessage';
-import { VoteButtons } from './VoteButtons';
+import { PageFeedback } from './PageFeedback';
+import { SectionFeedback } from './SectionFeedback';
 
 const StyledWrapper = styled.div`
   margin-top: 40px;
-
-  .buttons {
-    display: flex;
-    justify-content: space-between;
-  }
 `;
 
 export const Feedback: React.FC = () => {
@@ -22,12 +17,10 @@ export const Feedback: React.FC = () => {
 
   return (
     <StyledWrapper>
-      <div className="buttons">
-        {editable ? <EditButton style={{ transform: 'translateX(-12px)' }} /> : <div />}
-        <VoteButtons />
-      </div>
-      <FeedbackMessage />
-      {editable ? <Contributors filename={meta.frontmatter.filename} /> : null}
+      {editable && <EditButton style={{ transform: 'translateX(-12px)' }} />}
+      {editable && <Contributors filename={meta.frontmatter.filename} />}
+      <SectionFeedback />
+      <PageFeedback />
     </StyledWrapper>
   );
 };
