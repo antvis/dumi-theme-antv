@@ -28,7 +28,7 @@ export default (api: IApi) => {
     memo.favicons = ['https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*7svFR6wkPMoAAAAAAAAAAAAADmJ7AQ/original'];
 
     // 配置额外的 remark 插件，用于处理 Markdown 语法树的编译
-    memo.extraRemarkPlugins = [remarkFeedback];
+    memo.extraRemarkPlugins = memo.themeConfig.feedback ? [remarkFeedback] : [];
 
     // observable demo
     memo.extraRehypePlugins = [rehypeObservable];
