@@ -1,4 +1,4 @@
-import { useRouteMeta } from 'dumi';
+import { useSiteData } from 'dumi';
 import React from 'react';
 import { styled } from 'styled-components';
 import { Contributors } from './Contributors';
@@ -11,14 +11,17 @@ const StyledWrapper = styled.div`
 `;
 
 export const Feedback: React.FC = () => {
-  const meta = useRouteMeta();
+  const { themeConfig } = useSiteData();
+  const { feedback } = themeConfig;
 
-  const editable = !meta.frontmatter.readonly;
+  if (!feedback) {
+    return null;
+  }
 
   return (
     <StyledWrapper>
-      {editable && <EditButton style={{ transform: 'translateX(-12px)' }} />}
-      {editable && <Contributors filename={meta.frontmatter.filename} />}
+      <EditButton />
+      <Contributors />
       <SectionFeedback />
       <PageFeedback />
     </StyledWrapper>

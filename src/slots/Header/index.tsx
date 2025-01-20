@@ -100,6 +100,8 @@ export type HeaderProps = {
       sort?: string[];
     };
   };
+  /** 是否开启用户反馈功能 */
+  feedback?: boolean;
   /** petercat 配置 */
   petercat?: {
     token: string;

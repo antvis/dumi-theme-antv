@@ -45,7 +45,7 @@ export const SectionFeedbackCommentForm: React.FC = () => {
 
     return (
       <div>
-        {formatMessage({ id: '📖 你认为' })}{' '}
+        {formatMessage({ id: '你认为' })}{' '}
         <b>
           {leftQuote}
           {feedbackState.section}

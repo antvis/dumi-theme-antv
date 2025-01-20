@@ -140,8 +140,7 @@
     "react-dom": ">=16.9.0"
   },
   "publishConfig": {
-    "access": "public",
-    "tag": "beta"
+    "access": "public"
   },
   "authors": [
     "dumi",
