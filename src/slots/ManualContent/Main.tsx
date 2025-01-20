@@ -1,19 +1,21 @@
 import { VerticalAlignTopOutlined } from '@ant-design/icons';
 import { BackTop, Layout } from 'antd';
-import { useRouteMeta } from 'dumi';
+import { useRouteMeta, useSiteData } from 'dumi';
 import React, { type PropsWithChildren } from 'react';
 import { useMedia } from 'react-use';
 import readingTime from 'reading-time';
 import { useMenu } from '../../hooks/useMenu';
 import { ContentTable } from '../ContentTable';
 import { Feedback } from '../Feedback';
+import styles from './index.module.less';
 import { PrevAndNext } from './PrevAndNext';
 import ReadingTime from './ReadingTime';
-import styles from './index.module.less';
 import { usePreview } from './usePreview';
 
 export const Main: React.FC<PropsWithChildren> = ({ children }) => {
   const meta = useRouteMeta();
+  const { themeConfig } = useSiteData();
+  const { feedback } = themeConfig;
 
   const text = meta.texts.reduce((prev, next) => prev + next.value, '');
   const { time } = readingTime(text);
@@ -37,7 +39,12 @@ export const Main: React.FC<PropsWithChildren> = ({ children }) => {
           <Feedback />
           <PrevAndNext />
         </div>
-        <BackTop style={{ right: 32, bottom: 100 }}>
+        <BackTop
+          style={{
+            right: 32,
+            ...(feedback && { bottom: 100 }),
+          }}
+        >
           <div className={styles.backTop}>
             <VerticalAlignTopOutlined />
           </div>
