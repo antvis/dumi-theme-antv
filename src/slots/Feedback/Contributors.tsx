@@ -33,12 +33,12 @@ const StyledContributorsWrapper = styled.div`
 
 export const Contributors: React.FC = () => {
   const { formatMessage } = useIntl();
-  const { branch = 'main', siteRelativePath } = useSiteData().themeConfig;
+  const { branch = 'main', siteRelativePath = '/packages/site' } = useSiteData().themeConfig;
   const { owner, repo } = useGithubRepo();
   const meta = useRouteMeta();
   const editable = !meta.frontmatter.readonly;
 
-  if (!editable) {
+  if (!editable || !meta.frontmatter.filename) {
     return null;
   }
 

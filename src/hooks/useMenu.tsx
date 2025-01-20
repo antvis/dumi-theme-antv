@@ -96,6 +96,7 @@ export const useMenu = () => {
     const firstValidMenuItem = flattedMenuData.find((item) => item.link);
     if (firstValidMenuItem) {
       navigate(firstValidMenuItem.link);
+      selectedKey = firstValidMenuItem.link;
     }
   }
 
