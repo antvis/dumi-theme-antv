@@ -27,8 +27,6 @@ import '@petercatai/assistant/style';
 import styles from './index.module.less';
 
 export type HeaderProps = {
-  /** 主分支名，默认为 'main'*/
-  branch?: string;
   /** 官网子包相对于仓库根目录的路径 */
   siteRelativePath?: string;
   pathPrefix?: string;

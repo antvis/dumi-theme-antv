@@ -2,19 +2,21 @@ import { FormOutlined } from '@ant-design/icons';
 import { useIntl, useRouteMeta, useSiteData } from 'dumi';
 import path from 'path';
 import React from 'react';
+import { useGithubRepo } from '../../utils/github';
 
 export const EditButton: React.FC = () => {
   const meta = useRouteMeta();
   const { formatMessage } = useIntl();
   const { themeConfig } = useSiteData();
-  const { githubUrl, branch = 'main', siteRelativePath = '/packages/site' } = themeConfig;
+  const { githubUrl, siteRelativePath = '/packages/site' } = themeConfig;
+  const { defaultBranch } = useGithubRepo();
   const editable = !meta.frontmatter.readonly;
 
   if (!editable) {
     return null;
   }
 
-  const branchUrl = `${githubUrl}/edit/${branch}`;
+  const branchUrl = `${githubUrl}/edit/${defaultBranch}`;
 
   const url = meta.frontmatter.redirect
     ? path.join(branchUrl, meta.frontmatter.redirect)

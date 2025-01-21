@@ -22,7 +22,6 @@ export default defineConfig({
     siteUrl: 'https://antv.vision', // 官网地址
     siteRelativePath: '/example', // 官网子包相对于仓库根目录的路径
     githubUrl: repository.url, // GitHub 地址
-    branch: 'v3', // 主分支
     showSearch: true, // 是否显示搜索框
     showGithubCorner: true, // 是否显示头部的 GitHub icon
     showGithubStars: true, // 是否显示 GitHub star 数量
