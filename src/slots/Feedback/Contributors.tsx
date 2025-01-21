@@ -33,7 +33,7 @@ const StyledContributorsWrapper = styled.div`
 
 export const Contributors: React.FC = () => {
   const { formatMessage } = useIntl();
-  const { siteRelativePath = '/packages/site' } = useSiteData().themeConfig;
+  const { sitePackagePath = '/packages/site' } = useSiteData().themeConfig;
   const { owner, repo, defaultBranch } = useGithubRepo();
   const meta = useRouteMeta();
   const editable = !meta.frontmatter.readonly;
@@ -49,7 +49,7 @@ export const Contributors: React.FC = () => {
         cache
         repo={repo}
         owner={owner}
-        fileName={path.join(siteRelativePath, meta.frontmatter.filename)}
+        fileName={path.join(sitePackagePath, meta.frontmatter.filename)}
         className="list"
         renderItem={(item, loading) => <ContributorAvatar item={item} loading={loading} key={item?.url} />}
         branch={defaultBranch}

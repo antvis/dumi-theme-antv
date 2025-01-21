@@ -8,7 +8,7 @@ export const EditButton: React.FC = () => {
   const meta = useRouteMeta();
   const { formatMessage } = useIntl();
   const { themeConfig } = useSiteData();
-  const { githubUrl, siteRelativePath = '/packages/site' } = themeConfig;
+  const { githubUrl, sitePackagePath = '/packages/site' } = themeConfig;
   const { defaultBranch } = useGithubRepo();
   const editable = !meta.frontmatter.readonly;
 
@@ -20,7 +20,7 @@ export const EditButton: React.FC = () => {
 
   const url = meta.frontmatter.redirect
     ? path.join(branchUrl, meta.frontmatter.redirect)
-    : path.join(branchUrl, siteRelativePath, meta.frontmatter.filename || '');
+    : path.join(branchUrl, sitePackagePath, meta.frontmatter.filename || '');
 
   return (
     <a onClick={() => window.open(url, '_blank')}>

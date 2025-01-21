@@ -27,8 +27,8 @@ import '@petercatai/assistant/style';
 import styles from './index.module.less';
 
 export type HeaderProps = {
-  /** 官网子包相对于仓库根目录的路径 */
-  siteRelativePath?: string;
+  /** 官网子包所在路径 */
+  sitePackagePath?: string;
   pathPrefix?: string;
   /** 子标题 */
   subTitle?: React.ReactNode;
