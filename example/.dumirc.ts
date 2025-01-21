@@ -67,7 +67,7 @@ export default defineConfig({
     navs: [
       // 头部的菜单列表
       {
-        slug: 'docs/manual/concepts/grammar-of-graphics',
+        slug: 'docs/manual',
         title: {
           zh: '教程',
           en: 'Tutorials',
@@ -81,6 +81,7 @@ export default defineConfig({
           en: 'API',
         },
         order: 1,
+        exact: true,
       },
       {
         slug: 'docs/plots',

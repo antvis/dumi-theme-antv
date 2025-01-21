@@ -11,7 +11,7 @@ export const useMenu = () => {
   const fullData = useFullSidebarData() as FullSidebarData;
   const { pathname } = useLocation();
   const {
-    themeConfig: { docs },
+    themeConfig: { docs, navs },
   } = useSiteData();
   const baseRoute = getBaseRoute();
   const navigate = useNavigate();
@@ -91,8 +91,14 @@ export const useMenu = () => {
   const flattedMenuData = useMemo(() => flattenMenu(menuData), [menuData]);
 
   let selectedKey = pathname;
-  // 如果当前路径不在菜单中，选中第一个有 link 的菜单项
-  if (!flattedMenuData.find((item) => item.link === selectedKey)) {
+
+  // Nav 跳转但不在菜单中，则选中第一个菜单项
+  const navOf = (navs) => navs.some((nav) => nav?.slug?.replace('docs/', '/') === pathname);
+  const isNavLink = !!navOf(navs);
+  const isExactLink = navOf(navs)?.exact;
+  const isLinkInMenu = flattedMenuData.some((item) => item.link === pathname);
+
+  if (isNavLink && !isExactLink && !isLinkInMenu) {
     const firstValidMenuItem = flattedMenuData.find((item) => item.link);
     if (firstValidMenuItem) {
       navigate(firstValidMenuItem.link);
