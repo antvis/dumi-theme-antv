@@ -60,7 +60,7 @@
     "@docsearch/css": "^3.8.0",
     "@docsearch/react": "^3.8.0",
     "@monaco-editor/react": "^4.6.0",
-    "@petercatai/assistant": "^2.0.17",
+    "@petercatai/assistant": "^2.0.24",
     "@stackblitz/sdk": "^1.11.0",
     "antd": "^4.24.16",
     "classnames": "^2.5.1",
