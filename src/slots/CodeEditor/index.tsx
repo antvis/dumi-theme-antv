@@ -356,7 +356,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
         const code = (spec) => {
           if (!full) return `(${spec})`;
           return `import { Chart } from '@antv/g2';
-          
+
           const chart = new Chart({container:'container'});
 
           chart.options(${spec});
@@ -419,7 +419,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
             language={languageOf(tab)}
             value={valueOf(tab)}
             defaultValue={defaultOf(tab)}
-            path={tab}
+            path={`${tab}_${relativePath || exampleId}`}
             loading={<Loading />}
             options={{
               readOnly: tab === EDITOR_TABS.DATA || tab === EDITOR_TABS.SPEC,
