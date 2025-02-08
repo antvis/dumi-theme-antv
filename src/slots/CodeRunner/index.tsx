@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import { useSiteData, useLocale } from 'dumi';
+import { useLocale, useSiteData } from 'dumi';
 import { noop } from 'lodash-es';
+import React, { useState } from 'react';
 import SplitPane from 'react-split-pane';
+import { ExampleTopic } from '../../types';
+import { NotFound } from '../404';
 import { CodeEditor } from '../CodeEditor';
 import { CodePreview } from '../CodePreview';
 import { CodeHeader } from '../CodePreview/CodeHeader';
-import { getDemoInfo } from './utils';
-import { NotFound } from '../404';
 import { ic } from '../hooks';
-import { ExampleTopic } from '../../types';
+import { getDemoInfo } from './utils';
 
 type CodeRunnerProps = {
   isPlayground?: boolean;
@@ -19,13 +19,19 @@ type CodeRunnerProps = {
   size?: number;
   replaceId?: string;
   notFound?: React.ReactElement;
-}
+};
 
 /**
  * 代码编辑器 + 代码预览区域
  */
 export const CodeRunner: React.FC<CodeRunnerProps> = ({
-  exampleTopics, topic, example, demo, size, replaceId, isPlayground,
+  exampleTopics,
+  topic,
+  example,
+  demo,
+  size,
+  replaceId,
+  isPlayground,
   notFound = <NotFound />,
 }) => {
   const demoInfo = getDemoInfo(exampleTopics, topic, example, demo);
@@ -47,13 +53,8 @@ export const CodeRunner: React.FC<CodeRunnerProps> = ({
 
   return (
     // @ts-ignore
-    <SplitPane split='vertical' defaultSize={`${(1 - size) * 100}%`} minSize={100}>
-      <CodePreview
-        exampleId={exampleId}
-        error={error}
-        header={header}
-        isPlayground={isPlayground}
-      />
+    <SplitPane split="vertical" defaultSize={`${(1 - size) * 100}%`} minSize={100}>
+      <CodePreview exampleId={exampleId} error={error} header={header} isPlayground={isPlayground} />
       <CodeEditor
         exampleId={exampleId}
         source={source}
@@ -67,4 +68,4 @@ export const CodeRunner: React.FC<CodeRunnerProps> = ({
       />
     </SplitPane>
   );
-}
+};

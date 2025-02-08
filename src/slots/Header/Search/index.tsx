@@ -1,15 +1,17 @@
-import React, { useEffect, useState, useMemo } from 'react';
-import { Popover } from 'antd';
-import { useIntl, useSiteSearch } from 'dumi';
 import { SearchOutlined } from '@ant-design/icons';
+import { Popover } from 'antd';
+import { useIntl, useSiteData, useSiteSearch } from 'dumi';
+import React, { useEffect, useMemo, useState } from 'react';
 import { SearchResult } from './SearchResult';
 import { getSearchResults } from './helper';
-
 import styles from './index.module.less';
 
 export const Search = () => {
   const intl = useIntl();
   const [open, setOpen] = useState<boolean>(false);
+  const { themeConfig } = useSiteData();
+  const { docsearchOptions: { sort } = {} } = themeConfig;
+
   // useSiteSearch 错误 keywords 为空时 loading 为 true
   const { keywords, setKeywords, result, loading } = useSiteSearch();
 
@@ -26,20 +28,25 @@ export const Search = () => {
       if (!(typeof className === 'string' && className.match(styles.input))) {
         setOpen(false);
       }
-    }
+    };
     if (window) {
       window.addEventListener('click', close);
     }
     return () => {
       window.removeEventListener('click', close);
-    }
+    };
   }, []);
 
-  const searchResults = useMemo(() => getSearchResults(result), [result]);
+  const searchResults = useMemo(() => getSearchResults(result, 30, sort), [result]);
 
   return (
-    <Popover open={open} placement="topLeft" destroyTooltipOnHide={{ keepParent: false }} content={<SearchResult results={searchResults} />}>
-      <label className={styles.search} >
+    <Popover
+      open={open}
+      placement="topLeft"
+      destroyTooltipOnHide={{ keepParent: false }}
+      content={<SearchResult results={searchResults} />}
+    >
+      <label className={styles.search}>
         <SearchOutlined className={styles.icon} />
         <input
           className={styles.input}
@@ -51,7 +58,7 @@ export const Search = () => {
             id: '搜索…',
           })}
         />
-      </label >
+      </label>
     </Popover>
   );
 };

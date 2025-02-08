@@ -15,11 +15,7 @@ interface ProductProps {
 }
 
 const getTarget = (url: string) =>
-  url.startsWith('http') &&
-  !url.includes('gitee.io') &&
-  !url.includes('antv.vision')
-    ? '_blank'
-    : '_self';
+  url.startsWith('http') && !url.includes('gitee.io') && !url.includes('antv.vision') ? '_blank' : '_self';
 
 const Product: React.FC<ProductProps> = ({
   name,
@@ -40,10 +36,7 @@ const Product: React.FC<ProductProps> = ({
         <a href={url} target={getTarget(url)}>
           <h4>
             {name}
-            <span
-              className={styles.productSlogan}
-              style={{ opacity: language === 'en' ? 0.7 : '' }}
-            >
+            <span className={styles.productSlogan} style={{ opacity: language === 'en' ? 0.7 : '' }}>
               {slogan}
             </span>
           </h4>
@@ -56,10 +49,7 @@ const Product: React.FC<ProductProps> = ({
             </a>
           )}
           {links.example && (
-            <a
-              href={links.example.url}
-              target={getTarget(links.example.url || '')}
-            >
+            <a href={links.example.url} target={getTarget(links.example.url || '')}>
               {links.example.title ?? <FormattedMessage id="图表示例" />}
             </a>
           )}

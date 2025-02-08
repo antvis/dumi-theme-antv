@@ -1,9 +1,9 @@
-import React from 'react';
 import { useLocale } from 'dumi';
-import { ExampleWithTopic, GalleryPageContentProps } from '../../types';
-import { DemoCard } from './DemoCard';
-import { getCategoryId } from '../../utils';
+import React from 'react';
 import styles from '../../index.module.less';
+import { ExampleWithTopic, GalleryPageContentProps } from '../../types';
+import { getCategoryId } from '../../utils';
+import { DemoCard } from './DemoCard';
 
 /**
  * Examples 首页内容预览组件
@@ -45,9 +45,8 @@ export const GalleryPageContent: React.FC<GalleryPageContentProps> = (props) => 
   //   return result;
   // }, [allDemosInCategory, allDemos, locale.id]);
 
-
   const flattenExamples = exampleTopics.reduce((prev, current) => {
-    const exampleWithTopic = current.examples.map(item => {
+    const exampleWithTopic = current.examples.map((item) => {
       return {
         ...item,
         targetTopic: current,
@@ -67,10 +66,7 @@ export const GalleryPageContent: React.FC<GalleryPageContentProps> = (props) => 
               <ul className={styles.galleryList}>
                 {example.demos.map((demo) => {
                   return (
-                    <li
-                      className={styles.galleryCard}
-                      key={demo.id}
-                      title={demo.title[locale.id]}>
+                    <li className={styles.galleryCard} key={demo.id} title={demo.title[locale.id]}>
                       <DemoCard demo={demo} topicId={example.targetTopic.id} exampleId={example.id} />
                     </li>
                   );

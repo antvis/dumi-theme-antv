@@ -1,7 +1,7 @@
 import { useSiteData } from 'dumi';
 import { get } from 'lodash-es';
 import React, { useContext } from 'react';
-import { ErrorBoundary } from 'react-error-boundary'
+import { ErrorBoundary } from 'react-error-boundary';
 import { ThemeAntVContext } from '../../context';
 import { CodeRunner } from '../../slots/CodeRunner';
 
@@ -24,7 +24,7 @@ export type PlaygroundProps = {
    * 容器的高度，默认为 400px
    */
   height?: number;
-}
+};
 
 /**
  * Markdown 标签插件 Playground
@@ -55,14 +55,14 @@ const Playground: React.FC<PlaygroundProps> = ({ rid, path, ratio, height = 400 
   );
 };
 
-function ErrorFallback({error}) {
+function ErrorFallback({ error }) {
   console.log(error);
   return (
     <div role="alert">
       <p>Something went wrong:</p>
       <pre>{error.message}</pre>
     </div>
-  )
+  );
 }
 
 export default ((props: PlaygroundProps) => {

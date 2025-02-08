@@ -1,27 +1,21 @@
-import React from 'react';
-import {
-  AreaChartOutlined,
-  DingdingOutlined,
-  GithubOutlined,
-  HistoryOutlined,
-  HomeOutlined,
-  PieChartOutlined,
-  ReadOutlined,
-  YuqueOutlined,
-} from '@ant-design/icons';
 import { each } from 'lodash-es';
-import { getChinaMirrorHost } from '../../utils';
+import React from 'react';
 
 const tuple = <T extends string[]>(...args: T) => args;
 const Categories = tuple('basic', 'extension', 'ecology');
 const Link = tuple('home', 'example', 'api');
 
+export interface ProductCategory {
+  type: (typeof CATEGORY_TYPE)[number];
+  name: string;
+  products: ProductType[];
+}
 export interface ProductItem {
   title: string;
   icon?: React.ReactNode;
   slogan?: string;
   description: string;
-  category: typeof Categories[number];
+  category: (typeof Categories)[number];
   links?: Array<{
     icon?: React.ReactNode;
     title: React.ReactNode;
@@ -35,15 +29,12 @@ const ANTV_DOMAIN = 'antv.vision';
 export type ValuesOf<T extends any[]> = T[number];
 
 const CATEGORY_TYPE = tuple('basic', 'extension', 'mobile', 'ecology');
-export const CATEGORIES: Array<{
-  type: typeof CATEGORY_TYPE[number];
-  name: string;
-}> = [
-    { type: 'basic', name: '标准版基础产品' },
-    { type: 'extension', name: '标准版扩展产品' },
-    { type: 'mobile', name: '移动定制（F版）产品' },
-    { type: 'ecology', name: '周边生态' },
-  ];
+export const CATEGORIES: Array<ProductCategory> = [
+  { type: 'basic', name: '标准版基础产品', products: [] },
+  { type: 'extension', name: '标准版扩展产品', products: [] },
+  { type: 'mobile', name: '移动定制（F版）产品', products: [] },
+  { type: 'ecology', name: '周边生态', products: [] },
+];
 
 export type ProductType = {
   links: {
@@ -74,22 +65,16 @@ export function getNewProducts({
       return products
         .filter((d) => d.lang === language)
         .map((d) => {
-          const links =
-            typeof d.links === 'string' ? JSON.parse(d.links) : { ...d.links };
+          const links = typeof d.links === 'string' ? JSON.parse(d.links) : { ...d.links };
           const newLinks: any = {};
 
           each(links, (value, k: string) => {
             let actualUrl = value?.url || '';
             if (isChinaMirrorHost) {
               // g2plot.antv.vision => antv-g2plot.gitee.io
-              const match = actualUrl.match(
-                /([http|https]):\/\/(.*)\.antv\.vision/,
-              );
+              const match = actualUrl.match(/([http|https]):\/\/(.*)\.antv\.vision/);
               if (match && match[2]) {
-                actualUrl = actualUrl.replace(
-                  `${match[2]}.antv.vision`,
-                  `antv-${match[2]}.gitee.io`,
-                );
+                actualUrl = actualUrl.replace(`${match[2]}.antv.vision`, `antv-${match[2]}.gitee.io`);
               }
             }
             newLinks[k] = { ...value, url: actualUrl };
@@ -98,4 +83,3 @@ export function getNewProducts({
         });
     });
 }
-

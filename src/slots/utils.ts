@@ -1,6 +1,13 @@
 import { Status, TreeNode } from '../types';
 import { icWithLocale } from './hooks';
 
+/**
+ * 统一去掉中英文前缀
+ */
+export function getCurrentPathname(): string {
+  return window.location.pathname.replace('/zh/', '/').replace('/en/', '/');
+}
+
 export async function ping(): Promise<Status> {
   const timeout = new Promise<Status>((resolve) => {
     setTimeout(() => {
@@ -10,11 +17,11 @@ export async function ping(): Promise<Status> {
 
   const network = new Promise<Status>((resolve) => {
     const url =
-    'https://private-a' +
-    'lipay' +
-    'objects.alip' +
-    'ay.com/alip' +
-    'ay-rmsdeploy-image/rmsportal/RKuAiriJqrUhyqW.png';
+      'https://private-a' +
+      'lipay' +
+      'objects.alip' +
+      'ay.com/alip' +
+      'ay-rmsdeploy-image/rmsportal/RKuAiriJqrUhyqW.png';
     const img = new Image();
     img.onload = () => {
       img.onload = null;
@@ -29,7 +36,7 @@ export async function ping(): Promise<Status> {
     img.src = url;
   });
 
-  return Promise.race([timeout, network]).catch(r => 'error');
+  return Promise.race([timeout, network]).catch((r) => 'error');
 }
 
 export const getChinaMirrorHost = (host?: string): string => {
@@ -46,26 +53,15 @@ export const getChinaMirrorHost = (host?: string): string => {
   return hostString;
 };
 
-export function getGithubSourceURL(
-  githubUrl: string,
-  relativePath: string,
-  prefix: string = 'examples',
-): string {
+export function getGithubSourceURL(githubUrl: string, relativePath: string, prefix: string = 'examples'): string {
   // https://github.com/antvis/x6/tree/master/packages/x6-sites
   if (githubUrl.includes('/tree/master/')) {
-    return `${githubUrl.replace(
-      '/tree/master/',
-      '/edit/master/',
-    )}/${prefix}/${relativePath}`;
+    return `${githubUrl.replace('/tree/master/', '/edit/master/')}/${prefix}/${relativePath}`;
   }
   return `${githubUrl}/edit/master/${prefix}/${relativePath}`;
 }
 
-export const filterTreeNode = (
-  treeNode: TreeNode,
-  keyValue: string,
-  locale: string,
-) => {
+export const filterTreeNode = (treeNode: TreeNode, keyValue: string, locale: string) => {
   if (treeNode.childrenKey && Array.isArray(treeNode[treeNode.childrenKey])) {
     const children = treeNode[treeNode.childrenKey] as TreeNode[];
     const filteredChildren = children.filter((child) => {
@@ -81,9 +77,10 @@ export const filterTreeNode = (
 
   const title = icWithLocale(treeNode.title, locale) || '';
   const matchFields = [title, treeNode.id, treeNode.filename];
-  
-  const isCurrentTreeNodeMatched = 
-    matchFields.some(f => (f ? f.toLowerCase() : '').includes(keyValue ? keyValue.toLowerCase() : ''));
+
+  const isCurrentTreeNodeMatched = matchFields.some((f) =>
+    (f ? f.toLowerCase() : '').includes(keyValue ? keyValue.toLowerCase() : ''),
+  );
 
   // 当前节点自身匹配，那么其孩子直接匹配，可以直接返回当前节点
   if (isCurrentTreeNodeMatched) {

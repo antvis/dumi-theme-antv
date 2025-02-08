@@ -17,13 +17,7 @@ const Loading = () => (
         <div className="loader">
           <svg viewBox="0 0 80 80">
             <defs>
-              <linearGradient
-                id="gradient"
-                x1=".004%"
-                x2="100.131%"
-                y1="49.993%"
-                y2="49.993%"
-              >
+              <linearGradient id="gradient" x1=".004%" x2="100.131%" y1="49.993%" y2="49.993%">
                 <stop offset="0%" stopColor="#6500FF" />
                 <stop offset="16%" stopColor="#6A09FF" />
                 <stop offset="43%" stopColor="#7623FF" />

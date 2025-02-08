@@ -1,10 +1,10 @@
-import React from 'react';
-import { Link, useLocale } from 'dumi';
-import cx from 'classnames';
 import { Badge } from 'antd';
-import { DemoCardProps } from '../../../types';
+import cx from 'classnames';
+import { Link, useLocale } from 'dumi';
+import React from 'react';
 import { ic } from '../../../../../slots/hooks';
 import styles from '../../../index.module.less';
+import { DemoCardProps } from '../../../types';
 
 /**
  * DEMO 的卡片预览
@@ -18,13 +18,16 @@ export const DemoCard: React.FC<DemoCardProps> = (props) => {
   const locale = useLocale();
 
   const renderCardInternal = () => {
-    const img = demo.screenshot ||
-      'https://gw.alipayobjects.com/os/s/prod/antv/assets/image/screenshot-placeholder-b8e70.png';
+    const img =
+      demo.screenshot || 'https://gw.alipayobjects.com/os/s/prod/antv/assets/image/screenshot-placeholder-b8e70.png';
     return (
       <>
-        <div className={cx('demo-card-screenshot', styles.screenshot)} style={{
-          backgroundImage: `url("${img}")`,
-        }} />
+        <div
+          className={cx('demo-card-screenshot', styles.screenshot)}
+          style={{
+            backgroundImage: `url("${img}")`,
+          }}
+        />
       </>
     );
   };
@@ -35,14 +38,12 @@ export const DemoCard: React.FC<DemoCardProps> = (props) => {
       to={`${locale.id == 'zh' ? '' : '/en'}/examples/${topicId}/${exampleId}/#${demo.id}`}
     >
       {demo.isNew ? (
-        <Badge.Ribbon
-          text='new'
-          className={styles.customRibbon}
-        >
+        <Badge.Ribbon text="new" className={styles.customRibbon}>
           {renderCardInternal()}
         </Badge.Ribbon>
-      ) : renderCardInternal()
-      }
+      ) : (
+        renderCardInternal()
+      )}
       <h4>{ic(demo.title)}</h4>
     </Link>
   );

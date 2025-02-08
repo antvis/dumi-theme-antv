@@ -1,10 +1,10 @@
 import { ZoomInOutlined, ZoomOutOutlined } from '@ant-design/icons';
 import { Collapse, Popover } from 'antd';
-import { get, uniq, sortBy } from 'lodash-es';
+import { get, sortBy, uniq } from 'lodash-es';
 import React from 'react';
 import Markdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
+import remarkGfm from 'remark-gfm';
 import { useSnapshot } from 'valtio';
 import { store } from '../../model';
 import { CollapsedIcon } from '../../pages/Example/components/CollapsedIcon';
@@ -26,13 +26,7 @@ const EMPTY = /^\s*$/;
 /**
  * API 预览
  */
-export const API = ({
-  exampleTopics,
-  topic,
-  example,
-  demo,
-  language = 'zh',
-}: APIProps) => {
+export const API = ({ exampleTopics, topic, example, demo, language = 'zh' }: APIProps) => {
   const state = useSnapshot(store);
   const demoInfo = getDemoInfo(exampleTopics, topic, example, demo);
   const APIContent = get(demoInfo, ['api', language]);
@@ -46,9 +40,7 @@ export const API = ({
   };
 
   const getRegex = (tagLength: number) => {
-    return new RegExp(
-      `^${new Array(tagLength).fill('#').join('')}\\s+([^\\n]*)`,
-    );
+    return new RegExp(`^${new Array(tagLength).fill('#').join('')}\\s+([^\\n]*)`);
   };
 
   /** 根据正则将内容切片 */
@@ -76,11 +68,7 @@ export const API = ({
         const { start } = item;
         return {
           ...item,
-          children: setIndexTag(
-            lines.slice(start + 1, result[index + 1]?.start),
-            getRegex(tags[1]),
-            start + 1,
-          ),
+          children: setIndexTag(lines.slice(start + 1, result[index + 1]?.start), getRegex(tags[1]), start + 1),
         };
       });
     }
@@ -122,55 +110,27 @@ export const API = ({
         <Collapse bordered={false} defaultActiveKey={[result[0]?.header]} ghost>
           {result.map((item, index) => {
             const { start, header, children = [] } = item;
-            const end =
-              index === result.length - 1
-                ? lines.length
-                : result[index + 1].start;
+            const end = index === result.length - 1 ? lines.length : result[index + 1].start;
             return (
-              <Panel
-                header={
-                  <b style={{ lineHeight: '22px', fontSize: 16 }}>{header}</b>
-                }
-                key={header}
-              >
+              <Panel header={<b style={{ lineHeight: '22px', fontSize: 16 }}>{header}</b>} key={header}>
                 {children.length > 0 ? (
-                  <Collapse
-                    bordered={false}
-                    defaultActiveKey={[children[0]?.header]}
-                    ghost
-                  >
+                  <Collapse bordered={false} defaultActiveKey={[children[0]?.header]} ghost>
                     {children.map((nestedItem, nestedIndex) => {
-                      const {
-                        start: nestedStart,
-                        header: nestedHeader,
-                        maxEndIndex,
-                      } = nestedItem;
+                      const { start: nestedStart, header: nestedHeader, maxEndIndex } = nestedItem;
                       const nestEnd =
-                        nestedIndex === children.length - 1
-                          ? maxEndIndex
-                          : children[nestedIndex + 1].start;
+                        nestedIndex === children.length - 1 ? maxEndIndex : children[nestedIndex + 1].start;
                       return (
                         <Panel
-                          header={
-                            <b style={{ lineHeight: '22px', fontSize: 14 }}>
-                              {nestedHeader}
-                            </b>
-                          }
+                          header={<b style={{ lineHeight: '22px', fontSize: 14 }}>{nestedHeader}</b>}
                           key={nestedHeader}
                         >
-                          <MarkdownComponent
-                            content={lines
-                              .slice(nestedStart + 1, nestEnd)
-                              .join('\n')}
-                          />
+                          <MarkdownComponent content={lines.slice(nestedStart + 1, nestEnd).join('\n')} />
                         </Panel>
                       );
                     })}
                   </Collapse>
                 ) : (
-                  <MarkdownComponent
-                    content={lines.slice(start + 1, end).join('\n')}
-                  />
+                  <MarkdownComponent content={lines.slice(start + 1, end).join('\n')} />
                 )}
               </Panel>
             );
@@ -181,10 +141,7 @@ export const API = ({
   };
 
   return (
-    <div
-      className={styles.api}
-      style={{ width: state.showAPI ? state.apiContainerWidth : 24 }}
-    >
+    <div className={styles.api} style={{ width: state.showAPI ? state.apiContainerWidth : 24 }}>
       <div className={styles.header}>
         <p>API</p>
         <div className={styles.zoom}>
@@ -202,10 +159,7 @@ export const API = ({
             }}
           />
         </div>
-        <Popover
-          content={language === 'zh' ? '展示文档' : 'Show docs'}
-          placement="right"
-        >
+        <Popover content={language === 'zh' ? '展示文档' : 'Show docs'} placement="right">
           <CollapsedIcon
             isCollapsed={state.showAPI}
             onClick={(show: boolean) => {

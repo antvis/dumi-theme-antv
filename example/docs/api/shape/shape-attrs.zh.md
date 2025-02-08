@@ -90,3 +90,5 @@ fill: 'r(0.5,0.5,0.1) 0:#ffffff 1:#1890ff';
 // 使用纹理填充，在水平和垂直方向重复图片
 fill: 'p(a)https://gw.alipayobjects.com/zos/rmsportal/ibtwzHXSxomqbZCPMLqS.png';
 ```
+
+跳转到 [类型定义](/api/reference/type)

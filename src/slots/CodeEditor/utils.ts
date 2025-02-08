@@ -5,19 +5,10 @@ import indentString from 'indent-string';
 
 export function replaceFetchUrl(sourceCode: string) {
   const dataFileMatch = sourceCode.match(/fetch\('(.*)'\)/);
-  if (
-    dataFileMatch &&
-    dataFileMatch.length > 0 &&
-    !dataFileMatch[1].startsWith('http')
-  ) {
+  if (dataFileMatch && dataFileMatch.length > 0 && !dataFileMatch[1].startsWith('http')) {
     return sourceCode.replace(
       dataFileMatch[1],
-      path.join(
-        location!.origin || '',
-        location!.pathname || '',
-        '..',
-        dataFileMatch[1],
-      ),
+      path.join(location!.origin || '', location!.pathname || '', '..', dataFileMatch[1]),
     );
   }
   return sourceCode;
@@ -130,15 +121,10 @@ export function getHtmlCodeTemplate(
     .replace(/import\s+.*\s+from\s+['"].*['"];?/g, '')
     .replace(insertCssMatcher, '')
     .replace(/^\s+|\s+$/g, '');
-  let result = htmlCodeTemplate
-    .replace('{{code}}', indentString(code, 4))
-    .replace('{{title}}', title || 'example');
+  let result = htmlCodeTemplate.replace('{{code}}', indentString(code, 4)).replace('{{title}}', title || 'example');
   const customStyles = sourceCode.match(insertCssMatcher);
   if (customStyles && customStyles[1]) {
-    result = result.replace(
-      '</head>',
-      `  <style>\n${indentString(customStyles[1], 4)}\n    </style>\n  </head>`,
-    );
+    result = result.replace('</head>', `  <style>\n${indentString(customStyles[1], 4)}\n    </style>\n  </head>`);
   }
   if (container) {
     result = result.replace('<body>', `<body>\n${indentString(container, 4)}`);
@@ -169,12 +155,7 @@ insertCss(`;
  * @param replaceId rid
  * @param cb 回调错误
  */
-export function execute(
-  code: string,
-  playgroundScriptContainer: string,
-  container: string,
-  replaceId = 'container',
-) {
+export function execute(code: string, playgroundScriptContainer: string, container: string, replaceId = 'container') {
   const node = document.getElementById(playgroundScriptContainer);
   const script = document.createElement('script');
   // replace container id in case of multi demos in document
@@ -196,8 +177,7 @@ try {
 }
   `;
   // 追加图表容器
-  node.innerHTML =
-    container || `<div id=${replaceId} class="playgroundCodeContainer" />`;
+  node.innerHTML = container || `<div id=${replaceId} class="playgroundCodeContainer" />`;
   // 运行 script
   node!.appendChild(script);
 }
@@ -208,12 +188,7 @@ try {
 export function compile(value: string, relativePath: string, es5 = true) {
   const { code } = transform(value, {
     filename: relativePath,
-    presets: [
-      'react',
-      'typescript',
-      es5 ? 'es2015' : 'es2016',
-      ['stage-3', { decoratorsBeforeExport: true }],
-    ],
+    presets: ['react', 'typescript', es5 ? 'es2015' : 'es2016', ['stage-3', { decoratorsBeforeExport: true }]],
     plugins: ['transform-modules-umd'],
   });
   return code;

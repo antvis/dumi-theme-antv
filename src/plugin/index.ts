@@ -1,8 +1,10 @@
 import type { IApi } from 'dumi';
 import { winPath } from 'dumi/plugin-utils';
 import * as path from 'path';
+import { AntVReactTechStack } from './antVReactTechStack';
 import { getExamplePaths, getExamplesPageTopics } from './examples';
 import rehypeObservable from './rehypeObservable';
+import remarkFeedback from './remarkFeedback';
 
 const PAGES_DIR = winPath(path.join(__dirname, '../pages'));
 const MOCK_META = { frontmatter: { title: 'mock-meta' }, texts: [], toc: [] };
@@ -23,9 +25,7 @@ export default (api: IApi) => {
     memo.jsMinifier = 'terser';
 
     // 网站 favicon
-    memo.favicons = [
-      'https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*7svFR6wkPMoAAAAAAAAAAAAADmJ7AQ/original',
-    ];
+    memo.favicons = ['https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*7svFR6wkPMoAAAAAAAAAAAAADmJ7AQ/original'];
 
     memo.headScripts = [
       { src: 'https://ur.alipay.com/tracert_a369.js', async: true },
@@ -80,6 +80,13 @@ export default (api: IApi) => {
     },
   ];
 
+  api.modifyConfig((memo) => {
+    // 配置额外的 remark 插件，用于处理 Markdown 语法树的编译
+    memo.extraRemarkPlugins = memo.themeConfig.feedback ? [remarkFeedback] : [];
+
+    return memo;
+  });
+
   api.onGenerateFiles(() => {
     // write context provider when generate tmp file
     api.writeTmpFile({
@@ -88,9 +95,7 @@ export default (api: IApi) => {
       content: `
 import React from 'react';
 import { useOutlet, useSiteData } from 'dumi';
-import { ThemeAntVContext } from '${winPath(
-        path.join(__dirname, '../context'),
-      )}';
+import { ThemeAntVContext } from '${winPath(path.join(__dirname, '../context'))}';
 
 export default function ThemeAntVContextWrapper() {
   const outlet = useOutlet();
@@ -141,7 +146,8 @@ export default function ThemeAntVContextWrapper() {
   });
 
   // watch the `examples` folder
-  api.addTmpGenerateWatcherPaths(() => [
-    path.resolve(process.cwd(), 'examples'),
-  ]);
+  api.addTmpGenerateWatcherPaths(() => [path.resolve(process.cwd(), 'examples')]);
+
+  // extends dumi internal tech stack, for customize previewer props
+  api.registerTechStack(() => new AntVReactTechStack());
 };

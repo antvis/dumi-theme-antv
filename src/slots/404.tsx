@@ -1,7 +1,7 @@
-import React from 'react';
 import { HomeOutlined } from '@ant-design/icons';
-import { Result, Button } from 'antd';
+import { Button, Result } from 'antd';
 import { Link } from 'dumi';
+import React from 'react';
 
 export const NotFound = () => (
   <>

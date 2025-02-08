@@ -7,9 +7,7 @@ export default defineConfig({
     { id: 'en', name: 'English' },
   ],
   title: 'dumi-theme-antv 主题包', // 网站header标题
-  favicons: [
-    'https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*7svFR6wkPMoAAAAAAAAAAAAADmJ7AQ/original',
-  ], // 网站 favicon
+  favicons: ['https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*7svFR6wkPMoAAAAAAAAAAAAADmJ7AQ/original'], // 网站 favicon
   metas: [
     // 自定义 meta 标签
     { name: 'keywords', content: 'dumi-theme-antv' },
@@ -22,6 +20,7 @@ export default defineConfig({
     isAntVSite: false, // 是否是 AntV 的大官网
     footerTheme: 'light',
     siteUrl: 'https://antv.vision', // 官网地址
+    sitePackagePath: '/example', // 官网子包所在路径
     githubUrl: repository.url, // GitHub 地址
     showSearch: true, // 是否显示搜索框
     showGithubCorner: true, // 是否显示头部的 GitHub icon
@@ -34,6 +33,13 @@ export default defineConfig({
     showSpecTab: true, // 是否在 demo 页展示API文档
     themeSwitcher: 'g2',
     es5: false,
+    feedback: true, // 是否开启用户反馈功能
+    petercat: {
+      show: false,
+      // 以下配置仅在 show 为 true 时生效
+      // token 获取方式：https://github.com/petercat-ai/petercat/blob/main/docs/guides/quick_%20assistant_start_cn.md#token-%E8%8E%B7%E5%8F%96
+      token: 'your_token',
+    },
     version,
     versions: {
       // 历史版本以及切换下拉菜单
@@ -53,6 +59,7 @@ export default defineConfig({
       apiKey: '90c9a5dbf6e5ea7058cc32bcde8e94b2',
       indexName: 's2-antv-vision',
       appId: 'D73DOU8RXD',
+      sort: ['!/api'],
     },
     /**
      *  tips: 文档列表类型的路由导航(nav) 请以 docs/* 格式命名
@@ -60,7 +67,7 @@ export default defineConfig({
     navs: [
       // 头部的菜单列表
       {
-        slug: 'docs/manual/concepts/grammar-of-graphics',
+        slug: 'docs/manual',
         title: {
           zh: '教程',
           en: 'Tutorials',
@@ -74,6 +81,15 @@ export default defineConfig({
           en: 'API',
         },
         order: 1,
+        exact: true,
+      },
+      {
+        slug: 'docs/plots',
+        title: {
+          zh: '组件',
+          en: 'Components',
+        },
+        order: 2,
       },
       {
         slug: 'examples',
@@ -220,8 +236,7 @@ export default defineConfig({
         zh: '基于 dumi2 封装，提供灵活多变的 slots 插槽，抽取大量配置，一秒搭建 AntV 的各个技术栈官网。',
         en: 'Based on the dumi2 package, it provides flexible and changeable slots, extracts a large number of configurations, and builds the official website of each technology stack of AntV in one second.',
       },
-      image:
-        'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*wo_LToatmbwAAAAAAAAAAABkARQnAQ',
+      image: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*wo_LToatmbwAAAAAAAAAAABkARQnAQ',
       buttons: [
         {
           text: {
@@ -322,8 +337,7 @@ export default defineConfig({
           en: 'Real data visualization cases, we summarize them into story-based design templates, allowing users to achieve out-of-the-box effects.',
         },
         // link: `/examples/gallery`,
-        image:
-          'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*hDrgRb7ma4EAAAAAAAAAAABkARQnAQ',
+        image: 'https://gw.alipayobjects.com/mdn/rms_2274c3/afts/img/A*hDrgRb7ma4EAAAAAAAAAAABkARQnAQ',
       },
     ],
     /** 首页合作公司 */
@@ -384,5 +398,4 @@ export default defineConfig({
   plugins: [],
   links: [],
   scripts: [],
-  mfsu: false,
 });

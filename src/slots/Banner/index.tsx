@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { Modal } from 'antd';
 import { CaretRightOutlined } from '@ant-design/icons';
-import { FormattedMessage, Link, useLocale, useSiteData } from 'dumi'
+import { Modal } from 'antd';
 import classNames from 'classnames';
-import GitHubButton from 'react-github-button';
+import { FormattedMessage, Link, useLocale, useSiteData } from 'dumi';
 import gh from 'parse-github-url';
+import React, { useEffect, useState } from 'react';
+import GitHubButton from 'react-github-button';
 import { Player } from 'video-react';
 
 import Notification, { NotificationProps } from './Notification';
@@ -36,8 +36,7 @@ interface BannerProps {
   onPlayVideo?: () => void;
 }
 
-const backLeftBottom =
-  'https://gw.alipayobjects.com/zos/basement_prod/441d5eaf-e623-47cd-b9b9-2a581d9ce1e3.svg';
+const backLeftBottom = 'https://gw.alipayobjects.com/zos/basement_prod/441d5eaf-e623-47cd-b9b9-2a581d9ce1e3.svg';
 
 const Banner: React.FC<BannerProps> = ({
   coverImage,
@@ -52,14 +51,14 @@ const Banner: React.FC<BannerProps> = ({
   onCloseVideo,
   onPlayVideo,
 }) => {
-  const locale = useLocale()
+  const locale = useLocale();
   const lang = locale.id.includes('zh') ? 'zh' : 'en';
   const notificationsUrl = `https://my-json-server.typicode.com/antvis/antvis-sites-data/notifications?lang=${lang}`;
 
   const [remoteNews, setRemoteNews] = useState<NotificationProps[]>([]);
 
-  const { themeConfig } = useSiteData()
-  const { githubUrl } = themeConfig
+  const { themeConfig } = useSiteData();
+  const { githubUrl } = themeConfig;
 
   useEffect(() => {
     fetch(notificationsUrl)
@@ -71,9 +70,7 @@ const Banner: React.FC<BannerProps> = ({
 
   const notificationsNode = (notifications || remoteNews)
     .slice(0, 2)
-    .map((notification, i) => (
-      <Notification index={i} key={i} {...notification} />
-    ));
+    .map((notification, i) => <Notification index={i} key={i} {...notification} />);
 
   const showVideo = () => {
     if (onPlayVideo) {
@@ -90,10 +87,7 @@ const Banner: React.FC<BannerProps> = ({
   };
 
   const renderButtons = buttons.map((button: BannerButton, i) => {
-    const ButtonLink =
-      button.link.startsWith('http') || button.link.startsWith('#')
-        ? 'a'
-        : Link;
+    const ButtonLink = button.link.startsWith('http') || button.link.startsWith('#') ? 'a' : Link;
     const buttonProps = {} as any;
     if (button.link.startsWith('http')) {
       buttonProps.target = '_blank';
@@ -126,11 +120,7 @@ const Banner: React.FC<BannerProps> = ({
 
   if (video) {
     renderButtons.push(
-      <div
-        key="video"
-        onClick={showVideo}
-        className={styles.videoButtonWrapper}
-      >
+      <div key="video" onClick={showVideo} className={styles.videoButtonWrapper}>
         <div className={styles.videoButton}>
           <CaretRightOutlined className={styles.videoButtonIcon} />
           <p
@@ -140,7 +130,7 @@ const Banner: React.FC<BannerProps> = ({
               lineHeight: '40px',
             }}
           >
-            {<FormattedMessage id='知源・致远'></FormattedMessage>}
+            {<FormattedMessage id="知源・致远"></FormattedMessage>}
           </p>
         </div>
       </div>,
@@ -152,12 +142,7 @@ const Banner: React.FC<BannerProps> = ({
     if (githubObj && githubObj.owner && githubObj.name) {
       renderButtons.push(
         <div key="github" className={styles.githubWrapper}>
-          <GitHubButton
-            type="stargazers"
-            size="large"
-            namespace={githubObj.owner}
-            repo={githubObj.name}
-          />
+          <GitHubButton type="stargazers" size="large" namespace={githubObj.owner} repo={githubObj.name} />
         </div>,
       );
     }
@@ -167,29 +152,15 @@ const Banner: React.FC<BannerProps> = ({
     <section className={classNames(styles.wrapper, className)} style={style}>
       <div className={styles.content}>
         <div className={styles.text}>
-          <div className={classNames(styles.title, 'banner-title')}>
-            {title}
-          </div>
-          <p className={classNames(styles.description, 'banner-description')}>
-            {description}
-          </p>
-          <div className={classNames(styles.buttons, 'banner-buttons')}>
-            {renderButtons}
-          </div>
+          <div className={classNames(styles.title, 'banner-title')}>{title}</div>
+          <p className={classNames(styles.description, 'banner-description')}>{description}</p>
+          <div className={classNames(styles.buttons, 'banner-buttons')}>{renderButtons}</div>
         </div>
-        <div className={classNames(styles.notifications, 'notifications')}>
-          {notificationsNode}
-        </div>
+        <div className={classNames(styles.notifications, 'notifications')}>{notificationsNode}</div>
         <div className={classNames(styles.teaser, 'teaser')}>
-          <div className={classNames(styles.teaserimg, 'teaser-img')}>
-            {coverImage}
-          </div>
+          <div className={classNames(styles.teaserimg, 'teaser-img')}>{coverImage}</div>
         </div>
-        <img
-          className={styles.backLeftBottom}
-          src={backLeftBottom}
-          alt="back"
-        />
+        <img className={styles.backLeftBottom} src={backLeftBottom} alt="back" />
       </div>
     </section>
   );

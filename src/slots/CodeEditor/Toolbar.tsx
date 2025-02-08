@@ -1,20 +1,11 @@
-import {
-  CodeSandboxOutlined,
-  PlayCircleOutlined,
-  ThunderboltOutlined,
-} from '@ant-design/icons';
+import { CodeSandboxOutlined, PlayCircleOutlined, ThunderboltOutlined } from '@ant-design/icons';
 import stackblitzSdk from '@stackblitz/sdk';
 import { Tooltip, Typography } from 'antd';
 import { getParameters } from 'codesandbox/lib/api/define';
 import { FormattedMessage, useLocale } from 'dumi';
 import React, { ReactElement, useEffect, useState } from 'react';
 import { ping } from '../utils';
-import {
-  extractImportDeps,
-  getCodeSandboxConfig,
-  getRiddleConfig,
-  getStackblitzConfig,
-} from './utils';
+import { extractImportDeps, getCodeSandboxConfig, getRiddleConfig, getStackblitzConfig } from './utils';
 
 import styles from './Toolbar.module.less';
 
@@ -108,9 +99,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
   onExecuteCode,
 }) => {
   const locale = useLocale();
-  const exampleTitle = (
-    typeof title === 'object' ? title[locale.id as 'zh' | 'en'] : title
-  ) as string;
+  const exampleTitle = (typeof title === 'object' ? title[locale.id as 'zh' | 'en'] : title) as string;
 
   // 使用 playground.dependencies 定义的版本号
   const dependencies = {
@@ -168,22 +157,10 @@ export const Toolbar: React.FC<ToolbarProps> = ({
         })}
       </div>
       {riddleVisible ? (
-        <form
-          action="//riddle.alibaba-inc.com/riddles/define"
-          method="POST"
-          target="_blank"
-        >
-          <input
-            type="hidden"
-            name="data"
-            value={JSON.stringify(riddlePrefillConfig)}
-          />
+        <form action="//riddle.alibaba-inc.com/riddles/define" method="POST" target="_blank">
+          <input type="hidden" name="data" value={JSON.stringify(riddlePrefillConfig)} />
           <Tooltip title={<FormattedMessage id="在 Riddle 中打开" />}>
-            <input
-              type="submit"
-              value="Create New Riddle with Prefilled Data"
-              className={styles.riddle}
-            />
+            <input type="submit" value="Create New Riddle with Prefilled Data" className={styles.riddle} />
           </Tooltip>
         </form>
       ) : null}
@@ -196,16 +173,8 @@ export const Toolbar: React.FC<ToolbarProps> = ({
         />
       </Tooltip>
       <Tooltip title={<FormattedMessage id="在 CodeSandbox 中打开" />}>
-        <form
-          action="https://codesandbox.io/api/v1/sandboxes/define"
-          method="POST"
-          target="_blank"
-        >
-          <input
-            type="hidden"
-            name="parameters"
-            value={getParameters(codeSandboxConfig)}
-          />
+        <form action="https://codesandbox.io/api/v1/sandboxes/define" method="POST" target="_blank">
+          <input type="hidden" name="parameters" value={getParameters(codeSandboxConfig)} />
           <button type="submit" className={styles.codesandbox}>
             <CodeSandboxOutlined style={{ marginLeft: 8 }} />
           </button>
@@ -229,10 +198,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
         </Tooltip>
       ) : null} */}
       <Tooltip title={<FormattedMessage id="执行代码" />}>
-        <PlayCircleOutlined
-          onClick={onExecuteCode}
-          style={{ marginLeft: 12 }}
-        />
+        <PlayCircleOutlined onClick={onExecuteCode} style={{ marginLeft: 12 }} />
       </Tooltip>
     </div>
   );

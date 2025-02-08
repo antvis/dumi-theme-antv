@@ -1,9 +1,5 @@
+import { Divider, PageHeader, Space } from 'antd';
 import React from 'react';
-import { PageHeader, Tooltip, Space, Divider } from 'antd';
-import { FormattedMessage } from 'dumi';
-
-import styles from './CodeHeader.module.less';
-
 
 export type CodeHeaderProps = {
   /**
@@ -18,18 +14,12 @@ export type CodeHeaderProps = {
    * GitHub 的地址，用于拼接最后 GitHub 编辑地址
    */
   githubUrl: string;
-
-}
+};
 
 /**
  * 组件的 header
  */
-export const CodeHeader: React.FC<any> = ({
-  title,
-  relativePath,
-  githubUrl,
-}) => {
-
+export const CodeHeader: React.FC<any> = ({ title, relativePath, githubUrl }) => {
   return (
     <PageHeader
       ghost={false}
@@ -47,9 +37,7 @@ export const CodeHeader: React.FC<any> = ({
       //     </a>
       //   </Tooltip>
       // }
-      extra={
-        <Space split={<Divider type="vertical" />}></Space>
-      }
+      extra={<Space split={<Divider type="vertical" />}></Space>}
     />
-  )
-}
+  );
+};
