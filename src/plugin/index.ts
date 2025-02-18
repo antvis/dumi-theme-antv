@@ -81,7 +81,7 @@ export default (api: IApi) => {
     },
   ];
 
-  api.modifyConfig(async (memo) => {
+  api.modifyConfig((memo) => {
     // 配置额外的 remark 插件，用于处理 Markdown 语法树的编译
     memo.extraRemarkPlugins = memo.themeConfig.feedback ? [remarkFeedback] : [];
 
