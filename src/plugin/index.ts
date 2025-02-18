@@ -1,6 +1,7 @@
 import type { IApi } from 'dumi';
 import { winPath } from 'dumi/plugin-utils';
 import * as path from 'path';
+import { determineUserType } from '../utils/user';
 import { AntVReactTechStack } from './antVReactTechStack';
 import { getExamplePaths, getExamplesPageTopics } from './examples';
 import rehypeObservable from './rehypeObservable';
@@ -29,11 +30,12 @@ export default (api: IApi) => {
 
     memo.headScripts = [
       { src: 'https://ur.alipay.com/tracert_a369.js', async: true },
-      { content: `
+      {
+        content: `
           window.TracertCmdCache=window.TracertCmdCache||[];var t=window.Tracert||{_isRenderInit:!0,call:function(){window.TracertCmdCache.push(arguments)}},f=["call","start","config","logPv","info","err","click","expo","pageName","pageState","time","timeEnd","parse","checkExpo","stringify","report","set","before"];for(let i=0;i<f.length;i++){(function(fn){t[fn]=function(){var a=[],l=arguments.length;for (var j=0;j<l;j++) {a.push(arguments[j])}a.unshift(fn);window.TracertCmdCache.push(a)}})(f[i])}window.Tracert=t;window._to=window._to||{};
           window.Tracert.start({});
         `,
-        charset: 'utf-8'
+        charset: 'utf-8',
       },
     ];
 
@@ -80,9 +82,21 @@ export default (api: IApi) => {
     },
   ];
 
-  api.modifyConfig((memo) => {
+  api.modifyConfig(async (memo) => {
     // 配置额外的 remark 插件，用于处理 Markdown 语法树的编译
     memo.extraRemarkPlugins = memo.themeConfig.feedback ? [remarkFeedback] : [];
+
+    const isInternalUser = await determineUserType();
+
+    memo.scripts = [
+      ...(memo.scripts || []),
+      memo.themeConfig.links && isInternalUser
+        ? {
+            src: 'https://links.alipay.com/widgetInit/67a96a296b6fa80490bdf892',
+            async: true,
+          }
+        : undefined,
+    ].filter(Boolean);
 
     return memo;
   });

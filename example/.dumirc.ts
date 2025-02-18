@@ -35,11 +35,12 @@ export default defineConfig({
     es5: false,
     feedback: true, // 是否开启用户反馈功能
     petercat: {
-      show: false,
+      show: true,
       // 以下配置仅在 show 为 true 时生效
       // token 获取方式：https://github.com/petercat-ai/petercat/blob/main/docs/guides/quick_%20assistant_start_cn.md#token-%E8%8E%B7%E5%8F%96
       token: 'your_token',
     },
+    links: true,
     version,
     versions: {
       // 历史版本以及切换下拉菜单

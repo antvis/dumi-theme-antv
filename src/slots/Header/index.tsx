@@ -24,6 +24,7 @@ import type { IC } from '../../types';
 
 import { Assistant } from '@petercatai/assistant';
 import '@petercatai/assistant/style';
+import { determineUserType } from '../../utils/user';
 import styles from './index.module.less';
 
 export type HeaderProps = {
@@ -105,6 +106,9 @@ export type HeaderProps = {
     token: string;
     show: boolean;
   };
+  /** 是否显示 links 研发小蜜 */
+  links?: boolean;
+  /** 页面头部公告 */
   announcement?: {
     title: IC;
     icon: string;
@@ -655,11 +659,26 @@ export const Header: React.FC<Partial<HeaderProps>> = (props) => {
     announcement,
     petercat,
   };
+  const [isInternalUser, setIsInternalUser] = useState<boolean | undefined>(undefined);
+  const isPetercatShow = petercat?.show;
+
+  useEffect(() => {
+    const checkUserType = async () => {
+      const result = await determineUserType();
+      setIsInternalUser(result);
+    };
+
+    if (isPetercatShow) {
+      checkUserType();
+    }
+  }, [isPetercatShow]);
 
   return (
     <>
       <HeaderComponent {...Object.assign({}, headerProps, props)} />
-      {petercat?.show && <Assistant token={petercat?.token} apiDomain="https://api.petercat.ai" />}
+      {isPetercatShow && isInternalUser === false && (
+        <Assistant token={petercat?.token} apiDomain="https://api.petercat.ai" />
+      )}
     </>
   );
 };

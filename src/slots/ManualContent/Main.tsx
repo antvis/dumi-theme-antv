@@ -41,7 +41,7 @@ export const Main: React.FC<PropsWithChildren> = ({ children }) => {
         </div>
         <BackTop
           style={{
-            right: 32,
+            right: 28,
             ...(feedback && { bottom: 100 }),
           }}
         >

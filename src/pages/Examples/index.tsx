@@ -52,7 +52,7 @@ const Example = () => {
               <NavigatorBanner type="prev" post={prev} />
               <NavigatorBanner type="next" post={next} />
             </div>
-            <BackTop style={{ right: 32 }}>
+            <BackTop style={{ right: 28 }}>
               <div className={styles.backTop}>
                 <VerticalAlignTopOutlined />
               </div>
