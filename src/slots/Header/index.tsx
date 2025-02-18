@@ -668,10 +668,25 @@ export const Header: React.FC<Partial<HeaderProps>> = (props) => {
       setIsInternalUser(result);
     };
 
-    if (isPetercatShow) {
-      checkUserType();
+    checkUserType();
+  }, []);
+
+  useEffect(() => {
+    let script: HTMLScriptElement | null = null;
+
+    if (isInternalUser) {
+      script = document.createElement('script');
+      script.src = 'https://links.alipay.com/widgetInit/67a96a296b6fa80490bdf892';
+      script.async = true;
+      document.body.appendChild(script);
     }
-  }, [isPetercatShow]);
+
+    return () => {
+      if (script) {
+        document.body.removeChild(script);
+      }
+    };
+  }, [isInternalUser]);
 
   return (
     <>

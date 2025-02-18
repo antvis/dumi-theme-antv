@@ -1,12 +1,13 @@
 import { VerticalAlignTopOutlined } from '@ant-design/icons';
 import { BackTop, Layout } from 'antd';
-import { useRouteMeta, useSiteData } from 'dumi';
+import { useRouteMeta } from 'dumi';
 import React, { type PropsWithChildren } from 'react';
 import { useMedia } from 'react-use';
 import readingTime from 'reading-time';
 import { useMenu } from '../../hooks/useMenu';
 import { ContentTable } from '../ContentTable';
 import { Feedback } from '../Feedback';
+import { PageFeedback } from '../Feedback/PageFeedback';
 import styles from './index.module.less';
 import { PrevAndNext } from './PrevAndNext';
 import ReadingTime from './ReadingTime';
@@ -14,9 +15,6 @@ import { usePreview } from './usePreview';
 
 export const Main: React.FC<PropsWithChildren> = ({ children }) => {
   const meta = useRouteMeta();
-  const { themeConfig } = useSiteData();
-  const { feedback } = themeConfig;
-
   const text = meta.texts.reduce((prev, next) => prev + next.value, '');
   const { time } = readingTime(text);
 
@@ -41,8 +39,7 @@ export const Main: React.FC<PropsWithChildren> = ({ children }) => {
         </div>
         <BackTop
           style={{
-            right: 28,
-            ...(feedback && { bottom: 100 }),
+            right: 24,
           }}
         >
           <div className={styles.backTop}>
@@ -53,6 +50,7 @@ export const Main: React.FC<PropsWithChildren> = ({ children }) => {
       {showToc && (
         <Layout.Sider theme="light" width={260}>
           <div className={styles.toc}>
+            <PageFeedback />
             <ContentTable />
           </div>
         </Layout.Sider>

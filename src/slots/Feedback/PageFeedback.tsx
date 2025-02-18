@@ -4,15 +4,14 @@ import { PageFeedbackReasonForm } from './PageFeedbackReasonForm';
 import { PageFeedbackVoteButtons } from './PageFeedbackVoteButtons';
 
 const StyledWrapper = styled.div`
+  margin: 2px 4px 8px 4px;
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .08);
+  border-radius: 8px;
+  padding: 10px 12px;
+  width: fit-content;
   background-color: #fff;
-  border-radius: 12px;
-  bottom: 24px;
-  box-shadow: 0 0.5rem 1.2rem #f0f1f2;
-  padding: 10px 18px;
-  position: fixed;
-  right: 12px;
-  width: 262px;
-  z-index: 1000;
+  font-size: 14px;
+}
 `;
 
 export const PageFeedback: React.FC = () => {

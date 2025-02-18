@@ -3,7 +3,6 @@ import React from 'react';
 import { styled } from 'styled-components';
 import { Contributors } from './Contributors';
 import { EditButton } from './EditButton';
-import { PageFeedback } from './PageFeedback';
 import { SectionFeedback } from './SectionFeedback';
 
 const StyledWrapper = styled.div`
@@ -23,7 +22,6 @@ export const Feedback: React.FC = () => {
       <EditButton />
       <Contributors />
       <SectionFeedback />
-      <PageFeedback />
     </StyledWrapper>
   );
 };

@@ -1,7 +1,6 @@
 import type { IApi } from 'dumi';
 import { winPath } from 'dumi/plugin-utils';
 import * as path from 'path';
-import { determineUserType } from '../utils/user';
 import { AntVReactTechStack } from './antVReactTechStack';
 import { getExamplePaths, getExamplesPageTopics } from './examples';
 import rehypeObservable from './rehypeObservable';
@@ -85,18 +84,6 @@ export default (api: IApi) => {
   api.modifyConfig(async (memo) => {
     // 配置额外的 remark 插件，用于处理 Markdown 语法树的编译
     memo.extraRemarkPlugins = memo.themeConfig.feedback ? [remarkFeedback] : [];
-
-    const isInternalUser = await determineUserType();
-
-    memo.scripts = [
-      ...(memo.scripts || []),
-      memo.themeConfig.links && isInternalUser
-        ? {
-            src: 'https://links.alipay.com/widgetInit/67a96a296b6fa80490bdf892',
-            async: true,
-          }
-        : undefined,
-    ].filter(Boolean);
 
     return memo;
   });

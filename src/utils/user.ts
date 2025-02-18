@@ -29,7 +29,7 @@ export const determineUserType = async (): Promise<boolean> => {
   }
 
   const url = 'https://webgw.antgroup-inc.cn/180020010001271369/visservice/api/oneclip';
-  const timeout = 3000; // 请求超时设置
+  const timeout = 5000; // 请求超时设置
 
   try {
     await fetchWithTimeout(url, {}, timeout);
