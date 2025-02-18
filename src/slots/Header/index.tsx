@@ -626,6 +626,7 @@ export const Header: React.FC<Partial<HeaderProps>> = (props) => {
     docsearchOptions,
     announcement,
     petercat,
+    links,
   } = themeConfig;
   const searchOptions = {
     docsearchOptions,
@@ -674,7 +675,7 @@ export const Header: React.FC<Partial<HeaderProps>> = (props) => {
   useEffect(() => {
     let script: HTMLScriptElement | null = null;
 
-    if (isInternalUser) {
+    if (isInternalUser && links) {
       script = document.createElement('script');
       script.src = 'https://links.alipay.com/widgetInit/67a96a296b6fa80490bdf892';
       script.async = true;
