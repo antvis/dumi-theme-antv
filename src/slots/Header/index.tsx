@@ -25,6 +25,7 @@ import type { IC } from '../../types';
 import { Assistant } from '@petercatai/assistant';
 import '@petercatai/assistant/style';
 import { determineUserType } from '../../utils/user';
+import { getPathname } from '../utils';
 import styles from './index.module.less';
 
 export type HeaderProps = {
@@ -233,11 +234,12 @@ const HeaderComponent: React.FC<HeaderProps> = ({
     ...logo,
   };
 
+  const pathname = getPathname();
   useEffect(() => {
     if (popupMenuVisible) {
       setPopupMenuVisible(false);
     }
-  }, [window.location.pathname]);
+  }, [pathname]);
 
   // 移动端下弹出菜单时，禁止页面滚动
   useEffect(() => {
@@ -274,7 +276,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
     >
       {
         /** 最左侧的菜单，一般是 教程、API、示例，或者其他自定义，有配置文件中的 `navs` 决定 */
-        size(navs) ? <Navs navs={navs} path={window.location.pathname} /> : null
+        size(navs) ? <Navs navs={navs} path={getPathname()} /> : null
       }
 
       {
@@ -588,7 +590,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
             <>
               <span className={styles.divider} />
               <h2 className={styles.subProduceName}>
-                <a href={window.location.pathname.startsWith('/en') ? '/en' : '/'}>{subTitle}</a>
+                <a href={getPathname().startsWith('/en') ? '/en' : '/'}>{subTitle}</a>
               </h2>
             </>
           )}
@@ -633,7 +635,7 @@ export const Header: React.FC<Partial<HeaderProps>> = (props) => {
   };
 
   const locale = useLocale();
-  const path = window.location.pathname;
+  const path = getPathname();
   const isHomePage = path === '/' || path === `/${locale.id}` || path === `/${locale.id}/`;
 
   const headerProps = {

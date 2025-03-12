@@ -2,6 +2,7 @@
 /dist
 /example/node_modules
 /example/dist
+/example/server
 /example/.dumi/theme
 /example/.dumi/tmp
 /example/.dumi/tmp-production
@@ -12,3 +13,7 @@
 pnpm-lock.yaml
 yarn.lock
 package-lock.json
+
+#ide
+.lh
+.history

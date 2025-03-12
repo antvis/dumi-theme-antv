@@ -9,6 +9,7 @@ import { Footer } from '../../slots/Footer';
 import { Header } from '../../slots/Header';
 import NavigatorBanner from '../../slots/Header/Products/NavigatorBanner';
 import { usePrevAndNext } from '../../slots/hooks';
+import { getPathname } from '../../slots/utils';
 import { ExampleTopic } from '../../types';
 import { Article } from './components/Article';
 import { ExampleTopicMenu } from './components/ExampleTopicMenu';
@@ -34,11 +35,12 @@ const Example = () => {
 
   // 为 zh 做兜底
   useEffect(() => {
-    const p = window.location.pathname;
+    const p = getPathname();
     if (p.includes('/zh/')) {
       nav(p.replace('/zh/', '/'));
     }
   }, []);
+
   return (
     <>
       <SEO title={title} />

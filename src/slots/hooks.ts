@@ -1,15 +1,17 @@
 import { useLocale } from 'dumi';
 import { get } from 'lodash-es';
 import { useEffect, useState } from 'react';
-import { NavigatorBannerProps } from './ManualContent/NavigatorBanner';
+import type { NavigatorBannerProps } from './ManualContent/NavigatorBanner';
 
 export const useChinaMirrorHost = (): [boolean] => {
   const [isChinaMirrorHost, setIsChinaMirrorHost] = useState(false);
+
   useEffect(() => {
     if (window.location.host.includes('gitee.io') && window.location.host.includes('antv')) {
       setIsChinaMirrorHost(true);
     }
   }, []);
+
   return [isChinaMirrorHost];
 };
 

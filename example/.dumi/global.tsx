@@ -1,11 +1,11 @@
+import * as G2 from '@antv/g2';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import * as G2 from '@antv/g2';
 
 /**
  * 增加自己的全局变量，用于 DEMO 中的依赖，以 G2 为例
  */
-if (window) {
+if (typeof window !== 'undefined' && window) {
   (window as any).g2 = extendG2(G2);
   (window as any).globalAdd = (x, y) => x + y;
   (window as any).globalCard = globalCard;
@@ -44,8 +44,7 @@ function extendG2(g2) {
     ].reverse(),
   ) => {
     const autoFit = Object.keys(obj).find((d) => d === 'autoFit');
-    const filter = ([key, _]) =>
-      !autoFit ? true : key === 'width' || key === 'height' ? false : true;
+    const filter = ([key, _]) => (!autoFit ? true : key === 'width' || key === 'height' ? false : true);
     return Object.fromEntries(
       Object.entries(obj)
         .sort(([a], [b]) => keys.indexOf(b) - keys.indexOf(a))

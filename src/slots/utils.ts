@@ -1,11 +1,16 @@
 import { Status, TreeNode } from '../types';
+import { isBrowser } from '../utils/env';
 import { icWithLocale } from './hooks';
+
+export function getPathname(): string {
+  return isBrowser() ? window.location.pathname : '';
+}
 
 /**
  * 统一去掉中英文前缀
  */
 export function getCurrentPathname(): string {
-  return window.location.pathname.replace('/zh/', '/').replace('/en/', '/');
+  return getPathname().replace('/zh/', '/').replace('/en/', '/');
 }
 
 export async function ping(): Promise<Status> {

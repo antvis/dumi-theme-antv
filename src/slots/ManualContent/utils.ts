@@ -1,7 +1,8 @@
 import { isEmpty } from 'lodash-es';
+import { getPathname } from '../utils';
 
 export function getOpenKeys() {
-  const pathname = window.location.pathname.replace('/docs/', '/').replace('/zh/', '/');
+  const pathname = getPathname().replace('/docs/', '/').replace('/zh/', '/');
   const pathArr = pathname.split('/');
   const openKeys = [];
   for (let i = pathArr.length; i > 0; i--) {
@@ -16,13 +17,14 @@ export function getOpenKeys() {
  *  /en/api  -->  /en/api
  */
 export function getBaseRoute() {
-  let matchRoute = window.location.pathname;
+  const pathname = getPathname();
+  let matchRoute = pathname;
   // 兼容 zh
   matchRoute = matchRoute.replace('/zh/', '/');
   // 兼容带有docs的route
   matchRoute = matchRoute.replace('/docs', '');
   // 查找 baseRoute
-  const reg = window.location.pathname.startsWith('/en') ? /(\/[A-z]*\/?\/[A-z]*)\/?/ : /(\/[A-z]*)\/?/;
+  const reg = pathname.startsWith('/en') ? /(\/[A-z]*\/?\/[A-z]*)\/?/ : /(\/[A-z]*)\/?/;
   const mainRoute = matchRoute.match(reg);
   return mainRoute![1];
 }
