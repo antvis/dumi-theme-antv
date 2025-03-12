@@ -61,7 +61,7 @@ export const Navs: React.FC<NavProps> = ({ navs, path }) => {
             <Dropdown
               className={styles.ecoSystems}
               placement="bottom"
-              overlay={
+              menu={
                 <Menu>
                   {nav.dropdownItems.map(({ name, url, target }) => {
                     const displayName = name[locale.id];

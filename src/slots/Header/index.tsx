@@ -283,7 +283,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
           <li>
             <Dropdown
               className={styles.ecoSystems}
-              overlay={
+              menu={
                 <Menu>
                   {map(ecosystems, ({ url, name: ecosystemName }) => (
                     <Menu.Item key={ecosystemName?.[lang]}>
@@ -332,7 +332,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
               </div>
             </div>
           }
-          visible={chinaMirrorHintVisible}
+          open={chinaMirrorHintVisible}
           placement="bottomRight"
           align={{
             offset: [-12, -16],
@@ -355,7 +355,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
 
       {showChinaMirror && !isWide && (
         <Modal
-          visible={chinaMirrorHintVisible}
+          open={chinaMirrorHintVisible}
           cancelText="不再提醒"
           okText="立即前往"
           onCancel={() => {
@@ -460,7 +460,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
           <li className={cx(styles.navIcon, styles.languageSwitcher)}>
             <Dropdown
               placement="bottomRight"
-              overlay={
+              menu={
                 <Menu
                   defaultSelectedKeys={[lang]}
                   selectable
