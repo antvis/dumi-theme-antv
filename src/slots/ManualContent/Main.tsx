@@ -1,17 +1,18 @@
 import { VerticalAlignTopOutlined } from '@ant-design/icons';
 import { BackTop, Layout } from 'antd';
 import { useRouteMeta } from 'dumi';
-import React, { type PropsWithChildren } from 'react';
+import React, { lazy, type PropsWithChildren } from 'react';
 import { useMedia } from 'react-use';
 import readingTime from 'reading-time';
 import { useMenu } from '../../hooks/useMenu';
 import { ContentTable } from '../ContentTable';
 import { Feedback } from '../Feedback';
-import { PageFeedback } from '../Feedback/PageFeedback';
 import styles from './index.module.less';
 import { PrevAndNext } from './PrevAndNext';
 import ReadingTime from './ReadingTime';
 import { usePreview } from './usePreview';
+
+const PageFeedback = lazy(() => import('../Feedback/PageFeedback'));
 
 export const Main: React.FC<PropsWithChildren> = ({ children }) => {
   const meta = useRouteMeta();
@@ -34,7 +35,9 @@ export const Main: React.FC<PropsWithChildren> = ({ children }) => {
             <ReadingTime readingTime={time} className={styles.readtime} />
           </div>
           <div className={styles.markdown}>{children}</div>
-          <Feedback />
+          <div style={{ marginTop: '40px' }}>
+            <Feedback />
+          </div>
           <PrevAndNext />
         </div>
         <BackTop

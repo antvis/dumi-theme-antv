@@ -19,7 +19,7 @@ export type CodeHeaderProps = {
 /**
  * 组件的 header
  */
-export const CodeHeader: React.FC<any> = ({ title, relativePath, githubUrl }) => {
+const CodeHeader: React.FC<any> = ({ title, relativePath, githubUrl }) => {
   return (
     <PageHeader
       ghost={false}
@@ -41,3 +41,5 @@ export const CodeHeader: React.FC<any> = ({ title, relativePath, githubUrl }) =>
     />
   );
 };
+
+export default CodeHeader;

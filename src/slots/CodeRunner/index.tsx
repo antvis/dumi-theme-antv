@@ -2,13 +2,16 @@ import { useLocale, useSiteData } from 'dumi';
 import { noop } from 'lodash-es';
 import React, { useState } from 'react';
 import SplitPane from 'react-split-pane';
-import { ExampleTopic } from '../../types';
+import ClientOnly from '../../common/ClientOnly';
+import InViewSuspense from '../../common/InViewSuspense';
+import type { ExampleTopic } from '../../types';
 import { NotFound } from '../404';
-import { CodeEditor } from '../CodeEditor';
-import { CodePreview } from '../CodePreview';
-import { CodeHeader } from '../CodePreview/CodeHeader';
+import CodeHeader from '../CodePreview/CodeHeader';
 import { ic } from '../hooks';
 import { getDemoInfo } from './utils';
+
+const CodeEditor = React.lazy(() => import('../CodeEditor'));
+const CodePreview = React.lazy(() => import('../CodePreview'));
 
 type CodeRunnerProps = {
   isPlayground?: boolean;
@@ -24,7 +27,7 @@ type CodeRunnerProps = {
 /**
  * 代码编辑器 + 代码预览区域
  */
-export const CodeRunner: React.FC<CodeRunnerProps> = ({
+const CodeRunner: React.FC<CodeRunnerProps> = ({
   exampleTopics,
   topic,
   example,
@@ -52,20 +55,30 @@ export const CodeRunner: React.FC<CodeRunnerProps> = ({
   const exampleId = `${topic}_${example}_${demo}`;
 
   return (
-    // @ts-ignore
-    <SplitPane split="vertical" defaultSize={`${(1 - size) * 100}%`} minSize={100}>
-      <CodePreview exampleId={exampleId} error={error} header={header} isPlayground={isPlayground} />
-      <CodeEditor
-        exampleId={exampleId}
-        source={source}
-        relativePath={relativePath}
-        replaceId={replaceId}
-        onError={setError}
-        onFullscreen={setFullscreen}
-        onDestroy={noop}
-        onReady={noop}
-        playground={playground}
-      />
-    </SplitPane>
+    <InViewSuspense fallback={null}>
+      {/* @ts-ignore */}
+      <SplitPane split="vertical" defaultSize={`${(1 - size) * 100}%`} minSize={100}>
+        {/* 代码预览区域 */}
+
+        <CodePreview exampleId={exampleId} error={error} header={header} isPlayground={isPlayground} />
+
+        {/* 代码编辑区域 */}
+        <ClientOnly>
+          <CodeEditor
+            exampleId={exampleId}
+            source={source}
+            relativePath={relativePath}
+            replaceId={replaceId}
+            onError={setError}
+            onFullscreen={setFullscreen}
+            onDestroy={noop}
+            onReady={noop}
+            playground={playground}
+          />
+        </ClientOnly>
+      </SplitPane>
+    </InViewSuspense>
   );
 };
+
+export default CodeRunner;

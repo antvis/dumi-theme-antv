@@ -3,7 +3,7 @@ import { useIntl, useRouteMeta, useSiteData } from 'dumi';
 import React from 'react';
 import { useGithubRepo } from '../../utils/github';
 
-export const EditButton: React.FC = () => {
+const EditButton: React.FC = () => {
   const meta = useRouteMeta();
   const { formatMessage } = useIntl();
   const { themeConfig } = useSiteData();
@@ -28,3 +28,5 @@ export const EditButton: React.FC = () => {
     </a>
   );
 };
+
+export default EditButton;

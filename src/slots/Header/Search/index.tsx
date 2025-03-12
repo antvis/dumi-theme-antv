@@ -2,9 +2,9 @@ import { SearchOutlined } from '@ant-design/icons';
 import { Popover } from 'antd';
 import { useIntl, useSiteData, useSiteSearch } from 'dumi';
 import React, { useEffect, useMemo, useState } from 'react';
-import { SearchResult } from './SearchResult';
 import { getSearchResults } from './helper';
 import styles from './index.module.less';
+import { SearchResult } from './SearchResult';
 
 export const Search = () => {
   const intl = useIntl();

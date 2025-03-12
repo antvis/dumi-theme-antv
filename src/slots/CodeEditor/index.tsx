@@ -8,8 +8,8 @@ import parserBabel from 'prettier/parser-babel';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { bind, clear } from 'size-sensor';
 import Loading from '../Loading';
-import { EDITOR_TABS, Toolbar } from './Toolbar';
 import styles from './index.module.less';
+import { EDITOR_TABS, Toolbar } from './Toolbar';
 import { compile, execute, replaceInsertCss } from './utils';
 
 loader.config({
@@ -84,7 +84,7 @@ export type CodeEditorProps = {
 /**
  * 代码编辑器
  */
-export const CodeEditor: React.FC<CodeEditorProps> = ({
+const CodeEditor: React.FC<CodeEditorProps> = ({
   title = '',
   source,
   relativePath = '',
@@ -441,3 +441,5 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
     </div>
   );
 };
+
+export default CodeEditor;

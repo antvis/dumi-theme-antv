@@ -18,7 +18,7 @@ const StyledWrapper = styled.div`
   transition: top 0.3s ease-in-out, right 0.3s ease-in-out;
 `;
 
-export const SectionFeedback: React.FC = () => {
+const SectionFeedback: React.FC = () => {
   const feedbackState = useSnapshot(feedbackStore);
   const location = useLocation();
 
@@ -89,8 +89,8 @@ export const SectionFeedback: React.FC = () => {
   );
 };
 
-const findClosetElement = (e: MouseEvent, elements: NodeListOf<Element>) => {
-  let closestElement = null;
+const findClosetElement = (e: MouseEvent, elements: NodeListOf<Element>): Element | null => {
+  let closestElement: Element | null = null;
   let closestDistance = Infinity;
 
   elements.forEach((element) => {
@@ -106,3 +106,5 @@ const findClosetElement = (e: MouseEvent, elements: NodeListOf<Element>) => {
   });
   return closestElement;
 };
+
+export default SectionFeedback;

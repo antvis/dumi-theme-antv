@@ -32,7 +32,7 @@ function getErrorMessage(e): string {
  * 1. 一些 header 菜单
  * 2. 错误预览
  */
-export const CodePreview: React.FC<CodePreviewProps> = ({ isPlayground, exampleId, header, error }) => {
+const CodePreview: React.FC<CodePreviewProps> = ({ isPlayground, exampleId, header, error }) => {
   return (
     <div className={styles.preview}>
       {isPlayground ? null : <div className={styles.header}>{header}</div>}
@@ -53,3 +53,5 @@ export const CodePreview: React.FC<CodePreviewProps> = ({ isPlayground, exampleI
     </div>
   );
 };
+
+export default CodePreview;

@@ -8,7 +8,7 @@ import SEO from '../../common/SEO';
 import { ThemeAntVContext } from '../../context';
 import { store } from '../../model';
 import { API } from '../../slots/API';
-import { CodeRunner } from '../../slots/CodeRunner';
+import CodeRunner from '../../slots/CodeRunner';
 import { getDemoInfo } from '../../slots/CodeRunner/utils';
 import { ExampleSider } from '../../slots/ExampleSider';
 import { Header } from '../../slots/Header';

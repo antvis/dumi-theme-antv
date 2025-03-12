@@ -2,9 +2,12 @@ import { defineConfig } from 'dumi';
 import { repository, version } from './package.json';
 
 export default defineConfig({
-  ssr: {
-    builder: 'mako',
-  },
+  ssr:
+    process.env.NODE_ENV === 'production'
+      ? {
+          builder: 'mako',
+        }
+      : false,
   exportStatic: {},
   mako: {},
   // chainWebpack: (memo) => {

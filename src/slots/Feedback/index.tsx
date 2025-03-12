@@ -1,13 +1,10 @@
 import { useSiteData } from 'dumi';
-import React from 'react';
-import { styled } from 'styled-components';
-import { Contributors } from './Contributors';
-import { EditButton } from './EditButton';
-import { SectionFeedback } from './SectionFeedback';
+import React, { lazy } from 'react';
+import InViewSuspense from '../../common/InViewSuspense';
 
-const StyledWrapper = styled.div`
-  margin-top: 40px;
-`;
+const EditButton = lazy(() => import('./EditButton'));
+const Contributors = lazy(() => import('./Contributors'));
+const SectionFeedback = lazy(() => import('./SectionFeedback'));
 
 export const Feedback: React.FC = () => {
   const { themeConfig } = useSiteData();
@@ -18,10 +15,10 @@ export const Feedback: React.FC = () => {
   }
 
   return (
-    <StyledWrapper>
+    <InViewSuspense>
       <EditButton />
       <Contributors />
       <SectionFeedback />
-    </StyledWrapper>
+    </InViewSuspense>
   );
 };

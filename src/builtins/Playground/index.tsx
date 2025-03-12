@@ -3,8 +3,7 @@ import { get } from 'lodash-es';
 import React, { useContext } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { ThemeAntVContext } from '../../context';
-import { CodeRunner } from '../../slots/CodeRunner';
-
+import CodeRunner from '../../slots/CodeRunner';
 import styles from './index.module.less';
 
 export type PlaygroundProps = {

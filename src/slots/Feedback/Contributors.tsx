@@ -31,7 +31,7 @@ const StyledContributorsWrapper = styled.div`
   }
 `;
 
-export const Contributors: React.FC = () => {
+const Contributors: React.FC = () => {
   const { formatMessage } = useIntl();
   const { sitePackagePath = '/packages/site' } = useSiteData().themeConfig;
   const { owner, repo, defaultBranch } = useGithubRepo();
@@ -57,3 +57,5 @@ export const Contributors: React.FC = () => {
     </StyledContributorsWrapper>
   );
 };
+
+export default Contributors;
