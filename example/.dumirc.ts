@@ -2,6 +2,21 @@ import { defineConfig } from 'dumi';
 import { repository, version } from './package.json';
 
 export default defineConfig({
+  ssr: {
+    builder: 'mako',
+  },
+  exportStatic: {},
+  mako: {},
+  // chainWebpack: (memo) => {
+  //   memo.merge({
+  //     optimization: {
+  //       minimize: false,
+  //       moduleIds: 'named',
+  //       chunkIds: 'named'
+  //     }
+  //   })
+  //   return memo
+  // },
   locales: [
     { id: 'zh', name: '中文' },
     { id: 'en', name: 'English' },

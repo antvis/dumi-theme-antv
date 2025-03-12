@@ -1,0 +1,9 @@
+{
+  "optimization": {
+    "skipModules": false,
+    "concatenateModules": false
+  },
+  "hmr": false,
+  "devtool": false,
+  "dynamicImportToRequire":true
+}
