@@ -1,15 +1,15 @@
 import { useLocation, useOutlet, useSiteData } from 'dumi';
 import React, { useEffect } from 'react';
-import { getCurrentPathname } from '../slots/utils';
-import { Manual } from './entry/Manual';
 import IndexLayout from './IndexLayout';
+import ManualLayout from './ManualLayout';
 
 // 用户手动添加自己的
 import '../slots/_.less';
 import '../slots/global';
+import { getPurePathname } from '../utils/location';
 
 /**
- * DocuLayout 是 dumi2 的内置 layout 入口，在这里使用页面路径进行区分成自己不同的 Layout。
+ * DocLayout 是 dumi2 的内置 layout 入口，在这里使用页面路径进行区分成自己不同的 Layout。
  */
 export default () => {
   const { themeConfig, loading } = useSiteData();
@@ -29,7 +29,9 @@ export default () => {
   }, []);
 
   const outlet = useOutlet();
-  const { hash } = useLocation();
+  const location = useLocation();
+  const { pathname, hash } = location;
+  const purePathname = getPurePathname(pathname);
 
   // 监听 hash 变更，跳转到锚点位置
   // 同时监听页面 loading 状态，因为路由按需加载时需要等待页面渲染完毕才能找到锚点位置
@@ -38,14 +40,12 @@ export default () => {
 
     if (id) {
       const elm = document.getElementById(decodeURIComponent(id));
-
       if (elm) document.documentElement.scrollTo(0, elm.offsetTop - 80);
     }
   }, [loading, hash]);
 
-  const p = getCurrentPathname();
   // 首页
-  if (p === '/' || p === '/zh' || p === '/en' || p === '/en/') {
+  if (['/', ''].includes(purePathname)) {
     return <IndexLayout>{outlet}</IndexLayout>;
   }
 
@@ -54,8 +54,8 @@ export default () => {
     .filter((nav) => nav.slug && nav.slug.startsWith('docs/'))
     .map((nav) => nav.slug && nav.slug.split('/').find((item) => item !== 'docs'));
 
-  if (docsRoutes.some((route) => p.startsWith(`/${route}`) || p.startsWith(`/docs/${route}`))) {
-    return <Manual>{outlet}</Manual>;
+  if (docsRoutes.some((slug) => purePathname.startsWith(`/${slug}`) || purePathname.startsWith(`/docs/${slug}`))) {
+    return <ManualLayout>{outlet}</ManualLayout>;
   }
 
   return outlet;

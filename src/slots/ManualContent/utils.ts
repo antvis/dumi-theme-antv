@@ -1,23 +1,10 @@
 import { isEmpty } from 'lodash-es';
-import { getPathname } from '../utils';
-
-export function getOpenKeys() {
-  const pathname = getPathname().replace('/docs/', '/').replace('/zh/', '/');
-  const pathArr = pathname.split('/');
-  const openKeys = [];
-  for (let i = pathArr.length; i > 0; i--) {
-    const tem = pathArr.slice(0, i);
-    openKeys.push(tem.join('/'));
-  }
-  return openKeys;
-}
 
 /**
  *  /api/xxx -->  /api
  *  /en/api  -->  /en/api
  */
-export function getBaseRoute() {
-  const pathname = getPathname();
+export function getBaseRoute(pathname: string) {
   let matchRoute = pathname;
   // 兼容 zh
   matchRoute = matchRoute.replace('/zh/', '/');

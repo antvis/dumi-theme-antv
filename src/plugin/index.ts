@@ -1,5 +1,6 @@
 import type { IApi } from 'dumi';
 import { winPath } from 'dumi/plugin-utils';
+import fs from 'fs';
 import * as path from 'path';
 import { AntVReactTechStack } from './antVReactTechStack';
 import { getExamplePaths, getExamplesPageTopics } from './examples';
@@ -95,38 +96,45 @@ export default function ThemeAntVContextWrapper() {
       {
         id: 'dumi-theme-antv-homepage',
         absPath: '/',
+        path: '',
         file: `${PAGES_DIR}/Index`,
       },
       {
-        id: 'dumi-theme-antv-en-homepage',
+        id: 'dumi-theme-antv-homepage-en',
         absPath: '/en/',
+        path: 'en',
         file: `${PAGES_DIR}/Index`,
       },
       {
-        id: 'dumi-theme-antv-zh-homepage',
+        id: 'dumi-theme-antv-homepage-zh',
         absPath: '/zh/',
+        path: 'zh',
         file: `${PAGES_DIR}/Index`,
       },
       // Examples gallery page.
       {
         id: 'dumi-theme-antv-example-list-zh',
         absPath: '/examples',
+        path: 'examples',
         file: `${PAGES_DIR}/Examples`,
       },
       {
         id: 'dumi-theme-antv-example-list-lang',
         absPath: '/:language/examples',
+        path: ':language/examples',
         file: `${PAGES_DIR}/Examples`,
       },
       // single example preview page.
       {
         id: 'dumi-theme-antv-single-example-zh',
         absPath: '/examples/:topic/:example',
+        path: 'examples/:topic/:example',
         file: `${PAGES_DIR}/Example`,
       },
       {
         id: 'dumi-theme-antv-single-example-lang',
         absPath: '/:language/examples/:topic/:example',
+        path: ':language/examples/:topic/:example',
         file: `${PAGES_DIR}/Example`,
       },
     ];
@@ -134,7 +142,7 @@ export default function ThemeAntVContextWrapper() {
     extraRoutesList.forEach((itemRoute) => {
       routes[itemRoute.id] = {
         id: itemRoute.id,
-        path: itemRoute.absPath.slice(1),
+        path: itemRoute.path,
         absPath: itemRoute.absPath,
         file: itemRoute.file,
         parentId: 'DocLayout',
@@ -144,6 +152,8 @@ export default function ThemeAntVContextWrapper() {
 
     // replace default 404
     routes['404'].file = `${PAGES_DIR}/404`;
+
+    fs.writeFileSync(path.resolve(__dirname, '../routes.json'), JSON.stringify(routes, null, 2), 'utf-8');
 
     return routes;
   });

@@ -1,27 +1,30 @@
 import React, { lazy, type PropsWithChildren } from 'react';
 import InViewSuspense from '../../common/InViewSuspense';
+import SEO from '../../common/SEO';
+import { ManualContent } from '../../slots/ManualContent';
 
 const Header = lazy(() => import('../../slots/Header'));
 const Footer = lazy(() => import('../../slots/Footer'));
 
 /**
- * 首页布局
+ * Manual 路由下的入口
  */
-const IndexLayout: React.FC<PropsWithChildren> = (props) => {
-  const { children } = props;
+const ManualLayout: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <>
+      <SEO />
+
       <InViewSuspense>
-        <Header />
+        <Header isHomePage={false} />
       </InViewSuspense>
 
-      <div style={{ minHeight: '100vh' }}>{children}</div>
+      <ManualContent>{children}</ManualContent>
 
       <InViewSuspense>
-        <Footer />
+        <Footer isDynamicFooter />
       </InViewSuspense>
     </>
   );
 };
 
-export default IndexLayout;
+export default ManualLayout;

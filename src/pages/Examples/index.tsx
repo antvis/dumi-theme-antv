@@ -6,7 +6,6 @@ import InViewSuspense from '../../common/InViewSuspense';
 import SEO from '../../common/SEO';
 import { ThemeAntVContext } from '../../context';
 import useLocale, { type LocaleMap } from '../../hooks/useLocale';
-import { getPathname } from '../../slots/utils';
 import { ExampleTopic } from '../../types';
 import { Article } from './components/Article';
 import ExampleTopicMenu from './components/ExampleTopicMenu';
@@ -39,7 +38,7 @@ const Examples = () => {
 
   // 为 zh 做兜底
   useEffect(() => {
-    const p = getPathname();
+    const p = window.location.pathname;
     if (p.includes('/zh/')) {
       nav(p.replace('/zh/', '/'));
     }
@@ -48,9 +47,11 @@ const Examples = () => {
   return (
     <>
       <SEO title={locale.title} />
+
       <InViewSuspense>
         <Header isHomePage={false} />
       </InViewSuspense>
+
       <AntLayout hasSider className={styles.layout}>
         <InViewSuspense>
           <ExampleTopicMenu exampleTopics={exampleTopics} />

@@ -420,6 +420,48 @@
     "parentId": "dumi-context-layout",
     "file": "/Users/banxuan/Documents/dumi-theme-antv/example/node_modules/_dumi@2.4.18@dumi/dist/client/pages/Demo/index.js"
   },
+  "dumi-theme-antv-homepage": {
+    "id": "dumi-theme-antv-homepage",
+    "path": "",
+    "absPath": "/",
+    "file": "/Users/banxuan/Documents/dumi-theme-antv/src/pages/Index",
+    "parentId": "DocLayout",
+    "meta": {
+      "frontmatter": {
+        "title": "mock-meta"
+      },
+      "texts": [],
+      "toc": []
+    }
+  },
+  "dumi-theme-antv-homepage-en": {
+    "id": "dumi-theme-antv-homepage-en",
+    "path": "en",
+    "absPath": "/en/",
+    "file": "/Users/banxuan/Documents/dumi-theme-antv/src/pages/Index",
+    "parentId": "DocLayout",
+    "meta": {
+      "frontmatter": {
+        "title": "mock-meta"
+      },
+      "texts": [],
+      "toc": []
+    }
+  },
+  "dumi-theme-antv-homepage-zh": {
+    "id": "dumi-theme-antv-homepage-zh",
+    "path": "zh",
+    "absPath": "/zh/",
+    "file": "/Users/banxuan/Documents/dumi-theme-antv/src/pages/Index",
+    "parentId": "DocLayout",
+    "meta": {
+      "frontmatter": {
+        "title": "mock-meta"
+      },
+      "texts": [],
+      "toc": []
+    }
+  },
   "dumi-theme-antv-example-list-zh": {
     "id": "dumi-theme-antv-example-list-zh",
     "path": "examples",
@@ -428,7 +470,7 @@
     "parentId": "DocLayout",
     "meta": {
       "frontmatter": {
-        "title": "mock-meta1"
+        "title": "mock-meta"
       },
       "texts": [],
       "toc": []
@@ -442,7 +484,7 @@
     "parentId": "DocLayout",
     "meta": {
       "frontmatter": {
-        "title": "mock-meta1"
+        "title": "mock-meta"
       },
       "texts": [],
       "toc": []
@@ -456,7 +498,21 @@
     "parentId": "DocLayout",
     "meta": {
       "frontmatter": {
-        "title": "图表示例"
+        "title": "mock-meta"
+      },
+      "texts": [],
+      "toc": []
+    }
+  },
+  "dumi-theme-antv-single-example-lang": {
+    "id": "dumi-theme-antv-single-example-lang",
+    "path": ":language/examples/:topic/:example",
+    "absPath": "/:language/examples/:topic/:example",
+    "file": "/Users/banxuan/Documents/dumi-theme-antv/src/pages/Example",
+    "parentId": "DocLayout",
+    "meta": {
+      "frontmatter": {
+        "title": "mock-meta"
       },
       "texts": [],
       "toc": []

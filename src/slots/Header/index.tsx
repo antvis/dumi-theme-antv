@@ -14,6 +14,7 @@ import { get, map, size } from 'lodash-es';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMedia } from 'react-use';
+import { getPurePathname } from '../../utils/location';
 import { ic } from '../hooks';
 import { INav, Navs } from './Navs';
 import { Products } from './Products';
@@ -24,8 +25,8 @@ import type { IC } from '../../types';
 
 import { Assistant } from '@petercatai/assistant';
 import '@petercatai/assistant/style';
+import { useLocation } from 'react-router-dom';
 import { determineUserType } from '../../utils/user';
-import { getPathname } from '../utils';
 import styles from './index.module.less';
 
 export type HeaderProps = {
@@ -234,7 +235,8 @@ const HeaderComponent: React.FC<HeaderProps> = ({
     ...logo,
   };
 
-  const pathname = getPathname();
+  const { pathname } = useLocation();
+
   useEffect(() => {
     if (popupMenuVisible) {
       setPopupMenuVisible(false);
@@ -276,7 +278,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
     >
       {
         /** 最左侧的菜单，一般是 教程、API、示例，或者其他自定义，有配置文件中的 `navs` 决定 */
-        size(navs) ? <Navs navs={navs} path={getPathname()} /> : null
+        size(navs) ? <Navs navs={navs} path={pathname} /> : null
       }
 
       {
@@ -569,9 +571,9 @@ const HeaderComponent: React.FC<HeaderProps> = ({
           className={styles.banner}
           message={
             <div className={styles.topAlert}>
-              {announcement.icon && <img src={announcement.icon} />}
+              {announcement?.icon && <img src={announcement.icon} />}
               <div>{announcementTitle}</div>
-              {announcementLinkTitle && <a href={announcement.link.url}>{announcementLinkTitle}</a>}
+              {announcementLinkTitle && <a href={announcement?.link.url}>{announcementLinkTitle}</a>}
             </div>
           }
           type="info"
@@ -590,7 +592,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
             <>
               <span className={styles.divider} />
               <h2 className={styles.subProduceName}>
-                <a href={getPathname().startsWith('/en') ? '/en' : '/'}>{subTitle}</a>
+                <a href={pathname.startsWith('/en') ? '/en' : '/'}>{subTitle}</a>
               </h2>
             </>
           )}
@@ -634,9 +636,8 @@ const Header: React.FC<Partial<HeaderProps>> = (props) => {
     docsearchOptions,
   };
 
-  const locale = useLocale();
-  const path = getPathname();
-  const isHomePage = path === '/' || path === `/${locale.id}` || path === `/${locale.id}/`;
+  const { pathname } = useLocation();
+  const isHomePage = ['/', ''].includes(getPurePathname(pathname));
 
   const headerProps = {
     subTitle: title,

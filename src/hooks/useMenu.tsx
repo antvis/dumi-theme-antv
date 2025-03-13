@@ -13,7 +13,7 @@ export const useMenu = () => {
   const {
     themeConfig: { docs, navs },
   } = useSiteData();
-  const baseRoute = getBaseRoute();
+  const baseRoute = getBaseRoute(pathname);
   const navigate = useNavigate();
 
   const locale = useLocale();
