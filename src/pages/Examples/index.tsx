@@ -3,7 +3,7 @@ import { Layout as AntLayout, BackTop } from 'antd';
 import React, { lazy, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import InViewSuspense from '../../common/InViewSuspense';
-import SEO from '../../common/SEO';
+import CommonHelmet from '../../common/CommonHelmet';
 import { ThemeAntVContext } from '../../context';
 import useLocale, { type LocaleMap } from '../../hooks/useLocale';
 import Footer from '../../slots/Footer';
@@ -46,7 +46,7 @@ const Examples = () => {
 
   return (
     <>
-      <SEO title={locale.title} />
+      <CommonHelmet title={locale.title} />
 
       <Header isHomePage={false} />
 

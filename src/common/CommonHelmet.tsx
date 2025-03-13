@@ -1,14 +1,14 @@
 import { Helmet, useLocale, useRouteMeta, useSiteData } from 'dumi';
 import React from 'react';
 
-interface SEOProps {
+interface CommonHelmetProps {
   titleSuffix?: string;
   title?: string;
   description?: string;
   meta?: any[];
 }
 
-const SEO: React.FC<SEOProps> = ({
+const CommonHelmet: React.FC<CommonHelmetProps> = ({
   titleSuffix,
   title: propTitle,
   description: propDescription,
@@ -48,4 +48,4 @@ const SEO: React.FC<SEOProps> = ({
   );
 };
 
-export default SEO;
+export default CommonHelmet;

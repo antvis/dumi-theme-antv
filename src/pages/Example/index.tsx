@@ -5,7 +5,7 @@ import React, { useContext } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useSnapshot } from 'valtio';
 import InViewSuspense from '../../common/InViewSuspense';
-import SEO from '../../common/SEO';
+import CommonHelmet from '../../common/CommonHelmet';
 import { ThemeAntVContext } from '../../context';
 import { store } from '../../model';
 import { API } from '../../slots/API';
@@ -94,7 +94,7 @@ const Example: React.FC = () => {
 
   return (
     <div className={styles.example}>
-      <SEO title={exampleTitle} description={demoTitle} />
+      <CommonHelmet title={exampleTitle} description={demoTitle} />
 
       <InViewSuspense>
         <Header isHomePage={false} />

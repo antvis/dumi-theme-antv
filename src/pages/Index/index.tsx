@@ -1,7 +1,7 @@
 import { useIntl, useSiteData } from 'dumi';
 import { get, isArray, size } from 'lodash-es';
 import React from 'react';
-import SEO from '../../common/SEO';
+import CommonHelmet from '../../common/CommonHelmet';
 import { ic } from '../../slots/hooks';
 import { Cases } from './components/Cases';
 import { Companies } from './components/Companies';
@@ -45,7 +45,7 @@ const Index = () => {
 
   return (
     <>
-      <SEO title={ic(title)} titleSuffix="AntV" />
+      <CommonHelmet title={ic(title)} titleSuffix="AntV" />
       {size(detail) ? <Detail {...detailProps} /> : null}
       {size(featuresProps.features) ? <Features {...featuresProps} /> : null}
       {size(cases) ? <Cases {...casesProps} /> : null}
