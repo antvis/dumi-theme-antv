@@ -13,7 +13,7 @@ import { LeftMenu } from './components/LeftMenu';
  * @param {LeftMenuProps} props 相关参数，详见类型定义
  * @returns {React.FC} React.FC
  */
-export const ExampleTopicMenu: React.FC<LeftMenuProps> = (props) => {
+const ExampleTopicMenu: React.FC<LeftMenuProps> = (props) => {
   const { exampleTopics } = props;
 
   const isWide = useMedia('(min-width: 767.99px)', true);
@@ -46,3 +46,5 @@ export const ExampleTopicMenu: React.FC<LeftMenuProps> = (props) => {
     </Affix>
   );
 };
+
+export default ExampleTopicMenu;

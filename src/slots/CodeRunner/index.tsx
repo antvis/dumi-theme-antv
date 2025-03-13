@@ -59,7 +59,6 @@ const CodeRunner: React.FC<CodeRunnerProps> = ({
       {/* @ts-ignore */}
       <SplitPane split="vertical" defaultSize={`${(1 - size) * 100}%`} minSize={100}>
         {/* 代码预览区域 */}
-
         <CodePreview exampleId={exampleId} error={error} header={header} isPlayground={isPlayground} />
 
         {/* 代码编辑区域 */}

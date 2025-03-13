@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { FormattedMessage, history } from 'dumi';
+import { history, useIntl } from 'dumi';
 import React from 'react';
 import { useScrollToTop } from '../hooks';
 import styles from './NavigatorBanner.module.less';
@@ -15,9 +15,12 @@ export interface NavigatorBannerProps {
 }
 
 export const NavigatorBanner: React.FC<NavigatorBannerProps> = ({ post, type }) => {
+  const { formatMessage } = useIntl();
+
   if (!post) {
     return <div className={classNames(styles.button, styles.hidden)} />;
   }
+
   const { slug, title } = post;
   if (!slug || !title) {
     return null;
@@ -30,9 +33,7 @@ export const NavigatorBanner: React.FC<NavigatorBannerProps> = ({ post, type }) 
 
   return (
     <div className={classNames(styles.button, styles[type])} onClick={go}>
-      <div className={styles.label}>
-        <FormattedMessage id={type === 'prev' ? '上一篇' : '下一篇'} />
-      </div>
+      <div className={styles.label}>{formatMessage({ id: type === 'prev' ? '上一篇' : '下一篇' })}</div>
       <div className={styles.title}>{title}</div>
     </div>
   );

@@ -22,7 +22,7 @@ interface FooterProps extends RcFooterProps {
  * 底部菜单
  * @returns
  */
-export const Footer: React.FC<FooterProps> = (props) => {
+const Footer: React.FC<FooterProps> = (props) => {
   const { columns, bottom, language, isDynamicFooter, rootDomain = '', className, ...restProps } = props;
   const { themeConfig } = useSiteData();
   const locale = useLocale();
@@ -212,3 +212,5 @@ export const Footer: React.FC<FooterProps> = (props) => {
     />
   );
 };
+
+export default Footer;

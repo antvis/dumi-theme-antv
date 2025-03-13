@@ -1,7 +1,7 @@
 import { Layout } from 'antd';
 import { useLocale, useSiteData } from 'dumi';
 import { every, find, get } from 'lodash-es';
-import React, { lazy, useContext } from 'react';
+import React, { useContext } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useSnapshot } from 'valtio';
 import InViewSuspense from '../../common/InViewSuspense';
@@ -9,15 +9,16 @@ import SEO from '../../common/SEO';
 import { ThemeAntVContext } from '../../context';
 import { store } from '../../model';
 import { API } from '../../slots/API';
+import CodeRunner from '../../slots/CodeRunner';
 import { getDemoInfo } from '../../slots/CodeRunner/utils';
-import { ExampleSider } from '../../slots/ExampleSider';
-import { Header } from '../../slots/Header';
 import { ExampleTopic } from '../../types';
 import { CollapsedIcon } from './components/CollapsedIcon';
 import styles from './index.module.less';
 
 const { Sider, Content } = Layout;
-const CodeRunner = lazy(() => import('../../slots/CodeRunner'));
+
+const Header = React.lazy(() => import('../../slots/Header'));
+const ExampleSider = React.lazy(() => import('../../slots/ExampleSider'));
 
 type ExampleParams = {
   /**
@@ -34,6 +35,9 @@ type ExampleParams = {
   example: string;
 };
 
+/**
+ * 解析 Example 页面的元数据
+ */
 const useExampleMeta = () => {
   /** 示例页面的元数据信息 */
   const metaData: any = useContext(ThemeAntVContext);
@@ -46,11 +50,11 @@ const useExampleMeta = () => {
   // examples/case/id hash 为空，可以默认第一个 example 对应的 demo
   const demo = hash.slice(1) || get(exampleDemo, ['demos', '0', 'id']);
 
-  // TODO: 需要根据 locale 获取对应的 title
   const locale = useLocale();
   const exampleTitle = get(exampleDemo, ['title', locale.id]);
 
   const currentDemo = getDemoInfo(exampleTopics, topic, example, demo);
+  const demoTitle = get(currentDemo, ['title', locale.id]);
 
   return {
     // all example topics
@@ -65,6 +69,8 @@ const useExampleMeta = () => {
     demo,
     // current demo info
     currentDemo,
+    // demo title
+    demoTitle,
   };
 };
 
@@ -77,7 +83,7 @@ const Example: React.FC = () => {
   const navigate = useNavigate();
 
   const locale = useLocale();
-  const { exampleTopics, exampleTitle, currentDemo, topic, example, demo } = useExampleMeta();
+  const { exampleTopics, exampleTitle, currentDemo, topic, example, demo, demoTitle } = useExampleMeta();
 
   const { themeConfig } = useSiteData();
   const showAPI = every([get(themeConfig, 'showAPIDoc'), topic, example], Boolean);
@@ -88,8 +94,12 @@ const Example: React.FC = () => {
 
   return (
     <div className={styles.example}>
-      <SEO title={exampleTitle} />
-      <Header isHomePage={false} />
+      <SEO title={exampleTitle} description={demoTitle} />
+
+      <InViewSuspense>
+        <Header isHomePage={false} />
+      </InViewSuspense>
+
       <Layout className={styles.container}>
         <Sider
           collapsedWidth={0}
@@ -100,17 +110,20 @@ const Example: React.FC = () => {
           className={styles.menuSider}
           theme="light"
         >
-          <ExampleSider
-            showExampleDemoTitle={true}
-            currentDemo={currentDemo}
-            onDemoClicked={(example) => {
-              const { id: demoId, targetExample, targetTopic } = example;
-              // eg: /zh/examples/case/area/#area1
-              const newURL = `/${locale.id}/examples/${targetTopic?.id}/${targetExample?.id}/#${demoId}`;
-              navigate(newURL);
-            }}
-            exampleTopics={exampleTopics}
-          />
+          <InViewSuspense>
+            <ExampleSider
+              showExampleDemoTitle={true}
+              currentDemo={currentDemo}
+              onDemoClicked={(example) => {
+                const { id: demoId, targetExample, targetTopic } = example;
+                // eg: /zh/examples/case/area/#area1
+                const newURL = `/${locale.id}/examples/${targetTopic?.id}/${targetExample?.id}/#${demoId}`;
+                navigate(newURL);
+              }}
+              exampleTopics={exampleTopics}
+            />
+          </InViewSuspense>
+
           <CollapsedIcon
             isCollapsed={state.hideMenu}
             onClick={(show) => {
@@ -119,27 +132,17 @@ const Example: React.FC = () => {
             style={{ bottom: 0, right: state.hideMenu ? -24 : 0 }}
           />
         </Sider>
-        {/*//FIXME: 待 ANTD bug 修复后，可以使用下面的代码*/}
-        {/*<LeftOutlined
-          className={styles.trigger}
-          type={isCollapsed ? 'menu-unfold' : 'menu-fold'}
-          onClick={() => {
 
-            setIsCollapsed(!isCollapsed);
-          }}
-          rotate={isCollapsed ? 180 : 0}
-        />*/}
         <Content className={styles.content}>
-          <InViewSuspense>
-            <CodeRunner
-              exampleTopics={exampleTopics}
-              topic={topic}
-              example={example}
-              demo={demo}
-              size={get(themeConfig, 'editor.size', 0.38)}
-            />
-          </InViewSuspense>
+          <CodeRunner
+            exampleTopics={exampleTopics}
+            topic={topic}
+            example={example}
+            demo={demo}
+            size={get(themeConfig, 'editor.size', 0.38)}
+          />
         </Content>
+
         {showAPI && (
           <API exampleTopics={exampleTopics} topic={topic} example={example} demo={demo} language={locale.id} />
         )}

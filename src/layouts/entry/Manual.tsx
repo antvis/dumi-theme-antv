@@ -1,7 +1,7 @@
 import React, { PropsWithChildren } from 'react';
 import SEO from '../../common/SEO';
-import { Footer } from '../../slots/Footer';
-import { Header } from '../../slots/Header';
+import Footer from '../../slots/Footer';
+import Header from '../../slots/Header';
 import { ManualContent } from '../../slots/ManualContent';
 
 /**
@@ -10,7 +10,7 @@ import { ManualContent } from '../../slots/ManualContent';
 export const Manual: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <>
-      <SEO />
+      <SEO title="123" />
       <Header isHomePage={false} />
       <ManualContent>{children}</ManualContent>
       <Footer isDynamicFooter />

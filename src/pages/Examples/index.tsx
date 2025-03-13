@@ -2,19 +2,19 @@ import { VerticalAlignTopOutlined } from '@ant-design/icons';
 import { Layout as AntLayout, BackTop } from 'antd';
 import React, { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import InViewSuspense from '../../common/InViewSuspense';
 import SEO from '../../common/SEO';
 import { ThemeAntVContext } from '../../context';
 import useLocale, { type LocaleMap } from '../../hooks/useLocale';
-import { Footer } from '../../slots/Footer';
-import { Header } from '../../slots/Header';
-import NavigatorBanner from '../../slots/Header/Products/NavigatorBanner';
-import { usePrevAndNext } from '../../slots/hooks';
 import { getPathname } from '../../slots/utils';
 import { ExampleTopic } from '../../types';
 import { Article } from './components/Article';
-import { ExampleTopicMenu } from './components/ExampleTopicMenu';
+import ExampleTopicMenu from './components/ExampleTopicMenu';
 import { GalleryPageContent } from './components/GalleryPageContent';
 import styles from './index.module.less';
+
+const Header = React.lazy(() => import('../../slots/Header'));
+const Footer = React.lazy(() => import('../../slots/Footer'));
 
 const locales: LocaleMap = {
   zh: {
@@ -37,8 +37,6 @@ const Example = () => {
 
   const exampleTopics: ExampleTopic[] = metaData.meta.exampleTopics;
 
-  const [prev, next] = usePrevAndNext();
-
   // 为 zh 做兜底
   useEffect(() => {
     const p = getPathname();
@@ -50,16 +48,18 @@ const Example = () => {
   return (
     <>
       <SEO title={locale.title} />
-      <Header isHomePage={false} />
+      <InViewSuspense>
+        <Header isHomePage={false} />
+      </InViewSuspense>
       <AntLayout hasSider className={styles.layout}>
-        <ExampleTopicMenu exampleTopics={exampleTopics} />
+        <InViewSuspense>
+          <ExampleTopicMenu exampleTopics={exampleTopics} />
+        </InViewSuspense>
+
         <Article className={styles.markdown}>
           <div className={styles.main} style={{ width: '100%' }}>
             <GalleryPageContent exampleTopics={exampleTopics} />
-            <div>
-              <NavigatorBanner type="prev" post={prev} />
-              <NavigatorBanner type="next" post={next} />
-            </div>
+
             <BackTop style={{ right: 24 }}>
               <div className={styles.backTop}>
                 <VerticalAlignTopOutlined />
@@ -68,7 +68,10 @@ const Example = () => {
           </div>
         </Article>
       </AntLayout>
-      <Footer isDynamicFooter={true} />
+
+      <InViewSuspense>
+        <Footer isDynamicFooter={true} />
+      </InViewSuspense>
     </>
   );
 };

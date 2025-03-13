@@ -7,6 +7,7 @@ interface CollapsedProps {
   style?: React.CSSProperties;
   onClick?: (isCollapsed: boolean) => void;
 }
+
 export const CollapsedIcon: React.FC<CollapsedProps> = (props) => {
   const { isCollapsed, onClick, style } = props;
   return (

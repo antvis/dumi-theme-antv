@@ -605,7 +605,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
   );
 };
 
-export const Header: React.FC<Partial<HeaderProps>> = (props) => {
+const Header: React.FC<Partial<HeaderProps>> = (props) => {
   const { themeConfig } = useSiteData();
   const {
     title,
@@ -700,3 +700,5 @@ export const Header: React.FC<Partial<HeaderProps>> = (props) => {
     </>
   );
 };
+
+export default Header;

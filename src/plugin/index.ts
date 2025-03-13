@@ -94,18 +94,18 @@ export default function ThemeAntVContextWrapper() {
     console.log('==11111=============', routes);
 
     const pages = [
-      // {
-      //   id: 'dumi-theme-antv-homepage',
-      //   absPath: '/',
-      // },
-      // {
-      //   id: 'dumi-theme-antv-en-homepage',
-      //   absPath: '/en/',
-      // },
-      // {
-      //   id: 'dumi-theme-antv-zh-homepage',
-      //   absPath: '/zh/',
-      // },
+      {
+        id: 'dumi-theme-antv-homepage',
+        absPath: '/',
+      },
+      {
+        id: 'dumi-theme-antv-en-homepage',
+        absPath: '/en/',
+      },
+      {
+        id: 'dumi-theme-antv-zh-homepage',
+        absPath: '/zh/',
+      },
       // Examples gallery page.
       {
         id: 'dumi-theme-antv-example-list-zh',
