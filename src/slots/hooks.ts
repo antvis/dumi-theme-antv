@@ -1,6 +1,7 @@
 import { useLocale } from 'dumi';
 import { get } from 'lodash-es';
 import { useEffect, useState } from 'react';
+import type { IC } from '../types';
 
 export const useChinaMirrorHost = (): [boolean] => {
   const [isChinaMirrorHost, setIsChinaMirrorHost] = useState(false);
@@ -51,11 +52,11 @@ export const useLogoLink = ({
  * 如果是 object，则取 locale，否则直接用
  * @param v
  */
-export function ic(v: string | object) {
+export function ic(v: string | IC) {
   const locale = useLocale();
   return icWithLocale(v, locale.id);
 }
 
-export function icWithLocale(v: string | object, locale) {
+export function icWithLocale(v: string | IC, locale) {
   return typeof v === 'object' ? get(v, [locale]) : v;
 }

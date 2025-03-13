@@ -3,11 +3,10 @@ import { useLocale } from 'dumi/dist/client/theme-api';
 import gh from 'parse-github-url';
 import React, { useEffect, useState } from 'react';
 import GitHubButton from 'react-github-button';
-
-import { IC } from '../../types';
-import { ic } from '../hooks';
 import { News, NewsProps } from './News';
 
+import { ic } from '../../../../slots/hooks';
+import type { IC } from '../../../../types';
 import styles from './index.module.less';
 
 type DetailButtonProps = {

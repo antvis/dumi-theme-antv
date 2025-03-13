@@ -28,7 +28,7 @@ const locales: LocaleMap = {
 /**
  * Examples 页面
  */
-const Example = () => {
+const Examples = () => {
   const nav = useNavigate();
   const [locale] = useLocale(locales);
 
@@ -76,4 +76,4 @@ const Example = () => {
   );
 };
 
-export default Example;
+export default Examples;

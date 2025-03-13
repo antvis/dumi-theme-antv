@@ -7,7 +7,7 @@ import rehypeObservable from './rehypeObservable';
 import remarkFeedback from './remarkFeedback';
 
 const PAGES_DIR = winPath(path.join(__dirname, '../pages'));
-const MOCK_META = { frontmatter: { title: 'mock-meta1' }, texts: [], toc: [] };
+const MOCK_META = { frontmatter: { title: 'mock-meta' }, texts: [], toc: [] };
 
 export default (api: IApi) => {
   api.describe({ key: `dumi-theme:${require('../../package.json').name}` });
@@ -91,20 +91,21 @@ export default function ThemeAntVContextWrapper() {
 
   // add custom pages
   api.modifyRoutes((routes) => {
-    console.log('==11111=============', routes);
-
-    const pages = [
+    const extraRoutesList = [
       {
         id: 'dumi-theme-antv-homepage',
         absPath: '/',
+        file: `${PAGES_DIR}/Index`,
       },
       {
         id: 'dumi-theme-antv-en-homepage',
         absPath: '/en/',
+        file: `${PAGES_DIR}/Index`,
       },
       {
         id: 'dumi-theme-antv-zh-homepage',
         absPath: '/zh/',
+        file: `${PAGES_DIR}/Index`,
       },
       // Examples gallery page.
       {
@@ -130,12 +131,12 @@ export default function ThemeAntVContextWrapper() {
       },
     ];
 
-    pages.forEach((page) => {
-      routes[page.id] = {
-        id: page.id,
-        path: page.absPath.slice(1),
-        absPath: page.absPath,
-        file: page.file,
+    extraRoutesList.forEach((itemRoute) => {
+      routes[itemRoute.id] = {
+        id: itemRoute.id,
+        path: itemRoute.absPath.slice(1),
+        absPath: itemRoute.absPath,
+        file: itemRoute.file,
         parentId: 'DocLayout',
         meta: MOCK_META,
       };

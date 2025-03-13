@@ -1,7 +1,7 @@
 import { Col, Row } from 'antd';
 import cx from 'classnames';
 import React from 'react';
-import { ic } from '../hooks';
+import { ic } from '../../../../slots/hooks';
 import FeatureCard from './FeatureCard';
 import styles from './index.module.less';
 

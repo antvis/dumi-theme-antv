@@ -1,8 +1,8 @@
 import { useLocation, useOutlet, useSiteData } from 'dumi';
 import React, { useEffect } from 'react';
 import { getCurrentPathname } from '../slots/utils';
-import { Index } from './entry/Index';
 import { Manual } from './entry/Manual';
+import IndexLayout from './IndexLayout';
 
 // 用户手动添加自己的
 import '../slots/_.less';
@@ -45,7 +45,9 @@ export default () => {
 
   const p = getCurrentPathname();
   // 首页
-  if (p === '/' || p === '/zh' || p === '/en' || p === '/en/') return <Index />;
+  if (p === '/' || p === '/zh' || p === '/en' || p === '/en/') {
+    return <IndexLayout>{outlet}</IndexLayout>;
+  }
 
   // 匹配 navs 中的 docs 路由
   const docsRoutes = navs

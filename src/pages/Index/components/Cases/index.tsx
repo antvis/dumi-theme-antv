@@ -4,8 +4,8 @@ import { FormattedMessage, Link, useLocale } from 'dumi';
 import React from 'react';
 import Slider from 'react-slick';
 
-import { IC } from '../../types';
-import { ic, icWithLocale } from '../hooks';
+import { ic, icWithLocale } from '../../../../slots/hooks';
+import { IC } from '../../../../types';
 
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
