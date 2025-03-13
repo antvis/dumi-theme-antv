@@ -7,7 +7,7 @@ import rehypeObservable from './rehypeObservable';
 import remarkFeedback from './remarkFeedback';
 
 const PAGES_DIR = winPath(path.join(__dirname, '../pages'));
-const MOCK_META = { frontmatter: { title: 'mock-meta' }, texts: [], toc: [] };
+const MOCK_META = { frontmatter: { title: 'mock-meta1' }, texts: [], toc: [] };
 
 export default (api: IApi) => {
   api.describe({ key: `dumi-theme:${require('../../package.json').name}` });
@@ -43,43 +43,6 @@ export default (api: IApi) => {
 
     return memo;
   });
-
-  const pages = [
-    {
-      id: 'dumi-theme-antv-homepage',
-      absPath: '/',
-    },
-    {
-      id: 'dumi-theme-antv-en-homepage',
-      absPath: '/en/',
-    },
-    {
-      id: 'dumi-theme-antv-zh-homepage',
-      absPath: '/zh/',
-    },
-    // Examples gallery page.
-    {
-      id: 'dumi-theme-antv-example-list-zh',
-      absPath: '/examples',
-      file: `${PAGES_DIR}/Examples`,
-    },
-    {
-      id: 'dumi-theme-antv-example-list-lang',
-      absPath: '/:language/examples',
-      file: `${PAGES_DIR}/Examples`,
-    },
-    // single example preview page.
-    {
-      id: 'dumi-theme-antv-single-example-zh',
-      absPath: '/examples/:topic/:example',
-      file: `${PAGES_DIR}/Example`,
-    },
-    {
-      id: 'dumi-theme-antv-single-example-lang',
-      absPath: '/:language/examples/:topic/:example',
-      file: `${PAGES_DIR}/Example`,
-    },
-  ];
 
   api.modifyConfig((memo) => {
     // 配置额外的 remark 插件，用于处理 Markdown 语法树的编译
@@ -128,6 +91,45 @@ export default function ThemeAntVContextWrapper() {
 
   // add custom pages
   api.modifyRoutes((routes) => {
+    console.log('==11111=============', routes);
+
+    const pages = [
+      // {
+      //   id: 'dumi-theme-antv-homepage',
+      //   absPath: '/',
+      // },
+      // {
+      //   id: 'dumi-theme-antv-en-homepage',
+      //   absPath: '/en/',
+      // },
+      // {
+      //   id: 'dumi-theme-antv-zh-homepage',
+      //   absPath: '/zh/',
+      // },
+      // Examples gallery page.
+      {
+        id: 'dumi-theme-antv-example-list-zh',
+        absPath: '/examples',
+        file: `${PAGES_DIR}/Examples`,
+      },
+      {
+        id: 'dumi-theme-antv-example-list-lang',
+        absPath: '/:language/examples',
+        file: `${PAGES_DIR}/Examples`,
+      },
+      // single example preview page.
+      {
+        id: 'dumi-theme-antv-single-example-zh',
+        absPath: '/examples/:topic/:example',
+        file: `${PAGES_DIR}/Example`,
+      },
+      {
+        id: 'dumi-theme-antv-single-example-lang',
+        absPath: '/:language/examples/:topic/:example',
+        file: `${PAGES_DIR}/Example`,
+      },
+    ];
+
     pages.forEach((page) => {
       routes[page.id] = {
         id: page.id,
@@ -141,7 +143,6 @@ export default function ThemeAntVContextWrapper() {
 
     // replace default 404
     routes['404'].file = `${PAGES_DIR}/404`;
-    routes['404'].meta = MOCK_META;
 
     return routes;
   });
