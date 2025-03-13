@@ -1,9 +1,10 @@
 import { VerticalAlignTopOutlined } from '@ant-design/icons';
 import { BackTop, Layout } from 'antd';
 import { useRouteMeta } from 'dumi';
-import React, { lazy, Suspense, type PropsWithChildren } from 'react';
+import React, { lazy, type PropsWithChildren } from 'react';
 import { useMedia } from 'react-use';
 import readingTime from 'reading-time';
+import ClientOnly from '../../common/ClientOnly';
 import InViewSuspense from '../../common/InViewSuspense';
 import { ContentTable } from '../ContentTable';
 import { Feedback } from '../Feedback';
@@ -24,9 +25,9 @@ export const Main: React.FC<PropsWithChildren> = ({ children }) => {
 
   return (
     <>
-      <Suspense fallback={null}>
+      <ClientOnly>
         <ObPreview />
-      </Suspense>
+      </ClientOnly>
       <Layout.Content className={styles.content}>
         <div className={styles.main}>
           <h1 className={styles.contentTitle}>{meta.frontmatter.title}</h1>

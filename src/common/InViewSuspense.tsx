@@ -1,3 +1,6 @@
+/**
+ * 只在组件进入视口（可见区域）时才会加载和渲染被包裹的懒加载组件
+ */
 import { Skeleton } from 'antd';
 import React, { Suspense } from 'react';
 import type { IntersectionObserverProps } from 'react-intersection-observer';

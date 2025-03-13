@@ -32,8 +32,6 @@ function blockOf() {
 }
 
 export function usePreview(options = {}, select) {
-  if (typeof document === 'undefined') return;
-
   const key = select + ',' + blockOf().length;
 
   useEffect(() => {

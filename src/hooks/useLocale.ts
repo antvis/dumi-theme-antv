@@ -8,6 +8,9 @@ export interface LocaleMap<
   en: Record<K, V>;
 }
 
+/**
+ * 获取国际化
+ */
 const useLocale = <K extends PropertyKey = PropertyKey, V extends string | ((...params: any[]) => string) = string>(
   localeMap?: LocaleMap<K, V>,
 ): [Record<K, V>, 'zh' | 'en'] => {
