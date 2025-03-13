@@ -1,6 +1,5 @@
 import type { IApi } from 'dumi';
 import { winPath } from 'dumi/plugin-utils';
-import fs from 'fs';
 import * as path from 'path';
 import { AntVReactTechStack } from './antVReactTechStack';
 import { getExamplePaths, getExamplesPageTopics } from './examples';
@@ -152,8 +151,6 @@ export default function ThemeAntVContextWrapper() {
 
     // replace default 404
     routes['404'].file = `${PAGES_DIR}/404`;
-
-    fs.writeFileSync(path.resolve(__dirname, '../routes.json'), JSON.stringify(routes, null, 2), 'utf-8');
 
     return routes;
   });

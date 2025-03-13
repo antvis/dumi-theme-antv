@@ -1,12 +1,12 @@
 import { useLocation, useOutlet, useSiteData } from 'dumi';
 import React, { useEffect } from 'react';
+import { getPurePathname } from '../utils/location';
 import IndexLayout from './IndexLayout';
 import ManualLayout from './ManualLayout';
 
 // 用户手动添加自己的
 import '../slots/_.less';
 import '../slots/global';
-import { getPurePathname } from '../utils/location';
 
 /**
  * DocLayout 是 dumi2 的内置 layout 入口，在这里使用页面路径进行区分成自己不同的 Layout。

@@ -287,7 +287,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
           <li>
             <Dropdown
               className={styles.ecoSystems}
-              menu={
+              overlay={
                 <Menu>
                   {map(ecosystems, ({ url, name: ecosystemName }) => (
                     <Menu.Item key={ecosystemName?.[lang]}>
@@ -464,7 +464,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
           <li className={cx(styles.navIcon, styles.languageSwitcher)}>
             <Dropdown
               placement="bottomRight"
-              menu={
+              overlay={
                 <Menu
                   defaultSelectedKeys={[lang]}
                   selectable

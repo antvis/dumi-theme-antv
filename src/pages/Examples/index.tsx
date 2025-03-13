@@ -1,19 +1,19 @@
 import { VerticalAlignTopOutlined } from '@ant-design/icons';
 import { Layout as AntLayout, BackTop } from 'antd';
-import React, { useContext, useEffect } from 'react';
+import React, { lazy, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import InViewSuspense from '../../common/InViewSuspense';
 import SEO from '../../common/SEO';
 import { ThemeAntVContext } from '../../context';
 import useLocale, { type LocaleMap } from '../../hooks/useLocale';
+import Footer from '../../slots/Footer';
+import Header from '../../slots/Header';
 import { ExampleTopic } from '../../types';
 import { Article } from './components/Article';
-import ExampleTopicMenu from './components/ExampleTopicMenu';
 import { GalleryPageContent } from './components/GalleryPageContent';
 import styles from './index.module.less';
 
-const Header = React.lazy(() => import('../../slots/Header'));
-const Footer = React.lazy(() => import('../../slots/Footer'));
+const ExampleTopicMenu = lazy(() => import('./components/ExampleTopicMenu'));
 
 const locales: LocaleMap = {
   zh: {
@@ -48,9 +48,7 @@ const Examples = () => {
     <>
       <SEO title={locale.title} />
 
-      <InViewSuspense>
-        <Header isHomePage={false} />
-      </InViewSuspense>
+      <Header isHomePage={false} />
 
       <AntLayout hasSider className={styles.layout}>
         <InViewSuspense>
@@ -70,9 +68,7 @@ const Examples = () => {
         </Article>
       </AntLayout>
 
-      <InViewSuspense>
-        <Footer isDynamicFooter={true} />
-      </InViewSuspense>
+      <Footer isDynamicFooter={true} />
     </>
   );
 };

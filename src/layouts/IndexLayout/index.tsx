@@ -1,8 +1,6 @@
-import React, { lazy, type PropsWithChildren } from 'react';
-import InViewSuspense from '../../common/InViewSuspense';
-
-const Header = lazy(() => import('../../slots/Header'));
-const Footer = lazy(() => import('../../slots/Footer'));
+import React, { type PropsWithChildren } from 'react';
+import Footer from '../../slots/Footer';
+import Header from '../../slots/Header';
 
 /**
  * 首页布局
@@ -11,15 +9,9 @@ const IndexLayout: React.FC<PropsWithChildren> = (props) => {
   const { children } = props;
   return (
     <>
-      <InViewSuspense>
-        <Header />
-      </InViewSuspense>
-
+      <Header />
       <div style={{ minHeight: '100vh' }}>{children}</div>
-
-      <InViewSuspense>
-        <Footer />
-      </InViewSuspense>
+      <Footer />
     </>
   );
 };
