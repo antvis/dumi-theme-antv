@@ -4,8 +4,8 @@ import { every, find, get } from 'lodash-es';
 import React, { useContext } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useSnapshot } from 'valtio';
-import InViewSuspense from '../../common/InViewSuspense';
 import CommonHelmet from '../../common/CommonHelmet';
+import InViewSuspense from '../../common/InViewSuspense';
 import { ThemeAntVContext } from '../../context';
 import { store } from '../../model';
 import { API } from '../../slots/API';
@@ -45,7 +45,7 @@ const useExampleMeta = () => {
 
   const { topic, example } = useParams<ExampleParams>();
   const { hash } = useLocation();
-  const examples = get(exampleTopics, ['0', 'examples']);
+  const examples = exampleTopics.find(({ id }) => id === topic)?.examples;
   const exampleDemo = find(examples, ({ id }) => id === example);
   // examples/case/id hash 为空，可以默认第一个 example 对应的 demo
   const demo = hash.slice(1) || get(exampleDemo, ['demos', '0', 'id']);
@@ -94,7 +94,7 @@ const Example: React.FC = () => {
 
   return (
     <div className={styles.example}>
-      <CommonHelmet title={exampleTitle} description={demoTitle} />
+      <CommonHelmet title={`${demoTitle}·${exampleTitle}`} description={demoTitle} />
 
       <InViewSuspense>
         <Header isHomePage={false} />
