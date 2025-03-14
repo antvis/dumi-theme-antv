@@ -1,6 +1,6 @@
 import { useFullSidebarData, useLocale, useLocation, useNavigate, useSiteData } from 'dumi';
 import { get } from 'lodash-es';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Link from '../common/Link';
 import styles from '../slots/ManualContent/index.module.less';
 import { getBaseRoute } from '../slots/ManualContent/utils';
@@ -90,21 +90,26 @@ export const useMenu = () => {
   // 将菜单数据扁平化
   const flattedMenuData = useMemo(() => flattenMenu(menuData), [menuData]);
 
-  let selectedKey = pathname;
+  // 添加本地状态来存储选中的key
+  const [selectedKey, setSelectedKey] = useState(pathname);
 
-  // Nav 跳转但不在菜单中，则选中第一个菜单项
-  const navOf = (navs) => navs.some((nav) => nav?.slug?.replace('docs/', '/') === pathname);
-  const isNavLink = !!navOf(navs);
-  const isExactLink = navOf(navs)?.exact;
-  const isLinkInMenu = flattedMenuData.some((item) => item.link === pathname);
+  useEffect(() => {
+    // Nav 跳转但不在菜单中，则选中第一个菜单项
+    const navOf = (navs) => navs.some((nav) => nav?.slug?.replace('docs/', '/') === pathname);
+    const isNavLink = !!navOf(navs);
+    const isExactLink = navOf(navs)?.exact;
+    const isLinkInMenu = flattedMenuData?.some((item) => item.link === pathname);
 
-  if (isNavLink && !isExactLink && !isLinkInMenu) {
-    const firstValidMenuItem = flattedMenuData.find((item) => item.link);
-    if (firstValidMenuItem) {
-      navigate(firstValidMenuItem.link);
-      selectedKey = firstValidMenuItem.link;
+    if (isNavLink && !isExactLink && !isLinkInMenu) {
+      const firstValidMenuItem = flattedMenuData?.find((item) => item.link);
+      if (firstValidMenuItem) {
+        navigate(firstValidMenuItem.link);
+        setSelectedKey(firstValidMenuItem.link);
+      }
+    } else {
+      setSelectedKey(pathname);
     }
-  }
+  }, [pathname, flattedMenuData, navs, navigate]);
 
   return [menuData, selectedKey, flattedMenuData] as const;
 };

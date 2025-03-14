@@ -38,7 +38,7 @@ _
 
 交互语法将交互过程拆分成多个简单的、原子的环节，这些环节可以通过重新组装，快速地设计和搭建交互流程，从而达到可复用、易用的目的。先看一个基本的使用例子：
 
-<playground path='interaction/element/demo/element-link.ts' rid="interaction-container-1"></playground>
+<Playground path='interaction/element/demo/element-link.ts' rid="interaction-container-1"></Playground>
 
 ### 交互过程的拆分
 
@@ -332,7 +332,7 @@ registerAction('actionTargetName', {
 
 我们以**框选**为例，下面是实际的使用效果。
 
-<playground path='interaction/brush/demo/brush-ds-state.ts' rid="interaction-container-2"></playground>
+<Playground path='interaction/brush/demo/brush-ds-state.ts' rid="interaction-container-2"></Playground>
 
 定义多个 Action 反馈：
 

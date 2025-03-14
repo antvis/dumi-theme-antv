@@ -121,7 +121,7 @@
     "@types/react-slick": "^0.23.13",
     "@types/styled-components": "^5.1.34",
     "@umijs/lint": "^4.3.34",
-    "dumi": "2.4.13",
+    "dumi": "^2.4.13",
     "eslint": "^8.57.1",
     "father": "^4.5.1",
     "father-plugin-dumi-theme": "1.0.0-rc.1",
