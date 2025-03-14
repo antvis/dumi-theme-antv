@@ -1,5 +1,5 @@
 import { Helmet, useLocale, useRouteMeta, useSiteData } from 'dumi';
-import React from 'react';
+import React, { useLayoutEffect } from 'react';
 
 interface CommonHelmetProps {
   titleSuffix?: string;
@@ -22,6 +22,7 @@ const CommonHelmet: React.FC<CommonHelmetProps> = ({
 
   const title = propTitle || meta.frontmatter.title;
   const description = propDescription || meta.frontmatter.description || defaultDescription;
+  const fullTitle = `${title} | ${titleSuffix || defaultTitle}`;
 
   const defaultMeta = [
     { name: `description`, content: description },
@@ -38,14 +39,12 @@ const CommonHelmet: React.FC<CommonHelmetProps> = ({
     { property: `twitter:image`, content: 'https://gw.alipayobjects.com/zos/antfincdn/FLrTNDvlna/antv.png' },
   ];
 
-  return (
-    <Helmet
-      htmlAttributes={{ lang }}
-      titleTemplate={`%s | ${titleSuffix || defaultTitle}`}
-      title={title}
-      meta={[...defaultMeta, ...propMeta]}
-    />
-  );
+  useLayoutEffect(() => {
+    // 直接设置 document.title 作为备份机制
+    document.title = fullTitle;
+  }, [fullTitle]);
+
+  return <Helmet htmlAttributes={{ lang }} title={fullTitle} meta={[...defaultMeta, ...propMeta]} />;
 };
 
 export default CommonHelmet;
