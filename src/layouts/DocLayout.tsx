@@ -1,4 +1,4 @@
-import { useLocation, useOutlet, useSiteData } from 'dumi';
+import { Helmet, useLocation, useOutlet, useSiteData } from 'dumi';
 import React, { useEffect } from 'react';
 import { getPurePathname } from '../utils/location';
 import IndexLayout from './IndexLayout';
@@ -44,19 +44,34 @@ export default () => {
     }
   }, [loading, hash]);
 
-  // 首页
-  if (['/', ''].includes(purePathname)) {
-    return <IndexLayout>{outlet}</IndexLayout>;
-  }
+  const content = React.useMemo<React.ReactNode>(() => {
+    // 首页
+    if (['/', ''].includes(purePathname)) {
+      return <IndexLayout>{outlet}</IndexLayout>;
+    }
 
-  // 匹配 navs 中的 docs 路由
-  const docsRoutes = navs
-    .filter((nav) => nav.slug && nav.slug.startsWith('docs/'))
-    .map((nav) => nav.slug && nav.slug.split('/').find((item) => item !== 'docs'));
+    // 匹配 navs 中的 docs 路由
+    const docsRoutes = navs
+      .filter((nav) => nav.slug && nav.slug.startsWith('docs/'))
+      .map((nav) => nav.slug && nav.slug.split('/').find((item) => item !== 'docs'));
 
-  if (docsRoutes.some((slug) => purePathname.startsWith(`/${slug}`) || purePathname.startsWith(`/docs/${slug}`))) {
-    return <ManualLayout>{outlet}</ManualLayout>;
-  }
+    if (docsRoutes.some((slug) => purePathname.startsWith(`/${slug}`) || purePathname.startsWith(`/docs/${slug}`))) {
+      return <ManualLayout>{outlet}</ManualLayout>;
+    }
 
-  return outlet;
+    return outlet;
+  }, [purePathname]);
+
+  return (
+    <>
+      <Helmet>
+        {/* 开发环境 dumi 配置 favicon 失效，手动添加*/}
+        <link
+          rel="shortcut icon"
+          href="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*7svFR6wkPMoAAAAAAAAAAAAADmJ7AQ/original"
+        />
+      </Helmet>
+      {content}
+    </>
+  );
 };
