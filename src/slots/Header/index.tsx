@@ -9,7 +9,7 @@ import {
 } from '@ant-design/icons';
 import { Alert, Button, Dropdown, Menu, Modal, Popover, Select } from 'antd';
 import cx from 'classnames';
-import { FormattedMessage, useLocale, useSiteData } from 'dumi';
+import { FormattedMessage, Link, useLocale, useSiteData } from 'dumi';
 import { get, map, size } from 'lodash-es';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -19,7 +19,7 @@ import { ic } from '../hooks';
 import { INav, Navs } from './Navs';
 import { Products } from './Products';
 import { Search } from './Search';
-import { findVersion, getLangUrl } from './utils';
+import { findVersion } from './utils';
 
 import type { IC } from '../../types';
 
@@ -269,6 +269,37 @@ const HeaderComponent: React.FC<HeaderProps> = ({
         onClick: onToggleProductMenuVisible,
       };
 
+  const langItems = [
+    {
+      label: (
+        <Link to="/en">
+          <CheckOutlined
+            style={{
+              visibility: lang === 'en' ? 'visible' : 'hidden',
+              color: '#52c41a',
+            }}
+          />
+          English
+        </Link>
+      ),
+      key: 'en',
+    }, // 菜单项务必填写 key
+    {
+      label: (
+        <Link to="/">
+          <CheckOutlined
+            style={{
+              visibility: lang === 'zh' ? 'visible' : 'hidden',
+              color: '#52c41a',
+            }}
+          />
+          简体中文
+        </Link>
+      ),
+      key: 'zh',
+    },
+  ];
+
   const menu = (
     <ul
       className={cx(styles.menu, {
@@ -477,29 +508,10 @@ const HeaderComponent: React.FC<HeaderProps> = ({
                       onLanguageChange(key.toString());
                       return;
                     }
-                    const newUrl = getLangUrl(window.location.href, key);
-                    nav(newUrl.replace(window.location.origin, ''));
                   }}
-                >
-                  <Menu.Item key="en">
-                    <CheckOutlined
-                      style={{
-                        visibility: lang === 'en' ? 'visible' : 'hidden',
-                        color: '#52c41a',
-                      }}
-                    />
-                    English
-                  </Menu.Item>
-                  <Menu.Item key="zh">
-                    <CheckOutlined
-                      style={{
-                        visibility: lang === 'zh' ? 'visible' : 'hidden',
-                        color: '#52c41a',
-                      }}
-                    />
-                    简体中文
-                  </Menu.Item>
-                </Menu>
+                  items={langItems}
+                  forceSubMenuRender
+                />
               }
               className={styles.translation}
             >
