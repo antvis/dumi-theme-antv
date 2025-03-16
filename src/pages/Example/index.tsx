@@ -94,7 +94,7 @@ const Example: React.FC = () => {
 
   return (
     <div className={styles.example}>
-      <CommonHelmet title={`${demoTitle}·${exampleTitle}`} description={demoTitle} />
+      <CommonHelmet title={exampleTitle} description={demoTitle} />
 
       <InViewSuspense>
         <Header isHomePage={false} />
