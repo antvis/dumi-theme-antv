@@ -1,25 +1,18 @@
-import { useFullSidebarData, useLocale, useLocation, useNavigate, useSiteData } from 'dumi';
+import { useFullSidebarData, useLocale, useLocation, useSiteData } from 'dumi';
 import { get } from 'lodash-es';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import Link from '../common/Link';
+import { icWithLocale } from '../slots/hooks';
 import styles from '../slots/ManualContent/index.module.less';
 import { getBaseRoute } from '../slots/ManualContent/utils';
 import type { FullSidebarData, MenuItem, SidebarData } from '../types';
 import { flattenMenu } from '../utils/menu';
 
-export const useMenu = () => {
-  const fullData = useFullSidebarData() as FullSidebarData;
-  const { pathname } = useLocation();
-  const {
-    themeConfig: { docs, navs },
-  } = useSiteData();
-  const baseRoute = getBaseRoute(pathname);
-  const navigate = useNavigate();
-
-  const locale = useLocale();
-  const currentLocale: string = locale.id;
-
-  const getMenuData = (fullData: FullSidebarData, rootList: SidebarData, hrefId: string) => {
+/**
+ * 根据 baseRoute 获取特定的菜单数据（纯函数）
+ */
+export const getMenuData = (fullData: FullSidebarData, rootList: SidebarData, baseRoute: string, locale: string) => {
+  const getMenuDataInternal = (fullData: FullSidebarData, rootList: SidebarData, hrefId: string) => {
     const fullSidebarDataToMenuData = (rootList: SidebarData, hrefId: string, list: SidebarData) => {
       // 递归
       rootList.forEach((item: MenuItem) => {
@@ -33,7 +26,7 @@ export const useMenu = () => {
             list.push({
               ...item,
               key: href,
-              label: item.title[currentLocale as 'zh' | 'en'],
+              label: icWithLocale(item.title, locale),
             });
           }
         }
@@ -41,7 +34,7 @@ export const useMenu = () => {
       for (const item of list) {
         item.children = [];
         fullSidebarDataToMenuData(rootList, item.key, item.children);
-        fullData[item.key] &&
+        if (fullData[item.key]) {
           fullData[item.key][0].children?.forEach((itemChild) => {
             const label = itemChild.title as unknown as string;
             const key = itemChild.link as string;
@@ -61,13 +54,14 @@ export const useMenu = () => {
               key,
             });
           });
+        }
         // children 的 order 排序
         item.children.sort((a, b) => a.order - b.order);
-        if (item.children.length == 0) delete item.children;
+        if (item.children.length === 0) delete item.children;
       }
 
       if (hrefId === baseRoute) {
-        fullData[baseRoute] &&
+        if (fullData[baseRoute]) {
           fullData[baseRoute][0].children?.forEach((itemChild) => {
             const key = itemChild.link!;
             const label = itemChild.title as unknown as string;
@@ -77,6 +71,7 @@ export const useMenu = () => {
               key,
             });
           });
+        }
         list.sort((a, b) => a.order - b.order);
         return list;
       }
@@ -85,31 +80,39 @@ export const useMenu = () => {
     return fullSidebarDataToMenuData(rootList, hrefId, []);
   };
 
-  const menuData = useMemo(() => getMenuData(fullData, docs, baseRoute), [docs, baseRoute, fullData]);
+  return getMenuDataInternal(fullData, rootList, baseRoute);
+};
+
+/**
+ * 通过 hooks 包装的 getMenuData
+ */
+export const useMenuData = () => {
+  const fullData = useFullSidebarData() as FullSidebarData;
+  const {
+    themeConfig: { docs },
+  } = useSiteData();
+  const locale = useLocale();
+
+  const getter = useCallback(
+    (baseRoute: string) => {
+      return getMenuData(fullData, docs, baseRoute, locale.id);
+    },
+    [fullData, docs, locale.id],
+  );
+
+  return getter;
+};
+
+export const useMenu = () => {
+  const { pathname } = useLocation();
+  const baseRoute = getBaseRoute(pathname);
+
+  const getMenuDataFn = useMenuData();
+
+  const menuData = useMemo(() => getMenuDataFn(baseRoute), [getMenuDataFn, baseRoute]);
 
   // 将菜单数据扁平化
   const flattedMenuData = useMemo(() => flattenMenu(menuData), [menuData]);
 
-  // 添加本地状态来存储选中的key
-  const [selectedKey, setSelectedKey] = useState(pathname);
-
-  useEffect(() => {
-    // Nav 跳转但不在菜单中，则选中第一个菜单项
-    const navOf = (navs) => navs.some((nav) => nav?.slug?.replace('docs/', '/') === pathname);
-    const isNavLink = !!navOf(navs);
-    const isExactLink = navOf(navs)?.exact;
-    const isLinkInMenu = flattedMenuData?.some((item) => item.link === pathname);
-
-    if (isNavLink && !isExactLink && !isLinkInMenu) {
-      const firstValidMenuItem = flattedMenuData?.find((item) => item.link);
-      if (firstValidMenuItem) {
-        navigate(firstValidMenuItem.link);
-        setSelectedKey(firstValidMenuItem.link);
-      }
-    } else {
-      setSelectedKey(pathname);
-    }
-  }, [pathname, flattedMenuData, navs, navigate]);
-
-  return [menuData, selectedKey, flattedMenuData] as const;
+  return [menuData, pathname, flattedMenuData] as const;
 };

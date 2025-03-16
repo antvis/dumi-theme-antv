@@ -90,7 +90,6 @@ export default defineConfig({
           en: 'API',
         },
         order: 1,
-        exact: true,
       },
       {
         slug: 'docs/plots',
