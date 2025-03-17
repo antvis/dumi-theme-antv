@@ -106,11 +106,11 @@ export const Navs: React.FC<NavProps> = ({ navs, path }) => {
           } else {
             // 去除 docs 防止新页面 404 和 本页重新刷新。
             href = `/${nav.slug}`.replace(/^\/docs(?=\/)/, '');
-            href = getNavLink(href, navs, getMenuData(href));
 
             if (locale.id === 'en') {
               href = `/en${href}`;
             }
+            href = getNavLink(href, navs, getMenuData(href));
           }
 
           className = cx('header-menu-item-active', {
