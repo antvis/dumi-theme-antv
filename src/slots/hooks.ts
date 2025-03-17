@@ -57,6 +57,6 @@ export function ic(v: string | IC) {
   return icWithLocale(v, locale.id);
 }
 
-export function icWithLocale(v: string | IC, locale) {
+export function icWithLocale(v: string | IC, locale: string) {
   return typeof v === 'object' ? get(v, [locale]) : v;
 }
