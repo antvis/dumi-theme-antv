@@ -14,16 +14,19 @@ export default defineConfig({
     { id: 'zh', name: '中文' },
     { id: 'en', name: 'English' },
   ],
-  title: 'dumi-theme-antv 主题包', // 网站header标题
   favicons: ['https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*7svFR6wkPMoAAAAAAAAAAAAADmJ7AQ/original'], // 网站 favicon
-  metas: [
-    // 自定义 meta 标签
-    { name: 'keywords', content: 'dumi-theme-antv' },
-    { name: 'description', content: '基于 dumi2 的 AntV 官网主题包' },
-  ],
   themeConfig: {
-    title: 'dumi-theme-antv',
-    description: '基于 dumi2 的 AntV 官网主题包',
+    title: 'dumi-theme-antv', // 网站header标题
+    metas: {
+      title: {
+        zh: 'dumi-theme-antv 主题包',
+        en: 'dumi-theme-antv',
+      },
+      description: {
+        zh: '基于 dumi2 的 AntV 官网主题包',
+        en: 'Based on dumi2, the AntV official website theme package',
+      },
+    },
     defaultLanguage: 'zh', // 默认语言
     isAntVSite: false, // 是否是 AntV 的大官网
     footerTheme: 'light',

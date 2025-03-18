@@ -28,6 +28,13 @@ import { determineUserType } from '../../utils/user';
 import styles from './index.module.less';
 
 export type HeaderProps = {
+  /** 网站 header 标题 */
+  title?: string;
+  /** 网站 的 meta 标签 */
+  metas?: {
+    title: IC | string;
+    description: IC | string;
+  };
   /** 官网子包所在路径 */
   sitePackagePath?: string;
   pathPrefix?: string;
@@ -567,7 +574,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
 };
 
 const Header: React.FC<Partial<HeaderProps>> = (props) => {
-  const { themeConfig } = useSiteData();
+  const { themeConfig } = useSiteData() as any;
   const {
     title,
     siteUrl,
@@ -597,9 +604,10 @@ const Header: React.FC<Partial<HeaderProps>> = (props) => {
 
   const { pathname } = useLocation();
   const isHomePage = ['/', ''].includes(getPurePathname(pathname));
+  const lang = useLocale().id;
 
   const headerProps = {
-    subTitle: title,
+    subTitle: icWithLocale(title, lang),
     subTitleHref,
     githubUrl,
     isAntVSite,

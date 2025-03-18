@@ -11,7 +11,7 @@ import { Features } from './components/Features';
 const Index = () => {
   const { themeConfig } = useSiteData();
   const {
-    title,
+    metas: { title },
     githubUrl,
     isAntVSite,
     showGithubStars,

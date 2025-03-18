@@ -1,6 +1,7 @@
 import { Helmet, useLocale, useSiteData } from 'dumi';
 import { isEqual } from 'lodash-es';
 import React, { useEffect } from 'react';
+import { icWithLocale } from '../slots/hooks';
 
 interface CommonHelmetProps {
   titleSuffix?: string;
@@ -17,8 +18,12 @@ const CommonHelmet: React.FC<CommonHelmetProps> = ({
 }) => {
   const locale = useLocale();
   const lang = locale.id;
-  const { themeConfig } = useSiteData();
-  const { title: defaultTitle, defaultDescription } = themeConfig;
+  const {
+    themeConfig: { metas },
+  } = useSiteData();
+
+  const defaultTitle = icWithLocale(metas.title, lang);
+  const defaultDescription = icWithLocale(metas.description, lang);
 
   const helmetData = React.useMemo(() => {
     const title = propTitle || '';
@@ -49,7 +54,7 @@ const CommonHelmet: React.FC<CommonHelmetProps> = ({
       defaultMeta,
       meta: [...defaultMeta, ...(propMeta || [])],
     };
-  }, [propTitle, propDescription, defaultDescription, titleSuffix, defaultTitle, propMeta]);
+  }, [propTitle, propDescription, titleSuffix, propMeta]);
 
   useEffect(() => {
     // 延迟 document.title 设置标题作为备份机制
