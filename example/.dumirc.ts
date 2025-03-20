@@ -8,7 +8,6 @@ export default defineConfig({
           builder: 'mako',
         }
       : false,
-  exportStatic: {},
   mako: {},
   locales: [
     { id: 'zh', name: '中文' },

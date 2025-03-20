@@ -16,6 +16,35 @@ export default (api: IApi) => {
     // use passive mode for code blocks of markdown, to avoid dumi compile theme as react component
     memo.resolve.codeBlockMode = 'passive';
 
+    // 让 Webpack 在编译阶段处理 Less，将其转换为 JS 可用的 CSS 代码，并在 SSR 时直接插入 style 标签
+    memo.chainWebpack = (memo) => {
+      // 处理 Less 规则
+      memo.module
+        .rule('less')
+        .test(/\.less$/)
+        .use('style-loader')
+        .loader('style-loader')
+        .before('css-loader')
+        .end()
+        .use('css-loader')
+        .loader('css-loader')
+        .options({
+          importLoaders: 1,
+          modules: { auto: true }, // 启用 CSS Modules（可选）
+        })
+        .end()
+        .use('less-loader')
+        .loader('less-loader')
+        .options({
+          javascriptEnabled: true,
+        });
+
+      return memo;
+    };
+
+    // 开启该配置后会针对每个路由单独输出 HTML 文件
+    memo.exportStatic = {};
+
     // add exportStatic .html
     memo.exportStatic.extraRoutePaths = getExamplePaths();
 
