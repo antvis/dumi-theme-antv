@@ -1,6 +1,6 @@
 {
   "name": "@antv/dumi-theme-antv",
-  "version": "0.6.4-beta.4",
+  "version": "0.6.4",
   "description": "AntV website theme based on dumi2.",
   "keywords": [
     "dumi",
@@ -142,8 +142,7 @@
     "react-dom": ">=16.9.0"
   },
   "publishConfig": {
-    "access": "public",
-    "tag": "beta"
+    "access": "public"
   },
   "authors": [
     "dumi",
