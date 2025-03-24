@@ -48,7 +48,7 @@ interface CheckResult {
 }
 
 const defaultConfig: DeadLinkOptions = {
-  enable: true,
+  enable: false,
   distDir: 'dist',
   checkExternalLinks: true,
   ignorePatterns: ['^#', '^mailto:', '^tel:', '^javascript:', '^data:', '.*stackoverflow\\.com.*'],
@@ -57,6 +57,9 @@ const defaultConfig: DeadLinkOptions = {
   externalLinkTimeout: 10000,
   maxConcurrentRequests: 5,
 };
+
+// 在文件顶部添加缓存对象声明
+const tempCache: Record<string, { success: boolean; reason?: string }> = {};
 
 /**
  * 处理配置，转换正则表达式
@@ -150,33 +153,60 @@ async function checkExternalLinks(links: LinkInfo[], config: DeadLinkConfig): Pr
   const deadLinks: DeadLink[] = [];
   const limit = pLimit(config.maxConcurrentRequests);
 
-  const promises = links.map((link) => {
+  // 分离需要检查的链接和已缓存的链接
+  const uncachedLinks: LinkInfo[] = [];
+  links.forEach((link) => {
+    // 检查缓存中是否已有结果
+    if (tempCache[link.url]) {
+      // 使用缓存结果
+      if (!tempCache[link.url].success) {
+        deadLinks.push({
+          ...link,
+          reason: tempCache[link.url].reason || '未知错误',
+        });
+      }
+      console.log(chalk.gray(`  [cached] ${link.url}`));
+    } else {
+      uncachedLinks.push(link);
+    }
+  });
+
+  // 只检查未缓存的链接
+  const promises = uncachedLinks.map((link) => {
     return limit(async () => {
       try {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), config.externalLinkTimeout);
 
         const response = await fetch(link.url);
-
         clearTimeout(timeoutId);
 
+        // 存入缓存
         if (response.status >= 400) {
+          tempCache[link.url] = {
+            success: false,
+            reason: `Status code ${response.status}`,
+          };
           deadLinks.push({
             ...link,
             reason: `Status code ${response.status}`,
           });
+        } else {
+          tempCache[link.url] = { success: true };
         }
       } catch (error) {
+        const reason = error instanceof Error ? error.message : String(error);
+        // 存入缓存
+        tempCache[link.url] = { success: false, reason };
         deadLinks.push({
           ...link,
-          reason: error instanceof Error ? error.message : String(error),
+          reason,
         });
       }
     });
   });
 
   await Promise.all(promises);
-
   return deadLinks;
 }
 
@@ -278,7 +308,7 @@ export default (api: IApi) => {
     const userConfig = (themeConfig?.deadLinkChecker || {}) as DeadLinkConfig;
 
     // 检查是否禁用
-    if (userConfig.enable === false) {
+    if (!userConfig.enable) {
       return processConfig({
         ...defaultConfig,
         // 设置为空数组，使插件不执行任何检查
