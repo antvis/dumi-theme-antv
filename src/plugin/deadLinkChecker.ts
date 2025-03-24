@@ -4,7 +4,6 @@ import { IApi } from 'dumi';
 import * as fs from 'fs';
 import * as glob from 'glob';
 import merge from 'lodash.merge';
-import fetch from 'node-fetch';
 import pLimit from 'p-limit';
 import * as path from 'path';
 
