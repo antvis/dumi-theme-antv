@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 import type { IApi } from 'dumi';
 import { winPath } from 'dumi/plugin-utils';
 import * as path from 'path';
@@ -186,5 +187,18 @@ export default function ThemeAntVContextWrapper() {
   api.registerTechStack(() => new AntVReactTechStack());
 
   // check dead links(only for production)
-  deadLinkCheckerPlugin(api);
+  const checkLinks = deadLinkCheckerPlugin(api);
+
+  // 注册命令
+  api.registerCommand({
+    name: 'check-links',
+    fn: async () => await checkLinks(),
+  });
+
+  // build 完成且 html 完成构建之后
+  api.onBuildHtmlComplete(async () => {
+    await checkLinks(() => {
+      console.log(chalk.green('🚀 Build completed.'));
+    });
+  });
 };

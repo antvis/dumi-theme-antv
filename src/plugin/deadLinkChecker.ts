@@ -8,6 +8,8 @@ import pLimit from 'p-limit';
 import * as path from 'path';
 
 interface DeadLinkOptions {
+  // 是否开启死链检查，默认是 true
+  enable: boolean;
   // 构建输出目录，默认是 dist
   distDir: string;
   // 检查外部链接，默认是 true
@@ -46,6 +48,7 @@ interface CheckResult {
 }
 
 const defaultConfig: DeadLinkOptions = {
+  enable: true,
   distDir: 'dist',
   checkExternalLinks: true,
   ignorePatterns: ['^#', '^mailto:', '^tel:', '^javascript:', '^data:', '.*stackoverflow\\.com.*'],
@@ -271,8 +274,8 @@ function generateReport(result: CheckResult): void {
 export default (api: IApi) => {
   // 从 themeConfig 中获取配置
   const getConfig = (): DeadLinkConfig => {
-    const themeConfig = api.config.themeConfig || {};
-    const userConfig = themeConfig.deadLinkChecker || {};
+    const themeConfig = (api.config.themeConfig || {}) as any;
+    const userConfig = (themeConfig?.deadLinkChecker || {}) as DeadLinkConfig;
 
     // 检查是否禁用
     if (userConfig.enable === false) {
@@ -295,6 +298,9 @@ export default (api: IApi) => {
     }
 
     onBeforeCheck?.();
+
+    console.log(chalk.gray('🔍 Checking for dead links...'));
+
     const result = await runCheck(config);
     generateReport(result);
 
@@ -306,21 +312,5 @@ export default (api: IApi) => {
     }
   };
 
-  // 注册命令
-  api.registerCommand({
-    name: 'check-links',
-    fn: async () => {
-      await checkLinks(() => {
-        console.log(chalk.gray('🔍 Checking for dead links...'));
-      });
-    },
-  });
-
-  // build 完成且 html 完成构建之后
-  api.onBuildHtmlComplete(async () => {
-    await checkLinks(() => {
-      console.log(chalk.green('🚀 Build completed.'));
-      console.log(chalk.gray('🔍 Checking for dead links...'));
-    });
-  });
+  return checkLinks;
 };
