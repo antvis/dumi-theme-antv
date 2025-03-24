@@ -2,6 +2,7 @@ import type { IApi } from 'dumi';
 import { winPath } from 'dumi/plugin-utils';
 import * as path from 'path';
 import { AntVReactTechStack } from './antVReactTechStack';
+import deadLinkCheckerPlugin from './deadLinkChecker';
 import { getExamplePaths, getExamplesPageTopics } from './examples';
 import rehypeObservable from './rehypeObservable';
 import remarkFeedback from './remarkFeedback';
@@ -133,12 +134,6 @@ export default function ThemeAntVContextWrapper() {
         path: 'en',
         file: `${PAGES_DIR}/Index`,
       },
-      {
-        id: 'dumi-theme-antv-homepage-zh',
-        absPath: '/zh/',
-        path: 'zh',
-        file: `${PAGES_DIR}/Index`,
-      },
       // Examples gallery page.
       {
         id: 'dumi-theme-antv-example-list-zh',
@@ -148,8 +143,8 @@ export default function ThemeAntVContextWrapper() {
       },
       {
         id: 'dumi-theme-antv-example-list-lang',
-        absPath: '/:language/examples',
-        path: ':language/examples',
+        absPath: '/en/examples',
+        path: 'en/examples',
         file: `${PAGES_DIR}/Examples`,
       },
       // single example preview page.
@@ -161,8 +156,8 @@ export default function ThemeAntVContextWrapper() {
       },
       {
         id: 'dumi-theme-antv-single-example-lang',
-        absPath: '/:language/examples/:topic/:example',
-        path: ':language/examples/:topic/:example',
+        absPath: '/en/examples/:topic/:example',
+        path: 'en/examples/:topic/:example',
         file: `${PAGES_DIR}/Example`,
       },
     ];
@@ -189,4 +184,7 @@ export default function ThemeAntVContextWrapper() {
 
   // extends dumi internal tech stack, for customize previewer props
   api.registerTechStack(() => new AntVReactTechStack());
+
+  // check dead links(only for production)
+  deadLinkCheckerPlugin(api);
 };
