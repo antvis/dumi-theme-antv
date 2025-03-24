@@ -116,8 +116,9 @@ const Example: React.FC = () => {
               currentDemo={currentDemo}
               onDemoClicked={(example) => {
                 const { id: demoId, targetExample, targetTopic } = example;
-                // eg: /zh/examples/case/area/#area1
-                const newURL = `/${locale.id}/examples/${targetTopic?.id}/${targetExample?.id}/#${demoId}`;
+                // eg: /examples/case/area/#area1
+                const prefix = locale.id === 'en' ? '/en' : ``;
+                const newURL = `${prefix}/examples/${targetTopic?.id}/${targetExample?.id}/#${demoId}`;
                 navigate(newURL);
               }}
               exampleTopics={exampleTopics}

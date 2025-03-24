@@ -136,6 +136,12 @@ export default function ThemeAntVContextWrapper() {
         path: 'en',
         file: `${PAGES_DIR}/Index`,
       },
+      {
+        id: 'dumi-theme-antv-homepage-zh',
+        absPath: '/zh/',
+        path: 'zh',
+        file: `${PAGES_DIR}/Index`,
+      },
       // Examples gallery page.
       {
         id: 'dumi-theme-antv-example-list-zh',
@@ -145,8 +151,8 @@ export default function ThemeAntVContextWrapper() {
       },
       {
         id: 'dumi-theme-antv-example-list-lang',
-        absPath: '/en/examples',
-        path: 'en/examples',
+        absPath: '/:language/examples',
+        path: ':language/examples',
         file: `${PAGES_DIR}/Examples`,
       },
       // single example preview page.
@@ -158,8 +164,8 @@ export default function ThemeAntVContextWrapper() {
       },
       {
         id: 'dumi-theme-antv-single-example-lang',
-        absPath: '/en/examples/:topic/:example',
-        path: 'en/examples/:topic/:example',
+        absPath: '/:language/examples/:topic/:example',
+        path: ':language/examples/:topic/:example',
         file: `${PAGES_DIR}/Example`,
       },
     ];

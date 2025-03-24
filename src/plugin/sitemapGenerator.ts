@@ -42,7 +42,7 @@ function generateUrls(config: SitemapConfig) {
       } else if (stat.isFile() && path.extname(file) === '.html') {
         const relativePath = path.relative(config.outputDir, fullPath);
         let url = `${config.siteUrl}/${relativePath.replace(/\\/g, '/')}`;
-        if (url.endsWith('/index.html') && !url.match(/\/:(\w+)/)) {
+        if (url.endsWith('/index.html') && !url.match(/\/:(\w+)/) && !url.includes('/zh/')) {
           url = url.replace(/\/index\.html$/, '');
           urls.push(url);
         }

@@ -112,5 +112,5 @@ export const getExamplesPageTopics = (exampleTopics: ExampleTopic[], showAPIDoc:
 export function getExamplePaths() {
   const exampleTopicPaths = glob.sync(`${examplesBaseDir}/*/*`);
   const paths = exampleTopicPaths.map((p) => p.replace(process.cwd(), ''));
-  return [...paths, ...paths.map((p) => `/en${p}`)];
+  return [...paths, ...paths.map((p) => `/zh${p}`), ...paths.map((p) => `/en${p}`)];
 }
