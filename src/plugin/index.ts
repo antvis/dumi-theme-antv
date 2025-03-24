@@ -7,6 +7,7 @@ import deadLinkCheckerPlugin from './deadLinkChecker';
 import { getExamplePaths, getExamplesPageTopics } from './examples';
 import rehypeObservable from './rehypeObservable';
 import remarkFeedback from './remarkFeedback';
+import generateSitemap from './sitemapGenerator';
 
 const PAGES_DIR = winPath(path.join(__dirname, '../pages'));
 const MOCK_META = { frontmatter: { title: 'mock-meta' }, texts: [], toc: [] };
@@ -200,5 +201,7 @@ export default function ThemeAntVContextWrapper() {
     await checkLinks(() => {
       console.log(chalk.green('🚀 Build completed.'));
     });
+
+    generateSitemap(api);
   });
 };

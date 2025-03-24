@@ -107,7 +107,8 @@
     "unist-util-visit": "^4.1.2",
     "uri-parse": "^1.0.0",
     "valtio": "^1.13.2",
-    "video-react": "^0.16.0"
+    "video-react": "^0.16.0",
+    "xmlbuilder": "^15.1.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.8.1",

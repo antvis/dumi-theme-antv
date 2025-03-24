@@ -390,13 +390,13 @@ export default defineConfig({
       size: 0.4, // 代码区占比
       playgroundSize: 0.38, // 文档中的代码区占比
     },
-    // 死链检查配置（默认开启）
+    // 死链检查配置
     deadLinkChecker: {
-      // 启用功能
-      enable: true,
       // 是否检查外部链接
-      checkExternalLinks: true,
+      checkExternalLinks: false,
     },
+    // 站点地图配置
+    sitemap: {},
   },
   analytics: {
     // google analytics 的 key (GA 4)

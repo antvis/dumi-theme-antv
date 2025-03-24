@@ -9,21 +9,21 @@ import * as path from 'path';
 
 interface DeadLinkOptions {
   // 是否开启死链检查，默认是 true
-  enable: boolean;
+  enable?: boolean;
   // 构建输出目录，默认是 dist
-  distDir: string;
+  distDir?: string;
   // 检查外部链接，默认是 true
-  checkExternalLinks: boolean;
+  checkExternalLinks?: boolean;
   // 忽略的链接，默认是 ['^#', '^mailto:', '^tel:', '^javascript:', '^data:', '.*stackblitz\\.com.*']
-  ignorePatterns: (string | RegExp)[];
+  ignorePatterns?: (string | RegExp)[];
   // 检查的文件扩展名，默认是 ['.html']
-  fileExtensions: string[];
+  fileExtensions?: string[];
   // 失败时是否退出，默认是 false
-  failOnError: boolean;
+  failOnError?: boolean;
   // 外部链接超时时间，默认是 10000
-  externalLinkTimeout: number;
+  externalLinkTimeout?: number;
   // 最大并发请求数，默认是 5
-  maxConcurrentRequests: number;
+  maxConcurrentRequests?: number;
 }
 
 interface DeadLinkConfig extends Omit<DeadLinkOptions, 'ignorePatterns'> {
@@ -48,7 +48,7 @@ interface CheckResult {
 }
 
 const defaultConfig: DeadLinkOptions = {
-  enable: false,
+  enable: true,
   distDir: 'dist',
   checkExternalLinks: true,
   ignorePatterns: ['^#', '^mailto:', '^tel:', '^javascript:', '^data:', '.*stackoverflow\\.com.*'],
@@ -305,19 +305,25 @@ export default (api: IApi) => {
   // 从 themeConfig 中获取配置
   const getConfig = (): DeadLinkConfig => {
     const themeConfig = (api.config.themeConfig || {}) as any;
-    const userConfig = (themeConfig?.deadLinkChecker || {}) as DeadLinkConfig;
+    let userConfig = themeConfig?.deadLinkChecker;
+
+    if (!userConfig) {
+      userConfig = { enable: false };
+    }
+
+    const config = merge({}, defaultConfig, userConfig);
 
     // 检查是否禁用
-    if (!userConfig.enable) {
+    if (!config.enable) {
       return processConfig({
-        ...defaultConfig,
+        ...config,
         // 设置为空数组，使插件不执行任何检查
         fileExtensions: [],
       });
     }
 
     // 合并默认配置和用户配置
-    return processConfig(merge({}, defaultConfig, userConfig));
+    return processConfig(config);
   };
 
   const checkLinks = async (onBeforeCheck?: () => void) => {
@@ -337,8 +343,6 @@ export default (api: IApi) => {
     // 只有在发现死链接且配置为失败时退出
     if (!result.success && config.failOnError) {
       process.exit(1);
-    } else {
-      process.exit(0);
     }
   };
 
