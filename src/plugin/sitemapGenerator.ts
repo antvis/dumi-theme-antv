@@ -89,6 +89,15 @@ function writeSitemap(config: SitemapConfig, urls: string[]) {
   console.log(chalk.green(`✅ Sitemap generated including ${urls.length} urls. `));
 }
 
+function generateRobotsTxt(config: SitemapConfig) {
+  const robotsContent = `User-agent: *
+Allow: /
+
+Sitemap: ${config.siteUrl}/sitemap.xml`;
+
+  fs.writeFileSync(path.join(config.outputDir, 'robots.txt'), robotsContent);
+}
+
 export default function generateSitemap(api: IApi) {
   // 从 themeConfig 中获取配置
   const getConfig = (): SitemapConfig => {
@@ -110,4 +119,6 @@ export default function generateSitemap(api: IApi) {
 
   const urls = generateUrls(config);
   writeSitemap(config, urls);
+
+  generateRobotsTxt(config);
 }

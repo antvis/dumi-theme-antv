@@ -50,7 +50,7 @@ interface CheckResult {
 const defaultConfig: DeadLinkOptions = {
   enable: true,
   distDir: 'dist',
-  checkExternalLinks: true,
+  checkExternalLinks: false,
   ignorePatterns: ['^#', '^mailto:', '^tel:', '^javascript:', '^data:', '.*stackoverflow\\.com.*'],
   fileExtensions: ['.html'],
   failOnError: false,
