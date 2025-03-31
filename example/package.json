@@ -1,9 +1,13 @@
 {
   "version": "0.2.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/antvis/dumi-theme-antv"
+  },
   "scripts": {
-    "dev": "dumi dev",
     "build": "dumi build",
     "deploy": "gh-pages -d dist",
+    "dev": "dumi dev",
     "preview": "dumi preview"
   },
   "dependencies": {
@@ -11,13 +15,9 @@
     "d3-regression": "^1.3.10",
     "dumi": "^2.4.13"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/antvis/dumi-theme-antv"
-  },
   "devDependencies": {
     "gh-pages": "^4.0.0",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react": "18.3.0-canary-c3048aab4-20240326",
+    "react-dom": "18.3.0-canary-c3048aab4-20240326"
   }
 }
