@@ -16,6 +16,8 @@
     "url": "https://github.com/antvis/dumi-theme-antv"
   },
   "devDependencies": {
-    "gh-pages": "^4.0.0"
+    "gh-pages": "^4.0.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
   }
 }

@@ -2,12 +2,9 @@ import { defineConfig } from 'dumi';
 import { repository, version } from './package.json';
 
 export default defineConfig({
-  ssr:
-    process.env.NODE_ENV === 'production'
-      ? {
-          builder: 'mako',
-        }
-      : false,
+  ssr: {
+    builder: 'mako',
+  },
   mako: {},
   locales: [
     { id: 'zh', name: '中文' },
