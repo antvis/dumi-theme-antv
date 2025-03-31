@@ -1,4 +1,5 @@
-import { Divider, PageHeader, Space } from 'antd';
+import { PageHeader } from '@ant-design/pro-components';
+import { Divider, Space } from 'antd';
 import React from 'react';
 
 export type CodeHeaderProps = {

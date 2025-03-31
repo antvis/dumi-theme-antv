@@ -1,5 +1,5 @@
 import { VerticalAlignTopOutlined } from '@ant-design/icons';
-import { BackTop, Layout } from 'antd';
+import { FloatButton, Layout } from 'antd';
 import { useRouteMeta } from 'dumi';
 import React, { lazy, type PropsWithChildren } from 'react';
 import { useMedia } from 'react-use';
@@ -40,11 +40,11 @@ export const Main: React.FC<PropsWithChildren> = ({ children }) => {
           </div>
           <PrevAndNext />
         </div>
-        <BackTop style={{ right: 24 }}>
+        <FloatButton.BackTop style={{ right: 24 }}>
           <div className={styles.backTop}>
             <VerticalAlignTopOutlined />
           </div>
-        </BackTop>
+        </FloatButton.BackTop>
       </Layout.Content>
       {showToc && (
         <Layout.Sider theme="light" width={260}>

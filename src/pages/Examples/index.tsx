@@ -1,9 +1,9 @@
 import { VerticalAlignTopOutlined } from '@ant-design/icons';
-import { Layout as AntLayout, BackTop } from 'antd';
+import { FloatButton, Layout as AntLayout } from 'antd';
 import React, { lazy, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import InViewSuspense from '../../common/InViewSuspense';
 import CommonHelmet from '../../common/CommonHelmet';
+import InViewSuspense from '../../common/InViewSuspense';
 import { ThemeAntVContext } from '../../context';
 import useLocale, { type LocaleMap } from '../../hooks/useLocale';
 import Footer from '../../slots/Footer';
@@ -59,11 +59,11 @@ const Examples = () => {
           <div className={styles.main} style={{ width: '100%' }}>
             <GalleryPageContent exampleTopics={exampleTopics} />
 
-            <BackTop style={{ right: 24 }}>
+            <FloatButton.BackTop style={{ right: 24 }}>
               <div className={styles.backTop}>
                 <VerticalAlignTopOutlined />
               </div>
-            </BackTop>
+            </FloatButton.BackTop>
           </div>
         </Article>
       </AntLayout>
