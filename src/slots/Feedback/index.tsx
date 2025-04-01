@@ -1,6 +1,5 @@
 import { useSiteData } from 'dumi';
 import React, { lazy } from 'react';
-import InViewSuspense from '../../common/InViewSuspense';
 
 const EditButton = lazy(() => import('./EditButton'));
 const Contributors = lazy(() => import('./Contributors'));
@@ -15,10 +14,10 @@ export const Feedback: React.FC = () => {
   }
 
   return (
-    <InViewSuspense>
+    <>
       <EditButton />
       <Contributors />
       <SectionFeedback />
-    </InViewSuspense>
+    </>
   );
 };
