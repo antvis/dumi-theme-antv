@@ -6,7 +6,7 @@ import {
   MenuOutlined,
   WechatOutlined,
 } from '@ant-design/icons';
-import { Alert, Button, Dropdown, Menu, Modal, Popover, Select } from 'antd';
+import { Alert, Button, Dropdown, Menu, Modal, Popover } from 'antd';
 import cx from 'classnames';
 import { FormattedMessage, Link, useLocale, useSiteData } from 'dumi';
 import { get, map, size } from 'lodash-es';
@@ -441,27 +441,26 @@ const HeaderComponent: React.FC<HeaderProps> = ({
         /** 版本列表 */
         versions && (
           <li>
-            <Select
-              defaultValue={versions[findVersion(version, Object.keys(versions))]}
+            <Dropdown
               className={styles.versions}
-              bordered={false}
-              size="small"
-              onChange={(value: string) => {
-                window.location.href = value;
+              menu={{
+                items: Object.keys(versions).map((version: string) => ({
+                  label: (
+                    <a target="_blank" rel="noreferrer" href={versions[version]}>
+                      {version}
+                    </a>
+                  ),
+                  key: version,
+                })),
+                selectable: true,
+                defaultSelectedKeys: [findVersion(version, Object.keys(versions))],
               }}
             >
-              {Object.keys(versions).map((version: string) => {
-                const url = versions[version];
-                if (url.startsWith('http')) {
-                  return (
-                    <Select.Option key={url} value={url}>
-                      {version}
-                    </Select.Option>
-                  );
-                }
-                return null;
-              })}
-            </Select>
+              <span>
+                {findVersion(version, Object.keys(versions))}
+                <DownOutlined style={{ marginLeft: '6px' }} />
+              </span>
+            </Dropdown>
           </li>
         )
       }
@@ -499,9 +498,15 @@ const HeaderComponent: React.FC<HeaderProps> = ({
                 />
               }
               title="微信扫一扫关注"
-              overlayClassName="wx-qrcode-popover"
-              overlayStyle={{ width: 128, height: 128 }}
-              overlayInnerStyle={{ padding: 2 }}
+              styles={{
+                body: {
+                  padding: 2,
+                },
+                root: {
+                  width: 128,
+                  height: 128,
+                },
+              }}
             >
               <WechatOutlined />
             </Popover>
@@ -549,7 +554,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
           onClose={onBannerClose}
         />
       )}
-      <div className={styles.container}>
+      <div className={cx(styles.container)}>
         <div className={styles.left}>
           <h1>
             <a href={siteUrl[lang] ? siteUrl[lang] : siteUrl}>{img}</a>

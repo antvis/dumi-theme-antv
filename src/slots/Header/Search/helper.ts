@@ -10,6 +10,7 @@ export function getSearchResults(dumiResults: any[], limit = 30, sort?: string[]
   const flattenHints = dumiResults
     .flatMap((r) => r.hints)
     .map(({ pageTitle = '', highlightTitleTexts, highlightTexts, link }) => ({
+      key: pageTitle,
       link,
       subject: pageTitle,
       title: highlightTitleTexts,

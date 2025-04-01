@@ -1,4 +1,4 @@
-@import '../_.less';
+@import '../../../../common/styles/variables.less';
 
 .wrapper {
   display: flex;
@@ -31,14 +31,41 @@
     position: relative;
     margin: auto;
     margin-top: 48px;
+  }
 
-    .company {
-      margin-bottom: 20px;
+  .companiesGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px 124px;
+    width: 100%;
 
-      .companyimg {
-        width: 100%;
-      }
+    @media only screen and (max-width: 992px) {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px 50px;
     }
+
+    @media only screen and (max-width: 768px) {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px 77px;
+    }
+
+    @media only screen and (max-width: 576px) {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px 77px;
+    }
+  }
+
+  .company {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px;
+  }
+
+  .companyimg {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
   }
 }
 

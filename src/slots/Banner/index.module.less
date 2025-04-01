@@ -1,4 +1,4 @@
-@import '../_.less';
+@import '../../../../common/styles/variables.less';
 
 .wrapper {
   min-height: 650px;
@@ -56,26 +56,26 @@
         z-index: 10;
         position: relative;
         transition: all 0.3s;
-        border: 1px solid @primary-color;
-        color: @primary-color;
+        border: 1px solid var(--primary-color);
+        color: var(--primary-color);
         background: transparent;
         text-align: center;
         font-size: 1.14em;
         line-height: 40px;
 
         &:hover {
-          color: tint(@primary-color, 25%);
-          border: 1px solid tint(@primary-color, 25%);
-          background-color: fade(@primary-color, 3%);
+          color: tint(var(--primary-color), 25%);
+          border: 1px solid tint(var(--primary-color), 25%);
+          background-color: fade(var(--primary-color), 3%);
         }
 
         &.primary {
           border: none;
           outline: none;
           color: #fff;
-          background: linear-gradient(60deg, fade(@primary-color, 70%), shade(@primary-color, 20%));
+          background: linear-gradient(60deg, fade(var(--primary-color), 70%), shade(var(--primary-color), 20%));
           opacity: 0.8;
-          box-shadow: 0 8px 10px fade(@primary-color, 20%);
+          box-shadow: 0 8px 10px fade(var(--primary-color), 20%);
 
           &:hover {
             opacity: 1;
@@ -92,7 +92,7 @@
           width: 40px;
           height: 40px;
           background-size: contain;
-          border: 1px solid @primary-color;
+          border: 1px solid var(--primary-color);
           border-radius: 20px;
           transition: all 0.15s;
           display: flex;
@@ -102,14 +102,14 @@
           .videoButtonIcon {
             margin-left: 12px;
             font-size: 16px;
-            color: @primary-color;
+            color: var(--primary-color);
             line-height: 44px;
           }
 
           .videoButtonText {
             line-height: 40px;
             margin-left: 10px;
-            color: @primary-color;
+            color: var(--primary-color);
           }
 
           &:hover {

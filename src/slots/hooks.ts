@@ -16,7 +16,9 @@ export const useChinaMirrorHost = (): [boolean] => {
 };
 
 export const useScrollToTop = () => {
-  document.body.scrollTop = document.documentElement.scrollTop = 0;
+  if (typeof document !== 'undefined') {
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
+  }
 };
 
 export const useLogoLink = ({

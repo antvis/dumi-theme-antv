@@ -43,7 +43,7 @@ export const Search = () => {
     <Popover
       open={open}
       placement="topLeft"
-      destroyTooltipOnHide={{ keepParent: false }}
+      destroyTooltipOnHide={false}
       content={<SearchResult results={searchResults} />}
     >
       <label className={styles.search}>

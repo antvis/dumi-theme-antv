@@ -4,9 +4,9 @@ import { getPurePathname } from '../utils/location';
 import IndexLayout from './IndexLayout';
 import ManualLayout from './ManualLayout';
 
-// 用户手动添加自己的
-import '../slots/_.less';
-import '../slots/global';
+import { ConfigProvider } from 'antd';
+import GlobalStyles from '../common/GlobalStyles';
+import '../static/style';
 
 /**
  * DocLayout 是 dumi2 的内置 layout 入口，在这里使用页面路径进行区分成自己不同的 Layout。
@@ -71,7 +71,21 @@ export default () => {
           href="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*7svFR6wkPMoAAAAAAAAAAAAADmJ7AQ/original"
         />
       </Helmet>
-      {content}
+
+      <ConfigProvider
+        theme={{
+          token: {
+            colorPrimary: '#873bf4',
+            borderRadius: 8,
+            colorLink: '#873bf4',
+            fontSize: 14,
+            colorText: 'rgba(0, 0, 0, 0.85)',
+          },
+        }}
+      >
+        <GlobalStyles />
+        {content}
+      </ConfigProvider>
     </>
   );
 };

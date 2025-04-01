@@ -1,4 +1,3 @@
-import { Col, Row } from 'antd';
 import cx from 'classnames';
 import React from 'react';
 import { ic } from '../../../../slots/hooks';
@@ -20,15 +19,6 @@ interface FeaturesProps {
 }
 
 export const Features: React.FC<FeaturesProps> = ({ title, features = [], className, style, id }) => {
-  const getCards = () => {
-    const children = features.map((card) => (
-      <Col className={styles.cardWrapper} key={ic(card.title)} md={8} xs={24}>
-        <FeatureCard {...card} />
-      </Col>
-    ));
-    return children;
-  };
-
   return (
     <div id={id} className={cx(styles.wrapper, className)} style={style}>
       <div className={styles.content}>
@@ -37,9 +27,13 @@ export const Features: React.FC<FeaturesProps> = ({ title, features = [], classN
             {title ? ic(title) : ''}
           </p>
           <div key="block" className={styles.cardsContainer}>
-            <Row key="cards" className={styles.cards}>
-              {getCards()}
-            </Row>
+            <div className={styles.cardsGrid}>
+              {features.map((card) => (
+                <div key={ic(card.title)} className={styles.cardWrapper}>
+                  <FeatureCard {...card} />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

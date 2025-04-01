@@ -2,7 +2,9 @@ import { defineConfig } from 'dumi';
 import { repository, version } from './package.json';
 
 export default defineConfig({
-  ssr: false,
+  ssr: {
+    builder: 'mako',
+  },
   mako: {},
   locales: [
     { id: 'zh', name: '中文' },

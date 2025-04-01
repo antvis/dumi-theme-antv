@@ -18,7 +18,7 @@ export default function remarkFeedback() {
         .split(' ')
         .join('-');
 
-      const template = `<button title="Post a comment" data-feedback-hash=${headingText} type="button" class="ant-btn ant-btn-text ant-btn-icon-only button comment-link feedback-link">${icon}</button>`;
+      const template = `<button title="Post a comment" data-feedback-hash=${headingText} type="button" class="ant-btn ant-btn-text ant-btn-icon-only button comment-link">${icon}</button>`;
 
       const button = {
         type: 'html',

@@ -420,7 +420,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
             value={valueOf(tab)}
             defaultValue={defaultOf(tab)}
             path={`${tab}_${relativePath || exampleId}`}
-            loading={<Loading />}
+            loading={<Loading style={{ height: 'calc(100vh - 128px)' }} />}
             options={{
               readOnly: tab === EDITOR_TABS.DATA || tab === EDITOR_TABS.SPEC,
               automaticLayout: true,
