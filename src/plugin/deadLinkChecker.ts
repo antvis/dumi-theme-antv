@@ -241,9 +241,9 @@ async function runCheck(config: DeadLinkConfig): Promise<CheckResult> {
 
   const externalDeadLinks = config.checkExternalLinks
     ? await checkExternalLinks(
-        linksToCheck.filter((link) => link.isExternal),
-        config,
-      )
+      linksToCheck.filter((link) => link.isExternal),
+      config,
+    )
     : [];
 
   const deadLinks = [...internalDeadLinks, ...externalDeadLinks];
@@ -256,17 +256,16 @@ async function runCheck(config: DeadLinkConfig): Promise<CheckResult> {
 }
 
 /**
- * 生成死链检查报告并打印到控制台
+ * 生成死链检查报告
  */
 function generateReport(result: CheckResult): void {
-  console.log();
-
   if (result.deadLinks.length === 0) {
     console.log(chalk.green(`✓ Check completed: All ${result.totalLinks} links are valid`));
     console.log();
     return;
   }
 
+  const reportFile = path.join(process.cwd(), 'dead-links-report.log');
   const linksByFile = result.deadLinks.reduce((acc, link) => {
     if (!acc[link.sourceFile]) {
       acc[link.sourceFile] = [];
@@ -275,27 +274,61 @@ function generateReport(result: CheckResult): void {
     return acc;
   }, {} as Record<string, DeadLink[]>);
 
-  console.log(
-    chalk.yellow(
-      `📊 Found ${result.deadLinks.length}/${result.totalLinks} dead links in ${Object.keys(linksByFile).length} files`,
-    ),
-  );
+  // 准备详细报告内容
+  const reportLines = [
+    `Dead Links Report (${new Date().toISOString()})`,
+    `Found ${result.deadLinks.length}/${result.totalLinks} dead links in ${Object.keys(linksByFile).length} files`,
+    '',
+  ];
 
   Object.entries(linksByFile).forEach(([file, links]) => {
-    console.log();
-    console.log(chalk.yellow(`📄 ${file}:`));
-
+    reportLines.push(`File: ${file}`);
     links.forEach((link) => {
-      console.log(chalk.red(`  ✗ ${link.url}`));
-      console.log(chalk.gray(`    • Text: ${link.text}`));
-      console.log(chalk.gray(`    • Reason: ${link.reason}`));
+      reportLines.push(`  ✗ ${link.url}`);
+      reportLines.push(`    • Text: ${link.text}`);
+      reportLines.push(`    • Reason: ${link.reason}`);
     });
+    reportLines.push('');
   });
 
-  console.log();
-  console.log(chalk.cyan(`💡 Tip: Please fix these links and run \`npx dumi check-links\` to verify`));
-  console.log(chalk.cyan(`💡 Tip: Don't forget to run \`npm run build\` after fixing the links`));
-  console.log();
+  // 写入详细报告到文件
+  try {
+    fs.writeFileSync(reportFile, reportLines.join('\n'), 'utf-8');
+
+    // 确保 .gitignore 包含报告文件
+    const gitignorePath = path.join(process.cwd(), '.gitignore');
+    const gitignoreContent = fs.existsSync(gitignorePath)
+      ? fs.readFileSync(gitignorePath, 'utf-8')
+      : '';
+
+    if (!gitignoreContent.includes('dead-links-report.log')) {
+      fs.appendFileSync(gitignorePath, '\n# Dead links report\ndead-links-report.log\n');
+    }
+
+    // 控制台只输出简要信息
+    console.log();
+    console.log(chalk.yellow('📊 Dead Links Summary:'));
+    console.log(chalk.yellow(`Found ${result.deadLinks.length} dead links in ${Object.keys(linksByFile).length} files`));
+    console.log();
+
+    // 每个文件只显示概要信息
+    Object.entries(linksByFile).forEach(([file, links]) => {
+      console.log(
+        chalk.red(`✗ ${file}`),
+        chalk.gray(`(${links.length} dead ${links.length === 1 ? 'link' : 'links'})`)
+      );
+    });
+
+    console.log();
+    console.log(chalk.cyan(`💡 Detailed report: ${reportFile}`));
+    console.log();
+
+  } catch (error) {
+    // 写入失败时的错误处理
+    console.error(chalk.red('Failed to write report file:'), error);
+    // 回退到控制台完整输出
+    console.log(reportLines.join('\n'));
+  }
 }
 
 /**
