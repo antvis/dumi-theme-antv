@@ -3,7 +3,6 @@ import { FloatButton, Layout as AntLayout } from 'antd';
 import React, { lazy, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CommonHelmet from '../../common/CommonHelmet';
-import InViewSuspense from '../../common/InViewSuspense';
 import { ThemeAntVContext } from '../../context';
 import useLocale, { type LocaleMap } from '../../hooks/useLocale';
 import Footer from '../../slots/Footer';
@@ -51,9 +50,7 @@ const Examples = () => {
       <Header isHomePage={false} />
 
       <AntLayout hasSider className={styles.layout}>
-        <InViewSuspense>
-          <ExampleTopicMenu exampleTopics={exampleTopics} />
-        </InViewSuspense>
+        <ExampleTopicMenu exampleTopics={exampleTopics} />
 
         <Article className={styles.markdown}>
           <div className={styles.main} style={{ width: '100%' }}>
