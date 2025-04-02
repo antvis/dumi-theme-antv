@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+import Critters from 'critters-webpack-plugin';
 import type { IApi } from 'dumi';
 import { winPath } from 'dumi/plugin-utils';
 import * as path from 'path';
@@ -14,6 +15,16 @@ const MOCK_META = { frontmatter: { title: 'mock-meta' }, texts: [], toc: [] };
 
 export default (api: IApi) => {
   api.describe({ key: `dumi-theme:${require('../../package.json').name}` });
+
+  // use critters to extract key css into html head
+  api.chainWebpack((config) => {
+    config.plugin('critters').use(Critters, [
+      {
+        preload: 'js-lazy',
+        inlineThreshold: 10240,
+      },
+    ]);
+  });
 
   api.modifyDefaultConfig((memo) => {
     // use passive mode for code blocks of markdown, to avoid dumi compile theme as react component
