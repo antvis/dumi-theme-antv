@@ -177,7 +177,7 @@ try {
 }
   `;
   // 追加图表容器
-  node.innerHTML = container || `<div id=${replaceId} class="playgroundCodeContainer" />`;
+  node.innerHTML = container || `<div id=${replaceId} class="playgroundCodeContainer" style="max-height:400px"/>`;
   // 运行 script
   node!.appendChild(script);
 }

@@ -98,8 +98,8 @@ export const Toolbar: React.FC<ToolbarProps> = ({
   onToggleFullscreen = null,
   onExecuteCode,
 }) => {
-  const locale = useLocale();
-  const exampleTitle = (typeof title === 'object' ? title[locale.id as 'zh' | 'en'] : title) as string;
+  // const locale = useLocale();
+  const exampleTitle = (typeof title === 'object' ? title['zh'] : title) as string;
 
   // 使用 playground.dependencies 定义的版本号
   const dependencies = {

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Preview } from './Preview';
+import CodeBlockRunner from '../CodeBlockRunner';
 import { safeEval } from './utils';
 
 function optionsOf(p) {
@@ -16,11 +17,11 @@ function optionsOf(p) {
 }
 
 function sourceOf(block: Element) {
+  let source = "";
   const cloned = block.cloneNode(true) as Element;
-  // 去掉 comments
-  const comments = Array.from(cloned.querySelectorAll('.comment'));
-  comments.forEach((comment) => comment.remove());
-  return cloned.textContent;
+  const preElement = cloned.querySelector('pre');
+  preElement.childNodes.forEach((c) => source += c.textContent + '\n');
+  return source;
 }
 
 function blockOf() {
@@ -59,7 +60,10 @@ export function usePreview(options = {}, select) {
       const wrapper = document.createElement('div');
       const options = optionsOf(p);
       const root = createRoot(wrapper);
+      console.log(22223)
+
       root.render(<Preview source={source} code={block} {...options} />);
+      // root.render(<><CodeBlockRunner /><Preview source={source} code={block} {...options} /></>);
       p.replaceWith(wrapper);
 
       W[i] = wrapper;
