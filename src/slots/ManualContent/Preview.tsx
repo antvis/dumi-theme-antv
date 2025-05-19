@@ -180,8 +180,8 @@ export const Preview: FC<any> = ({ source, code, pin = true, compile = false }) 
       ) : (
         <>
           <div ref={containerRef} className={styles.main} id={`playgroundScriptContainer_${exampleId}`} style={{ maxHeight: '400px' }}>
-            {error && <span className={styles.error}>{error.toString()}</span>}
           </div>
+          {error && <span className={styles.error}>{error.toString()}</span>}
           <ul className={styles.ul} ref={ulRef}>
             <li onClick={onPin} className={styles.li}>
               <PushpinOutlined />
