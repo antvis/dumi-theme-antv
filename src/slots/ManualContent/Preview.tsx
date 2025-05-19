@@ -1,7 +1,13 @@
 import { PlayCircleOutlined, PushpinOutlined } from '@ant-design/icons';
 import React, { FC, useEffect, useRef, useState } from 'react';
+import { createRoot } from 'react-dom/client';
 import styles from './Preview.module.less';
 import { safeEval } from './utils';
+import {noop} from "lodash-es";
+import {nanoid} from "nanoid";
+
+const CodeEditor = React.lazy(() => import('../CodeEditor'));
+
 
 type ClearableDOM = (HTMLElement | SVGElement) & { clear?: any };
 
@@ -31,16 +37,18 @@ function sizeOf(dom) {
 export type PreviewProps = {
   source: string;
   pin: boolean;
+  compile?: boolean;
   code: HTMLDivElement;
 };
 
-export const Preview: FC<any> = ({ source, code, pin = true }) => {
+export const Preview: FC<any> = ({ source, code, pin = true, compile = false }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const ulRef = useRef<HTMLUListElement>(null);
   const nodeRef = useRef<ClearableDOM>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error>(null);
   const [node, setNode] = useState<ClearableDOM>(null);
+  const [exampleId, setExampleId] = useState("");
 
   async function execute(source) {
     setError(null);
@@ -81,7 +89,7 @@ export const Preview: FC<any> = ({ source, code, pin = true }) => {
 
   // 执行代码
   useEffect(() => {
-    execute(source);
+    //execute(source);
   }, [source]);
 
   // 更新 node
@@ -133,6 +141,28 @@ export const Preview: FC<any> = ({ source, code, pin = true }) => {
       containerRef.current.addEventListener('mouseenter', enter);
       containerRef.current.addEventListener('mouseleave', leave);
     }
+    //todo 修改代码为可编辑
+    code.style.height = "300px";
+    let codeBlock = createRoot(code);
+    console.log("source",source)
+    const exampleId = '1111'+nanoid(10);
+    setExampleId(exampleId);
+    codeBlock.render(
+      <CodeEditor
+        exampleId={exampleId}
+        source={source}
+        //relativePath={relativePath}
+        replaceId={exampleId}
+        onError={setError}
+        onFullscreen={()=>{console.log("fullscreen")}}
+        onDestroy={noop}
+        onReady={noop}
+        customExecute={compile?null:execute}
+        playground={{}}
+        noCompile={!compile}
+      />
+    );
+
     return () => {
       code.removeEventListener('mouseenter', enter);
       code.removeEventListener('mouseleave', leave);
@@ -144,14 +174,14 @@ export const Preview: FC<any> = ({ source, code, pin = true }) => {
   }, []);
 
   return (
-    <div className={styles.preview}>
+    <div className={styles.preview} >
       {loading ? (
         <div className={styles.loading}>running...</div>
       ) : (
         <>
-          <div ref={containerRef} className={styles.main}>
-            {error && <span className={styles.error}>{error.toString()}</span>}
+          <div ref={containerRef} className={styles.main} id={`playgroundScriptContainer_${exampleId}`} style={{ maxHeight: '400px' }}>
           </div>
+          {error && <span className={styles.error}>{error.toString()}</span>}
           <ul className={styles.ul} ref={ulRef}>
             <li onClick={onPin} className={styles.li}>
               <PushpinOutlined />

@@ -64,6 +64,8 @@ export type CodeEditorProps = {
    * 执行出错的时候，回调，方便上层做显示
    */
   onError: (e: any) => void;
+  customExecute?: (source: string) => void;
+  noCompile?: boolean;
   /**
    * playground 的一些配置
    */
@@ -96,11 +98,12 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   onDestroy = noop,
   onError = noop,
   onFullscreen = noop,
+  customExecute = noop,
+  noCompile= false,
 }) => {
-  const locale = useLocale();
+  //const locale = useLocale();
   const { themeConfig } = useSiteData();
   const { es5 = true, showSpecTab = false } = themeConfig;
-  const { extraLib = '' } = themeConfig.playground;
   // 编辑器两个 tab，分别是代码和数据
   const [data, setData] = useState(null);
   const [spec, setSpec] = useState(null);
@@ -154,16 +157,26 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
 
   const executeCode = useCallback(
     debounce((v: string) => {
+
       if (currentEditorTab !== EDITOR_TABS.JAVASCRIPT) return;
       if (!v) return;
 
       // 1. 先编译代码
-      let compiled;
-      try {
-        compiled = compile(replaceInsertCss(v, locale.id), relativePath, es5);
-      } catch (e) {
-        reportError(e);
-        // 执行出错，后面的步骤不用做了！
+
+      let compiled = v;
+
+      if(! noCompile){
+        try {
+          compiled = compile(replaceInsertCss(v, 'zh'), relativePath, es5);
+        } catch (e) {
+          reportError(e);
+          // 执行出错，后面的步骤不用做了！
+          return;
+        }
+      }
+
+      if (customExecute) {
+        customExecute(compiled);
         return;
       }
 
