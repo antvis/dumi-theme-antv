@@ -2,6 +2,8 @@ import { PlayCircleOutlined, PushpinOutlined } from '@ant-design/icons';
 import React, { FC, useEffect, useRef, useState } from 'react';
 import styles from './Preview.module.less';
 import { safeEval } from './utils';
+import { compile } from '../CodeEditor/utils';
+import { uniqueId } from 'lodash-es';
 
 type ClearableDOM = (HTMLElement | SVGElement) & { clear?: any };
 
@@ -32,30 +34,68 @@ export type PreviewProps = {
   source: string;
   pin: boolean;
   code: HTMLDivElement;
+  autoMount: boolean;
 };
 
-export const Preview: FC<any> = ({ source, code, pin = true }) => {
+export const Preview: FC<any> = ({ source, code, pin = true, autoMount = false }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const ulRef = useRef<HTMLUListElement>(null);
-  const nodeRef = useRef<ClearableDOM>(null);
+  const nodeRef = useRef<ClearableDOM | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<Error>(null);
-  const [node, setNode] = useState<ClearableDOM>(null);
+  const [error, setError] = useState<Error | null>(null);
+  const [node, setNode] = useState<ClearableDOM | null>(null);
+  const [uniqueContainerId] = useState<string>(`container_${uniqueId()}`);
 
-  async function execute(source) {
+  function executeScript(code: string, scriptContainerId: string) {
+    if (!containerRef.current) return null;
+
+    const containerDiv = document.createElement('div');
+    containerDiv.id = scriptContainerId;
+
+    // 使用唯一ID作为容器ID，确保多个Preview组件不会冲突
+    containerDiv.innerHTML = `<div id="${uniqueContainerId}" class="playgroundCodeContainer" style="width: 100%; height: 100%"></div>`;
+
+    containerRef.current.innerHTML = '';
+    containerRef.current.appendChild(containerDiv);
+
+    const script = document.createElement('script');
+    const modifiedCode = code.replace(/'container'|"container"/g, `'${uniqueContainerId}'`);
+    script.innerHTML = modifiedCode;
+
+    containerDiv.appendChild(script);
+    return containerDiv;
+  }
+
+  async function execute(source: string) {
     setError(null);
+
     try {
-      const value = safeEval(source);
-      if (value instanceof Promise) setLoading(true);
-      const rendered = normalizeValue(value);
-      const n = await rendered;
-      const node = normalizeDOM(n);
+      let node = null;
+
+      if (autoMount) {
+        // 手动执行，自动挂载到 DOM 上
+        const compiledCode = compile(source, '', true);
+
+        // 为每个脚本容器生成唯一ID
+        const scriptContainerId = `script_container_${uniqueId()}`;
+        const containerNode = executeScript(compiledCode, scriptContainerId);
+
+        node = containerNode;
+      } else {
+        // 自执行函数
+        const value = safeEval(source);
+        if (value instanceof Promise) setLoading(true);
+        const rendered = normalizeValue(value);
+        const n = await rendered;
+        node = normalizeDOM(n);
+      }
+
       setNode(node);
       setLoading(false);
-    } catch (error) {
+    } catch (err) {
       setLoading(false);
-      setError(error);
-      console.error(error);
+      setError(err as Error);
+      console.error(err);
     }
   }
 
@@ -73,6 +113,8 @@ export const Preview: FC<any> = ({ source, code, pin = true }) => {
   }
 
   function updateToolHeight() {
+    if (!ulRef.current || !containerRef.current) return;
+
     const { height: codeHeight } = sizeOf(code);
     const { height: nodeHeight } = sizeOf(containerRef.current);
     const height = codeHeight + nodeHeight;
@@ -84,9 +126,9 @@ export const Preview: FC<any> = ({ source, code, pin = true }) => {
     execute(source);
   }, [source]);
 
-  // 更新 node
+  // 更新 node（非 autoMount 模式）
   useEffect(() => {
-    if (containerRef.current && node) {
+    if (containerRef.current && node && !autoMount) {
       nodeRef.current?.clear?.();
       nodeRef.current = node;
       const oldChild = containerRef.current.children[0];
@@ -97,18 +139,18 @@ export const Preview: FC<any> = ({ source, code, pin = true }) => {
       }
       updateToolHeight();
     }
-  }, [node]);
+  }, [node, autoMount]);
 
   // 销毁的时候调用 DOM 上的 clear 函数
   useEffect(() => {
     return () => nodeRef.current?.clear?.();
-  });
+  }, []);
 
   // 是否需要隐藏代码
   useEffect(() => {
     if (pin !== false) return;
     code.style.display = 'none';
-  }, [pin]);
+  }, [pin, code]);
 
   // 暂时和隐藏 toolbar
   useEffect(() => {
@@ -141,7 +183,7 @@ export const Preview: FC<any> = ({ source, code, pin = true }) => {
         containerRef.current.removeEventListener('mouseleave', leave);
       }
     };
-  }, []);
+  }, [code]);
 
   return (
     <div className={styles.preview}>
