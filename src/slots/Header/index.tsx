@@ -10,7 +10,7 @@ import { Alert, Button, Dropdown, Menu, Modal, Popover } from 'antd';
 import cx from 'classnames';
 import { FormattedMessage, Link, useLocale, useSiteData } from 'dumi';
 import { get, map, size } from 'lodash-es';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import { useMedia } from 'react-use';
 import { getPurePathname } from '../../utils/location';
 import { ic, icWithLocale } from '../hooks';
@@ -124,6 +124,11 @@ export type HeaderProps = {
       text: IC;
     };
   };
+  showWeavefox: {
+    internal: boolean | string;
+    public: boolean | string;
+  };
+  isInternalUser: boolean;
 };
 
 function redirectChinaMirror(chinaMirrorOrigin: string) {
@@ -142,6 +147,8 @@ const HeaderComponent: React.FC<HeaderProps> = ({
   showGithubCorner = true,
   showAntVProductsCard = true,
   showLanguageSwitcher = true,
+  showWeavefox = {},
+  isInternalUser,
   logo,
   onLanguageChange,
   // 默认就使用 AntV 的公众号
@@ -277,6 +284,27 @@ const HeaderComponent: React.FC<HeaderProps> = ({
     onLanguageChange?.(lang);
   };
 
+  const weavefox = useMemo(() => {
+    const configKey = isInternalUser ? 'internal' : 'public';
+    const configValue = showWeavefox[configKey];
+
+    if (!configValue) return <></>;
+
+    const defaultLink = isInternalUser
+      ? 'https://weavefox.antgroup-inc.cn/agent/@huiyu.zjt/AntV'
+      : 'https://weavefox.alipay.com/agent/@ufox-b8tydq-0758/202505AP7vfl00422922';
+
+    const href = typeof configValue === 'string' ? configValue : defaultLink;
+
+    return (
+      <li>
+        <a href={href} target="_blank" rel="noreferrer">
+          AI生码
+        </a>
+      </li>
+    );
+  }, [isInternalUser, showWeavefox]);
+
   const menu = (
     <ul
       className={cx(styles.menu, {
@@ -288,7 +316,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
         /** 最左侧的菜单，一般是 教程、API、示例，或者其他自定义，有配置文件中的 `navs` 决定 */
         size(navs) ? <Navs navs={navs} path={pathname} /> : null
       }
-
+      {weavefox}
       {
         /** 生态产品 */
         size(ecosystems) ? (
@@ -602,6 +630,7 @@ const Header: React.FC<Partial<HeaderProps>> = (props) => {
     announcement,
     petercat,
     links,
+    showWeavefox,
   } = themeConfig;
   const searchOptions = {
     docsearchOptions,
@@ -610,6 +639,7 @@ const Header: React.FC<Partial<HeaderProps>> = (props) => {
   const { pathname } = useLocation();
   const isHomePage = ['/', ''].includes(getPurePathname(pathname));
   const lang = useLocale().id;
+  const [isInternalUser, setIsInternalUser] = useState<boolean | undefined>(undefined);
 
   const headerProps = {
     subTitle: icWithLocale(title, lang),
@@ -634,8 +664,9 @@ const Header: React.FC<Partial<HeaderProps>> = (props) => {
     transparent: isHomePage && isAntVSite,
     announcement,
     petercat,
+    showWeavefox,
+    isInternalUser,
   };
-  const [isInternalUser, setIsInternalUser] = useState<boolean | undefined>(undefined);
   const isPetercatShow = petercat?.show;
 
   useEffect(() => {
