@@ -33,7 +33,7 @@ const Footer: React.FC<FooterProps> = (props) => {
   const getColumns = () => {
     // 如果外部没有传入 columns，则默认展示 antv footer
     const col1 = {
-      title: 'Resources',
+      title: <FormattedMessage id="资源" />,
       items: [
         {
           title: 'Ant Design',
@@ -150,7 +150,7 @@ const Footer: React.FC<FooterProps> = (props) => {
             />
           ),
           title: 'Galacean',
-          description: '互动图形解决方案',
+          description: <FormattedMessage id="互动图形解决方案" />,
           url: 'https://galacean.antgroup.com/',
           openExternal: true,
         },
