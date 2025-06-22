@@ -25,153 +25,169 @@ interface LiveExampleProps extends PreviewOptions {
   title?: string;
 }
 
-interface ExecutionResult {
+interface ExecutionState {
   isLoading: boolean;
-  error: Error | null;
-  renderedNode: RenderableNode | null;
+  error: string | null;
 }
-
-type RenderableNode = (HTMLElement | SVGElement) & {
-  clear?: () => void;
-  _eventCleanup?: () => void;
-};
-
-const normalizeAsyncValue = (value: any): Promise<any> => (value instanceof Promise ? value : Promise.resolve(value));
-
-const createDOMNode = (value: any): RenderableNode => {
-  if (value instanceof HTMLElement || value instanceof SVGElement) {
-    const wrapper = document.createElement('div') as RenderableNode;
-    wrapper.style.width = '100%';
-    wrapper.style.height = '100%';
-    wrapper.appendChild(value);
-
-    wrapper.clear = () => {
-      if (typeof (value as any).clear === 'function') {
-        (value as any).clear();
-      }
-    };
-    return wrapper;
-  }
-
-  const span = document.createElement('span') as RenderableNode;
-  span.textContent = String(value);
-  return span;
-};
-
-/**
- * Calculates the actual size of an element
- */
-const calculateElementSize = (element: HTMLElement) => {
-  const computedStyle = getComputedStyle(element);
-  return {
-    width: element.clientWidth || parseInt(computedStyle.width) || 0,
-    height: element.clientHeight || parseInt(computedStyle.height) || 0,
-  };
-};
-
-const safelyCleanContainer = (container: HTMLElement) => {
-  try {
-    container.innerHTML = '';
-  } catch {
-    try {
-      while (container.firstChild) container.removeChild(container.firstChild);
-    } catch {}
-  }
-};
 
 export default function LiveExample(props: LiveExampleProps) {
   const { source: initialSource, lang, inject = false, pin = true } = props;
 
-  const previewContainerRef = useRef<HTMLDivElement>(null);
-  const codeEditorRef = useRef<HTMLDivElement>(null);
+  const previewRef = useRef<HTMLDivElement>(null);
+  const codeRef = useRef<HTMLDivElement>(null);
   const toolbarRef = useRef<HTMLUListElement>(null);
-  const currentNodeRef = useRef<RenderableNode | null>(null);
 
   const [sourceCode, setSourceCode] = useState(initialSource);
-  const [executionResult, setExecutionResult] = useState<ExecutionResult>({
+  const [executionState, setExecutionState] = useState<ExecutionState>({
     isLoading: false,
     error: null,
-    renderedNode: null,
   });
   const [isCodeVisible, setIsCodeVisible] = useState(pin !== false);
-  const [containerId] = useState(() => `live-example-container-${uniqueId()}`);
+  const [containerId] = useState(() => `live-example-${uniqueId()}`);
 
-  /**
-   * Executes compiled code by injecting it into the DOM
-   * This is used for inject mode where code needs to run in the browser context
-   */
-  const executeCompiledScript = useCallback(
-    (compiledCode: string, scriptId: string): HTMLDivElement | null => {
-      if (!previewContainerRef.current) return null;
-
-      safelyCleanContainer(previewContainerRef.current);
-
-      const scriptContainer = document.createElement('div');
-      scriptContainer.id = scriptId;
-      scriptContainer.innerHTML = `<div id="${containerId}" class="playgroundCodeContainer" style="width: 100%; height: 100%"></div>`;
-
-      previewContainerRef.current.appendChild(scriptContainer);
-
-      const scriptElement = document.createElement('script');
-      const modifiedCode = compiledCode.replace(/'container'|"container"/g, `'${containerId}'`);
-      scriptElement.innerHTML = modifiedCode;
-      scriptContainer.appendChild(scriptElement);
-
-      return scriptContainer;
-    },
-    [containerId],
-  );
-
-  const execute = useCallback(
-    async (code: string) => {
-      setExecutionResult({ isLoading: true, error: null, renderedNode: null });
-
-      try {
-        let resultNode: RenderableNode | null = null;
-
-        if (inject) {
-          // DOM injection mode: compile and execute code in browser context
-          const compiledCode = compile(code, '', true);
-          const scriptId = `script-${uniqueId()}`;
-          resultNode = executeCompiledScript(compiledCode, scriptId);
-        } else {
-          // Direct evaluation mode: execute code and handle results
-          const evaluationResult = safeEval(code);
-          // Handle both sync and async results consistently
-          const resolved = await normalizeAsyncValue(evaluationResult);
-          resultNode = createDOMNode(resolved);
-        }
-
-        setExecutionResult({
-          isLoading: false,
-          error: null,
-          renderedNode: resultNode,
-        });
-      } catch (error) {
-        setExecutionResult({
-          isLoading: false,
-          error: error as Error,
-          renderedNode: null,
-        });
-      }
-    },
-    [inject, executeCompiledScript],
-  );
-
-  const updateToolbarHeight = useCallback(() => {
-    if (!toolbarRef.current || !previewContainerRef.current || !codeEditorRef.current) return;
-
-    const codeSize = calculateElementSize(codeEditorRef.current);
-    const previewSize = calculateElementSize(previewContainerRef.current);
-    toolbarRef.current.style.height = `${codeSize.height + previewSize.height}px`;
+  const clearPreviewContainer = useCallback(() => {
+    if (previewRef.current) {
+      previewRef.current.innerHTML = '';
+    }
   }, []);
 
+  const showError = useCallback((message: string) => {
+    if (previewRef.current) {
+      previewRef.current.innerHTML = `
+        <div style="color: #fb1716; padding: 8px; border-left: 3px solid #ff0000; padding-left: 12px;">
+          ${message}
+        </div>
+      `;
+    }
+  }, []);
+
+  const renderResult = useCallback((value: any) => {
+    const container = previewRef.current;
+    if (!container) {
+      console.warn('渲染结果时容器不存在');
+      return;
+    }
+
+    if (
+      value instanceof HTMLElement ||
+      value instanceof SVGElement ||
+      (value && typeof value === 'object' && value.nodeType)
+    ) {
+      container.appendChild(value);
+    } else if (value !== null && value !== undefined) {
+      const div = document.createElement('div');
+      div.textContent = String(value);
+      container.appendChild(div);
+    }
+  }, []);
+
+  // Inject模式：编译并注入代码
+  const executeInjectMode = useCallback(
+    (code: string) => {
+      // 编译代码
+      let compiledCode: string;
+      try {
+        compiledCode = compile(code, '', true);
+      } catch (compileError) {
+        const errorMessage = compileError instanceof Error ? compileError.message : String(compileError);
+        showError(`Compile Error: ${errorMessage}`);
+        return;
+      }
+
+      // 清理容器并注入代码
+      clearPreviewContainer();
+      const container = previewRef.current!;
+      container.innerHTML = `<div id="${containerId}" style="width: 100%; height: 100%;"></div>`;
+
+      // 创建并注入脚本
+      const script = document.createElement('script');
+      const modifiedCode = compiledCode.replace(/'container'|"container"/g, `'${containerId}'`);
+
+      script.textContent = `
+      try {
+        ${modifiedCode}
+      } catch (error) {
+        console.error('脚本执行时发生错误:', error);
+        const errorContainer = document.getElementById('${containerId}');
+        if (errorContainer) {
+          errorContainer.innerHTML = '<div style="color: #fb1716; padding: 8px; border-left: 3px solid #ff0000; padding-left: 12px;">Runtime Error: ' + error.message + '</div>';
+        }
+      }
+    `;
+
+      document.head.appendChild(script);
+
+      // 延迟清理脚本
+      setTimeout(() => {
+        if (script.parentNode) {
+          script.parentNode.removeChild(script);
+        }
+      }, 100);
+    },
+    [containerId, clearPreviewContainer, showError],
+  );
+
+  // Direct模式：直接执行代码
+  const executeDirectMode = useCallback(
+    (code: string) => {
+      clearPreviewContainer();
+
+      const result = safeEval(code);
+
+      // 处理Promise结果
+      if (result && typeof result.then === 'function') {
+        result
+          .then((resolvedValue: any) => {
+            renderResult(resolvedValue);
+          })
+          .catch((error: any) => {
+            showError(`Promise Error: ${error.message || String(error)}`);
+          });
+      } else {
+        renderResult(result);
+      }
+    },
+    [clearPreviewContainer, renderResult, showError],
+  );
+
+  // 主执行函数
+  const execute = useCallback(
+    async (code: string) => {
+      setExecutionState({ isLoading: true, error: null });
+
+      try {
+        if (inject) {
+          executeInjectMode(code);
+        } else {
+          executeDirectMode(code);
+        }
+
+        setExecutionState({ isLoading: false, error: null });
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        setExecutionState({ isLoading: false, error: errorMessage });
+        showError(`Execution Error: ${errorMessage}`);
+      }
+    },
+    [inject, executeInjectMode, executeDirectMode, showError],
+  );
+
+  // 工具栏高度更新
+  const updateToolbarHeight = useCallback(() => {
+    if (!toolbarRef.current || !previewRef.current || !codeRef.current) return;
+
+    const codeHeight = codeRef.current.clientHeight;
+    const previewHeight = previewRef.current.clientHeight;
+    toolbarRef.current.style.height = `${codeHeight + previewHeight}px`;
+  }, []);
+
+  // 事件处理函数
   const toggleCodeVisibility = useCallback(() => {
     const visible = !isCodeVisible;
     setIsCodeVisible(visible);
 
-    if (codeEditorRef.current) {
-      codeEditorRef.current.style.display = visible ? 'block' : 'none';
+    if (codeRef.current) {
+      codeRef.current.style.display = visible ? 'block' : 'none';
       setTimeout(updateToolbarHeight, 0);
     }
   }, [isCodeVisible, updateToolbarHeight]);
@@ -184,122 +200,71 @@ export default function LiveExample(props: LiveExampleProps) {
     setSourceCode(code);
   }, []);
 
+  // Effects
   useEffect(() => {
     execute(sourceCode);
-  }, [sourceCode, execute]);
+  }, [execute, sourceCode]);
 
   useEffect(() => {
-    if (!executionResult.renderedNode || inject) return;
-
-    if (currentNodeRef.current) {
-      currentNodeRef.current._eventCleanup?.();
-      currentNodeRef.current.clear?.();
-    }
-
-    currentNodeRef.current = executionResult.renderedNode;
-
-    if (previewContainerRef.current) {
-      safelyCleanContainer(previewContainerRef.current);
-      previewContainerRef.current.appendChild(executionResult.renderedNode);
-
-      const handleMouseEnter = () => {
-        if (!toolbarRef.current || !codeEditorRef.current) return;
-        toolbarRef.current.style.display = 'block';
-        codeEditorRef.current.style.borderRadius = '0px';
-        setTimeout(updateToolbarHeight, 0);
-      };
-
-      const handleMouseLeave = () => {
-        if (!toolbarRef.current || !codeEditorRef.current) return;
-        toolbarRef.current.style.display = '';
-        codeEditorRef.current.style.borderRadius = '';
-      };
-
-      executionResult.renderedNode.addEventListener('mouseenter', handleMouseEnter);
-      executionResult.renderedNode.addEventListener('mouseleave', handleMouseLeave);
-
-      executionResult.renderedNode._eventCleanup = () => {
-        executionResult.renderedNode.removeEventListener('mouseenter', handleMouseEnter);
-        executionResult.renderedNode.removeEventListener('mouseleave', handleMouseLeave);
-      };
-    }
-
-    setTimeout(updateToolbarHeight, 0);
-  }, [executionResult.renderedNode, inject, updateToolbarHeight]);
+    setTimeout(updateToolbarHeight, 100);
+  }, [executionState, updateToolbarHeight]);
 
   useEffect(() => {
-    if (!executionResult.renderedNode || !inject) return;
-    setTimeout(updateToolbarHeight, 0);
-  }, [executionResult.renderedNode, inject, updateToolbarHeight]);
-
-  useEffect(() => {
-    if (!codeEditorRef.current) return;
+    if (!codeRef.current) return;
     if (pin === false) {
-      codeEditorRef.current.style.display = 'none';
+      codeRef.current.style.display = 'none';
       setIsCodeVisible(false);
     }
   }, [pin]);
 
   useEffect(() => {
     const handleMouseEnter = () => {
-      if (!toolbarRef.current || !codeEditorRef.current) return;
+      if (!toolbarRef.current || !codeRef.current) return;
       toolbarRef.current.style.display = 'block';
-      codeEditorRef.current.style.borderRadius = '0px';
+      codeRef.current.style.borderRadius = '0px';
       setTimeout(updateToolbarHeight, 0);
     };
 
     const handleMouseLeave = () => {
-      if (!toolbarRef.current || !codeEditorRef.current) return;
+      if (!toolbarRef.current || !codeRef.current) return;
       toolbarRef.current.style.display = '';
-      codeEditorRef.current.style.borderRadius = '';
+      codeRef.current.style.borderRadius = '';
     };
 
-    codeEditorRef.current?.addEventListener('mouseenter', handleMouseEnter);
-    codeEditorRef.current?.addEventListener('mouseleave', handleMouseLeave);
+    const codeEditor = codeRef.current;
+    const previewContainer = previewRef.current;
 
-    previewContainerRef.current?.addEventListener('mouseenter', handleMouseEnter);
-    previewContainerRef.current?.addEventListener('mouseleave', handleMouseLeave);
+    codeEditor?.addEventListener('mouseenter', handleMouseEnter);
+    codeEditor?.addEventListener('mouseleave', handleMouseLeave);
+    previewContainer?.addEventListener('mouseenter', handleMouseEnter);
+    previewContainer?.addEventListener('mouseleave', handleMouseLeave);
 
     return () => {
-      codeEditorRef.current?.removeEventListener('mouseenter', handleMouseEnter);
-      codeEditorRef.current?.removeEventListener('mouseleave', handleMouseLeave);
-
-      previewContainerRef.current?.removeEventListener('mouseenter', handleMouseEnter);
-      previewContainerRef.current?.removeEventListener('mouseleave', handleMouseLeave);
+      codeEditor?.removeEventListener('mouseenter', handleMouseEnter);
+      codeEditor?.removeEventListener('mouseleave', handleMouseLeave);
+      previewContainer?.removeEventListener('mouseenter', handleMouseEnter);
+      previewContainer?.removeEventListener('mouseleave', handleMouseLeave);
     };
   }, [updateToolbarHeight]);
 
-  useEffect(() => {
-    return () => {
-      if (currentNodeRef.current) {
-        currentNodeRef.current._eventCleanup?.();
-        currentNodeRef.current.clear?.();
-      }
-    };
-  }, []);
-
   return (
     <div className={styles.preview}>
-      {executionResult.isLoading ? (
+      {executionState.isLoading ? (
         <div className={styles.loading}>Executing...</div>
       ) : (
         <>
-          <div ref={previewContainerRef} className={styles.main}>
-            {executionResult.error && (
-              <span className={styles.error}>{executionResult.error.message || executionResult.error.toString()}</span>
-            )}
-          </div>
+          <div ref={previewRef} className={styles.main} />
           <ul className={styles.ul} ref={toolbarRef}>
-            <li onClick={toggleCodeVisibility} className={styles.li} title="Toggle code visibility">
+            <li onClick={toggleCodeVisibility} className={styles.li} title="Toggle Code Editor">
               <PushpinOutlined />
             </li>
-            <li onClick={handleRunCode} className={styles.li} title="Run code">
+            <li onClick={handleRunCode} className={styles.li} title="Run Code">
               <PlayCircleOutlined />
             </li>
           </ul>
         </>
       )}
-      <div ref={codeEditorRef} style={{ display: isCodeVisible ? 'block' : 'none' }}>
+      <div ref={codeRef} style={{ display: isCodeVisible ? 'block' : 'none' }}>
         <SourceCodeEditor onChange={handleSourceChange} initialValue={sourceCode} lang={lang} />
       </div>
     </div>
