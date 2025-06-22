@@ -35,7 +35,7 @@ export default function rehypeObservable() {
               type: 'element',
               tagName: 'p',
               // @ts-ignore
-              properties: { meta: node.data.meta as string },
+              properties: { meta: node.data.meta as string, ...node.properties },
               children: [],
             },
             // @ts-ignore

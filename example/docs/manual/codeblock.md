@@ -174,9 +174,9 @@ globalCard('world');
 })();
 ```
 
-## G2 autoMount
+## G2 inject
 
-```js | ob { autoMount: true  }
+```js | ob { inject: true  }
 import { Chart } from '@antv/g2';
 
 const chart = new Chart({
@@ -199,9 +199,9 @@ chart
 chart.render();
 ```
 
-## G2 autoMount & unpin
+## G2 inject & unpin
 
-```js | ob { pin: false, autoMount: true  }
+```js | ob { pin: false, inject: true  }
 import { Chart } from '@antv/g2';
 
 const chart = new Chart({
