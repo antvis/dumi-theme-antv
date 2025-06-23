@@ -44,29 +44,32 @@ export default function LiveExample(props: LiveExampleProps) {
   });
   const [isCodeVisible, setIsCodeVisible] = useState(pin !== false);
   const [containerId] = useState(() => `live-example-${uniqueId()}`);
+  const [hasSuccessfulRender, setHasSuccessfulRender] = useState(false);
 
-  const clearPreviewContainer = useCallback(() => {
+  const clearContainer = useCallback(() => {
     if (previewRef.current) {
       previewRef.current.innerHTML = '';
     }
   }, []);
 
-  const showError = useCallback((message: string) => {
-    if (previewRef.current) {
-      previewRef.current.innerHTML = `
+  const handleError = useCallback(
+    (message: string) => {
+      if (hasSuccessfulRender) {
+        console.error('LiveExample Error:', message);
+      } else if (previewRef.current) {
+        previewRef.current.innerHTML = `
         <div style="color: #fb1716; padding: 8px; border-left: 3px solid #ff0000; padding-left: 12px;">
           ${message}
         </div>
       `;
-    }
-  }, []);
+      }
+    },
+    [hasSuccessfulRender],
+  );
 
   const renderResult = useCallback((value: any) => {
     const container = previewRef.current;
-    if (!container) {
-      console.warn('渲染结果时容器不存在');
-      return;
-    }
+    if (!container) return;
 
     if (
       value instanceof HTMLElement ||
@@ -84,108 +87,126 @@ export default function LiveExample(props: LiveExampleProps) {
   // Inject模式：编译并注入代码
   const executeInjectMode = useCallback(
     (code: string) => {
-      // 编译代码
       let compiledCode: string;
       try {
         compiledCode = compile(code, '', true);
       } catch (compileError) {
         const errorMessage = compileError instanceof Error ? compileError.message : String(compileError);
-        showError(`Compile Error: ${errorMessage}`);
+        handleError(`Compile Error: ${errorMessage}`);
         return;
       }
 
-      // 清理容器并注入代码
-      clearPreviewContainer();
+      // 清理容器并准备新的渲染
+      clearContainer();
       const container = previewRef.current!;
       container.innerHTML = `<div id="${containerId}" style="width: 100%; height: 100%;"></div>`;
 
-      // 创建并注入脚本
+      // 生成唯一的执行ID并创建脚本
+      const executionId = `exec-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
       const script = document.createElement('script');
       const modifiedCode = compiledCode.replace(/'container'|"container"/g, `'${containerId}'`);
 
       script.textContent = `
       try {
         ${modifiedCode}
+        const successElement = document.createElement('div');
+        successElement.id = 'execution-success-${executionId}';
+        successElement.style.display = 'none';
+        document.body.appendChild(successElement);
       } catch (error) {
         console.error('脚本执行时发生错误:', error);
-        const errorContainer = document.getElementById('${containerId}');
-        if (errorContainer) {
-          errorContainer.innerHTML = '<div style="color: #fb1716; padding: 8px; border-left: 3px solid #ff0000; padding-left: 12px;">Runtime Error: ' + error.message + '</div>';
+        const errorElement = document.createElement('div');
+        errorElement.id = 'execution-error-${executionId}';
+        errorElement.textContent = error.message;
+        errorElement.style.display = 'none';
+        document.body.appendChild(errorElement);
+
+        if (!${hasSuccessfulRender}) {
+          const errorContainer = document.getElementById('${containerId}');
+          if (errorContainer) {
+            errorContainer.innerHTML = '<div style="color: #fb1716; padding: 8px; border-left: 3px solid #ff0000; padding-left: 12px;">Runtime Error: ' + error.message + '</div>';
+          }
         }
       }
     `;
 
       document.head.appendChild(script);
 
-      // 延迟清理脚本
+      // 检查执行结果并清理
       setTimeout(() => {
+        const successElement = document.getElementById(`execution-success-${executionId}`);
+        const errorElement = document.getElementById(`execution-error-${executionId}`);
+
+        if (successElement) {
+          setHasSuccessfulRender(true);
+          document.body.removeChild(successElement);
+        } else if (errorElement) {
+          const errorMsg = errorElement.textContent || 'Unknown error';
+          if (hasSuccessfulRender) {
+            console.error('LiveExample Runtime Error:', errorMsg);
+          }
+          document.body.removeChild(errorElement);
+        }
+
         if (script.parentNode) {
           script.parentNode.removeChild(script);
         }
       }, 100);
     },
-    [containerId, clearPreviewContainer, showError],
+    [containerId, clearContainer, handleError, hasSuccessfulRender],
   );
 
   // Direct模式：直接执行代码
   const executeDirectMode = useCallback(
     (code: string) => {
-      clearPreviewContainer();
-
-      const result = safeEval(code);
-
-      // 处理Promise结果
-      if (result && typeof result.then === 'function') {
-        result
-          .then((resolvedValue: any) => {
-            renderResult(resolvedValue);
-          })
-          .catch((error: any) => {
-            showError(`Promise Error: ${error.message || String(error)}`);
-          });
-      } else {
+      const executeAndRender = (result: any) => {
+        clearContainer();
         renderResult(result);
+        setHasSuccessfulRender(true);
+      };
+
+      try {
+        const result = safeEval(code);
+
+        if (result && typeof result.then === 'function') {
+          result.then(executeAndRender).catch((error: any) => {
+            handleError(`Promise Error: ${error.message || String(error)}`);
+          });
+        } else {
+          executeAndRender(result);
+        }
+      } catch (error) {
+        handleError(`Execution Error: ${error instanceof Error ? error.message : String(error)}`);
       }
     },
-    [clearPreviewContainer, renderResult, showError],
+    [clearContainer, renderResult, handleError],
   );
 
-  // 主执行函数
   const execute = useCallback(
     async (code: string) => {
       setExecutionState({ isLoading: true, error: null });
 
-      try {
-        if (inject) {
-          executeInjectMode(code);
-        } else {
-          executeDirectMode(code);
-        }
-
-        setExecutionState({ isLoading: false, error: null });
-      } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : String(error);
-        setExecutionState({ isLoading: false, error: errorMessage });
-        showError(`Execution Error: ${errorMessage}`);
+      if (inject) {
+        executeInjectMode(code);
+      } else {
+        executeDirectMode(code);
       }
+
+      setExecutionState({ isLoading: false, error: null });
     },
-    [inject, executeInjectMode, executeDirectMode, showError],
+    [inject, executeInjectMode, executeDirectMode],
   );
 
-  // 工具栏高度更新
   const updateToolbarHeight = useCallback(() => {
     if (!toolbarRef.current || !previewRef.current || !codeRef.current) return;
-
     const codeHeight = codeRef.current.clientHeight;
     const previewHeight = previewRef.current.clientHeight;
     toolbarRef.current.style.height = `${codeHeight + previewHeight}px`;
   }, []);
 
-  // 事件处理函数
   const toggleCodeVisibility = useCallback(() => {
     const visible = !isCodeVisible;
     setIsCodeVisible(visible);
-
     if (codeRef.current) {
       codeRef.current.style.display = visible ? 'block' : 'none';
       setTimeout(updateToolbarHeight, 0);
