@@ -56,5 +56,22 @@ export function getNavigateUrl(pathname: string, first: string, siderbarMenu: an
 }
 
 export function safeEval(source) {
-  return new Function(`return ${source}`)();
+  try {
+    // 如果代码以 (() => 或 (function 开头，说明是IIFE，直接执行
+    const trimmedSource = source.trim();
+    if (trimmedSource.startsWith('(') && (trimmedSource.includes('=>') || trimmedSource.includes('function'))) {
+      return new Function(`return ${source}`)();
+    }
+
+    // 尝试作为表达式执行
+    try {
+      return new Function(`return ${source}`)();
+    } catch (e) {
+      // 如果作为表达式失败，尝试作为语句执行
+      return new Function(source)();
+    }
+  } catch (error) {
+    console.error('代码执行错误:', error);
+    throw error;
+  }
 }
