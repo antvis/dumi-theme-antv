@@ -65,7 +65,7 @@ const Footer: React.FC<FooterProps> = (props) => {
         },
         {
           title: 'WeaveFox',
-          description: <FormattedMessage id="WeaveFox 前端智能研发" />,
+          description: <FormattedMessage id="前端智能研发" />,
           url: 'https://github.com/weavefox',
           openExternal: true,
         },
@@ -89,9 +89,9 @@ const Footer: React.FC<FooterProps> = (props) => {
           openExternal: true,
         },
         {
-          icon: <img src="https://mdn.alipayobjects.com/huamei_4qpv3u/afts/img/FTrERIKrsfMAAAAAAAAAAAAAeocTAQFr/original" alt="weavefox" />,
-          title: 'WeaveFox Tech Community',
-          description: <FormattedMessage id="WeaveFox 技术社区" />,
+          icon: <img src="https://mdn.alipayobjects.com/huamei_4qpv3u/afts/img/iH6wQKX4WCYAAAAAAAAAAAAAeocTAQFr/original" alt="weavefox" />,
+          title: 'WeaveFox',
+          description: <FormattedMessage id="WeaveFox 智能研发技术社区" />,
           url: 'https://www.yuque.com/weavefox/blog',
           openExternal: true,
         },
@@ -168,8 +168,9 @@ const Footer: React.FC<FooterProps> = (props) => {
           openExternal: true,
         },
         {
-          icon: <img src="https://mdn.alipayobjects.com/huamei_4qpv3u/afts/img/FTrERIKrsfMAAAAAAAAAAAAAeocTAQFr/original" alt="weavefox" />,
-          title: <FormattedMessage id="WeaveFox 前端智能研发" />,
+          icon: <img src="https://mdn.alipayobjects.com/huamei_4qpv3u/afts/img/iH6wQKX4WCYAAAAAAAAAAAAAeocTAQFr/original" alt="weavefox" />,
+          title: 'WeaveFox',
+          description: <FormattedMessage id="前端智能研发" />,
           url: 'https://weavefox.alipay.com',
           openExternal: true,
         },
