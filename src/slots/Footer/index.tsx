@@ -63,6 +63,12 @@ const Footer: React.FC<FooterProps> = (props) => {
           url: 'https://github.com/alibaba/hooks',
           openExternal: true,
         },
+        {
+          title: 'WeaveFox',
+          description: <FormattedMessage id="WeaveFox 前端智能研发" />,
+          url: 'https://github.com/weavefox',
+          openExternal: true,
+        },
       ],
     };
 
@@ -80,6 +86,13 @@ const Footer: React.FC<FooterProps> = (props) => {
           title: 'SEE Conf',
           description: <FormattedMessage id="蚂蚁体验科技大会" />,
           url: 'https://seeconf.antfin.com/',
+          openExternal: true,
+        },
+        {
+          icon: <img src="https://mdn.alipayobjects.com/huamei_4qpv3u/afts/img/FTrERIKrsfMAAAAAAAAAAAAAeocTAQFr/original" alt="weavefox" />,
+          title: 'WeaveFox Weblog',
+          description: <FormattedMessage id="WeaveFox 博客" />,
+          url: 'https://www.yuque.com/weavefox/blog',
           openExternal: true,
         },
       ],
