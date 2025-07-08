@@ -90,8 +90,8 @@ const Footer: React.FC<FooterProps> = (props) => {
         },
         {
           icon: <img src="https://mdn.alipayobjects.com/huamei_4qpv3u/afts/img/FTrERIKrsfMAAAAAAAAAAAAAeocTAQFr/original" alt="weavefox" />,
-          title: 'WeaveFox Weblog',
-          description: <FormattedMessage id="WeaveFox 博客" />,
+          title: 'WeaveFox Tech Community',
+          description: <FormattedMessage id="WeaveFox 技术社区" />,
           url: 'https://www.yuque.com/weavefox/blog',
           openExternal: true,
         },
