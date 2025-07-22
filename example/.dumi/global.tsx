@@ -1,12 +1,15 @@
 import * as G2 from '@antv/g2';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
+import * as ReactDOM from 'react-dom/client';
 
 /**
  * 增加自己的全局变量，用于 DEMO 中的依赖，以 G2 为例
  */
 if (typeof window !== 'undefined' && window) {
   (window as any).g2 = extendG2(G2);
+  (window as any).React = React;
+  (window as any).ReactDOM = ReactDOM;
   (window as any).globalAdd = (x, y) => x + y;
   (window as any).globalCard = globalCard;
   (window as any).d3Regression = require('d3-regression');
