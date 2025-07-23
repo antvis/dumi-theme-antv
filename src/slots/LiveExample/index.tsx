@@ -1,10 +1,7 @@
-import React, { createElement, FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import ChartPreview from './ChartPreview';
+import React, { createElement, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { CodeEditor } from './CodeEditor';
-import IIFEPreview from './IIFEPreview';
 import styles from './index.module.less';
-import PurePreview from './PurePreview';
-import ReactPreview from './ReactPreview';
+import { ChartPreview, IIFEPreview, PurePreview, ReactPreview } from './Previews';
 import { Toolbar } from './Toolbar';
 
 interface LiveExampleProps {
@@ -26,7 +23,7 @@ const CODE_MODE = {
 
 type CodeMode = (typeof CODE_MODE)[keyof typeof CODE_MODE];
 
-const previews: Record<CodeMode, FC<any>> = {
+const previews: Record<CodeMode, React.ComponentType<any>> = {
   react: ReactPreview,
   chart: ChartPreview,
   iife: IIFEPreview,
