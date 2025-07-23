@@ -71,6 +71,8 @@ const ReactPreview: FC<Props> = ({ code, refresh }) => {
       }
 
       try {
+        (window as any).define = undefined; // 临时禁用 define
+
         const compiled = compileCode(code);
         const Component = executeModule(compiled);
         if (isReactComponent(Component)) {

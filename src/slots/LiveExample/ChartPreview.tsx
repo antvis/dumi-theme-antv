@@ -27,6 +27,8 @@ function executeChartScript(
   if (!ref.current) return;
   ref.current.innerHTML = `<div id="${containerId.current}"></div>`;
   try {
+    (window as any).define = undefined; // 临时禁用 define
+
     const compiled = compile(code, '', true);
 
     const script = document.createElement('script');
