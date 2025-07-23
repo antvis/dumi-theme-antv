@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useEffect, useRef } from 'react';
 import { createRoot, Root } from 'react-dom/client';
 
-interface ExpressionPreviewProps {
+interface PurePreviewProps {
   code: string;
   refresh: number;
 }
@@ -18,11 +18,7 @@ function renderError(ref: React.RefObject<HTMLDivElement>, msg: string) {
 /**
  * 渲染表达式结果
  */
-function renderExprResult(
-  ref: React.RefObject<HTMLDivElement>,
-  rootRef: React.MutableRefObject<Root | null>,
-  val: any,
-) {
+function renderResult(ref: React.RefObject<HTMLDivElement>, rootRef: React.MutableRefObject<Root | null>, val: any) {
   if (!ref.current) return;
   if (val instanceof HTMLElement) {
     ref.current.appendChild(val);
@@ -41,7 +37,7 @@ function renderExprResult(
 /**
  * 执行表达式
  */
-function executeExpr(code: string, ref: React.RefObject<HTMLDivElement>, rootRef: React.MutableRefObject<Root | null>) {
+function execute(code: string, ref: React.RefObject<HTMLDivElement>, rootRef: React.MutableRefObject<Root | null>) {
   if (!ref.current) return;
   ref.current.innerHTML = '';
   try {
@@ -49,24 +45,24 @@ function executeExpr(code: string, ref: React.RefObject<HTMLDivElement>, rootRef
     const result = Function('return (function(){ with (window) { return ' + code + ' } })')()();
     if (result && typeof result.then === 'function') {
       result
-        .then((val: any) => renderExprResult(ref, rootRef, val))
+        .then((val: any) => renderResult(ref, rootRef, val))
         .catch((e: any) => {
           renderError(ref, `Promise 执行错误: ${e}`);
         });
     } else {
-      renderExprResult(ref, rootRef, result);
+      renderResult(ref, rootRef, result);
     }
   } catch (e) {
     renderError(ref, String(e));
   }
 }
 
-const ExpressionPreview: FC<ExpressionPreviewProps> = ({ code, refresh }) => {
+const PurePreview: FC<PurePreviewProps> = ({ code, refresh }) => {
   const ref = useRef<HTMLDivElement>(null);
   const rootRef = useRef<Root | null>(null);
 
   const doRender = useCallback(() => {
-    executeExpr(code, ref, rootRef);
+    execute(code, ref, rootRef);
   }, [code]);
 
   useEffect(() => {
@@ -86,4 +82,4 @@ const ExpressionPreview: FC<ExpressionPreviewProps> = ({ code, refresh }) => {
   return <div ref={ref} />;
 };
 
-export default ExpressionPreview;
+export default PurePreview;

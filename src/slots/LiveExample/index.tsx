@@ -1,9 +1,9 @@
 import React, { createElement, FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import ChartPreview from './ChartPreview';
 import { CodeEditor } from './CodeEditor';
-import ExpressionPreview from './ExpressionPreview';
 import IIFEPreview from './IIFEPreview';
 import styles from './index.module.less';
+import PurePreview from './PurePreview';
 import ReactPreview from './ReactPreview';
 import { Toolbar } from './Toolbar';
 
@@ -21,7 +21,7 @@ const CODE_MODE = {
   React: 'react',
   Chart: 'chart',
   IIFE: 'iife',
-  Expr: 'expr',
+  Pure: 'pure',
 } as const;
 
 type CodeMode = (typeof CODE_MODE)[keyof typeof CODE_MODE];
@@ -30,7 +30,7 @@ const previews: Record<CodeMode, FC<any>> = {
   react: ReactPreview,
   chart: ChartPreview,
   iife: IIFEPreview,
-  expr: ExpressionPreview,
+  pure: PurePreview,
 };
 
 function detectMode(source: string, mode?: string, inject?: boolean): CodeMode {
@@ -38,7 +38,7 @@ function detectMode(source: string, mode?: string, inject?: boolean): CodeMode {
   if (inject) return CODE_MODE.Chart;
   if (/export\s+default/.test(source)) return CODE_MODE.React;
   if (/^\(\(.*\)\s*=>|function\s*\(/.test(source.trim())) return CODE_MODE.IIFE;
-  return CODE_MODE.Expr;
+  return CODE_MODE.Pure;
 }
 
 export default function LiveExample({ source, mode = 'auto', lang, pin, inject }: LiveExampleProps) {
