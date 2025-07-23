@@ -32,7 +32,7 @@ function renderExprResult(
     if (!rootRef.current) rootRef.current = createRoot(ref.current);
     rootRef.current.render(val);
   } else if (val !== undefined && val !== null) {
-    ref.current.innerHTML = `<pre>${JSON.stringify(val)}</pre>`;
+    ref.current.innerHTML = `<div>${JSON.stringify(val)}</div>`;
   } else {
     renderError(ref, '表达式未返回有效结果');
   }

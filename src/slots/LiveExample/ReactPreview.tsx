@@ -70,6 +70,7 @@ const ReactPreview: FC<Props> = ({ code, refresh }) => {
         rootRef.current = createRoot(ref.current);
       }
 
+      const prevDefine = (window as any).define;
       try {
         (window as any).define = undefined; // 临时禁用 define
 
@@ -82,6 +83,8 @@ const ReactPreview: FC<Props> = ({ code, refresh }) => {
         }
       } catch (e) {
         renderError(ref, String(e));
+      } finally {
+        (window as any).define = prevDefine;
       }
     }, 200),
     [],
