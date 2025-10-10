@@ -1,0 +1,131 @@
+.card {
+  padding: 16px;
+  min-width: 0;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+  aspect-ratio: 292 / 208;
+  background: rgba(22, 119, 255, 0.06);
+
+  .typeTag {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: fit-content;
+    padding: 2px 8px;
+    border-radius: 6px;
+    box-shadow: inset 1px 1px 4px 0 rgba(0, 0, 0, 4%),
+      1px 1px 1px rgba(255, 255, 255, 40%);
+    font-size: 12px;
+    line-height: 20px;
+    margin-bottom: 12px;
+
+    .typeIcon {
+      display: flex;
+
+      svg {
+        width: 14px;
+        height: 14px;
+      }
+    }
+
+    .typeText {
+      white-space: nowrap;
+    }
+  }
+
+  .title {
+    font-size: 14px;
+    color: #1d2129e3;
+    line-height: 20px;
+    font-weight: 500;
+    .textEllipsis();
+  }
+
+  .imageContainer {
+    position: relative;
+    margin-top: 16px;
+
+    .image0,
+    .image1 {
+      width: 80%;
+      position: absolute;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+
+    .image0 {
+      transform: translate(24%, 24px);
+    }
+
+    .image1 {
+      transform: translate(4%, 0) rotate(-4deg);
+    }
+  }
+}
+
+.hoverMask {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 40px;
+  background: linear-gradient(
+    to top,
+    rgba(255, 255, 255, 40%) 0%,
+    rgba(255, 255, 255, 20%) 36%,
+    transparent 100%
+  );
+}
+
+.popoverOverlay {
+  :global {
+    .ant-popover-inner {
+      border: 1px solid rgba(31, 59, 99, 10%);
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 9px 20px 8px #000a1a0d;
+    }
+
+    .ant-popover-inner-content {
+      padding: 16px;
+    }
+
+    .ant-popover-arrow {
+      display: none;
+    }
+  }
+
+  .popoverContent {
+    max-width: 372px;
+
+    .popoverItem {
+      display: flex;
+      gap: 4px;
+      align-items: baseline;
+
+      .popoverLabel {
+        font-size: 12px;
+        color: #1d2129e6;
+        line-height: 22px;
+        font-weight: 500;
+        min-width: 56px;
+      }
+
+      .popoverValue {
+        font-size: 12px;
+        color: #1d2129cc;
+        line-height: 20px;
+      }
+    }
+  }
+}
+
+.textEllipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

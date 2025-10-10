@@ -5,6 +5,7 @@ import { useChinaMirrorHost } from '../../hooks';
 import Product from './Product';
 import styles from './Product.module.less';
 import { CATEGORIES, getNewProducts, ProductCategory } from './getProducts';
+import {useProducts} from "../../../hooks/useProducts";
 
 interface ProductsProps {
   show: boolean;
@@ -15,27 +16,30 @@ interface ProductsProps {
 }
 
 export const Products: React.FC<ProductsProps> = ({ show, language, className, bannerVisible }) => {
+  const { data: products = [] } = useProducts();
   const locale = useLocale();
   const [isChinaMirrorHost] = useChinaMirrorHost();
   const [productsCategoty, setProducts] = React.useState<ProductCategory[]>(CATEGORIES);
   const lang = locale.id === 'zh' ? 'zh' : 'en';
 
   React.useEffect(() => {
-    getNewProducts({
+    if (!Array.isArray(products)) {
+      return;
+    }
+    const data =  getNewProducts({
       language: lang,
       isChinaMirrorHost,
-    }).then((data) => {
-      const newProducts = CATEGORIES.map(({ name, type }) => {
+      products,
+    });
+    const newProducts = CATEGORIES.map(({ name, type }) => {
         return {
           name,
           type,
           products: data.filter((item) => item.category === type),
         };
-      });
-
-      setProducts(newProducts);
     });
-  }, [lang, isChinaMirrorHost]);
+    setProducts(newProducts);
+  }, [lang, isChinaMirrorHost, products]);
 
   return (
     <>

@@ -8,6 +8,7 @@ import { News, NewsProps } from './News';
 import { ic } from '../../../../slots/hooks';
 import type { IC } from '../../../../types';
 import styles from './index.module.less';
+import {HomeDialog} from "../../../../slots/AI/HomeDialog";
 
 type DetailButtonProps = {
   text: IC;
@@ -112,6 +113,7 @@ export const Detail: React.FC<DetailProps> = ({
             )}
           </div>
         </div>
+        <HomeDialog />
         {/** 新闻公告 */}
         <div className={cx(styles.news, 'news')}>
           {(news || remoteNews).slice(0, 3).map((n, i) => (

@@ -13,6 +13,11 @@ declare module '*.json' {
   export default content;
 }
 
+declare module '*.module.less' {
+  const classes: any;
+  export default classes;
+}
+
 declare module '*.less' {
   const content: any;
   export default content;

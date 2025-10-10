@@ -65,6 +65,8 @@
     "@monaco-editor/react": "^4.6.0",
     "@petercatai/assistant": "^2.0.24",
     "@stackblitz/sdk": "^1.11.0",
+    "@tanstack/react-query": "^5.90.2",
+    "ahooks": "^3.9.5",
     "antd": "^5.24.5",
     "antd-style": "^3.7.1",
     "babel-loader": "^10.0.0",

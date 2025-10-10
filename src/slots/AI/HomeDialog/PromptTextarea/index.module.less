@@ -1,0 +1,127 @@
+.container {
+  position: relative;
+  margin-bottom: 48px;
+
+  height: 144px;
+  font-size: 0;
+  padding: 16px;
+  gap: 16px;
+  transition: all 0.2s;
+  border: 1px solid rgba(134, 144, 156, 0.2);
+  border-radius: 16px;
+  background: #ffffff99;
+  box-shadow: 8px 8px 20px 0px #0000000a, inset 1px -1px 0 0px #ffffffe3;
+
+  display: flex;
+  flex-direction: column;
+
+  &.withDatasource {
+    height: 184px;
+  }
+
+  .header {
+    > div {
+      max-width: 300px;
+    }
+  }
+
+  .footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 32px;
+
+    .dataActions {
+      display: flex;
+      gap: 8px;
+
+      :global {
+        button {
+          display: inline-flex;
+          align-items: center;
+          height: 32px;
+          padding: 0 12px;
+          border-radius: 8px;
+          outline: none;
+          max-width: 240px;
+          background: #3f4b660a;
+          font-size: 14px;
+          color: #1d2129;
+          border-color: transparent;
+
+          &.btn-error {
+            color: #ff4d4f;
+            box-shadow: inset 1px -1px 0 0 rgba(255, 255, 255, 0.89),
+              0 0 12px 0 rgba(250, 16, 16, 0.23);
+          }
+
+          .btn-icon,
+          img {
+            display: block;
+            width: 20px;
+            height: 20px;
+            margin-right: 4px;
+          }
+
+          span {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
+      }
+    }
+  }
+
+  &.active {
+    background: #ffffff99;
+    border: 1px solid #1677ff;
+    box-shadow: 0px 8px 20px 0px #1677ff29, inset 1px -1px 0 0px #ffffffe3;
+
+    .promptTextarea::placeholder {
+      color: transparent;
+    }
+  }
+
+  &.compact {
+    margin-bottom: 0;
+    padding: 8px 12px;
+    gap: 6px;
+
+    height: 124px;
+
+    &.withDatasource {
+      height: 160px;
+    }
+
+    .promptTextarea {
+      font-size: 14px;
+    }
+  }
+}
+
+.datasourceBtn {
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+  width: 10px;
+  height: 10px;
+  background-color: red;
+}
+
+.promptTextarea {
+  flex: 1 1;
+  display: block;
+  font-size: 16px;
+  color: #1d2129;
+  width: 100%;
+  resize: none;
+  border: none;
+  outline: none;
+  padding: 0;
+  background: transparent;
+
+  &::placeholder {
+    color: rgba(122, 132, 153, 0.85);
+  }
+}
