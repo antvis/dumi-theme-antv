@@ -2,8 +2,8 @@ import { Popover } from 'antd';
 import React from 'react';
 import styles from './card.module.less';
 import {ReplayCase} from "../../types";
-import {COLORS} from "../../constant";
 import {BarChartOutlined, QuestionCircleOutlined} from "@ant-design/icons";
+import {AIMode, AIModeMeta, COLORS} from "../../constant";
 
 interface ICardProps {
   item: ReplayCase;
@@ -18,7 +18,7 @@ export const Card: React.FC<ICardProps> = ({ item, index }) => {
     e.stopPropagation();
 
     const urlObj = new URL(location.href);
-    urlObj.hash = `#/session/${link}?replayCase=true&replaySpeed=500`;
+    urlObj.hash = ``;
     window.open(urlObj.toString(), '_blank');
   };
 
@@ -32,12 +32,10 @@ export const Card: React.FC<ICardProps> = ({ item, index }) => {
         <div className={styles.popoverLabel}>描述信息</div>
         <div className={styles.popoverValue}>{description}</div>
       </div>
-
-        <div className={styles.popoverItem}>
-          <div className={styles.popoverLabel}>数据源</div>
+        {/*<div className={styles.popoverItem}>*/}
+          {/*<div className={styles.popoverLabel}>数据源</div>*/}
           {/*<div className={styles.popoverValue}>{dataSourceName}</div>*/}
-        </div>
-
+        {/*</div>*/}
     </div>
   );
 
@@ -55,9 +53,9 @@ export const Card: React.FC<ICardProps> = ({ item, index }) => {
         onClick={handleClick}
       >
         <div className={styles.typeTag} style={style}>
-          <BarChartOutlined className={styles.typeIcon}/>
-          <QuestionCircleOutlined className={styles.typeIcon}/>
-          <span className={styles.typeText}>{tag}</span>
+          { tag === AIMode.implement ? <BarChartOutlined className={styles.typeIcon}/>
+          : <QuestionCircleOutlined className={styles.typeIcon}/> }
+          <span className={styles.typeText}>{AIModeMeta[tag]?.name || tag}</span>
         </div>
 
         <div className={styles.title}>{query}</div>

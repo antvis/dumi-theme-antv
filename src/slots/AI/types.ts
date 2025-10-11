@@ -3,7 +3,6 @@
  */
 export type ReplayCase = {
   caseId: string;
-  caseTags: string;
   query: string;
   description: string;
   source: string;

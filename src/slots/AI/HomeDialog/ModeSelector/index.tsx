@@ -1,30 +1,13 @@
 import classnames from 'classnames';
-import React, {
-  ReactNode,
-} from 'react';
+import React from 'react';
 import styles from './index.module.less';
-import {BarChartOutlined, QuestionCircleOutlined} from "@ant-design/icons";
-import {AIMode, AIModeType} from "../../constant";
+import {AIMode, AIModeMeta, AIModeType} from "../../constant";
 
 export interface DatasetSelectorProps {
   size?: 'default' | 'compact';
   value: AIModeType;
   onChange: (_mode: AIModeType) => void;
 }
-
-export const BUTTON_META: Record<
-    AIModeType,
-  { name: string; icon: ReactNode }
-> = {
-    implement: {
-    name: '可视化研发',
-    icon: <BarChartOutlined />,
-  },
-  solve: {
-    name: '可视化答疑',
-    icon: <QuestionCircleOutlined />,
-  },
-};
 
 export const ModeSelector =
   ({ value, size, onChange }: DatasetSelectorProps) => {
@@ -38,7 +21,7 @@ export const ModeSelector =
         <div className={styles.typeSwitcher}>
           {[AIMode.implement, AIMode.solve].map(
             (mode) => {
-              const meta = BUTTON_META[mode];
+              const meta = AIModeMeta[mode];
               return (
                 <div
                   key={mode}

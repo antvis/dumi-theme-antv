@@ -1,0 +1,42 @@
+[
+  {
+    "caseId": "1",
+    "tag": "implement",
+    "query": "一个城市过去五年来的年度降雨量分别是：2016年800毫米，2017年900毫米，2018年700毫米，2019年1000毫米，2020年1100毫米。使用折线图描绘这些数据。",
+    "description": "自然语言描述需求，生成可视化代码",
+    "imageUrls": [
+      "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*K5iUTrYme5QAAAAAQpAAAAgAemJ7AQ/original",
+      "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*K5iUTrYme5QAAAAAQpAAAAgAemJ7AQ/original"
+    ]
+  },
+  {
+    "caseId": "2",
+    "tag": "implement",
+    "query": "使用文件中的数据，生成柱状图",
+    "description": "多种数据源引入，专业图表生成，有数据就能生成图表。",
+    "imageUrls": [
+      "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*K5iUTrYme5QAAAAAQpAAAAgAemJ7AQ/original",
+      "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*K5iUTrYme5QAAAAAQpAAAAgAemJ7AQ/original"
+    ]
+  },
+  {
+    "caseId": "3",
+    "tag": "implement",
+    "query": "基于设计稿生成图表代码，还原视觉细节",
+    "description": "基于设计稿生成图表代码，还原视觉细节",
+    "imageUrls": [
+      "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*K5iUTrYme5QAAAAAQpAAAAgAemJ7AQ/original",
+      "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*K5iUTrYme5QAAAAAQpAAAAgAemJ7AQ/original"
+    ]
+  },
+  {
+    "caseId": "4",
+    "tag": "solve",
+    "query": "怎么配置堆叠面积图的描边为不同的颜色",
+    "description": "精准定位并提供针对渲染异常、性能瓶颈及数据不匹配等问题的解决方案。",
+    "imageUrls": [
+      "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*K5iUTrYme5QAAAAAQpAAAAgAemJ7AQ/original",
+      "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*K5iUTrYme5QAAAAAQpAAAAgAemJ7AQ/original"
+    ]
+  }
+]

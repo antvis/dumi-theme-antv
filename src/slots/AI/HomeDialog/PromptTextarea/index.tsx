@@ -6,9 +6,8 @@ import _ from 'lodash';
 import React, { useState } from 'react';
 import styles from './index.module.less';
 import { SendButton } from './SendButton';
-import {AIModeType, FileIcons} from "../../constant";
+import {AIMode, AIModeType, FileIcons} from "../../constant";
 import { ChooseLib } from './ChooseLib';
-import {PictureOutlined, UploadOutlined} from "@ant-design/icons";
 
 interface PromptTextareaProps {
   value: string;
@@ -112,7 +111,7 @@ function PromptTextarea(props: PromptTextareaProps) {
       <div className={styles.footer}>
         <div className={styles.dataActions}>
           <ChooseLib value={lib} onChange={onLibChange} />
-          <Upload>
+          {mode === AIMode.implement && <><Upload>
             <button type="button">
               <img src={FileIcons.FILE} /> 上传数据
             </button>
@@ -121,7 +120,7 @@ function PromptTextarea(props: PromptTextareaProps) {
             <button type="button">
               <img src={FileIcons.IMAGE} /> 上传图片
             </button>
-          </Upload>
+          </Upload></>}
         </div>
         <div className={styles.actions}>
           {loading ? (

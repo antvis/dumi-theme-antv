@@ -1,9 +1,26 @@
+import { BarChartOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import React, {ReactNode} from "react";
+
 export const AIMode = {
   implement: 'implement',
   solve: 'solve',
 } as const;
 
 export type AIModeType = keyof typeof AIMode;
+
+export const AIModeMeta: Record<
+  AIModeType,
+  { name: string; icon: ReactNode }
+> = {
+  implement: {
+    name: '可视化研发',
+    icon: <BarChartOutlined />,
+  },
+  solve: {
+    name: '可视化答疑',
+    icon: <QuestionCircleOutlined />,
+  },
+};
 
 // 循环取这几个颜色
 export const COLORS = [

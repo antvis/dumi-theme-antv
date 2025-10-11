@@ -4,6 +4,7 @@ import { Card } from './Card';
 import styles from './index.module.less';
 import {RedoOutlined} from "@ant-design/icons";
 import {ReplayCase} from "../../types";
+import RecommendJson from "./recommend.json";
 
 export const RecommendCase = () => {
   const [loading, setLoading] = useState(false);
@@ -14,7 +15,7 @@ export const RecommendCase = () => {
     async () => {
       try {
         setLoading(true);
-        const data = [];
+        const data = RecommendJson;
         setList(data.slice(0, 4));
       } catch (err) {
         console.log(err);
