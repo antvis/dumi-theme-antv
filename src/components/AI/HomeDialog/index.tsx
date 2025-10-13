@@ -6,9 +6,13 @@ import {RecommendCase} from "./RecommendCase";
 import {ModeSelector} from "./ModeSelector";
 import { useLocalStorageState } from 'ahooks';
 import {AIMode, AIModeType} from "../constant";
+import classnames from "classnames";
 
 interface HomeDialogProps {
   lib?: string;
+  className?: string;
+  style?: React.CSSProperties;
+  promptTextareaStyle?: React.CSSProperties;
 }
 
 export function HomeDialog(props: HomeDialogProps) {
@@ -21,7 +25,7 @@ export function HomeDialog(props: HomeDialogProps) {
   );
   const [promptText, setPromptText] = useState<string>('');
 
-  return <div className={styles.content}>
+  return <div className={classnames(styles.content, props.className)} style={props.style}>
     <AntVBanner/>
     <ModeSelector
       onChange={(v) => {
@@ -44,6 +48,7 @@ export function HomeDialog(props: HomeDialogProps) {
         // 发起请求
         // todo  埋点
       }}
+      style={props.promptTextareaStyle}
     />
     <RecommendCase/>
   </div>;

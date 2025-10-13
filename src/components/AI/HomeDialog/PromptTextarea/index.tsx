@@ -25,6 +25,7 @@ interface PromptTextareaProps {
   mode: AIModeType;
   lib: string;
   onLibChange: (val: string) => void;
+  style?: React.CSSProperties;
 }
 
 const PLACEHOLDER = {
@@ -94,6 +95,7 @@ function PromptTextarea(props: PromptTextareaProps) {
         [styles.compact]: size === 'compact',
         [styles.withDatasource]: Boolean(datasourceNode),
       })}
+      style={props.style}
     >
       {datasourceNode && <div className={styles.header}>{datasourceNode}</div>}
       <textarea

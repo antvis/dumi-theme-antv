@@ -18,12 +18,14 @@ export default (api: IApi) => {
 
   // use critters to extract key css into html head
   api.chainWebpack((config) => {
-    config.plugin('critters').use(Critters, [
-      {
-        preload: 'js-lazy',
-        inlineThreshold: 10240,
-      },
-    ]);
+    if (api.env === 'production') {
+      config.plugin('critters').use(Critters, [
+        {
+          preload: 'js-lazy',
+          inlineThreshold: 10240,
+        },
+      ]);
+    }
   });
 
   api.modifyDefaultConfig((memo) => {

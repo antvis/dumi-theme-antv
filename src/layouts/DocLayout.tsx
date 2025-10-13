@@ -5,13 +5,9 @@ import React, { useEffect } from 'react';
 import { getPurePathname } from '../utils/location';
 import IndexLayout from './IndexLayout';
 import ManualLayout from './ManualLayout';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import GlobalStyles from '../common/GlobalStyles';
 import { defaultToken } from '../common/styles/theme';
 import '../static/style';
-
-const queryClient = new QueryClient();
-
 /**
  * DocLayout 是 dumi2 的内置 layout 入口，在这里使用页面路径进行区分成自己不同的 Layout。
  */
@@ -110,9 +106,7 @@ export default () => {
           }}
         >
           <GlobalStyles />
-          <QueryClientProvider client={queryClient}>
           {content}
-          </QueryClientProvider>
         </ConfigProvider>
       </StyleProvider>
     </>

@@ -5,7 +5,7 @@ import CommonHelmet from '../../common/CommonHelmet';
 import { ic } from '../../slots/hooks';
 import { Cases } from './components/Cases';
 import { Companies } from './components/Companies';
-import { Detail } from './components/Detail';
+import { Detail } from '../../slots/Detail';
 import { Features } from './components/Features';
 
 const Index = () => {

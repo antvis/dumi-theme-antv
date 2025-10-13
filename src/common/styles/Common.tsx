@@ -15,7 +15,7 @@ export default () => {
           --border-color-split: #f0f0f0;
           --text-color-secondary: rgba(0, 0, 0, 0.45);
           --text-color: rgba(0, 0, 0, 0.85);
-          --font-family: AlibabaPuHuiTiRHeavy, sans-serif;
+          --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'PingFang SC', 'Microsoft YaHei', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
         }
 
         @font-face {

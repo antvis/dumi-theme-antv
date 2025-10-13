@@ -1,7 +1,7 @@
 import { Link, useLocale } from 'dumi';
 import React from 'react';
-import { IC } from '../../../../types';
-import { ic } from '../../../../slots/hooks';
+import { IC } from '../../types';
+import { ic } from '../hooks';
 import styles from './News.module.less';
 
 export interface NewsProps {
