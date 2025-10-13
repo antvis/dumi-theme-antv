@@ -161,6 +161,12 @@ export default function ThemeAntVContextWrapper() {
         path: ':language/examples/:topic/:example',
         file: `${PAGES_DIR}/Example`,
       },
+      {
+        id: 'dumi-theme-antv-ai-playground-lang',
+        absPath: '/:language/ai-playground/:id',
+        path: ':language/ai-playground/:id',
+        file: `${PAGES_DIR}/AIPlayground`,
+      },
     ];
 
     extraRoutesList.forEach((itemRoute) => {

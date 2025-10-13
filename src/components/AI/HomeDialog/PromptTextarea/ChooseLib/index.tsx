@@ -5,8 +5,13 @@ import {useLocale} from "dumi";
 import {FormProps} from "../../../types";
 import styles from './index.module.less';
 
-export function ChooseLib(props: FormProps<string>) {
-  const { value, onChange } = props;
+type ChooseLibProps = FormProps<string> & {
+  size?: 'default' | 'compact';
+};
+
+export function ChooseLib(props: ChooseLibProps) {
+  const { value, onChange, size = "default" } = props;
+  const isCompact = size === 'compact';
   const locale = useLocale();
   const lang = locale.id === 'zh' ? 'zh' : 'en';
   const { data = [] } = useProducts();
@@ -21,7 +26,7 @@ export function ChooseLib(props: FormProps<string>) {
     key: item.title,
     label: item.title,
       icon: <img src={item.icon} alt={item.title} className={styles.icon}/>,
-      extra: item.slogan,
+      extra: (!isCompact && item.slogan),
       onClick: () => onSelect(item.title)
   }));
 
@@ -34,7 +39,7 @@ export function ChooseLib(props: FormProps<string>) {
           data.find(item => item.title === value)?.icon ||
           "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*7svFR6wkPMoAAAAAAAAAAAAADmJ7AQ/original"}
              alt="AntV"/>
-        { value || '选择技术栈' }
+        { value || (!isCompact && '选择技术栈') }
       </button>
     </Dropdown>
   );

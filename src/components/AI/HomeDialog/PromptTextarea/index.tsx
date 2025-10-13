@@ -1,6 +1,6 @@
 import { DatasourceCard } from './DatasourceCard';
 import { useEventListener } from 'ahooks';
-import {message, Upload} from 'antd';
+import {message, Tooltip, Upload} from 'antd';
 import classnames from 'classnames';
 import _ from 'lodash';
 import React, { useState } from 'react';
@@ -12,7 +12,7 @@ import { ChooseLib } from './ChooseLib';
 interface PromptTextareaProps {
   value: string;
   loading?: boolean;
-  onChange: (val: string) => void;
+  onChange?: (val: string) => void;
   onCancel?: () => void;
   onConfirm?: () => void;
   onOpenDatasetModal?: () => void;
@@ -23,8 +23,8 @@ interface PromptTextareaProps {
     fileSize?: string;
   };
   mode: AIModeType;
-  lib: string;
-  onLibChange: (val: string) => void;
+  lib?: string;
+  onLibChange?: (val: string) => void;
   style?: React.CSSProperties;
 }
 
@@ -49,6 +49,7 @@ function PromptTextarea(props: PromptTextareaProps) {
   } = props;
   const [showError, setShowError] = useState(false);
   const [focus, setFocus] = useState(false);
+  const isCompact = size === 'compact';
 
 
   function renderDatasourceCard() {
@@ -92,7 +93,7 @@ function PromptTextarea(props: PromptTextareaProps) {
     <div
       className={classnames(styles.container, {
         [styles.active]: focus,
-        [styles.compact]: size === 'compact',
+        [styles.compact]: isCompact,
         [styles.withDatasource]: Boolean(datasourceNode),
       })}
       style={props.style}
@@ -112,17 +113,19 @@ function PromptTextarea(props: PromptTextareaProps) {
 
       <div className={styles.footer}>
         <div className={styles.dataActions}>
-          <ChooseLib value={lib} onChange={onLibChange} />
-          {mode === AIMode.implement && <><Upload>
+          <ChooseLib value={lib} onChange={onLibChange} size={size}/>
+          {mode === AIMode.implement && <><Tooltip title={isCompact && "上传数据"}><Upload>
             <button type="button">
-              <img src={FileIcons.FILE} /> 上传数据
+              <img src={FileIcons.FILE} /> {!isCompact && "上传数据"}
+            </button>
+          </Upload></Tooltip>
+          <Tooltip title={isCompact && '上传图片'}><Upload>
+            <button type="button">
+              <img src={FileIcons.IMAGE} /> {!isCompact && '上传图片'}
             </button>
           </Upload>
-          <Upload>
-            <button type="button">
-              <img src={FileIcons.IMAGE} /> 上传图片
-            </button>
-          </Upload></>}
+          </Tooltip>
+          </>}
         </div>
         <div className={styles.actions}>
           {loading ? (

@@ -47,7 +47,7 @@ export default () => {
 
   const content = React.useMemo<React.ReactNode>(() => {
     // 首页
-    if (['/', ''].includes(purePathname)) {
+    if (['/', ''].includes(purePathname) || purePathname.includes('ai-playground')) {
       return <IndexLayout>{outlet}</IndexLayout>;
     }
 
