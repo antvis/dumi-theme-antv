@@ -1,8 +1,8 @@
 import React from 'react';
 import {PromptTextarea} from "../../../../components/AI/HomeDialog/PromptTextarea";
-import {Flex, List} from 'antd';
+import {Flex, List, Space} from 'antd';
 import { Bubble } from '@ant-design/x';
-import {CheckOutlined} from "@ant-design/icons";
+import {CheckOutlined, DislikeOutlined, LikeOutlined} from "@ant-design/icons";
 import {projectFiles} from "../../demo";
 import styles from "./index.module.less";
 
@@ -42,6 +42,10 @@ function MsgBox(props) {
             </List.Item>)}
         </List>}
         avatar={avatar}
+        footer={<Space>
+          <a><LikeOutlined /></a>
+          <a><DislikeOutlined /></a>
+        </Space>}
       />
     </Flex>
     <PromptTextarea size="compact" mode="implement" value="" style={{ marginBottom: 0 }} />

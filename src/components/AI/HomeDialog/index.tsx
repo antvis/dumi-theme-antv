@@ -7,16 +7,18 @@ import {ModeSelector} from "./ModeSelector";
 import { useLocalStorageState } from 'ahooks';
 import {AIMode, AIModeType} from "../constant";
 import classnames from "classnames";
+import {useSiteData} from "dumi";
 
 interface HomeDialogProps {
-  lib?: string;
   className?: string;
   style?: React.CSSProperties;
   promptTextareaStyle?: React.CSSProperties;
+  recommendCaseClassName?: string;
 }
 
 export function HomeDialog(props: HomeDialogProps) {
-  const [lib, setLib] = useState(props.lib);
+  const { themeConfig } = useSiteData();
+  const [lib, setLib] = useState(themeConfig.title);
   const [mode, setMode] = useLocalStorageState<AIModeType>(
     'use-local-storage-ai-mode-type',
     {
@@ -50,6 +52,6 @@ export function HomeDialog(props: HomeDialogProps) {
       }}
       style={props.promptTextareaStyle}
     />
-    <RecommendCase/>
+    <RecommendCase className={props.recommendCaseClassName}/>
   </div>;
 }

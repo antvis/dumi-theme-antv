@@ -1,8 +1,8 @@
 @import '../../common/styles/variables.less';
 
 .wrapper {
-  min-height: 650px;
-  max-height: 803px;
+  min-height: 1000px;
+  max-height: 1150px;
   background: linear-gradient(225deg, #ffffff, #f0f5ff);
   height: calc(94vh);
   position: relative;
@@ -16,9 +16,15 @@
 
   .text {
     position: relative;
-    top: 26%;
+    top: 12%;
     z-index: 1;
     margin-left: 4.5%;
+
+    .titleButtons{
+      display: flex;
+      gap: 50px;
+      justify-content: center;
+    }
 
     .title {
       font-size: 3.4em; //2.875em;
@@ -52,7 +58,7 @@
 
     .buttons {
       display: flex;
-      margin-top: max(3%, 40px);
+      margin-top: 10px;
 
       .buttonLink {
         display: flex;
@@ -190,7 +196,7 @@
     position: absolute;
     right: 0;
     margin-top: -300px;
-    width: 52%;
+    width: 32%;
     max-width: 598px;
     height: 324px;
     margin: auto;

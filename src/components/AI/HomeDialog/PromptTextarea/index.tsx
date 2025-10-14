@@ -8,6 +8,8 @@ import styles from './index.module.less';
 import { SendButton } from './SendButton';
 import {AIMode, AIModeType, FileIcons} from "../../constant";
 import { ChooseLib } from './ChooseLib';
+import {useSiteData} from "dumi";
+import {ic} from "../../../../slots/hooks";
 
 interface PromptTextareaProps {
   value: string;
@@ -50,7 +52,7 @@ function PromptTextarea(props: PromptTextareaProps) {
   const [showError, setShowError] = useState(false);
   const [focus, setFocus] = useState(false);
   const isCompact = size === 'compact';
-
+  const { themeConfig } = useSiteData();
 
   function renderDatasourceCard() {
     if ((fileMeta?.type === 'FILE' || fileMeta?.type === 'IMAGE') && fileMeta?.fileName) {
@@ -104,7 +106,7 @@ function PromptTextarea(props: PromptTextareaProps) {
         onBlur={() => setFocus(false)}
         id="prompt-textarea"
         className={classnames(styles.promptTextarea)}
-        placeholder={_.get(PLACEHOLDER, mode, '今天，你想可视化什么？')}
+        placeholder={ic(themeConfig.metas.description) || _.get(PLACEHOLDER, mode, '今天，你想可视化什么？')}
         value={value}
         onChange={(evt) => {
           onChange(evt.target.value);

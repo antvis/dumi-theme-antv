@@ -5,8 +5,13 @@ import styles from './index.module.less';
 import {RedoOutlined} from "@ant-design/icons";
 import {ReplayCase} from "../../types";
 import RecommendJson from "./recommend.json";
+import classnames from "classnames";
 
-export const RecommendCase = () => {
+type RecommendCaseProps = {
+  className?: string;
+};
+
+export const RecommendCase = (props: RecommendCaseProps) => {
   const [loading, setLoading] = useState(false);
 
   const [list, setList] = useState<ReplayCase[]>([]);
@@ -43,7 +48,7 @@ export const RecommendCase = () => {
           换一批
         </span>
       </div>
-      <Spin spinning={loading} wrapperClassName={styles.listContainer}>
+      <Spin spinning={loading} wrapperClassName={classnames(styles.listContainer, props.className)}>
         <div className={styles.list}>
           {list.map((item, index) => {
             return <Card key={item.caseId} item={item} index={index}/>;

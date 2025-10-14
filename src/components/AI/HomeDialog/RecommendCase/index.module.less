@@ -1,5 +1,4 @@
 .container {
-  width: 760px;
   margin-top: 32px;
   margin-left: auto;
   margin-right: auto;
@@ -9,6 +8,9 @@
   display: flex;
   align-items: end;
   margin-bottom: 24px;
+  width: 760px;
+  margin-left: auto;
+  margin-right: auto;
 
   .quickStart {
     font-size: 20px;
@@ -32,17 +34,7 @@
 }
 
 .listContainer {
-  position: absolute;
-  left: 112px;
-  right: 112px;
-  width: calc(100vw - 224px);
-  min-width: 760px;
-
-  @media (max-width: 1023px) {
-    left: 24px;
-    right: 24px;
-    width: calc(100vw - 48px);
-  }
+  width: 100%;
 }
 .list {
   display: grid;

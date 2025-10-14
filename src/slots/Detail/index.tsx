@@ -77,43 +77,21 @@ export const Detail: React.FC<DetailProps> = ({
     <section className={cx(styles.wrapper, className)} style={style}>
       <div className={styles.content}>
         <div className={styles.text}>
-          <div className={cx(styles.title, 'detail-title')}>
-            <span className={cx(styles.engine, 'detail-engine')}>{engineText}</span>
-            {ic(title).replace(engineText, '')}
-          </div>
-          <div className={cx(styles.description, 'detail-description')}>{ic(description)}</div>
-          {/** buttons  */}
-          <div className={cx(styles.buttons, 'detail-buttons')}>
-            {buttons.map(({ type, style, text, link, shape, icon }) => {
-              return (
-                <a
-                  key={ic(text)}
-                  className={cx(
-                    styles.buttonLink,
-                    styles[type || ''],
-                    type === 'primary' ? 'primary-button' : 'common-button',
-                  )}
-                  style={{
-                    borderRadius: shape === 'round' ? '1000px' : '12px',
-                    ...style,
-                  }}
-                  href={link[lang] ? link[lang] : link}
-                >
-                  {icon !== null && (
-                    <div className={styles.icon} style={icon ? { backgroundImage: `url(${icon})` } : {}} />
-                  )}
-                  <span className={styles.button}>{ic(text)}</span>
-                </a>
-              );
-            })}
-            {showGitHubStarsButton && (
-              <div key="github" className={styles.githubWrapper}>
-                <GitHubButton type="stargazers" size="large" namespace={githubObj.owner} repo={githubObj.name} />
-              </div>
-            )}
+          <div className={styles.titleButtons}>
+            <div className={cx(styles.title, 'detail-title')}>
+              <span className={cx(styles.engine, 'detail-engine')}>{engineText}</span>
+              {ic(title).replace(engineText, '')}
+            </div>
+            <div className={cx(styles.buttons, 'detail-buttons')}>
+              {showGitHubStarsButton && (
+                <div key="github" className={styles.githubWrapper}>
+                  <GitHubButton type="stargazers" size="large" namespace={githubObj.owner} repo={githubObj.name} />
+                </div>
+              )}
+            </div>
           </div>
         </div>
-        <HomeDialog />
+        <HomeDialog style={{margin: "140px auto"}}/>
         {/** 新闻公告 */}
         <div className={cx(styles.news, 'news')}>
           {(news || remoteNews).slice(0, 3).map((n, i) => (
