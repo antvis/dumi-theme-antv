@@ -1,6 +1,6 @@
 import React from 'react';
 import { Sandpack } from "@codesandbox/sandpack-react";
-import {projectFiles} from "./demo";
+import {projectFiles} from "../../demo";
 import styles from "./index.module.less";
 
 function TaskBox(props) {
