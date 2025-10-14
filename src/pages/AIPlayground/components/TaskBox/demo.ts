@@ -38,7 +38,6 @@ export const projectFiles = {
   <title>Vanilla JS Example</title>
 </head>
 <body>
-  <h1>纯 JavaScript 示例</h1>
   <div id="root"></div>
   <script src="index.js"></script>
 </body>

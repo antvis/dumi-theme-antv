@@ -1,6 +1,7 @@
 import React from 'react';
 import { Sandpack } from "@codesandbox/sandpack-react";
 import {projectFiles} from "./demo";
+import styles from "./index.module.less";
 
 function TaskBox(props) {
   return (
@@ -10,8 +11,12 @@ function TaskBox(props) {
       options={{
         showLineNumbers: true, // 显示行号
         showTabs: true,
-        closableTabs: true,
+        closableTabs: false,
         editorHeight: "calc(100vh - 150px)",
+        rtl: true,
+        classes: {
+          "sp-layout": styles["antv-sp-layout"],
+        },
       }}
       theme="light" // 主题：dark, light, auto
     />
