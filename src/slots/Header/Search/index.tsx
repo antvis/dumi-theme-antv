@@ -44,7 +44,7 @@ export const Search = () => {
       open={open}
       placement="topLeft"
       destroyTooltipOnHide={false}
-      content={<SearchResult results={searchResults} />}
+      content={<SearchResult results={searchResults} keywords={keywords} />}
     >
       <label className={styles.search}>
         <SearchOutlined className={styles.icon} />

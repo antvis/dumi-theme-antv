@@ -32,16 +32,24 @@ const getHighlightInfo = (textSegments: ITextSegment[]) => {
  * 展示搜索结果
  * @returns
  */
-export const SearchResult: React.FC<{ results: ISearchResult[] }> = ({ results }) => {
+export const SearchResult: React.FC<{ results: ISearchResult[], keywords: string }> = ({ results, keywords }) => {
   const intl = useIntl();
   return (
     <div className={styles.searchResult}>
-      {results?.length ? (
-        results.map((r) => {
+      <div className={styles.item}>
+        <div className={styles.subject}><img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*A-lcQbVTpjwAAAAAAAAAAAAADmJ7AQ/original" alt="AntV"/></div>
+        <div className={styles.br}/>
+        <a className={styles.result} href="/zh/ai-playground/2">
+          <div className={styles.title}>{keywords}</div>
+          <div className={styles.description}>试试AI可视化答疑</div>
+        </a>
+      </div>
+      {results?.length && (
+        results.map((r, index) => {
           return (
-            <div className={styles.item}>
+            <div className={styles.item} key={index}>
               <div className={styles.subject}>{r.subject}</div>
-              <div className={styles.br} />
+              <div className={styles.br}/>
               <a className={styles.result} href={r.link}>
                 <div className={styles.title}>{getHighlightInfo(r.title)}</div>
                 <div className={styles.description}>{getHighlightInfo(r.description)}</div>
@@ -49,11 +57,6 @@ export const SearchResult: React.FC<{ results: ISearchResult[] }> = ({ results }
             </div>
           );
         })
-      ) : (
-        <div className={styles.empty}>
-          <InboxOutlined style={{ fontSize: 20 }} />
-          <div>{intl.formatMessage({ id: '没有找到查询结果' })}</div>
-        </div>
       )}
     </div>
   );
