@@ -106,7 +106,7 @@ function PromptTextarea(props: PromptTextareaProps) {
         onBlur={() => setFocus(false)}
         id="prompt-textarea"
         className={classnames(styles.promptTextarea)}
-        placeholder={(!isCompact && ic(themeConfig.metas.description)) || _.get(PLACEHOLDER, mode, '今天，你想可视化什么？')}
+        placeholder={(!isCompact && !themeConfig.isAntVSite && ic(themeConfig.metas.description)) || _.get(PLACEHOLDER, mode, '今天，你想可视化什么？')}
         value={value}
         onChange={(evt) => {
           onChange(evt.target.value);

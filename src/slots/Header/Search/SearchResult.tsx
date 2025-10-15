@@ -1,7 +1,7 @@
-import { InboxOutlined } from '@ant-design/icons';
 import { useIntl } from 'dumi';
 import React from 'react';
 import styles from './SearchResult.module.less';
+import classnames from "classnames";
 
 export type ITextSegment = {
   text: string;
@@ -37,14 +37,14 @@ export const SearchResult: React.FC<{ results: ISearchResult[], keywords: string
   return (
     <div className={styles.searchResult}>
       <div className={styles.item}>
-        <div className={styles.subject}><img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*A-lcQbVTpjwAAAAAAAAAAAAADmJ7AQ/original" alt="AntV"/></div>
+        <div className={styles.subject}><img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*7svFR6wkPMoAAAAAAAAAAAAADmJ7AQ/original" alt="AntV"/></div>
         <div className={styles.br}/>
         <a className={styles.result} href="/zh/ai-playground/2">
-          <div className={styles.title}>{keywords}</div>
-          <div className={styles.description}>试试AI可视化答疑</div>
+          <div className={classnames(styles.title, styles.highlighted)}>{keywords}</div>
+          <div className={styles.description}>试试&nbsp;<span className={styles.highlighted}>AI</span>&nbsp;可视化答疑</div>
         </a>
       </div>
-      {results?.length && (
+      {results?.length ? (
         results.map((r, index) => {
           return (
             <div className={styles.item} key={index}>
@@ -57,7 +57,7 @@ export const SearchResult: React.FC<{ results: ISearchResult[], keywords: string
             </div>
           );
         })
-      )}
+      ): <></>}
     </div>
   );
 };

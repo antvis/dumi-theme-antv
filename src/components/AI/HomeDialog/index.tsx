@@ -18,7 +18,7 @@ interface HomeDialogProps {
 
 export function HomeDialog(props: HomeDialogProps) {
   const { themeConfig } = useSiteData();
-  const [lib, setLib] = useState(themeConfig.title);
+  const [lib, setLib] = useState(!themeConfig.isAntVSite ? themeConfig.title : undefined);
   const [mode, setMode] = useLocalStorageState<AIModeType>(
     'use-local-storage-ai-mode-type',
     {
