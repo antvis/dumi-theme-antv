@@ -156,6 +156,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
           );
         })}
       </div>
+      <a>AI</a>
       {riddleVisible ? (
         <form action="//riddle.alibaba-inc.com/riddles/define" method="POST" target="_blank">
           <input type="hidden" name="data" value={JSON.stringify(riddlePrefillConfig)} />

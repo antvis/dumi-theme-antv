@@ -23,9 +23,6 @@ export const Products: React.FC<ProductsProps> = ({ show, language, className, b
   const lang = locale.id === 'zh' ? 'zh' : 'en';
 
   React.useEffect(() => {
-    if (!Array.isArray(products)) {
-      return;
-    }
     const data =  getNewProducts({
       language: lang,
       isChinaMirrorHost,
@@ -39,7 +36,7 @@ export const Products: React.FC<ProductsProps> = ({ show, language, className, b
         };
     });
     setProducts(newProducts);
-  }, [lang, isChinaMirrorHost, products]);
+  }, [lang, isChinaMirrorHost, products.length]);
 
   return (
     <>

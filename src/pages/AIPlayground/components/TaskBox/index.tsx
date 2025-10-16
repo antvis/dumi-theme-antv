@@ -1,9 +1,32 @@
 import React from 'react';
-import { Sandpack } from "@codesandbox/sandpack-react";
+import {Sandpack} from "@codesandbox/sandpack-react";
 import {projectFiles} from "../../demo";
 import styles from "./index.module.less";
+// import {code} from "../../demo";
+// import {requestProxy, useVisionsnapSdk} from "../../../../hooks/useVisionsnapSdk";
 
-function TaskBox(props) {
+
+
+function TaskBox() {
+
+    // const { sdk, loading } = useVisionsnapSdk('3.2.4');
+    //
+    // if (loading) {
+    //   return <div>Loading...</div>;
+    // }
+    //
+    // return (
+    //     <sdk.VisionPreview id="visionIframe"
+    //                        bizCode="vision-preview-demo"
+    //                        style={{ height: '100vh' }}
+    //                        userId="263347"
+    //                        displayMode="preview-only"
+    //                        editable={false}
+    //                        code={code}
+    //                        // requestProxy={requestProxy}
+    //                        isStreaming={false} />
+    // );
+
   return (
     <Sandpack
       template="vanilla" // 指定项目模板，Sandpack 会据此配置环境
