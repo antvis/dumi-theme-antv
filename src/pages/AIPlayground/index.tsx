@@ -5,10 +5,13 @@ import TaskBox from "./components/TaskBox";
 
 function AIPlayground() {
   return (
+    <>
+
     <SessionLayout>
       <MsgBox/>
       <TaskBox/>
     </SessionLayout>
+      </>
   );
 }
 

@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react';
 import styles from './index.module.less';
-
+import {ConversationsMenu} from "../ConversationsMenu";
 type SessionLayoutProps = PropsWithChildren;
 
 function SessionLayout(props: SessionLayoutProps) {
@@ -12,6 +12,7 @@ function SessionLayout(props: SessionLayoutProps) {
 
   return (
     <div className={styles.container}>
+      <ConversationsMenu />
       <div className={styles.msgBox}>{children[0]}</div>
       <div className={styles.taskBox}>{children[1]}</div>
     </div>

@@ -1,26 +1,56 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
+import * as ReactDOMClient from 'react-dom/client';
+import * as ReactDOM from 'react-dom';
+
+// 将 React 暴露到全局作用域，供第三方 SDK 使用
+declare global {
+  interface Window {
+    React: typeof React
+    ReactDOM: typeof ReactDOM & {
+      createRoot: typeof ReactDOMClient.createRoot
+      hydrateRoot: typeof ReactDOMClient.hydrateRoot
+    }
+  }
+}
+
+// 只有在全局 React 不存在时才设置
+if (typeof window !== 'undefined') {
+  if (!window.React) {
+    window.React = React
+  }
+  if (!window.ReactDOM) {
+    // 合并 ReactDOM 和 ReactDOMClient 的功能，确保新的 API 来自正确的模块
+    window.ReactDOM = {
+      ...ReactDOM,
+      // 明确从 react-dom/client 导入新的 API
+      createRoot: ReactDOMClient.createRoot,
+      hydrateRoot: ReactDOMClient.hydrateRoot,
+    }
+  }
+}
+
 
 export interface IVisionsnapSdk {
   VisionCanvas: React.FC<{
-    [key: string]: any;
+    [key: string]: unknown;
   }>;
   VisionPreview: React.FC<{
-    [key: string]: any;
+    [key: string]: unknown;
   }>;
   VisionChat: React.FC<{
-    [key: string]: any;
+    [key: string]: unknown;
   }>;
 }
 
 interface IUseRemoteSdkResult<T> {
-  sdk: T;
+  sdk: T | null;
   loading: boolean;
 }
 
 // 扩展 Window 接口以支持动态属性访问
 declare global {
   interface Window {
-    [key: string]: any;
+    [key: string]: unknown;
   }
 }
 
@@ -84,8 +114,8 @@ function load(url: string, name: string) {
  * @param name global name
  * @return global variable
  */
-export function useRemoteComponent<T>(url: string, name: string): [T, boolean] {
-  const [Component, setComponent] = useState<any>(null);
+export function useRemoteComponent<T>(url: string, name: string): [T | null, boolean] {
+  const [Component, setComponent] = useState<T | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -94,14 +124,14 @@ export function useRemoteComponent<T>(url: string, name: string): [T, boolean] {
 
   const clear = useInterval(() => {
     if (window[name]) {
-      setComponent(window[name]);
+      setComponent(window[name] as T);
       setLoading(false);
       clear();
     }
   }, 100);
 
   if (window?.[name]) {
-    return [window[name], false];
+    return [window[name] as T, false];
   }
 
   return [Component, loading];
@@ -118,7 +148,7 @@ function getJSSDKURL(options: JSSDKURLOptions): string {
   const { packageName, version, file = 'dist/sdk.js' } = options;
   const jssdkVersion = version;
 
-  let jssdkCdnUrl = jssdkVersion.includes('dev')
+  const jssdkCdnUrl = jssdkVersion.includes('dev')
     ? `https://g.alipay.com/${packageName}@${jssdkVersion}/${file}`
     : `https://gw.alipayobjects.com/render/p/yuyan_npm/${packageName.replace('/', '_')}/${jssdkVersion}/${file}`;
 
@@ -128,6 +158,7 @@ function getJSSDKURL(options: JSSDKURLOptions): string {
 function useRemoteSdk<T>(options: JSSDKURLOptions): IUseRemoteSdkResult<T> {
   const { sdkInstanceName = 'sdk' } = options;
 
+  // dev 版本只能走 g.alipay.com 域名，外网千万不能配
   const jssdkCdnUrl = getJSSDKURL(options);
   const [sdk, sdkLoading] = useRemoteComponent<T>(jssdkCdnUrl, sdkInstanceName);
 
@@ -145,8 +176,3 @@ export function useVisionsnapSdk(visionsnapVersion: string) {
     file: 'dist/sdk.js',
   });
 }
-
-export const requestProxy = {
-  getAuthToken: `https://www.weavefox.cn/api/visionsnap/auth_token`,
-  getImportMaps: `https://www.weavefox.cn/api/visionsnap/import_maps`,
-};
