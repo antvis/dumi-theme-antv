@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useDeepCompareEffect } from 'ahooks';
 
 interface UseStreamingTextOptions {
   url: string;
@@ -23,7 +24,7 @@ export const useStreamingText = ({
                                  }: UseStreamingTextOptions) => {
   const [text, setText] = useState('');
 
-  useEffect(() => {
+  useDeepCompareEffect(() => {
     if (!trigger || !body.query) {
       setText('');
       return;

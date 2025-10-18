@@ -35,13 +35,23 @@ function TaskBox() {
         showLineNumbers: true, // 显示行号
         showTabs: true,
         closableTabs: false,
-        editorHeight: "calc(100vh - 150px)",
+        editorHeight: 'calc(100vh - 150px)',
         rtl: true,
         classes: {
-          "sp-layout": styles["antv-sp-layout"],
+          'sp-layout': styles['antv-sp-layout'],
         },
       }}
       theme="light" // 主题：dark, light, auto
+      customSetup={{
+        npmRegistries: [
+          {
+            limitToScopes: false, // 设为 false 使所有包都从自定义 registry 获取
+            registryUrl: 'https://registry.npmmirror.com', // 使用淘宝镜像
+            enabledScopes: [],
+            proxyEnabled: false,
+          },
+        ],
+      }}
     />
   );
 }
