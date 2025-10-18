@@ -125,3 +125,34 @@ export type SidebarData = MenuItem[];
 export type FullSidebarData = {
   [key: string]: SidebarData;
 };
+
+export interface Message {
+  id: string | number;
+  role: 'user' | 'assistant';
+  content: string;
+  createdAt: number;
+  mode?: 'implement' | 'solve';
+  lib?: string;
+}
+
+export interface ChatSession {
+  id: string;
+  title: string;
+  createdAt: number;
+  messages: Message[];
+}
+
+// 定义整个应用的状态树结构
+export interface AIChatState {
+  // 数据初始化状态
+  isInitialized: boolean;
+
+  // 需要持久化的数据
+  anonymousUserId: string | null;
+  sessions: ChatSession[];
+  // appSettings: AppSettings;
+
+  // 运行时状态 (不需要持久化)
+  activeSessionId: string | null;
+  tempMessage: Message | null;
+}

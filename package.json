@@ -87,6 +87,7 @@
     "indent-string": "^5.0.0",
     "insert-css": "^2.0.0",
     "leancloud-storage": "^4.15.2",
+    "localforage": "^1.10.0",
     "lodash-es": "^4.17.21",
     "lodash.merge": "^4.6.2",
     "mini-css-extract-plugin": "^2.9.2",

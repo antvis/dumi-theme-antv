@@ -6,8 +6,9 @@ interface UseStreamingTextOptions {
   headers?: Record<string, string>;
   body?: object;
   trigger: boolean;
-  onFinish?: (text: string) => void; // 新增 onFinish 回调
-  onError?: (error: Error) => void;   // 新增 onError 回调
+  beforeStart?: () => void;
+  onFinish?: (text: string) => void;
+  onError?: (error: Error) => void;
 }
 
 export const useStreamingText = ({
@@ -18,11 +19,12 @@ export const useStreamingText = ({
                                    trigger,
                                    onFinish,
                                    onError,
+                                   beforeStart
                                  }: UseStreamingTextOptions) => {
   const [text, setText] = useState('');
 
   useEffect(() => {
-    if (!trigger) {
+    if (!trigger || !body.query) {
       setText('');
       return;
     }
@@ -67,12 +69,14 @@ export const useStreamingText = ({
       }
     };
 
+    beforeStart?.();
+
     fetchData();
 
     return () => {
       abortController.abort();
     };
-  }, [trigger, url, method, headers, body, onFinish, onError]); // 将所有依赖项加入数组
+  }, [trigger, url, method, headers, body]);
 
   return text;
 };

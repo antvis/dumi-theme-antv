@@ -1,13 +1,15 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import styles from './index.module.less';
-import {AntVBanner} from "./AntVBanner";
-import {PromptTextarea} from "./PromptTextarea";
-import {RecommendCase} from "./RecommendCase";
-import {ModeSelector} from "./ModeSelector";
+import { AntVBanner } from './AntVBanner';
+import { PromptTextarea } from './PromptTextarea';
+import { RecommendCase } from './RecommendCase';
+import { ModeSelector } from './ModeSelector';
 import { useLocalStorageState } from 'ahooks';
-import {AIMode, AIModeType} from "../constant";
-import classnames from "classnames";
-import {useSiteData} from "dumi";
+import { AIMode, AIModeType } from '../constant';
+import classnames from 'classnames';
+import { history, useSiteData } from 'dumi';
+import { AIChatStore } from '../../../model/AIChat';
+import {snapshot} from "valtio";
 
 interface HomeDialogProps {
   className?: string;
@@ -47,8 +49,27 @@ export function HomeDialog(props: HomeDialogProps) {
         setPromptText(val);
       }}
       onConfirm={() => {
-        // 发起请求
         // todo  埋点
+        // 1. 创建一个新的会话
+        const newSessionId = crypto.randomUUID();
+        AIChatStore.sessions.unshift({
+          id: newSessionId,
+          title: promptText.substring(0, 20), // 使用输入内容作为初始标题
+          createdAt: Date.now(),
+          messages: [],
+        });
+        AIChatStore.activeSessionId = newSessionId;
+
+        // 2. 创建临时消息并存入 store
+        AIChatStore.tempMessage = {
+          id: crypto.randomUUID(),
+          role: 'user',
+          content: promptText,
+          createdAt: Date.now(),
+          mode,
+          lib,
+        };
+        history.push(`/zh/ai-playground/2`);
       }}
       style={props.promptTextareaStyle}
     />
