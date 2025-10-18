@@ -1,5 +1,5 @@
 import { proxy, subscribe, snapshot } from 'valtio';
-import { derive } from 'valtio/utils';
+import { derive, subscribeKey } from 'valtio/utils';
 import localforage from 'localforage';
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
 import { AIChatState, ChatSession } from '../types';
@@ -139,3 +139,7 @@ export const handlePinSession = (sessionId: string) => {
   // （可选）置顶后自动激活该会话
   AIChatStore.activeSessionId = sessionId;
 };
+
+subscribeKey(AIChatStore, 'activeSessionId', () => {
+  AIChatStore.codeBlock = null;
+})

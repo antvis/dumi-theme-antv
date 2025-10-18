@@ -2,12 +2,16 @@ import React from 'react';
 import {Sandpack} from "@codesandbox/sandpack-react";
 import {projectFiles} from "../../demo";
 import styles from "./index.module.less";
+import { AIChatStore } from "../../../../model/AIChat";
+import {useSnapshot} from "valtio";
+import {wrap2Sandpack} from "./generateCode";
 // import {code} from "../../demo";
 // import {requestProxy, useVisionsnapSdk} from "../../../../hooks/useVisionsnapSdk";
 
 
 
 function TaskBox() {
+  const snap = useSnapshot(AIChatStore);
 
     // const { sdk, loading } = useVisionsnapSdk('3.2.4');
     //
@@ -30,7 +34,7 @@ function TaskBox() {
   return (
     <Sandpack
       template="vanilla" // 指定项目模板，Sandpack 会据此配置环境
-      files={projectFiles}
+      files={wrap2Sandpack(snap.codeBlock)}
       options={{
         showLineNumbers: true, // 显示行号
         showTabs: true,

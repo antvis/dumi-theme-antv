@@ -1,6 +1,7 @@
 import React from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import {a11yLight} from "react-syntax-highlighter/dist/cjs/styles/hljs";
+import { AIChatStore } from "../../../../model/AIChat";
 
 // 定义 props 类型，它将接收 react-markdown 传递的所有属性
 interface CodeBlockProps {
@@ -28,12 +29,8 @@ export const MarkdownCodeBlock: React.FC<CodeBlockProps> = ({ inline, className,
 
   // 5. 定义运行代码的逻辑
   const handleRunCode = () => {
-    console.log("准备运行的代码:", codeString);
-    // 在这里可以实现更复杂的逻辑，比如：
-    // - 将代码发送到后端服务执行
-    // - 在 Web Worker 中运行
-    // - 使用 eval 或 Function 构造函数（注意安全风险！）
-    alert('“运行”按钮被点击！');
+    // console.log("准备运行的代码:", codeString);
+    AIChatStore.codeBlock = codeString;
   };
 
   // 6. 返回最终的 JSX 结构

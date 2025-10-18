@@ -39,6 +39,7 @@ export const projectFiles = {
 </head>
 <body>
   <div id="root"></div>
+  <div id="container"></div>
   <script src="index.js"></script>
 </body>
 </html>`

@@ -46,6 +46,7 @@ export const ConversationsMenu: React.FC = () => {
   return (
     <div className={styles.container}>
       <Menu
+        selectedKeys={[snap.activeSessionId]}
         defaultOpenKeys={['history']}
         mode="inline"
         theme="light"

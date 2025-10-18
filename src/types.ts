@@ -155,4 +155,5 @@ export interface AIChatState {
   // 运行时状态 (不需要持久化)
   activeSessionId: string | null;
   tempMessage: Message | null;
+  codeBlock: string | null;
 }
