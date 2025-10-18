@@ -1,6 +1,7 @@
 import { proxy, subscribe, snapshot } from 'valtio';
 import { derive } from 'valtio/utils';
 import localforage from 'localforage';
+import FingerprintJS from '@fingerprintjs/fingerprintjs';
 import { AIChatState, ChatSession } from '../types';
 
 // --- 配置 ---
@@ -58,9 +59,19 @@ export const initializeStore = async () => {
 
   // 3. 处理初始化边缘情况
   if (!AIChatStore.anonymousUserId) {
-    // 优先使用现代、原生的 crypto.randomUUID()
-    // 如果需要兼容旧浏览器，可以换成 `import { v4 as uuidv4 } from 'uuid';` 和 `uuidv4()`
-    AIChatStore.anonymousUserId = crypto.randomUUID();
+    try {
+      const fp = await FingerprintJS.load();
+      const result = await fp.get();
+      // result.visitorId 是一个基于浏览器指纹生成的哈希值
+      // 例如：'d8b759e6a5b2f1c3d9e8a6f0b7c5d4a3'
+      AIChatStore.anonymousUserId = result.visitorId;
+      // console.log('FingerprintJS ID generated:', result.visitorId);
+    } catch (error) {
+      // console.error('FingerprintJS failed, falling back to simple ID:', error);
+      // 如果指纹生成失败（例如被浏览器插件阻止），回退到一个简单方案
+      // 如果需要兼容旧浏览器，可以换成 `import { v4 as uuidv4 } from 'uuid';` 和 `uuidv4()`
+      AIChatStore.anonymousUserId = crypto.randomUUID();
+    }
   }
 
   if (AIChatStore.sessions.length === 0) {

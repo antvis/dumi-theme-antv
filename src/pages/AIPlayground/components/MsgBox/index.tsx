@@ -9,7 +9,7 @@ import styles from './index.module.less';
 import { useSnapshot } from 'valtio';
 import { AIChatStore, derivedState } from '../../../../model/AIChat';
 import {findLast} from "lodash-es";
-import Markdown from 'react-markdown';
+import {MarkdownComponent} from "../MarkdownComponent";
 
 const avatar = {
   icon: (
@@ -111,7 +111,7 @@ function MsgBox(props) {
         derivedSnap.activeSession?.messages?.map((msg, index) =>
           <Bubble
             key={index}
-            content={<Markdown>{msg.content}</Markdown>}
+            content={<MarkdownComponent content={msg.content}/>}
             avatar={msg.role === 'assistant' && avatar}
             placement={msg.role === 'user' ? 'end' : 'start'}/>)
       }
