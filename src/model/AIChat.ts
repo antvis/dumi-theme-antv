@@ -3,6 +3,7 @@ import { derive, subscribeKey } from 'valtio/utils';
 import localforage from 'localforage';
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
 import { AIChatState, ChatSession } from '../types';
+import {history} from "dumi";
 
 // --- 配置 ---
 // 定义需要持久化的 state key
@@ -17,6 +18,7 @@ const initialState: AIChatState = {
   sessions: [],
   activeSessionId: null,
   tempMessage: null,
+  codeBlock: null
 };
 
 
@@ -143,3 +145,28 @@ export const handlePinSession = (sessionId: string) => {
 subscribeKey(AIChatStore, 'activeSessionId', () => {
   AIChatStore.codeBlock = null;
 })
+
+
+export const createNewSession = (config: { promptText: string, mode: "implement" | "solve", lib: string }) => {
+  // todo  埋点
+  // 1. 创建一个新的会话
+  const newSessionId = crypto.randomUUID();
+  AIChatStore.sessions.unshift({
+    id: newSessionId,
+    title: config.promptText.substring(0, 20), // 使用输入内容作为初始标题
+    createdAt: Date.now(),
+    messages: [],
+  });
+  AIChatStore.activeSessionId = newSessionId;
+
+  // 2. 创建临时消息并存入 store
+  AIChatStore.tempMessage = {
+    id: crypto.randomUUID(),
+    role: 'user',
+    content: config.promptText,
+    createdAt: Date.now(),
+    mode: config.mode,
+    lib: config.lib,
+  };
+  history.push(`/zh/ai-playground/2`);
+}

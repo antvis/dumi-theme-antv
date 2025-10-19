@@ -112,7 +112,7 @@ function MsgBox(props) {
           <Bubble
             key={index}
             content={<MarkdownComponent content={msg.content}/>}
-            avatar={msg.role === 'assistant' && avatar}
+            avatar={msg.role === 'assistant' ? avatar : null}
             placement={msg.role === 'user' ? 'end' : 'start'}/>)
       }
       {
