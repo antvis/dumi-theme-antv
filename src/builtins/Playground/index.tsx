@@ -54,7 +54,7 @@ const Playground: React.FC<PlaygroundProps> = ({ rid, path, ratio, height = 400 
   );
 };
 
-function ErrorFallback({ error }) {
+export function ErrorFallback({ error }) {
   console.log(error);
   return (
     <div role="alert">

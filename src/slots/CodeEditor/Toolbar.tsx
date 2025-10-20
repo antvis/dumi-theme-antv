@@ -78,6 +78,8 @@ type ToolbarProps = {
    * 执行代码
    */
   onExecuteCode: () => void;
+
+  onClickAI: () => void;
   /**
    * Tab 的附加内容
    */
@@ -97,6 +99,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
   onEditorTabChange,
   onToggleFullscreen = null,
   onExecuteCode,
+  onClickAI,
 }) => {
   const locale = useLocale();
   const exampleTitle = (typeof title === 'object' ? title[locale.id as 'zh' | 'en'] : title) as string;
@@ -156,7 +159,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
           );
         })}
       </div>
-      <a>AI</a>
+      <a className={styles.ai} onClick={onClickAI}>AI 助手</a>
       {riddleVisible ? (
         <form action="//riddle.alibaba-inc.com/riddles/define" method="POST" target="_blank">
           <input type="hidden" name="data" value={JSON.stringify(riddlePrefillConfig)} />

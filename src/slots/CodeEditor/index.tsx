@@ -1,5 +1,5 @@
 import MonacoEditor, { loader } from '@monaco-editor/react';
-import { Switch } from 'antd';
+import {Drawer, Switch} from 'antd';
 import { autoType as d3AutoType, dsvFormat } from 'd3-dsv';
 import { useLocale, useSiteData } from 'dumi';
 import { debounce, noop } from 'lodash-es';
@@ -114,6 +114,8 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   const [editorTabs, setEditorTabs] = useState<EDITOR_TABS[]>([]);
   // 当前选中菜单栏
   const [currentEditorTab, setCurrentEditorTab] = useState(EDITOR_TABS.JAVASCRIPT);
+
+  const [showAI, setShowAI] = useState(false);
 
   const containerId = `playgroundScriptContainer_${exampleId}`;
 
@@ -392,6 +394,10 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
     }
   };
 
+  const onClickAI = () => {
+    setShowAI(true);
+  };
+
   return (
     <div className={styles.editor}>
       <Toolbar
@@ -406,6 +412,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
         onExecuteCode={() => executeCode(code)}
         onEditorTabChange={onTabChange}
         onToggleFullscreen={onFullscreen}
+        onClickAI={onClickAI}
         slots={{
           Spec: (
             <span style={{ paddingLeft: '0.25em', paddingRight: 0 }}>

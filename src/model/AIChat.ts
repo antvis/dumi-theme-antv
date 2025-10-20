@@ -32,7 +32,7 @@ subscribe(AIChatStore, () => {
 
   const stateSnapshot = snapshot(AIChatStore);
 
-  console.log('stateSnapshot', stateSnapshot);
+  // console.log('stateSnapshot', stateSnapshot);
 
   const stateToPersist: Partial<AIChatState> = {};
 

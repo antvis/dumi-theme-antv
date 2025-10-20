@@ -13,6 +13,12 @@ declare global {
   }
 }
 
+if (!React.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED) {
+    React.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED = {
+        ReactCurrentOwner: { current: null }
+    };
+}
+
 // 只有在全局 React 不存在时才设置
 if (typeof window !== 'undefined') {
   if (!window.React) {
@@ -176,3 +182,8 @@ export function useVisionsnapSdk(visionsnapVersion: string) {
     file: 'dist/sdk.js',
   });
 }
+
+export const requestProxy = {
+  getAuthToken: `https://www.weavefox.cn/api/visionsnap/auth_token`,
+  getImportMaps: `https://www.weavefox.cn/api/visionsnap/import_maps`,
+};

@@ -69,32 +69,29 @@ export function generateDependencies(codeString) {
 }
 
 export function wrap2VisionSnap (codeBlock: string = '') {
-  const regex = /^```[\w-]*\n([\s\S]*?)\n?```$/m;
-  const match = codeBlock.match(regex);
-  if (match) {
-    return [{
-      filePath: '/package.json', content: `{
+  return {
+    modules: {
+      '/package.json': {
+        fpath: '/package.json',
+        code: `{
   "name": "AntV-master",
   "version": "1.0.0",
   "main": "/src/index.jsx",
-  "dependencies": ${JSON.stringify(generateDependencies(match[1]), null, 2)}
+  "dependencies": ${JSON.stringify(generateDependencies(codeBlock), null, 2)}
 }`
-    }, {
-      filePath: '/src/index.jsx',
-      content: match[1]
-    }];
-  } else {
-    return [{
-      filePath: 'AntVChart.js',
-      content: codeBlock
-    }];
+      },
+      '/src/index.jsx': {
+        fpath: '/src/index.jsx',
+        code: codeBlock
+      }
+    }
   }
 }
 
-export function wrap2Sandpack(codeBlock: string = '') {
-  // const regex = /^```[\w-]*\n([\s\S]*?)\n?```$/m;
-  // const match = codeBlock.match(regex);
-  // if (match) {
+  export function wrap2Sandpack(codeBlock: string = '') {
+    // const regex = /^```[\w-]*\n([\s\S]*?)\n?```$/m;
+    // const match = codeBlock.match(regex);
+    // if (match) {
     return {
       "/package.json": {
         code: `{
@@ -121,11 +118,5 @@ export function wrap2Sandpack(codeBlock: string = '') {
 </html>`
       },
     };
-  // } else {
-  //   return [{
-  //     filePath: 'AntVChart.js',
-  //     content: codeBlock
-  //   }];
-  // }
-}
+  }
 
