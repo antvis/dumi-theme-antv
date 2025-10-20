@@ -1,20 +1,29 @@
 import React, { useState } from 'react';
 import {
+  DeleteOutlined,
+  EditOutlined,
+  EllipsisOutlined,
   HistoryOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  PlusSquareOutlined,
+  PlusSquareOutlined, VerticalAlignTopOutlined,
 } from '@ant-design/icons';
-import type { MenuProps } from 'antd';
+import {Dropdown, Input, MenuProps, Modal} from 'antd';
 import { Menu } from 'antd';
 import styles from './index.module.less';
 import { useSnapshot } from 'valtio';
-import { AIChatStore } from "../../../../model/AIChat";
+import {AIChatStore, handleDeleteSession, handlePinSession, handleRenameSession} from "../../../../model/AIChat";
 import { history } from 'dumi';
+import {useSetState} from "ahooks";
 
 type MenuItem = Required<MenuProps>['items'][number];
 
 export const ConversationsMenu: React.FC = () => {
+  const [state, setState] = useSetState({
+    open: false,
+    session: null,
+    rename: '',
+  });
   const [collapsed, setCollapsed] = useState(false);
   const snap = useSnapshot(AIChatStore);
 
@@ -27,19 +36,69 @@ export const ConversationsMenu: React.FC = () => {
   };
 
   const items: MenuItem[] = [
-    { key: 'fold', extra: !collapsed ? <MenuFoldOutlined /> : null, onClick: toggleCollapsed, label: null, icon: !collapsed ? null : <MenuUnfoldOutlined />, title: "展开" },
+    {
+      key: 'fold',
+      extra: !collapsed ? <MenuFoldOutlined /> : null,
+      onClick: toggleCollapsed,
+      label: null,
+      icon: !collapsed ? null : <MenuUnfoldOutlined />,
+      title: '展开',
+    },
     { key: 'new', icon: <PlusSquareOutlined />, label: '开始新对话', onClick: () => history.push('/') },
     {
       key: 'history',
       label: '历史对话',
       icon: <HistoryOutlined />,
-      children: snap.sessions.map(session => {
+      children: snap.sessions.map((session) => {
         return {
           key: session.id,
-          label: session.title,
-          onClick: () => handleSelectSession(session.id)
-        }
-      })
+          label: (
+            <div className={styles.menuItem}>
+              <span className={styles.title}>{session.title}</span>
+              <Dropdown
+                menu={{
+                  items: [
+                    { key: 'edit', label: '重命名', icon: <EditOutlined />,
+                      onClick: ({ domEvent }) => {
+                        domEvent.stopPropagation();
+                        setState({ open: true, session: session , rename: session.title})
+                      }, },
+                    {
+                      key: 'top',
+                      label: '置顶',
+                      icon: <VerticalAlignTopOutlined />,
+                      onClick: ({ domEvent }) => {
+                        domEvent.stopPropagation();
+                        handlePinSession(session.id);
+                      },
+                    },
+                    {
+                      key: 'delete',
+                      label: '删除',
+                      icon: <DeleteOutlined />,
+                      onClick: ({ domEvent }) => {
+                        domEvent.stopPropagation();
+                        handleDeleteSession(session.id);
+                      },
+                    },
+                  ],
+                }}
+                trigger={['click']}
+              >
+                <span
+                  className={styles.iconWrapper}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }}
+                >
+                  <EllipsisOutlined />
+                </span>
+              </Dropdown>
+            </div>
+          ),
+        };
+      }),
     },
   ];
 
@@ -52,7 +111,21 @@ export const ConversationsMenu: React.FC = () => {
         theme="light"
         inlineCollapsed={collapsed}
         items={items}
+        onSelect={({ key }) => handleSelectSession(key)}
       />
+      <Modal
+        title="编辑对话名称"
+        open={state.open}
+        centered
+        maskClosable={false}
+        onOk={() => {
+          handleRenameSession(state.session.id, state.rename);
+          setState({ open: false });
+        }}
+        onCancel={() => setState({ open: false })}
+      >
+        <Input showCount maxLength={20} onChange={(e) => setState({rename: e.target.value})} value={state.rename} />
+      </Modal>
     </div>
   );
 };

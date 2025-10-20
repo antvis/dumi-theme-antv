@@ -15,3 +15,30 @@
     }
   }
 }
+
+.title {
+  width: 200px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.menuItem{
+  display: flex;
+  justify-content: space-between;
+}
+
+.iconWrapper{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  margin-top: 10px;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+  &:hover{
+    background-color: #fbfcfd;
+  }
+}
