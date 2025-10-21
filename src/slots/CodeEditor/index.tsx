@@ -11,9 +11,18 @@ import Loading from '../Loading';
 import styles from './index.module.less';
 import { EDITOR_TABS, Toolbar } from './Toolbar';
 import { compile, execute, replaceInsertCss } from './utils';
-import * as monaco from 'monaco-editor/esm/vs/editor/editor.api.js';
 import MsgBox from "../../pages/AIPlayground/components/MsgBox";
-loader.config({ monaco });
+
+loader.config({
+  'vs/nls': {
+    availableLanguages: {
+      '*': 'zh-cn',
+    },
+  },
+  paths: {
+    vs: 'https://gw.alipayobjects.com/os/lib/monaco-editor/0.34.0/min/vs',
+  },
+});
 
 export type CodeEditorProps = {
   /**
