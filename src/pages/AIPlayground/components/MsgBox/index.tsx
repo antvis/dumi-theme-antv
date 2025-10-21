@@ -21,8 +21,15 @@ const avatar = {
   ),
   style: {
     borderRadius: 0,
-    backgroundColor: '#fff',
+    backgroundColor: "transparent",
   }};
+
+const chatScrollIntoView = () => {
+  setTimeout(() => {
+    const nodeList = document.querySelectorAll(".ant-bubble");
+    nodeList[nodeList.length - 1].scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+}
 
 function MsgBox(props) {
   const [promptText, setPromptText] = useState<string>('');
@@ -62,6 +69,7 @@ function MsgBox(props) {
         // 当流结束时，更新最后一条消息并重置 trigger
         setIsStreaming(false); // **关键：流结束后，关闭 trigger**
         setLoading(false);
+        chatScrollIntoView();
       }
     },
     onError: (error) => {
@@ -89,6 +97,7 @@ function MsgBox(props) {
     });
     // **关键：开启 trigger，开始请求**
     setIsStreaming(true);
+    chatScrollIntoView();
   };
 
   useEffect(() => {
@@ -103,6 +112,13 @@ function MsgBox(props) {
       }
     }
   }, []);
+
+  useEffect(() => {
+    if (derivedState.activeSession && (Date.now() - derivedState.activeSession.createdAt > 5000)) {
+      setLoading(false);
+      setIsStreaming(false);
+    }
+  }, [snap.activeSessionId]);
 
 
   return <>
@@ -122,25 +138,6 @@ function MsgBox(props) {
         loading={loading}
       />
       }
-      {/*<Bubble*/}
-      {/*  placement="start"*/}
-      {/*  content={<List style={{width: "200px"}}*/}
-      {/*    itemLayout="horizontal"*/}
-      {/*                 size="small"*/}
-      {/*  >*/}
-      {/*    {Object.keys(projectFiles).map((item, index) => <List.Item key={index}>*/}
-      {/*        <List.Item.Meta*/}
-      {/*          avatar={<CheckOutlined style={{color: '#49de80'}}/>}*/}
-      {/*          title={`创建 ${item}`}*/}
-      {/*        />*/}
-      {/*      </List.Item>)}*/}
-      {/*  </List>}*/}
-      {/*  avatar={avatar}*/}
-      {/*  footer={<Space>*/}
-      {/*    <a><LikeOutlined /></a>*/}
-      {/*    <a><DislikeOutlined /></a>*/}
-      {/*  </Space>}*/}
-      {/*/>*/}
     </Flex>
     <div>
       <div className={styles.newButtonContainer}>
@@ -153,6 +150,11 @@ function MsgBox(props) {
       </div>
       <PromptTextarea size="compact" mode="implement" value={promptText}
                       onChange={setPromptText}
+                      loading={loading}
+                      onCancel={() => {
+                        setIsStreaming(false);
+                        setLoading(false);
+                      }}
                       style={{marginBottom: 0}} onConfirm={handleSubmit}/>
     </div>
   </>;
