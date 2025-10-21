@@ -11,17 +11,9 @@ import Loading from '../Loading';
 import styles from './index.module.less';
 import { EDITOR_TABS, Toolbar } from './Toolbar';
 import { compile, execute, replaceInsertCss } from './utils';
-
-loader.config({
-  'vs/nls': {
-    availableLanguages: {
-      '*': 'zh-cn',
-    },
-  },
-  paths: {
-    vs: 'https://gw.alipayobjects.com/os/lib/monaco-editor/0.34.0/min/vs',
-  },
-});
+import * as monaco from 'monaco-editor/esm/vs/editor/editor.api.js';
+import MsgBox from "../../pages/AIPlayground/components/MsgBox";
+loader.config({ monaco });
 
 export type CodeEditorProps = {
   /**
@@ -451,6 +443,23 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
               monacoRef.current = editor;
             }}
           />
+          <Drawer
+            placement="right"
+            closable={true}
+            open={showAI}
+            getContainer={false}
+            onClose={() => setShowAI(false)}
+            rootClassName={styles.drawer}
+          >
+            <MsgBox simple messages={[{
+              id: crypto.randomUUID(),
+              role: 'assistant',
+              content: `我是AntV AI助手。您可以随时向我提问，让我为您：
+              \n1、解读当前图表的代码配置。
+              \n2、通过自然语言对话，基于当前案例生成新代码以定制图表。`,
+              createdAt: Date.now(),
+            }]}/>
+          </Drawer>
         </div>
       ))}
     </div>

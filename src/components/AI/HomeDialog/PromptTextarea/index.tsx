@@ -1,15 +1,15 @@
 import { DatasourceCard } from './DatasourceCard';
 import { useEventListener } from 'ahooks';
-import {message, Tooltip, Upload} from 'antd';
+import { message, Tooltip, Upload } from 'antd';
 import classnames from 'classnames';
 import _ from 'lodash';
 import React, { useState } from 'react';
 import styles from './index.module.less';
 import { SendButton } from './SendButton';
-import {AIMode, AIModeType, FileIcons} from "../../constant";
+import { AIMode, AIModeType, FileIcons } from '../../constant';
 import { ChooseLib } from './ChooseLib';
-import {useSiteData} from "dumi";
-import {ic} from "../../../../slots/hooks";
+import { useSiteData } from 'dumi';
+import { ic } from '../../../../slots/hooks';
 
 interface PromptTextareaProps {
   value: string;
@@ -28,13 +28,13 @@ interface PromptTextareaProps {
   lib?: string;
   onLibChange?: (val: string) => void;
   style?: React.CSSProperties;
+  showAction?: boolean;
 }
 
 const PLACEHOLDER = {
   implement: '今天，你想可视化什么？',
   solve: '今天，你想解决什么可视化问题？',
 } as const;
-
 
 function PromptTextarea(props: PromptTextareaProps) {
   const {
@@ -47,7 +47,8 @@ function PromptTextarea(props: PromptTextareaProps) {
     fileMeta,
     mode,
     lib,
-    onLibChange
+    onLibChange,
+    showAction = true,
   } = props;
   const [showError, setShowError] = useState(false);
   const [focus, setFocus] = useState(false);
@@ -56,13 +57,7 @@ function PromptTextarea(props: PromptTextareaProps) {
 
   function renderDatasourceCard() {
     if ((fileMeta?.type === 'FILE' || fileMeta?.type === 'IMAGE') && fileMeta?.fileName) {
-      return (
-        <DatasourceCard
-          type={fileMeta.type}
-          title={fileMeta.fileName!}
-          desc={fileMeta.fileSize}
-        />
-      );
+      return <DatasourceCard type={fileMeta.type} title={fileMeta.fileName!} desc={fileMeta.fileSize} />;
     } else {
       return null;
     }
@@ -106,7 +101,10 @@ function PromptTextarea(props: PromptTextareaProps) {
         onBlur={() => setFocus(false)}
         id="prompt-textarea"
         className={classnames(styles.promptTextarea)}
-        placeholder={(!isCompact && !themeConfig.isAntVSite && ic(themeConfig.metas.description)) || _.get(PLACEHOLDER, mode, '今天，你想可视化什么？')}
+        placeholder={
+          (!isCompact && !themeConfig.isAntVSite && ic(themeConfig.metas.description)) ||
+          _.get(PLACEHOLDER, mode, '今天，你想可视化什么？')
+        }
         value={value}
         onChange={(evt) => {
           onChange(evt.target.value);
@@ -115,19 +113,29 @@ function PromptTextarea(props: PromptTextareaProps) {
 
       <div className={styles.footer}>
         <div className={styles.dataActions}>
-          <ChooseLib value={lib} onChange={onLibChange} size={size}/>
-          {mode === AIMode.implement && <><Tooltip title={isCompact && "上传数据"}><Upload>
-            <button type="button">
-              <img src={FileIcons.FILE} /> {!isCompact && "上传数据"}
-            </button>
-          </Upload></Tooltip>
-          <Tooltip title={isCompact && '上传图片'}><Upload>
-            <button type="button">
-              <img src={FileIcons.IMAGE} /> {!isCompact && '上传图片'}
-            </button>
-          </Upload>
-          </Tooltip>
-          </>}
+          {showAction && (
+            <>
+              <ChooseLib value={lib} onChange={onLibChange} size={size} />
+              {mode === AIMode.implement && (
+                <>
+                  <Tooltip title={isCompact && '上传数据'}>
+                    <Upload>
+                      <button type="button">
+                        <img src={FileIcons.FILE} /> {!isCompact && '上传数据'}
+                      </button>
+                    </Upload>
+                  </Tooltip>
+                  <Tooltip title={isCompact && '上传图片'}>
+                    <Upload>
+                      <button type="button">
+                        <img src={FileIcons.IMAGE} /> {!isCompact && '上传图片'}
+                      </button>
+                    </Upload>
+                  </Tooltip>
+                </>
+              )}
+            </>
+          )}
         </div>
         <div className={styles.actions}>
           {loading ? (

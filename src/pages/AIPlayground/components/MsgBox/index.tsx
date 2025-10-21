@@ -7,9 +7,10 @@ import {useStreamingText} from "../../../../hooks/useStreamingText";
 import {PlusSquareOutlined} from "@ant-design/icons";
 import styles from './index.module.less';
 import { useSnapshot } from 'valtio';
-import { AIChatStore, derivedState } from '../../../../model/AIChat';
+import {AIChatStore, createNewSession, derivedState} from '../../../../model/AIChat';
 import {findLast} from "lodash-es";
 import {MarkdownComponent} from "../MarkdownComponent";
+import {Message} from "../../../../types";
 
 const avatar = {
   icon: (
@@ -31,7 +32,12 @@ const chatScrollIntoView = () => {
   });
 }
 
-function MsgBox(props) {
+interface MsgBoxProps {
+  messages?: Message[];
+  simple?: boolean;
+}
+
+function MsgBox(props: MsgBoxProps) {
   const [promptText, setPromptText] = useState<string>('');
   const [isStreaming, setIsStreaming] = useState(false); // trigger
   const [loading, setLoading] = useState(false);
@@ -85,6 +91,12 @@ function MsgBox(props) {
 
   // 3. 处理用户提交
   const handleSubmit = () => {
+    if (props.simple) {
+      createNewSession({
+        promptText
+      })
+      return;
+    }
     if (!promptText.trim() || isStreaming) return; // 如果正在流式输出，则不允许发送
     setPromptText('');
     derivedState.activeSession?.messages?.push({
@@ -124,7 +136,7 @@ function MsgBox(props) {
   return <>
     <Flex gap="middle" vertical className={styles.chatContainer}>
       {
-        derivedSnap.activeSession?.messages?.map((msg, index) =>
+        (props.messages ?? derivedSnap.activeSession?.messages)?.map((msg, index) =>
           <Bubble
             key={index}
             content={<MarkdownComponent content={msg.content}/>}
@@ -140,14 +152,14 @@ function MsgBox(props) {
       }
     </Flex>
     <div>
-      <div className={styles.newButtonContainer}>
+      {!props.simple && <div className={styles.newButtonContainer}>
         <button type="button" onClick={() => history.push('/')} className={styles.newButton}>
           <Space>
             <PlusSquareOutlined/>
             开始新对话
           </Space>
         </button>
-      </div>
+      </div>}
       <PromptTextarea size="compact" mode="implement" value={promptText}
                       onChange={setPromptText}
                       loading={loading}
@@ -155,6 +167,7 @@ function MsgBox(props) {
                         setIsStreaming(false);
                         setLoading(false);
                       }}
+                      showAction={!props.simple}
                       style={{marginBottom: 0}} onConfirm={handleSubmit}/>
     </div>
   </>;

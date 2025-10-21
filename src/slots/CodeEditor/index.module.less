@@ -9,3 +9,25 @@
     width: 100%;
   }
 }
+
+.drawer{
+  margin-top: 36px;
+  :global {
+    .ant-drawer-content {
+      background: #f8f9fc;
+      div.ant-drawer-header {
+        padding-bottom: unset;
+        border-bottom: unset;
+        flex-direction: row-reverse;
+
+        .ant-drawer-header-title {
+          flex: unset;
+        }
+      }
+      .ant-drawer-body{
+        display: flex;
+        flex-direction: column;
+      }
+    }
+  }
+}

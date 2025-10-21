@@ -147,7 +147,7 @@ subscribeKey(AIChatStore, 'activeSessionId', () => {
 })
 
 
-export const createNewSession = (config: { promptText: string, mode: "implement" | "solve", lib: string }) => {
+export const createNewSession = (config: { promptText: string, mode?: "implement" | "solve", lib?: string }) => {
   // todo  埋点
   // 1. 创建一个新的会话
   const newSessionId = crypto.randomUUID();
