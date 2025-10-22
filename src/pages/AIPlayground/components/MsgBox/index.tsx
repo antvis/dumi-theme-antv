@@ -11,6 +11,7 @@ import {AIChatStore, createNewSession, derivedState} from '../../../../model/AIC
 import {findLast} from "lodash-es";
 import {MarkdownComponent} from "../MarkdownComponent";
 import {Message} from "../../../../types";
+import {getCodeFromMarkdown, isPreviewable} from "../../../../utils/code";
 
 const avatar = {
   icon: (
@@ -45,7 +46,7 @@ function MsgBox(props: MsgBoxProps) {
   const derivedSnap = useSnapshot(derivedState);
 
   const streamingText = useStreamingText({
-    url: 'http://127.0.0.1:7001/ai/chat',
+    url: 'http://127.0.0.1:7001/external/chat',
     method: 'POST',
     body: {
       "gptConversationId": derivedSnap.activeSession?.id,
@@ -69,6 +70,9 @@ function MsgBox(props: MsgBoxProps) {
           // mode,
           // lib,
         });
+        if (isPreviewable(finalJSON.content)) {
+          AIChatStore.codeBlock = getCodeFromMarkdown(finalJSON.content).code;
+        }
       } catch (e) {
         // 说明不是JSON格式
       } finally {
@@ -79,13 +83,18 @@ function MsgBox(props: MsgBoxProps) {
       }
     },
     onError: (error) => {
+      console.log('回答失败', error)
       // 处理错误
-      console.error("AI stream failed:", error);
-      // setMessages(prev => [
-      //   ...prev,
-      //   { id: Date.now(), role: 'assistant', content: `Sorry, an error occurred: ${error.message}` }
-      // ]);
-      setIsStreaming(false); // **关键：出错后，也要关闭 trigger**
+      derivedState.activeSession?.messages?.push({
+        id: crypto.randomUUID(),
+        role: 'assistant',
+        content: `抱歉，我没能成功处理您的请求，请稍后再次提问`,
+        createdAt: Date.now(),
+        // mode,
+        // lib,
+      });
+      setIsStreaming(false);
+      setLoading(false);
     }
   });
 

@@ -48,6 +48,11 @@ export const useStreamingText = ({
           throw new Error('Response body is null');
         }
 
+        if (response.headers.get("content-type") === "application/json") {
+          onFinish?.(JSON.stringify(await response.json()));
+          return;
+        }
+
         const reader = response.body.getReader();
         const decoder = new TextDecoder();
         let accumulatedText = '';

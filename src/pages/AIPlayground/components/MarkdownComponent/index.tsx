@@ -17,7 +17,7 @@ export const MarkdownComponent: React.FC<MarkdownComponentProps> = ({ content })
         // 1. 重写 `p` 标签的渲染
         p(props) {
           const { node, ...rest } = props;
-          return <p style={{ marginBottom: '1em', lineHeight: '1.6' }} {...rest} />;
+          return <p style={{ marginBottom: 'unset', lineHeight: '1.6' }} {...rest} />;
         },
 
         // 2. 【核心】重写 `code` 标签的渲染，使用我们自己的组件
