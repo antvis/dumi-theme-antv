@@ -37,6 +37,8 @@ const PLACEHOLDER = {
   solve: '今天，你想解决什么可视化问题？',
 } as const;
 
+const uploadFileTooltip = '仅支持csv,json,tsv,txt文件，为了性能和成本，只会使用您数据的前几行作为样本';
+
 function PromptTextarea(props: PromptTextareaProps) {
   const {
     value,
@@ -126,7 +128,7 @@ function PromptTextarea(props: PromptTextareaProps) {
               <ChooseLib value={lib} onChange={onLibChange} size={size} />
               {mode === AIMode.implement && (
                 <>
-                  <Tooltip title={isCompact && '上传数据'}>
+                  <Tooltip title={isCompact ? `上传数据。${uploadFileTooltip}` : uploadFileTooltip}>
                     <Upload>
                       <button type="button">
                         <img src={FileIcons.FILE} /> {!isCompact && '上传数据'}

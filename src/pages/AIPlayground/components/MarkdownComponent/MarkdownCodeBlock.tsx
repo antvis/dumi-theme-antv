@@ -2,6 +2,10 @@ import React from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import {a11yLight} from "react-syntax-highlighter/dist/cjs/styles/hljs";
 import { AIChatStore } from "../../../../model/AIChat";
+import {useCopyToClipboard} from "react-use";
+import {CheckOutlined, CopyOutlined, PlaySquareOutlined} from "@ant-design/icons";
+import {Tooltip} from "antd";
+import styles from "./MarkdownCodeBlock.module.less";
 
 // 定义 props 类型，它将接收 react-markdown 传递的所有属性
 interface CodeBlockProps {
@@ -12,6 +16,7 @@ interface CodeBlockProps {
 }
 
 export const MarkdownCodeBlock: React.FC<CodeBlockProps> = ({ inline, className, children }) => {
+  const [copyState, copyToClipboard] = useCopyToClipboard();
   // 1. 处理行内代码：如果是行内代码，不做特殊处理，直接返回一个 <code> 标签
   if (inline || (typeof children === 'string' && !children.includes("\n"))) {
     return <code className={className}>{children}</code>;
@@ -35,29 +40,33 @@ export const MarkdownCodeBlock: React.FC<CodeBlockProps> = ({ inline, className,
 
   // 6. 返回最终的 JSX 结构
   return (
-    <div style={{ position: 'relative', margin: '1em 0' }}>
+    <div style={{position: 'relative', margin: '1em 0'}}>
+      <Tooltip title="复制">
+      <button
+        type="button"
+        onClick={() => copyToClipboard(codeString)}
+        style={{
+          right: '3em',
+        }}
+        className={styles.button}
+        title="复制"
+      >
+        {copyState.value === codeString ? <CheckOutlined /> : <CopyOutlined /> }
+      </button>
+      </Tooltip>
       {/* 条件渲染“运行”按钮 */}
       {showRunButton && (
-        <button
+        <Tooltip title="运行此代码片段"><button
           type="button"
           onClick={handleRunCode}
           style={{
-            position: 'absolute',
-            top: '0.5em',
             right: '0.5em',
-            zIndex: 1,
-            padding: '5px 10px',
-            border: 'none',
-            borderRadius: '5px',
-            backgroundColor: '#4a4a4a',
-            color: 'white',
-            cursor: 'pointer',
-            fontSize: '0.8em',
           }}
+          className={styles.button}
           title="运行此代码片段"
         >
-          运行
-        </button>
+          <PlaySquareOutlined />
+        </button></Tooltip>
       )}
 
       {/* 使用 react-syntax-highlighter 进行代码高亮 */}
