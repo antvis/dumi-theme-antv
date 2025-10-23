@@ -1,7 +1,6 @@
-import { CodeSandboxOutlined, PlayCircleOutlined, ThunderboltOutlined } from '@ant-design/icons';
+import { PlayCircleOutlined, ThunderboltOutlined } from '@ant-design/icons';
 import stackblitzSdk from '@stackblitz/sdk';
 import { Tooltip, Typography } from 'antd';
-import { getParameters } from 'codesandbox/lib/api/define';
 import { FormattedMessage, useLocale } from 'dumi';
 import React, { ReactElement, useEffect, useState } from 'react';
 import { ping } from '../utils';
@@ -156,14 +155,14 @@ export const Toolbar: React.FC<ToolbarProps> = ({
           );
         })}
       </div>
-      {riddleVisible ? (
+      {/* {riddleVisible ? (
         <form action="//riddle.alibaba-inc.com/riddles/define" method="POST" target="_blank">
           <input type="hidden" name="data" value={JSON.stringify(riddlePrefillConfig)} />
           <Tooltip title={<FormattedMessage id="在 Riddle 中打开" />}>
             <input type="submit" value="Create New Riddle with Prefilled Data" className={styles.riddle} />
           </Tooltip>
         </form>
-      ) : null}
+      ) : null} */}
       <Tooltip title={<FormattedMessage id="在 StackBlitz 中打开" />}>
         <ThunderboltOutlined
           className={styles.stackblitz}
@@ -172,14 +171,14 @@ export const Toolbar: React.FC<ToolbarProps> = ({
           }}
         />
       </Tooltip>
-      <Tooltip title={<FormattedMessage id="在 CodeSandbox 中打开" />}>
+      {/* <Tooltip title={<FormattedMessage id="在 CodeSandbox 中打开" />}>
         <form action="https://codesandbox.io/api/v1/sandboxes/define" method="POST" target="_blank">
           <input type="hidden" name="parameters" value={getParameters(codeSandboxConfig)} />
           <button type="submit" className={styles.codesandbox}>
             <CodeSandboxOutlined style={{ marginLeft: 8 }} />
           </button>
         </form>
-      </Tooltip>
+      </Tooltip> */}
       <Paragraph copyable={{ text: sourceCode }} style={{ marginLeft: 6 }} />
       {/** 暂时去掉全屏，当前空间已经非常大了 */}
       {/* {onToggleFullscreen ? (
