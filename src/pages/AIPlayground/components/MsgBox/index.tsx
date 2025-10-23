@@ -1,25 +1,25 @@
-import React, {useEffect, useState} from 'react';
-import {PromptTextarea} from "../../../../components/AI/HomeDialog/PromptTextarea";
-import {Button, Flex, Space} from 'antd';
-import { Bubble } from '@ant-design/x';
-import { history } from 'dumi';
-import {useStreamingText} from "../../../../hooks/useStreamingText";
 import {
   CheckOutlined,
   CopyOutlined,
   DislikeOutlined,
   LikeOutlined,
   PlusSquareOutlined,
-  SyncOutlined
-} from "@ant-design/icons";
-import styles from './index.module.less';
+  SyncOutlined,
+} from '@ant-design/icons';
+import { Bubble } from '@ant-design/x';
+import { Button, Flex, Space, Tooltip } from 'antd';
+import { history } from 'dumi';
+import { findLast } from 'lodash-es';
+import React, { useEffect, useState } from 'react';
+import { useCopyToClipboard } from 'react-use';
 import { useSnapshot } from 'valtio';
-import {AIChatStore, createNewSession, derivedState} from '../../../../model/AIChat';
-import {findLast} from "lodash-es";
-import {MarkdownComponent} from "../MarkdownComponent";
-import {Message} from "../../../../types";
-import {getCodeFromMarkdown, isPreviewable} from "../../../../utils/code";
-import {useCopyToClipboard} from "react-use";
+import { PromptTextarea } from '../../../../components/AI/HomeDialog/PromptTextarea';
+import { useStreamingText } from '../../../../hooks/useStreamingText';
+import { AIChatStore, createNewSession, derivedState } from '../../../../model/AIChat';
+import { Message } from '../../../../types';
+import { getCodeFromMarkdown, isPreviewable } from '../../../../utils/code';
+import { MarkdownComponent } from '../MarkdownComponent';
+import styles from './index.module.less';
 
 const avatar = {
   icon: (
@@ -31,15 +31,16 @@ const avatar = {
   ),
   style: {
     borderRadius: 0,
-    backgroundColor: "transparent",
-  }};
+    backgroundColor: 'transparent',
+  },
+};
 
 const chatScrollIntoView = () => {
   setTimeout(() => {
-    const nodeList = document.querySelectorAll(".ant-bubble");
-    nodeList[nodeList.length - 1].scrollIntoView({ behavior: "smooth", block: "center" });
+    const nodeList = document.querySelectorAll('.ant-bubble');
+    nodeList[nodeList.length - 1].scrollIntoView({ behavior: 'smooth', block: 'center' });
   });
-}
+};
 
 interface MsgBoxProps {
   messages?: Message[];
@@ -55,15 +56,17 @@ function MsgBox(props: MsgBoxProps) {
   const [copyState, copyToClipboard] = useCopyToClipboard();
 
   const streamingText = useStreamingText({
-    url: 'http://127.0.0.1:7001/external/chat',
+    url: 'https://webgw-pre.alipay.com/visqaservice/external/chat',
     method: 'POST',
     body: {
-      "gptConversationId": derivedSnap.activeSession?.id,
-      "query": findLast(derivedSnap.activeSession?.messages, (msg) => msg.role === 'user')?.content
+      gptConversationId: derivedSnap.activeSession?.id,
+      query: findLast(derivedSnap.activeSession?.messages, (msg) => msg.role === 'user')?.content,
     },
     trigger: isStreaming, // 将 isStreaming 状态作为 trigger
     headers: {
       'Content-Type': 'application/json',
+      'x-webgw-version': '2.0',
+      'x-webgw-appid': '180020010001210065',
     },
     beforeStart: () => {
       setLoading(true);
@@ -92,7 +95,7 @@ function MsgBox(props: MsgBoxProps) {
       }
     },
     onError: (error) => {
-      console.log('回答失败', error)
+      console.log('回答失败', error);
       // 处理错误
       derivedState.activeSession?.messages?.push({
         id: crypto.randomUUID(),
@@ -104,15 +107,15 @@ function MsgBox(props: MsgBoxProps) {
       });
       setIsStreaming(false);
       setLoading(false);
-    }
+    },
   });
 
   // 3. 处理用户提交
   const handleSubmit = () => {
     if (props.simple) {
       createNewSession({
-        promptText
-      })
+        promptText,
+      });
       return;
     }
     if (!promptText.trim() || isStreaming) return; // 如果正在流式输出，则不允许发送
@@ -144,63 +147,83 @@ function MsgBox(props: MsgBoxProps) {
   }, []);
 
   useEffect(() => {
-    if (derivedState.activeSession && (Date.now() - derivedState.activeSession.createdAt > 5000)) {
+    if (derivedState.activeSession && Date.now() - derivedState.activeSession.createdAt > 5000) {
       setLoading(false);
       setIsStreaming(false);
     }
   }, [snap.activeSessionId]);
 
+  const showMessages = props.messages ?? derivedSnap.activeSession?.messages;
 
-  return <>
-    <Flex gap="middle" vertical className={styles.chatContainer}>
-      {
-        (props.messages ?? derivedSnap.activeSession?.messages)?.map((msg, index) =>
+  return (
+    <>
+      <Flex gap="middle" vertical className={styles.chatContainer}>
+        {showMessages?.map((msg, index) => (
           <Bubble
             key={index}
-            content={<MarkdownComponent content={msg.content}/>}
+            content={<MarkdownComponent content={msg.content} />}
             avatar={msg.role === 'assistant' ? avatar : null}
-            footer={msg.role === 'assistant' ? <Space size="small">
-              <Button color="default" variant="text" size="small" icon={<LikeOutlined />} />
-              <Button color="default" variant="text" size="small" icon={<DislikeOutlined />} />
-              <Button color="default" variant="text" size="small" icon={<SyncOutlined />} />
-              <Button
-                color="default"
-                variant="text"
-                size="small"
-                onClick={() => copyToClipboard(msg.content)}
-                icon={copyState.value === msg.content ? <CheckOutlined /> : <CopyOutlined /> }
-              />
-            </Space> : null}
-            placement={msg.role === 'user' ? 'end' : 'start'}/>)
-      }
-      {
-      loading && <Bubble
-        placement="start"
-        avatar={avatar}
-        loading={loading}
-      />
-      }
-    </Flex>
-    <div>
-      {!props.simple && <div className={styles.newButtonContainer}>
-        <button type="button" onClick={() => history.push('/')} className={styles.newButton}>
-          <Space>
-            <PlusSquareOutlined/>
-            开始新对话
-          </Space>
-        </button>
-      </div>}
-      <PromptTextarea size="compact" mode="implement" value={promptText}
-                      onChange={setPromptText}
-                      loading={loading}
-                      onCancel={() => {
-                        setIsStreaming(false);
-                        setLoading(false);
-                      }}
-                      showAction={!props.simple}
-                      style={{marginBottom: 0}} onConfirm={handleSubmit}/>
-    </div>
-  </>;
+            footer={
+              (msg.role === 'assistant' && index > 0) ? (
+                <Space size="small">
+                  <Tooltip title="点赞">
+                    <Button color="default" variant="text" size="small" icon={<LikeOutlined />} />
+                  </Tooltip>
+                  <Tooltip title="点踩">
+                    <Button color="default" variant="text" size="small" icon={<DislikeOutlined />} />
+                  </Tooltip>
+                  {index === showMessages.length - 1 && <Tooltip title="再来一次">
+                    <Button onClick={() => {
+                      derivedState.activeSession.messages.pop();
+                      setIsStreaming(true);
+                    }}
+                      color="default" variant="text" size="small" icon={<SyncOutlined />} />
+                  </Tooltip>}
+                  <Tooltip title="复制">
+                    <Button
+                      color="default"
+                      variant="text"
+                      size="small"
+                      onClick={() => copyToClipboard(msg.content)}
+                      icon={copyState.value === msg.content ? <CheckOutlined /> : <CopyOutlined />}
+                    />
+                  </Tooltip>
+                </Space>
+              ) : null
+            }
+            placement={msg.role === 'user' ? 'end' : 'start'}
+          />
+        ))}
+        {loading && <Bubble placement="start" avatar={avatar} loading={loading} />}
+      </Flex>
+      <div>
+        {!props.simple && (
+          <div className={styles.newButtonContainer}>
+            <button type="button" onClick={() => history.push('/')} className={styles.newButton}>
+              <Space>
+                <PlusSquareOutlined />
+                开始新对话
+              </Space>
+            </button>
+          </div>
+        )}
+        <PromptTextarea
+          size="compact"
+          mode="implement"
+          value={promptText}
+          onChange={setPromptText}
+          loading={loading}
+          onCancel={() => {
+            setIsStreaming(false);
+            setLoading(false);
+          }}
+          showAction={!props.simple}
+          style={{ marginBottom: 0 }}
+          onConfirm={handleSubmit}
+        />
+      </div>
+    </>
+  );
 }
 
 export default MsgBox;
