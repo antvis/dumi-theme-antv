@@ -97,11 +97,11 @@ export function wrap2VisionSnap (codeBlock: string = '') {
         code: `{
       "name": "AntV-AI-Code",
       "version": "1.0.0",
-      "main": "/index.js",
+      "main": "/index.tsx",
       "dependencies": ${JSON.stringify(generateDependencies(codeBlock), null, 2)}
     }`
       },
-      "/index.js": { // 入口文件是纯 JS
+      "/index.js": {
         code: codeBlock
       },
       "/index.html": {

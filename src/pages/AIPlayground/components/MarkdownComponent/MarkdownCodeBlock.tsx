@@ -4,7 +4,7 @@ import {a11yLight} from "react-syntax-highlighter/dist/cjs/styles/hljs";
 import { AIChatStore } from "../../../../model/AIChat";
 import {useCopyToClipboard} from "react-use";
 import {CheckOutlined, CopyOutlined, PlaySquareOutlined} from "@ant-design/icons";
-import {Tooltip} from "antd";
+import {Space, Tooltip} from "antd";
 import styles from "./MarkdownCodeBlock.module.less";
 
 // 定义 props 类型，它将接收 react-markdown 传递的所有属性
@@ -40,35 +40,30 @@ export const MarkdownCodeBlock: React.FC<CodeBlockProps> = ({ inline, className,
 
   // 6. 返回最终的 JSX 结构
   return (
-    <div style={{position: 'relative', margin: '1em 0'}}>
-      <Tooltip title="复制">
-      <button
-        type="button"
-        onClick={() => copyToClipboard(codeString)}
-        style={{
-          right: '3em',
-        }}
-        className={styles.button}
-        title="复制"
-      >
-        {copyState.value === codeString ? <CheckOutlined /> : <CopyOutlined /> }
-      </button>
-      </Tooltip>
-      {/* 条件渲染“运行”按钮 */}
-      {showRunButton && (
-        <Tooltip title="运行此代码片段"><button
-          type="button"
-          onClick={handleRunCode}
-          style={{
-            right: '0.5em',
-          }}
-          className={styles.button}
-          title="运行此代码片段"
-        >
-          <PlaySquareOutlined />
-        </button></Tooltip>
-      )}
-
+    <div style={{ position: 'relative', margin: '1em 0' }}>
+      <Space className={styles.button}>
+        <Tooltip title="复制">
+          <button
+            type="button"
+            onClick={() => copyToClipboard(codeString)}
+            title="复制"
+          >
+            {copyState.value === codeString ? <CheckOutlined /> : <CopyOutlined />}
+          </button>
+        </Tooltip>
+        {/* 条件渲染“运行”按钮 */}
+        {showRunButton && (
+          <Tooltip title="运行此代码片段">
+            <button
+              type="button"
+              onClick={handleRunCode}
+              title="运行此代码片段"
+            >
+              <PlaySquareOutlined />
+            </button>
+          </Tooltip>
+        )}
+      </Space>
       {/* 使用 react-syntax-highlighter 进行代码高亮 */}
       <SyntaxHighlighter
         style={a11yLight}
