@@ -123,6 +123,9 @@ export const ConversationsMenu: React.FC = () => {
           setState({ open: false });
         }}
         onCancel={() => setState({ open: false })}
+        okButtonProps={{
+          disabled: !state.rename,
+        }}
       >
         <Input showCount maxLength={20} onChange={(e) => setState({rename: e.target.value})} value={state.rename} />
       </Modal>

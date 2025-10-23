@@ -38,7 +38,7 @@ const avatar = {
 const chatScrollIntoView = () => {
   setTimeout(() => {
     const nodeList = document.querySelectorAll('.ant-bubble');
-    nodeList[nodeList.length - 1].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    nodeList[nodeList.length - 1].scrollIntoView({ behavior: 'smooth' });
   });
 };
 
