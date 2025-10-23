@@ -1,10 +1,17 @@
 import React, {useEffect, useState} from 'react';
 import {PromptTextarea} from "../../../../components/AI/HomeDialog/PromptTextarea";
-import {Flex, Space} from 'antd';
+import {Button, Flex, Space} from 'antd';
 import { Bubble } from '@ant-design/x';
 import { history } from 'dumi';
 import {useStreamingText} from "../../../../hooks/useStreamingText";
-import {PlusSquareOutlined} from "@ant-design/icons";
+import {
+  CheckOutlined,
+  CopyOutlined,
+  DislikeOutlined,
+  LikeOutlined,
+  PlusSquareOutlined,
+  SyncOutlined
+} from "@ant-design/icons";
 import styles from './index.module.less';
 import { useSnapshot } from 'valtio';
 import {AIChatStore, createNewSession, derivedState} from '../../../../model/AIChat';
@@ -12,6 +19,7 @@ import {findLast} from "lodash-es";
 import {MarkdownComponent} from "../MarkdownComponent";
 import {Message} from "../../../../types";
 import {getCodeFromMarkdown, isPreviewable} from "../../../../utils/code";
+import {useCopyToClipboard} from "react-use";
 
 const avatar = {
   icon: (
@@ -44,6 +52,7 @@ function MsgBox(props: MsgBoxProps) {
   const [loading, setLoading] = useState(false);
   const snap = useSnapshot(AIChatStore);
   const derivedSnap = useSnapshot(derivedState);
+  const [copyState, copyToClipboard] = useCopyToClipboard();
 
   const streamingText = useStreamingText({
     url: 'http://127.0.0.1:7001/external/chat',
@@ -150,6 +159,18 @@ function MsgBox(props: MsgBoxProps) {
             key={index}
             content={<MarkdownComponent content={msg.content}/>}
             avatar={msg.role === 'assistant' ? avatar : null}
+            footer={msg.role === 'assistant' ? <Space size="small">
+              <Button color="default" variant="text" size="small" icon={<LikeOutlined />} />
+              <Button color="default" variant="text" size="small" icon={<DislikeOutlined />} />
+              <Button color="default" variant="text" size="small" icon={<SyncOutlined />} />
+              <Button
+                color="default"
+                variant="text"
+                size="small"
+                onClick={() => copyToClipboard(msg.content)}
+                icon={copyState.value === msg.content ? <CheckOutlined /> : <CopyOutlined /> }
+              />
+            </Space> : null}
             placement={msg.role === 'user' ? 'end' : 'start'}/>)
       }
       {
