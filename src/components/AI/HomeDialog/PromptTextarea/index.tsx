@@ -10,6 +10,7 @@ import { AIMode, AIModeType, FileIcons } from '../../constant';
 import { ChooseLib } from './ChooseLib';
 import { useSiteData } from 'dumi';
 import { ic } from '../../../../slots/hooks';
+import {useTypewriter} from "../../../../hooks/useTypewriter";
 
 interface PromptTextareaProps {
   value: string;
@@ -54,6 +55,12 @@ function PromptTextarea(props: PromptTextareaProps) {
   const [focus, setFocus] = useState(false);
   const isCompact = size === 'compact';
   const { themeConfig } = useSiteData();
+  const typedPlaceholder = useTypewriter({
+    texts: [
+      `${themeConfig.title}是什么？`,
+      ic(themeConfig.metas.description),
+    ],
+  });
 
   function renderDatasourceCard() {
     if ((fileMeta?.type === 'FILE' || fileMeta?.type === 'IMAGE') && fileMeta?.fileName) {
@@ -102,7 +109,8 @@ function PromptTextarea(props: PromptTextareaProps) {
         id="prompt-textarea"
         className={classnames(styles.promptTextarea)}
         placeholder={
-          (!isCompact && !themeConfig.isAntVSite && ic(themeConfig.metas.description)) ||
+          // (!isCompact && !themeConfig.isAntVSite && ic(themeConfig.metas.description)) ||
+          (!isCompact && !themeConfig.isAntVSite) ? typedPlaceholder :
           _.get(PLACEHOLDER, mode, '今天，你想可视化什么？')
         }
         value={value}
