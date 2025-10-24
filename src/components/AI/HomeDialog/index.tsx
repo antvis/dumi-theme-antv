@@ -52,7 +52,8 @@ export function HomeDialog(props: HomeDialogProps) {
         createNewSession({
           promptText,
           mode,
-          lib
+          lib,
+          jump: true
         })
       }}
       style={props.promptTextareaStyle}

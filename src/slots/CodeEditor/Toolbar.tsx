@@ -1,4 +1,4 @@
-import { CodeSandboxOutlined, PlayCircleOutlined, ThunderboltOutlined } from '@ant-design/icons';
+import {CodeSandboxOutlined, PlayCircleOutlined, ReloadOutlined, ThunderboltOutlined} from '@ant-design/icons';
 import stackblitzSdk from '@stackblitz/sdk';
 import { Tooltip, Typography } from 'antd';
 import { getParameters } from 'codesandbox/lib/api/define';
@@ -80,6 +80,7 @@ type ToolbarProps = {
   onExecuteCode: () => void;
 
   onClickAI: () => void;
+  onReload: () => void;
   /**
    * Tab 的附加内容
    */
@@ -100,6 +101,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
   onToggleFullscreen = null,
   onExecuteCode,
   onClickAI,
+  onReload
 }) => {
   const locale = useLocale();
   const exampleTitle = (typeof title === 'object' ? title[locale.id as 'zh' | 'en'] : title) as string;
@@ -160,6 +162,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
         })}
       </div>
       <a className={styles.ai} onClick={onClickAI}>AI 助手</a>
+      <Tooltip title="还原"><span className={styles.ai} onClick={onReload}><ReloadOutlined /></span></Tooltip>
       {riddleVisible ? (
         <form action="//riddle.alibaba-inc.com/riddles/define" method="POST" target="_blank">
           <input type="hidden" name="data" value={JSON.stringify(riddlePrefillConfig)} />

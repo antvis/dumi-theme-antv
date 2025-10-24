@@ -73,6 +73,7 @@ const CodeRunner: React.FC<CodeRunnerProps> = ({
             onDestroy={noop}
             onReady={noop}
             playground={playground}
+            title={ic(title)}
           />
         </ClientOnly>
       </SplitPane>

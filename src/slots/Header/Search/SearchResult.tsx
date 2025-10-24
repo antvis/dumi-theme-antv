@@ -46,7 +46,8 @@ export const SearchResult: React.FC<{ results: ISearchResult[], keywords: string
           createNewSession({
             promptText: keywords,
             mode: "solve",
-            lib: !themeConfig.isAntVSite ? themeConfig.title : undefined
+            lib: !themeConfig.isAntVSite ? themeConfig.title : undefined,
+            jump: true
           })
         }}>
           <div className={classnames(styles.title, styles.highlighted)}>{keywords}</div>

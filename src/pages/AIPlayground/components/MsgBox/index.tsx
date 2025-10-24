@@ -9,13 +9,19 @@ import {
 import { Bubble } from '@ant-design/x';
 import { Button, Flex, Space, Tooltip } from 'antd';
 import {history, useSiteData} from 'dumi';
-import { findLast } from 'lodash-es';
+import {findLast, isEmpty} from 'lodash-es';
 import React, { useEffect, useState } from 'react';
 import { useCopyToClipboard } from 'react-use';
 import { useSnapshot } from 'valtio';
 import { PromptTextarea } from '../../../../components/AI/HomeDialog/PromptTextarea';
 import { useStreamingText } from '../../../../hooks/useStreamingText';
-import { AIChatStore, createNewSession, derivedState } from '../../../../model/AIChat';
+import {
+  AIChatStore, clearEmptySession,
+  createNewSession,
+  createPureNewSession,
+  derivedState,
+  handleDeleteSession
+} from '../../../../model/AIChat';
 import { Message } from '../../../../types';
 import { getCodeFromMarkdown, isPreviewable } from '../../../../utils/code';
 import { MarkdownComponent } from '../MarkdownComponent';
@@ -45,9 +51,13 @@ const chatScrollIntoView = () => {
 interface MsgBoxProps {
   messages?: Message[];
   simple?: boolean;
+  context?: string;
+  onCodegen?: (code: string) => void;
+  title?: string;
 }
 
 function MsgBox(props: MsgBoxProps) {
+  const {messages = [], simple = false, context = '', onCodegen, title} = props;
   const { themeConfig } = useSiteData();
   const [lib, setLib] = useState(!themeConfig.isAntVSite ? themeConfig.title : undefined);
   const [promptText, setPromptText] = useState<string>('');
@@ -67,7 +77,7 @@ function MsgBox(props: MsgBoxProps) {
       library: latestUserMessage?.lib || lib,
       mode: latestUserMessage?.mode,
       anonymousUserId: snap.anonymousUserId,
-      context: latestUserMessage?.context,
+      context: latestUserMessage?.context || context,
       mountId: "container"
     },
     trigger: isStreaming, // 将 isStreaming 状态作为 trigger
@@ -91,7 +101,9 @@ function MsgBox(props: MsgBoxProps) {
           // lib,
         });
         if (isPreviewable(finalJSON.content)) {
-          AIChatStore.codeBlock = getCodeFromMarkdown(finalJSON.content).code;
+          const codeBlock = getCodeFromMarkdown(finalJSON.content).code;
+          AIChatStore.codeBlock = codeBlock;
+          onCodegen?.(codeBlock);
         }
       } catch (e) {
         // 说明不是JSON格式
@@ -120,12 +132,6 @@ function MsgBox(props: MsgBoxProps) {
 
   // 3. 处理用户提交
   const handleSubmit = () => {
-    if (props.simple) {
-      createNewSession({
-        promptText,
-      });
-      return;
-    }
     if (!promptText.trim() || isStreaming) return; // 如果正在流式输出，则不允许发送
     setPromptText('');
     derivedState.activeSession?.messages?.push({
@@ -133,8 +139,7 @@ function MsgBox(props: MsgBoxProps) {
       role: 'user',
       content: promptText,
       createdAt: Date.now(),
-      // mode,
-      // lib,
+      lib,
     });
     // **关键：开启 trigger，开始请求**
     setIsStreaming(true);
@@ -152,6 +157,13 @@ function MsgBox(props: MsgBoxProps) {
         AIChatStore.tempMessage = null;
       }
     }
+    if (simple) {
+      createPureNewSession(title);
+    }
+
+    return () => {
+      clearEmptySession();
+    };
   }, []);
 
   useEffect(() => {
@@ -161,7 +173,7 @@ function MsgBox(props: MsgBoxProps) {
     }
   }, [snap.activeSessionId]);
 
-  const showMessages = props.messages ?? derivedSnap.activeSession?.messages;
+  const showMessages = [...messages, ...derivedSnap.activeSession?.messages];
 
   return (
     <>

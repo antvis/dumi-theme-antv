@@ -2,7 +2,7 @@ import { Spin } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Card } from './Card';
 import styles from './index.module.less';
-import {RedoOutlined} from "@ant-design/icons";
+import {ReloadOutlined} from "@ant-design/icons";
 import {ReplayCase} from "../../types";
 import RecommendJson from "./recommend.json";
 import classnames from "classnames";
@@ -44,7 +44,7 @@ export const RecommendCase = (props: RecommendCaseProps) => {
       <div className={styles.title}>
         <span className={styles.quickStart}>精选案例</span>
         <span className={styles.refresh} onClick={() => fetchList()}>
-          <RedoOutlined />
+          <ReloadOutlined />
           换一批
         </span>
       </div>

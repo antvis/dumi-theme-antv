@@ -105,7 +105,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   // 编辑器两个 tab，分别是代码和数据
   const [data, setData] = useState(null);
   const [spec, setSpec] = useState(null);
-  const [code, setCode] = useState(source);
+  const [code, setCode] = useState(source)
   const [full, setFull] = useState(false);
   // monaco instance
   const monacoRef = useRef<any>(null);
@@ -281,6 +281,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   // 用于更新当前 example 的 spec 和 data
   useEffect(() => {
     setCurrentEditorTab(EDITOR_TABS.JAVASCRIPT);
+    setShowAI(false);
   }, [exampleId]);
 
   // hook 用户的数据
@@ -399,6 +400,10 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
     setShowAI(true);
   };
 
+  const onReload = () => {
+    setCode(source);
+  }
+
   return (
     <div className={styles.editor}>
       <Toolbar
@@ -414,6 +419,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
         onEditorTabChange={onTabChange}
         onToggleFullscreen={onFullscreen}
         onClickAI={onClickAI}
+        onReload={onReload}
         slots={{
           Spec: (
             <span style={{ paddingLeft: '0.25em', paddingRight: 0 }}>
@@ -459,15 +465,26 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
             getContainer={false}
             onClose={() => setShowAI(false)}
             rootClassName={styles.drawer}
+            width={'90%'}
           >
-            <MsgBox simple messages={[{
-              id: crypto.randomUUID(),
-              role: 'assistant',
-              content: `我是AntV AI助手。您可以随时向我提问，让我为您：
+            <MsgBox
+              simple
+              messages={[
+                {
+                  id: crypto.randomUUID(),
+                  role: 'assistant',
+                  content: `我是AntV AI助手。您可以随时向我提问，让我为您：
               \n1、解读当前图表的代码配置。
               \n2、通过自然语言对话，基于当前案例生成新代码以定制图表。`,
-              createdAt: Date.now(),
-            }]}/>
+                  createdAt: Date.now(),
+                },
+              ]}
+              context={valueOf(tab)}
+              onCodegen={(codeBlock) => {
+                setCode(codeBlock);
+              }}
+              title={title}
+            />
           </Drawer>
         </div>
       ))}

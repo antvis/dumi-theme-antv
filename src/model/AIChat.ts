@@ -44,6 +44,10 @@ subscribe(AIChatStore, () => {
   localforage.setItem(STORAGE_KEY, stateToPersist);
 });
 
+export const clearEmptySession = () => {
+  AIChatStore.sessions = AIChatStore.sessions.filter(s => s.messages.length > 0);
+}
+
 // --- 初始化逻辑 ---
 export const initializeStore = async () => {
   // 1. 从 localForage 加载持久化的数据
@@ -90,6 +94,8 @@ export const initializeStore = async () => {
   if (!AIChatStore.activeSessionId || !AIChatStore.sessions.find(s => s.id === AIChatStore.activeSessionId)) {
     AIChatStore.activeSessionId = AIChatStore.sessions[0]?.id || null;
   }
+
+  clearEmptySession();
 
   // 4. 标记初始化完成，这将触发持久化订阅
   AIChatStore.isInitialized = true;
@@ -146,18 +152,21 @@ subscribeKey(AIChatStore, 'activeSessionId', () => {
   AIChatStore.codeBlock = null;
 })
 
-
-export const createNewSession = (config: { promptText: string, mode?: "implement" | "solve", lib?: string }) => {
-  // todo  埋点
-  // 1. 创建一个新的会话
+export const createPureNewSession = (title?: string) => {
   const newSessionId = crypto.randomUUID();
   AIChatStore.sessions.unshift({
     id: newSessionId,
-    title: config.promptText.substring(0, 20), // 使用输入内容作为初始标题
+    title: title ?? 'New Conversation',
     createdAt: Date.now(),
     messages: [],
   });
   AIChatStore.activeSessionId = newSessionId;
+}
+
+export const createNewSession = (config: { promptText: string, mode?: "implement" | "solve", lib?: string, jump?: boolean }) => {
+  // todo  埋点
+  // 1. 创建一个新的会话
+  createPureNewSession();
 
   // 2. 创建临时消息并存入 store
   AIChatStore.tempMessage = {
@@ -168,5 +177,7 @@ export const createNewSession = (config: { promptText: string, mode?: "implement
     mode: config.mode,
     lib: config.lib,
   };
-  history.push(`/zh/ai-playground/2`);
+  if (config.jump) {
+    history.push(`/zh/ai-playground/2`);
+  }
 }
