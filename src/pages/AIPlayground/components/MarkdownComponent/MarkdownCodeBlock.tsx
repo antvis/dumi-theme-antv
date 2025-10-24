@@ -6,6 +6,7 @@ import {useCopyToClipboard} from "react-use";
 import {CheckOutlined, CopyOutlined, PlaySquareOutlined} from "@ant-design/icons";
 import {Space, Tooltip} from "antd";
 import styles from "./MarkdownCodeBlock.module.less";
+import {isPreviewable} from "../../../../utils/code";
 
 // 定义 props 类型，它将接收 react-markdown 传递的所有属性
 interface CodeBlockProps {
@@ -29,8 +30,8 @@ export const MarkdownCodeBlock: React.FC<CodeBlockProps> = ({ inline, className,
   // 3. 将 children 转换为字符串，并移除末尾的换行符
   const codeString = String(children).replace(/\n$/, '');
 
-  // 4. 实现核心逻辑：判断是否显示“运行”按钮
-  const showRunButton = codeString.trim().startsWith('import');
+  // 4. 判断是否显示“运行”按钮
+  const showRunButton = /\bimport\b/.test(codeString);
 
   // 5. 定义运行代码的逻辑
   const handleRunCode = () => {

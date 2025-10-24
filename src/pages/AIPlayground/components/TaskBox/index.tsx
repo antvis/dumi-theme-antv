@@ -47,6 +47,7 @@ function TaskBox() {
       }}
       theme="light" // 主题：dark, light, auto
       customSetup={{
+        entry: "/index.tsx",
         npmRegistries: [
           {
             limitToScopes: false, // 设为 false 使所有包都从自定义 registry 获取

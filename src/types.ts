@@ -132,7 +132,14 @@ export interface Message {
   content: string;
   createdAt: number;
   mode?: 'implement' | 'solve';
+  /**
+   * G2、S2、F2、G6
+   */
   lib?: string;
+  /**
+   * 上下文，比如提问的页面、demo等
+   */
+  context?: string;
 }
 
 export interface ChatSession {

@@ -101,7 +101,7 @@ export function wrap2VisionSnap (codeBlock: string = '') {
       "dependencies": ${JSON.stringify(generateDependencies(codeBlock), null, 2)}
     }`
       },
-      "/index.js": {
+      "/index.tsx": {
         code: codeBlock
       },
       "/index.html": {
@@ -113,7 +113,7 @@ export function wrap2VisionSnap (codeBlock: string = '') {
 <body>
   <div id="root"></div>
   <div id="container"></div>
-  <script src="index.js"></script>
+  <script src="index.tsx"></script>
 </body>
 </html>`
       },

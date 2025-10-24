@@ -8,7 +8,7 @@ import {
 } from '@ant-design/icons';
 import { Bubble } from '@ant-design/x';
 import { Button, Flex, Space, Tooltip } from 'antd';
-import { history } from 'dumi';
+import {history, useSiteData} from 'dumi';
 import { findLast } from 'lodash-es';
 import React, { useEffect, useState } from 'react';
 import { useCopyToClipboard } from 'react-use';
@@ -48,19 +48,27 @@ interface MsgBoxProps {
 }
 
 function MsgBox(props: MsgBoxProps) {
+  const { themeConfig } = useSiteData();
+  const [lib, setLib] = useState(!themeConfig.isAntVSite ? themeConfig.title : undefined);
   const [promptText, setPromptText] = useState<string>('');
   const [isStreaming, setIsStreaming] = useState(false); // trigger
   const [loading, setLoading] = useState(false);
   const snap = useSnapshot(AIChatStore);
   const derivedSnap = useSnapshot(derivedState);
   const [copyState, copyToClipboard] = useCopyToClipboard();
+  const latestUserMessage = findLast(derivedSnap.activeSession?.messages, (msg) => msg.role === 'user');
 
   const streamingText = useStreamingText({
     url: 'https://webgw-pre.alipay.com/visqaservice/external/chat',
     method: 'POST',
     body: {
       gptConversationId: derivedSnap.activeSession?.id,
-      query: findLast(derivedSnap.activeSession?.messages, (msg) => msg.role === 'user')?.content,
+      query: latestUserMessage?.content,
+      library: latestUserMessage?.lib || lib,
+      mode: latestUserMessage?.mode,
+      anonymousUserId: snap.anonymousUserId,
+      context: latestUserMessage?.context,
+      mountId: "container"
     },
     trigger: isStreaming, // 将 isStreaming 状态作为 trigger
     headers: {
@@ -220,6 +228,8 @@ function MsgBox(props: MsgBoxProps) {
           showAction={!props.simple}
           style={{ marginBottom: 0 }}
           onConfirm={handleSubmit}
+          lib={lib}
+          onLibChange={setLib}
         />
       </div>
     </>
