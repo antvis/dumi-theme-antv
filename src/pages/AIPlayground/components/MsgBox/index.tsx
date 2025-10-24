@@ -173,7 +173,7 @@ function MsgBox(props: MsgBoxProps) {
     }
   }, [snap.activeSessionId]);
 
-  const showMessages = [...messages, ...derivedSnap.activeSession?.messages];
+  const showMessages = [...messages, ...(derivedSnap.activeSession?.messages || [])];
 
   return (
     <>
