@@ -2,6 +2,7 @@ import classnames from 'classnames';
 import React from 'react';
 import styles from './index.module.less';
 import {AIMode, AIModeMeta, AIModeType} from "../../constant";
+import { FormattedMessage } from 'dumi';
 
 export interface DatasetSelectorProps {
   size?: 'default' | 'compact';
@@ -35,7 +36,7 @@ export const ModeSelector =
                   }}
                 >
                   {meta.icon}
-                  <span>{meta.name}</span>
+                  <FormattedMessage id={meta.name} />
                 </div>
               );
             },

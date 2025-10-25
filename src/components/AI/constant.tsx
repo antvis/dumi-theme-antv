@@ -13,11 +13,11 @@ export const AIModeMeta: Record<
   { name: string; icon: ReactNode }
 > = {
   implement: {
-    name: '可视化研发',
+    name: 'ai.mode.implement',
     icon: <BarChartOutlined />,
   },
   solve: {
-    name: '可视化答疑',
+    name: 'ai.mode.solve',
     icon: <QuestionCircleOutlined />,
   },
 };

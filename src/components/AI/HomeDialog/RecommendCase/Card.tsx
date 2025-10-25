@@ -4,6 +4,7 @@ import styles from './card.module.less';
 import {ReplayCase} from "../../types";
 import {BarChartOutlined, QuestionCircleOutlined} from "@ant-design/icons";
 import {AIMode, AIModeMeta, COLORS} from "../../constant";
+import { FormattedMessage } from 'dumi';
 
 interface ICardProps {
   item: ReplayCase;
@@ -55,7 +56,7 @@ export const Card: React.FC<ICardProps> = ({ item, index }) => {
         <div className={styles.typeTag} style={style}>
           { tag === AIMode.implement ? <BarChartOutlined className={styles.typeIcon}/>
           : <QuestionCircleOutlined className={styles.typeIcon}/> }
-          <span className={styles.typeText}>{AIModeMeta[tag]?.name || tag}</span>
+          <span className={styles.typeText}><FormattedMessage id={AIModeMeta[tag]?.name || tag} /></span>
         </div>
 
         <div className={styles.title}>{query}</div>

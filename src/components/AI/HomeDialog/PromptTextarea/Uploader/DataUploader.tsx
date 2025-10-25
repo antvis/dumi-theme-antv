@@ -3,6 +3,7 @@ import React from 'react';
 import { Upload, message, Tooltip } from 'antd';
 import type { UploadProps } from 'antd';
 import { useRequest } from 'ahooks';
+import { useIntl } from 'dumi';
 import { AIMode, FileIcons } from '../../../constant';
 
 // 定义文件元信息类型，与父组件保持一致
@@ -43,9 +44,9 @@ const formatBytes = (bytes: number, decimals = 2) => {
 };
 
 // 这些函数负责将文件内容转换成给AI看的摘要
-function getTableSummary(content: string, fileType: 'csv' | 'tsv' | 'txt'): string {
+function getTableSummary(content: string, fileType: 'csv' | 'tsv' | 'txt', intl: any): string {
   const lines = content.replace(/\r\n/g, '\n').split('\n');
-  if (lines.length === 0) return "文件为空。";
+  if (lines.length === 0) return intl.formatMessage({ id: 'ai.upload.file.empty' });
 
   const delimiter = fileType === 'csv' ? ',' : '\t';
   const header = lines[0];
@@ -54,26 +55,26 @@ function getTableSummary(content: string, fileType: 'csv' | 'tsv' | 'txt'): stri
   const columnCount = header.split(delimiter).length;
   const rowCount = lines.filter(line => line.trim() !== '').length;
 
-  return `这是一个包含约 ${rowCount} 行和 ${columnCount} 列的表格数据。
-列名（Header）是: ${header}
-前${MAX_LINES}行样本数据如下:
-${sampleRows}`;
+  return intl.formatMessage(
+    { id: 'ai.upload.file.table.summary' },
+    { rowCount, columnCount, header, maxLines: MAX_LINES, sampleRows }
+  );
 }
 
-function getJsonSummary(data: any): string {
+function getJsonSummary(data: any, intl: any): string {
   if (Array.isArray(data) && data.length > 0 && typeof data[0] === 'object') {
     const keys = Object.keys(data[0]);
     const sampleData = data.slice(0, MAX_LINES).map(item => JSON.stringify(item)).join('\n');
-    return `这是一个包含 ${data.length} 个对象的JSON数组。
-每个对象的键（Keys）是: ${keys.join(', ')}
-前${MAX_LINES}个样本对象如下:
-${sampleData}`;
+    return intl.formatMessage(
+      { id: 'ai.upload.file.json.array.summary' },
+      { dataLength: data.length, keys: keys.join(', '), maxLines: MAX_LINES, sampleData }
+    );
   }
-  return `这是一个JSON对象。其结构和部分数据如下：\n` + JSON.stringify(data, null, 2);
+  return intl.formatMessage({ id: 'ai.upload.file.json.object.summary' }) + '\n' + JSON.stringify(data, null, 2);
 }
 
 // --- 文件解析服务函数 ---
-async function parseFile(file: File): Promise<AnalyzedData> {
+async function parseFile(file: File, intl: any): Promise<AnalyzedData> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = (event) => {
@@ -84,23 +85,26 @@ async function parseFile(file: File): Promise<AnalyzedData> {
         // --- 智能策略判断 ---
         if (fileContent.length <= DIRECT_FEED_CHAR_THRESHOLD) {
           // 策略1：文件内容足够小，直接作为上下文
-          dataSummary = `用户上传了一个数据文件，其完整内容如下：\n\n${fileContent}`;
+          dataSummary = intl.formatMessage(
+            { id: 'ai.upload.file.full.content' },
+            { fileContent }
+          );
         } else {
           // 策略2：文件内容过大，执行摘要算法
           const fileType = file.name.split('.').pop()?.toLowerCase() || '';
 
           if (fileType === 'json') {
             const jsonData = JSON.parse(fileContent);
-            dataSummary = getJsonSummary(jsonData);
+            dataSummary = getJsonSummary(jsonData, intl);
           } else if (['csv', 'tsv', 'txt'].includes(fileType)) {
-            dataSummary = getTableSummary(fileContent as any, fileType as any);
+            dataSummary = getTableSummary(fileContent as any, fileType as any, intl);
           } else {
-            reject(new Error('不支持的文件解析类型'));
+            reject(new Error(intl.formatMessage({ id: 'ai.upload.file.parse.type.error' })));
             return;
           }
 
           if (dataSummary.length > MAX_CONTEXT_CHARS) {
-            dataSummary = dataSummary.substring(0, MAX_CONTEXT_CHARS) + "\n... (数据摘要已截断)";
+            dataSummary = dataSummary.substring(0, MAX_CONTEXT_CHARS) + "\n" + intl.formatMessage({ id: 'ai.upload.file.summary.truncated' });
           }
         }
 
@@ -113,16 +117,17 @@ async function parseFile(file: File): Promise<AnalyzedData> {
           },
         });
       } catch (e) {
-        reject(new Error('文件内容格式错误，无法解析。'));
+        reject(new Error(intl.formatMessage({ id: 'ai.upload.file.parse.error' })));
       }
     };
-    reader.onerror = () => reject(new Error('读取文件失败。'));
+    reader.onerror = () => reject(new Error(intl.formatMessage({ id: 'ai.upload.file.read.error' })));
     reader.readAsText(file);
   });
 }
 
 export const DataUploader: React.FC<DataUploaderProps> = ({ onDataAnalyzed, isCompact, tooltipText }) => {
-  const { run: runParse, loading } = useRequest(parseFile, {
+  const intl = useIntl();
+  const { run: runParse, loading } = useRequest((file: File) => parseFile(file, intl), {
     manual: true,
     onSuccess: (result) => {
       // message.success(`${result.fileMeta?.fileName} 分析成功！`);
@@ -141,11 +146,17 @@ export const DataUploader: React.FC<DataUploaderProps> = ({ onDataAnalyzed, isCo
     beforeUpload: (file) => {
       const fileExtension = file.name.split('.').pop()?.toLowerCase() || '';
       if (!ALLOWED_FILE_TYPES.includes(fileExtension)) {
-        message.error(`不支持的文件类型。请上传 ${ALLOWED_FILE_TYPES.join(', ')} 文件。`);
+        message.error(intl.formatMessage(
+          { id: 'ai.upload.file.type.error' },
+          { types: ALLOWED_FILE_TYPES.join(', ') }
+        ));
         return Upload.LIST_IGNORE;
       }
       if (file.size / 1024 / 1024 > MAX_FILE_SIZE_MB) {
-        message.error(`文件大小不能超过 ${MAX_FILE_SIZE_MB}MB!`);
+        message.error(intl.formatMessage(
+          { id: 'ai.upload.file.size.error' },
+          { size: MAX_FILE_SIZE_MB }
+        ));
         return Upload.LIST_IGNORE;
       }
       runParse(file);
@@ -154,14 +165,14 @@ export const DataUploader: React.FC<DataUploaderProps> = ({ onDataAnalyzed, isCo
   };
 
   return (
-    <Tooltip title={isCompact ? `上传数据。${tooltipText}` : tooltipText}>
+    <Tooltip title={isCompact ? `${intl.formatMessage({ id: 'ai.upload.data' })}。${tooltipText}` : tooltipText}>
       <Upload {...uploadProps}>
         <button type="button" disabled={loading}>
           {loading ? (
-            '分析中...'
+            intl.formatMessage({ id: 'ai.upload.analyzing' })
           ) : (
             <>
-              <img src={FileIcons.FILE} alt="file-icon" /> {!isCompact && '上传数据'}
+              <img src={FileIcons.FILE} alt="file-icon" /> {!isCompact && intl.formatMessage({ id: 'ai.upload.data' })}
             </>
           )}
         </button>
