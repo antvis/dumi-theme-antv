@@ -26,11 +26,15 @@ export const Card: React.FC<ICardProps> = ({ item, index }) => {
   const popoverContent = (
     <div className={styles.popoverContent}>
       <div className={styles.popoverItem}>
-        <div className={styles.popoverLabel}>案例名</div>
+        <div className={styles.popoverLabel}>
+          <FormattedMessage id="ai.recommend.card.caseName" />
+        </div>
         <div className={styles.popoverValue}>{query}</div>
       </div>
       <div className={styles.popoverItem}>
-        <div className={styles.popoverLabel}>描述信息</div>
+        <div className={styles.popoverLabel}>
+          <FormattedMessage id="ai.recommend.card.description" />
+        </div>
         <div className={styles.popoverValue}>{description}</div>
       </div>
         {/*<div className={styles.popoverItem}>*/}
