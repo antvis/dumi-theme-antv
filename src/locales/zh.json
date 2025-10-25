@@ -224,6 +224,7 @@
   "ai.search.try": "试试",
   "ai.search.visualization": "可视化答疑",
   "ai.assistant.editor.intro": "我是AntV AI助手。您可以随时向我提问，让我为您：\n\n1、解读当前图表的代码配置。\n2、通过自然语言对话，基于当前案例生成新代码以定制图表。",
+  "ai.placeholder.whatis": "{title}是什么？",
   "header.ai.code": "AI生码",
   "header.china.mirror.title": "AntV 系列网站部署在 gh-pages 上，若访问速度不佳，可以前往国内镜像站点。",
   "header.china.mirror.temp.close": "暂时关闭",

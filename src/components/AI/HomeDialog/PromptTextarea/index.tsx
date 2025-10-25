@@ -63,7 +63,7 @@ function PromptTextarea(props: PromptTextareaProps) {
   const { themeConfig } = useSiteData();
   const typedPlaceholder = useTypewriter({
     texts: [
-      `${themeConfig.title}是什么？`,
+      formatMessage({ id: 'ai.placeholder.whatis' }, { title: themeConfig.title }),
       ic(themeConfig.metas.description),
     ],
   });
