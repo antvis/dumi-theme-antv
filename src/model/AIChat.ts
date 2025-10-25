@@ -163,7 +163,7 @@ export const createPureNewSession = (title?: string) => {
   AIChatStore.activeSessionId = newSessionId;
 }
 
-export const createNewSession = (config: { promptText: string, mode?: "implement" | "solve", lib?: string, jump?: boolean }) => {
+export const createNewSession = (config: { promptText: string, mode?: "implement" | "solve", lib?: string, jump?: boolean, context?: string }) => {
   // todo  埋点
   // 1. 创建一个新的会话
   createPureNewSession();
@@ -176,6 +176,7 @@ export const createNewSession = (config: { promptText: string, mode?: "implement
     createdAt: Date.now(),
     mode: config.mode,
     lib: config.lib,
+    context: config.context,
   };
   if (config.jump) {
     history.push(`/zh/ai-playground/2`);

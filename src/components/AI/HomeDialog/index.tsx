@@ -7,9 +7,8 @@ import { ModeSelector } from './ModeSelector';
 import { useLocalStorageState } from 'ahooks';
 import { AIMode, AIModeType } from '../constant';
 import classnames from 'classnames';
-import { history, useSiteData } from 'dumi';
-import {AIChatStore, createNewSession} from '../../../model/AIChat';
-import {snapshot} from "valtio";
+import { useSiteData } from 'dumi';
+import {createNewSession} from '../../../model/AIChat';
 
 interface HomeDialogProps {
   className?: string;
@@ -28,6 +27,7 @@ export function HomeDialog(props: HomeDialogProps) {
     }
   );
   const [promptText, setPromptText] = useState<string>('');
+  const [fileSummary, setFileSummary] = useState('');
 
   return <div className={classnames(styles.content, props.className)} style={props.style}>
     <AntVBanner/>
@@ -53,10 +53,12 @@ export function HomeDialog(props: HomeDialogProps) {
           promptText,
           mode,
           lib,
-          jump: true
+          jump: true,
+          context: fileSummary,
         })
       }}
       style={props.promptTextareaStyle}
+      onDataSummaryChange={setFileSummary}
     />
     <RecommendCase className={props.recommendCaseClassName}/>
   </div>;

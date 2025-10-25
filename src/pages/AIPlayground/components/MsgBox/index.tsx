@@ -67,7 +67,7 @@ function MsgBox(props: MsgBoxProps) {
   const derivedSnap = useSnapshot(derivedState);
   const [copyState, copyToClipboard] = useCopyToClipboard();
   const latestUserMessage = findLast(derivedSnap.activeSession?.messages, (msg) => msg.role === 'user');
-
+  const [fileSummary, setFileSummary] = useState('');
   const streamingText = useStreamingText({
     url: 'https://webgw-pre.alipay.com/visqaservice/external/chat',
     method: 'POST',
@@ -139,6 +139,7 @@ function MsgBox(props: MsgBoxProps) {
       role: 'user',
       content: promptText,
       createdAt: Date.now(),
+      context: fileSummary,
       lib,
     });
     // **关键：开启 trigger，开始请求**
@@ -242,6 +243,7 @@ function MsgBox(props: MsgBoxProps) {
           onConfirm={handleSubmit}
           lib={lib}
           onLibChange={setLib}
+          onDataSummaryChange={setFileSummary}
         />
       </div>
     </>

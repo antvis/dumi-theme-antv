@@ -11,20 +11,20 @@ import { ChooseLib } from './ChooseLib';
 import { useSiteData } from 'dumi';
 import { ic } from '../../../../slots/hooks';
 import {useTypewriter} from "../../../../hooks/useTypewriter";
+import { DataUploader, FileMeta, AnalyzedData } from './Uploader/DataUploader';
 
 interface PromptTextareaProps {
   value: string;
   loading?: boolean;
   onChange?: (val: string) => void;
+  // 新增一个回调，用于传递解析出的数据摘要
+  onDataSummaryChange?: (summary: string) => void;
   onCancel?: () => void;
   onConfirm?: () => void;
   onOpenDatasetModal?: () => void;
   size?: 'default' | 'compact';
-  fileMeta?: {
-    type: 'FILE' | 'IMAGE';
-    fileName?: string;
-    fileSize?: string;
-  };
+  // fileMeta现在由组件内部管理
+  // fileMeta?: FileMeta;
   mode: AIModeType;
   lib?: string;
   onLibChange?: (val: string) => void;
@@ -37,23 +37,27 @@ const PLACEHOLDER = {
   solve: '今天，你想解决什么可视化问题？',
 } as const;
 
-const uploadFileTooltip = '仅支持csv,json,tsv,txt文件，为了性能和成本，只会使用您数据的前几行作为样本';
+const uploadFileTooltip = '仅支持csv,json,tsv,txt文件，为了性能和成本，只会使用文件的前几行作为样本';
 
 function PromptTextarea(props: PromptTextareaProps) {
   const {
     value,
     size,
     onChange,
+    onDataSummaryChange, // 接收新的prop
     onConfirm,
     onCancel,
     loading,
-    fileMeta,
     mode,
     lib,
     onLibChange,
     showAction = true,
   } = props;
-  const [showError, setShowError] = useState(false);
+
+  // 将fileMeta状态移到组件内部管理
+  const [fileMeta, setFileMeta] = useState<FileMeta | null>(null);
+
+  // ... 其他状态和hooks保持不变
   const [focus, setFocus] = useState(false);
   const isCompact = size === 'compact';
   const { themeConfig } = useSiteData();
@@ -64,9 +68,24 @@ function PromptTextarea(props: PromptTextareaProps) {
     ],
   });
 
+  // 处理DataUploader的回调
+  const handleDataAnalyzed = (analyzedData: AnalyzedData) => {
+    setFileMeta(analyzedData.fileMeta);
+    if (onDataSummaryChange) {
+      onDataSummaryChange(analyzedData.dataSummary);
+    }
+  };
+
   function renderDatasourceCard() {
     if ((fileMeta?.type === 'FILE' || fileMeta?.type === 'IMAGE') && fileMeta?.fileName) {
-      return <DatasourceCard type={fileMeta.type} title={fileMeta.fileName!} desc={fileMeta.fileSize} />;
+      // 当点击DatasourceCard的关闭按钮时，应该清空状态
+      const handleClose = () => {
+        setFileMeta(null);
+        if (onDataSummaryChange) {
+          onDataSummaryChange('');
+        }
+      };
+      return <DatasourceCard type={fileMeta.type} title={fileMeta.fileName!} desc={fileMeta.fileSize} onDelete={handleClose} />;
     } else {
       return null;
     }
@@ -77,10 +96,7 @@ function PromptTextarea(props: PromptTextareaProps) {
   const promptTextValid = Boolean(value);
 
   const send = () => {
-    if (!promptTextValid) {
-      message.warning('请输入指令');
-    } else {
-      setShowError(false);
+    if (promptTextValid) {
       onConfirm?.();
     }
   };
@@ -128,14 +144,14 @@ function PromptTextarea(props: PromptTextareaProps) {
               <ChooseLib value={lib} onChange={onLibChange} size={size} />
               {mode === AIMode.implement && (
                 <>
-                  <Tooltip title={isCompact ? `上传数据。${uploadFileTooltip}` : uploadFileTooltip}>
-                    <Upload>
-                      <button type="button">
-                        <img src={FileIcons.FILE} /> {!isCompact && '上传数据'}
-                      </button>
-                    </Upload>
-                  </Tooltip>
-                  <Tooltip title={isCompact && '上传图片'}>
+                  {/* 使用我们新的DataUploader组件 */}
+                  <DataUploader
+                    onDataAnalyzed={handleDataAnalyzed}
+                    isCompact={isCompact}
+                    tooltipText={uploadFileTooltip}
+                  />
+                  {/* 图片上传保持原样或同样封装 */}
+                  <Tooltip title={isCompact ? '上传图片' : undefined}>
                     <Upload>
                       <button type="button">
                         <img src={FileIcons.IMAGE} /> {!isCompact && '上传图片'}
