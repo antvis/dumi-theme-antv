@@ -1,7 +1,7 @@
 import React from 'react';
 import {Dropdown} from "antd";
 import {useProducts} from "../../../../../hooks/useProducts";
-import {useLocale} from "dumi";
+import {useLocale, useIntl, FormattedMessage} from "dumi";
 import {FormProps} from "../../../types";
 import styles from './index.module.less';
 
@@ -30,6 +30,8 @@ export function ChooseLib(props: ChooseLibProps) {
       onClick: () => onSelect(item.title)
   }));
 
+  const intl = useIntl();
+
   return (
     <Dropdown menu={{ items }}>
       <button
@@ -39,9 +41,8 @@ export function ChooseLib(props: ChooseLibProps) {
           data.find(item => item.title === value)?.icon ||
           "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*7svFR6wkPMoAAAAAAAAAAAAADmJ7AQ/original"}
              alt="AntV"/>
-        { value || (!isCompact && '选择技术栈') }
+        { value || (!isCompact && <FormattedMessage id="ai.chooseLib.placeholder" />) }
       </button>
     </Dropdown>
   );
 }
-

@@ -221,6 +221,7 @@
   "ai.conversations.pin": "置顶",
   "ai.conversations.delete": "删除",
   "ai.conversations.edit.title": "编辑对话名称",
+  "ai.chooseLib.placeholder": "选择技术栈",
   "ai.search.try": "试试",
   "ai.search.visualization": "可视化答疑",
   "ai.assistant.editor.intro": "我是AntV AI助手。您可以随时向我提问，让我为您：\n\n1、解读当前图表的代码配置。\n2、通过自然语言对话，基于当前案例生成新代码以定制图表。",

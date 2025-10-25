@@ -222,6 +222,7 @@
   "ai.conversations.pin": "Pin",
   "ai.conversations.delete": "Delete",
   "ai.conversations.edit.title": "Edit Conversation Name",
+  "ai.chooseLib.placeholder": "Choose Technology Stack",
   "ai.search.try": "Try",
   "ai.search.visualization": "Q&A",
   "ai.assistant.editor.intro": "I am AntV AI Assistant. You can ask me questions at any time to:\n1. Interpret the code configuration of the current chart.\n2. Generate new code based on the current case through natural language dialogue to customize the chart.",

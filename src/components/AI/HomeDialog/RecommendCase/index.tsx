@@ -6,6 +6,7 @@ import {ReloadOutlined} from "@ant-design/icons";
 import {ReplayCase} from "../../types";
 import RecommendJson from "./recommend.json";
 import classnames from "classnames";
+import { useIntl, FormattedMessage } from 'dumi';
 
 type RecommendCaseProps = {
   className?: string;
@@ -42,10 +43,12 @@ export const RecommendCase = (props: RecommendCaseProps) => {
   return (
     <div className={styles.container}>
       <div className={styles.title}>
-        <span className={styles.quickStart}>精选案例</span>
+        <span className={styles.quickStart}>
+          <FormattedMessage id="ai.recommend.title" />
+        </span>
         <span className={styles.refresh} onClick={() => fetchList()}>
           <ReloadOutlined />
-          换一批
+          <FormattedMessage id="ai.recommend.refresh" />
         </span>
       </div>
       <Spin spinning={loading} wrapperClassName={classnames(styles.listContainer, props.className)}>
