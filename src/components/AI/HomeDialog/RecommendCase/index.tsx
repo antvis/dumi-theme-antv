@@ -20,7 +20,7 @@ export const RecommendCase = (props: RecommendCaseProps) => {
     async () => {
       try {
         setLoading(true);
-        const data = RecommendJson;
+        const data = RecommendJson as unknown as ReplayCase[];
         setList(data.slice(0, 4));
       } catch (err) {
         console.log(err);

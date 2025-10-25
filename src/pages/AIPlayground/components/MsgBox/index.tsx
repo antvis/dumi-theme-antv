@@ -8,7 +8,7 @@ import {
 } from '@ant-design/icons';
 import { Bubble } from '@ant-design/x';
 import { Button, Flex, Space, Tooltip } from 'antd';
-import {history, useSiteData} from 'dumi';
+import {history, useSiteData, useIntl} from 'dumi';
 import {findLast, isEmpty} from 'lodash-es';
 import React, { useEffect, useState } from 'react';
 import { useCopyToClipboard } from 'react-use';
@@ -59,6 +59,7 @@ interface MsgBoxProps {
 function MsgBox(props: MsgBoxProps) {
   const {messages = [], simple = false, context = '', onCodegen, title} = props;
   const { themeConfig } = useSiteData();
+  const { formatMessage } = useIntl();
   const [lib, setLib] = useState(!themeConfig.isAntVSite ? themeConfig.title : undefined);
   const [promptText, setPromptText] = useState<string>('');
   const [isStreaming, setIsStreaming] = useState(false); // trigger
@@ -120,7 +121,7 @@ function MsgBox(props: MsgBoxProps) {
       derivedState.activeSession?.messages?.push({
         id: crypto.randomUUID(),
         role: 'assistant',
-        content: `抱歉，我没能成功处理您的请求，请稍后再次提问`,
+        content: formatMessage({ id: 'ai.msgbox.error.response' }),
         createdAt: Date.now(),
         // mode,
         // lib,
@@ -187,20 +188,20 @@ function MsgBox(props: MsgBoxProps) {
             footer={
               (msg.role === 'assistant' && index > 0) ? (
                 <Space size="small">
-                  <Tooltip title="点赞">
+                  <Tooltip title={formatMessage({ id: 'ai.msgbox.like' })}>
                     <Button color="default" variant="text" size="small" icon={<LikeOutlined />} />
                   </Tooltip>
-                  <Tooltip title="点踩">
+                  <Tooltip title={formatMessage({ id: 'ai.msgbox.dislike' })}>
                     <Button color="default" variant="text" size="small" icon={<DislikeOutlined />} />
                   </Tooltip>
-                  {index === showMessages.length - 1 && <Tooltip title="再来一次">
+                  {index === showMessages.length - 1 && <Tooltip title={formatMessage({ id: 'ai.msgbox.retry' })}>
                     <Button onClick={() => {
                       derivedState.activeSession.messages.pop();
                       setIsStreaming(true);
                     }}
                       color="default" variant="text" size="small" icon={<SyncOutlined />} />
                   </Tooltip>}
-                  <Tooltip title="复制">
+                  <Tooltip title={formatMessage({ id: 'ai.msgbox.copy' })}>
                     <Button
                       color="default"
                       variant="text"
@@ -223,7 +224,7 @@ function MsgBox(props: MsgBoxProps) {
             <button type="button" onClick={() => history.push('/')} className={styles.newButton}>
               <Space>
                 <PlusSquareOutlined />
-                开始新对话
+                {formatMessage({ id: 'ai.msgbox.start.new.chat' })}
               </Space>
             </button>
           </div>

@@ -8,7 +8,7 @@ import styles from './index.module.less';
 import { SendButton } from './SendButton';
 import { AIMode, AIModeType, FileIcons } from '../../constant';
 import { ChooseLib } from './ChooseLib';
-import { useSiteData } from 'dumi';
+import { useSiteData, useIntl } from 'dumi';
 import { ic } from '../../../../slots/hooks';
 import {useTypewriter} from "../../../../hooks/useTypewriter";
 import { DataUploader, FileMeta, AnalyzedData } from './Uploader/DataUploader';
@@ -33,11 +33,9 @@ interface PromptTextareaProps {
 }
 
 const PLACEHOLDER = {
-  implement: '今天，你想可视化什么？',
-  solve: '今天，你想解决什么可视化问题？',
+  implement: 'ai.placeholder.implement',
+  solve: 'ai.placeholder.solve',
 } as const;
-
-const uploadFileTooltip = '仅支持csv,json,tsv,txt文件，为了性能和成本，只会使用文件的前几行作为样本';
 
 function PromptTextarea(props: PromptTextareaProps) {
   const {
@@ -53,6 +51,8 @@ function PromptTextarea(props: PromptTextareaProps) {
     onLibChange,
     showAction = true,
   } = props;
+
+  const { formatMessage } = useIntl();
 
   // 将fileMeta状态移到组件内部管理
   const [fileMeta, setFileMeta] = useState<FileMeta | null>(null);
@@ -129,7 +129,7 @@ function PromptTextarea(props: PromptTextareaProps) {
         placeholder={
           // (!isCompact && !themeConfig.isAntVSite && ic(themeConfig.metas.description)) ||
           (!isCompact && !themeConfig.isAntVSite) ? typedPlaceholder :
-          _.get(PLACEHOLDER, mode, '今天，你想可视化什么？')
+          formatMessage({ id: _.get(PLACEHOLDER, mode, 'ai.placeholder.implement') })
         }
         value={value}
         onChange={(evt) => {
@@ -148,13 +148,13 @@ function PromptTextarea(props: PromptTextareaProps) {
                   <DataUploader
                     onDataAnalyzed={handleDataAnalyzed}
                     isCompact={isCompact}
-                    tooltipText={uploadFileTooltip}
+                    tooltipText={formatMessage({ id: 'ai.upload.tooltip' })}
                   />
                   {/* 图片上传保持原样或同样封装 */}
-                  <Tooltip title={isCompact ? '上传图片' : undefined}>
+                  <Tooltip title={isCompact ? formatMessage({ id: 'ai.upload.image' }) : undefined}>
                     <Upload>
                       <button type="button">
-                        <img src={FileIcons.IMAGE} /> {!isCompact && '上传图片'}
+                        <img src={FileIcons.IMAGE} /> {!isCompact && formatMessage({ id: 'ai.upload.image' })}
                       </button>
                     </Upload>
                   </Tooltip>
@@ -174,7 +174,7 @@ function PromptTextarea(props: PromptTextareaProps) {
             <SendButton
               onClick={send}
               disabled={!promptTextValid}
-              tip={!promptTextValid ? `请输入内容后发送指令` : undefined}
+              tip={!promptTextValid ? formatMessage({ id: 'ai.msgbox.send.tip' }) : undefined}
             />
           )}
         </div>

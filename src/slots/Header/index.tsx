@@ -299,7 +299,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
     return (
       <li>
         <a href={href} target="_blank" rel="noreferrer">
-          AI生码
+          <FormattedMessage id="header.ai.code" />
         </a>
       </li>
     );
@@ -353,11 +353,11 @@ const HeaderComponent: React.FC<HeaderProps> = ({
                 <span role="img" aria-labelledby="中国" style={{ marginRight: '8px' }}>
                   🇨🇳
                 </span>
-                AntV 系列网站部署在 gh-pages 上，若访问速度不佳，可以前往国内镜像站点。
+                <FormattedMessage id="header.china.mirror.title" />
               </div>
               <div style={{ marginTop: 16, textAlign: 'right' }}>
                 <Button onClick={() => updateChinaMirrorHintVisible(false)} size="small" style={{ marginRight: 8 }}>
-                  暂时关闭
+                  <FormattedMessage id="header.china.mirror.temp.close" />
                 </Button>
                 <Button
                   type="primary"
@@ -367,7 +367,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
                     updateChinaMirrorHintVisible(false);
                   }}
                 >
-                  不再提醒
+                  <FormattedMessage id="header.china.mirror.no.more" />
                 </Button>
               </div>
             </div>
@@ -396,8 +396,8 @@ const HeaderComponent: React.FC<HeaderProps> = ({
       {showChinaMirror && !isWide && (
         <Modal
           open={chinaMirrorHintVisible}
-          cancelText="不再提醒"
-          okText="立即前往"
+          cancelText={<FormattedMessage id="header.china.mirror.no.more" />}
+          okText={<FormattedMessage id="header.china.mirror.temp.close" />}
           onCancel={() => {
             updateChinaMirrorHintVisible(false);
           }}
@@ -413,7 +413,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
             <span role="img" aria-labelledby="中国">
               🇨🇳
             </span>
-            AntV 系列网站部署在 gh-pages 上，若访问速度不佳，可以前往
+            <FormattedMessage id="header.china.mirror.title" />
             <a
               href={chinaMirrorUrl}
               onClick={(e) => {
@@ -525,7 +525,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
                   alt="wx-qrcode"
                 />
               }
-              title="微信扫一扫关注"
+              title={<FormattedMessage id="header.wx.qrcode.title" />}
               styles={{
                 body: {
                   padding: 2,

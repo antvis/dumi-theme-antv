@@ -161,17 +161,17 @@ export const Toolbar: React.FC<ToolbarProps> = ({
           );
         })}
       </div>
-      <a className={styles.ai} onClick={onClickAI}>AI 助手</a>
-      <Tooltip title="还原"><span className={styles.ai} onClick={onReload}><ReloadOutlined /></span></Tooltip>
+      <a className={styles.ai} onClick={onClickAI}><FormattedMessage id="ai.toolbar.assistant" /></a>
+      <Tooltip title={<FormattedMessage id="ai.toolbar.restore" />}><span className={styles.ai} onClick={onReload}><ReloadOutlined /></span></Tooltip>
       {riddleVisible ? (
         <form action="//riddle.alibaba-inc.com/riddles/define" method="POST" target="_blank">
           <input type="hidden" name="data" value={JSON.stringify(riddlePrefillConfig)} />
-          <Tooltip title={<FormattedMessage id="在 Riddle 中打开" />}>
+          <Tooltip title={<FormattedMessage id="ai.toolbar.open.riddle" />}>
             <input type="submit" value="Create New Riddle with Prefilled Data" className={styles.riddle} />
           </Tooltip>
         </form>
       ) : null}
-      <Tooltip title={<FormattedMessage id="在 StackBlitz 中打开" />}>
+      <Tooltip title={<FormattedMessage id="ai.toolbar.open.stackblitz" />}>
         <ThunderboltOutlined
           className={styles.stackblitz}
           onClick={() => {
@@ -179,7 +179,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
           }}
         />
       </Tooltip>
-      <Tooltip title={<FormattedMessage id="在 CodeSandbox 中打开" />}>
+      <Tooltip title={<FormattedMessage id="ai.toolbar.open.codesandbox" />}>
         <form action="https://codesandbox.io/api/v1/sandboxes/define" method="POST" target="_blank">
           <input type="hidden" name="parameters" value={getParameters(codeSandboxConfig)} />
           <button type="submit" className={styles.codesandbox}>
@@ -204,7 +204,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
           )}
         </Tooltip>
       ) : null} */}
-      <Tooltip title={<FormattedMessage id="执行代码" />}>
+      <Tooltip title={<FormattedMessage id="ai.toolbar.execute" />}>
         <PlayCircleOutlined onClick={onExecuteCode} style={{ marginLeft: 12 }} />
       </Tooltip>
     </div>
