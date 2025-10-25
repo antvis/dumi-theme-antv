@@ -1,7 +1,7 @@
 import MonacoEditor, { loader } from '@monaco-editor/react';
 import {Drawer, Switch} from 'antd';
 import { autoType as d3AutoType, dsvFormat } from 'd3-dsv';
-import { useLocale, useSiteData } from 'dumi';
+import { useLocale, useSiteData, useIntl } from 'dumi';
 import { debounce, noop } from 'lodash-es';
 import { format } from 'prettier';
 import parserBabel from 'prettier/parser-babel';
@@ -100,6 +100,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
 }) => {
   const locale = useLocale();
   const { themeConfig } = useSiteData();
+  const intl = useIntl();
   const { es5 = true, showSpecTab = false } = themeConfig;
   const { extraLib = '', playgroundBeforeExecute = '' } = themeConfig.playground;
   // 编辑器两个 tab，分别是代码和数据
@@ -473,9 +474,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
                 {
                   id: crypto.randomUUID(),
                   role: 'assistant',
-                  content: `我是AntV AI助手。您可以随时向我提问，让我为您：
-              \n1、解读当前图表的代码配置。
-              \n2、通过自然语言对话，基于当前案例生成新代码以定制图表。`,
+                  content: intl.formatMessage({ id: 'ai.assistant.editor.intro' }),
                   createdAt: Date.now(),
                 },
               ]}

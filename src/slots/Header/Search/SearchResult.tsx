@@ -51,7 +51,11 @@ export const SearchResult: React.FC<{ results: ISearchResult[], keywords: string
           })
         }}>
           <div className={classnames(styles.title, styles.highlighted)}>{keywords}</div>
-          <div className={styles.description}>试试&nbsp;<span className={styles.highlighted}>AI</span>&nbsp;可视化答疑</div>
+          <div className={styles.description}>
+            {intl.formatMessage({ id: 'ai.search.try' })}
+            &nbsp;<span className={styles.highlighted}>AI</span>&nbsp;
+            {intl.formatMessage({ id: 'ai.search.visualization' })}
+          </div>
         </a>
       </div>
       {results?.length ? (

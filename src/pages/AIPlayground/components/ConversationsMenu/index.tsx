@@ -15,6 +15,7 @@ import { useSnapshot } from 'valtio';
 import {AIChatStore, handleDeleteSession, handlePinSession, handleRenameSession} from "../../../../model/AIChat";
 import { history } from 'dumi';
 import {useSetState} from "ahooks";
+import { useIntl, FormattedMessage } from 'dumi';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -35,6 +36,8 @@ export const ConversationsMenu: React.FC = () => {
     setCollapsed(!collapsed);
   };
 
+  const { formatMessage } = useIntl();
+
   const items: MenuItem[] = [
     {
       key: 'fold',
@@ -42,12 +45,12 @@ export const ConversationsMenu: React.FC = () => {
       onClick: toggleCollapsed,
       label: null,
       icon: !collapsed ? null : <MenuUnfoldOutlined />,
-      title: '展开',
+      title: collapsed ? formatMessage({ id: 'ai.conversations.expand' }) : formatMessage({ id: 'ai.conversations.collapse' }),
     },
-    { key: 'new', icon: <PlusSquareOutlined />, label: '开始新对话', onClick: () => history.push('/') },
+    { key: 'new', icon: <PlusSquareOutlined />, label: formatMessage({ id: 'ai.conversations.new' }), onClick: () => history.push('/') },
     {
       key: 'history',
-      label: '历史对话',
+      label: formatMessage({ id: 'ai.conversations.history' }),
       icon: <HistoryOutlined />,
       children: snap.sessions.map((session) => {
         return {
@@ -58,14 +61,14 @@ export const ConversationsMenu: React.FC = () => {
               <Dropdown
                 menu={{
                   items: [
-                    { key: 'edit', label: '重命名', icon: <EditOutlined />,
+                    { key: 'edit', label: formatMessage({ id: 'ai.conversations.rename' }), icon: <EditOutlined />,
                       onClick: ({ domEvent }) => {
                         domEvent.stopPropagation();
                         setState({ open: true, session: session , rename: session.title})
                       }, },
                     {
                       key: 'top',
-                      label: '置顶',
+                      label: formatMessage({ id: 'ai.conversations.pin' }),
                       icon: <VerticalAlignTopOutlined />,
                       onClick: ({ domEvent }) => {
                         domEvent.stopPropagation();
@@ -74,7 +77,7 @@ export const ConversationsMenu: React.FC = () => {
                     },
                     {
                       key: 'delete',
-                      label: '删除',
+                      label: formatMessage({ id: 'ai.conversations.delete' }),
                       icon: <DeleteOutlined />,
                       onClick: ({ domEvent }) => {
                         domEvent.stopPropagation();
@@ -114,7 +117,7 @@ export const ConversationsMenu: React.FC = () => {
         onSelect={({ key }) => handleSelectSession(key)}
       />
       <Modal
-        title="编辑对话名称"
+        title={formatMessage({ id: 'ai.conversations.edit.title' })}
         open={state.open}
         centered
         maskClosable={false}
