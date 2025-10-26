@@ -47,7 +47,8 @@ export const SearchResult: React.FC<{ results: ISearchResult[], keywords: string
             promptText: keywords,
             mode: "solve",
             lib: !themeConfig.isAntVSite ? themeConfig.title : undefined,
-            jump: true
+            jump: true,
+            lang: intl.locale === 'zh' ? 'zh' : 'en'
           })
         }}>
           <div className={classnames(styles.title, styles.highlighted)}>{keywords}</div>

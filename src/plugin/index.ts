@@ -163,8 +163,8 @@ export default function ThemeAntVContextWrapper() {
       },
       {
         id: 'dumi-theme-antv-ai-playground-lang',
-        absPath: '/:language/ai-playground/:id',
-        path: ':language/ai-playground/:id',
+        absPath: '/:language/ai-playground',
+        path: ':language/ai-playground',
         file: `${PAGES_DIR}/AIPlayground`,
       },
     ];

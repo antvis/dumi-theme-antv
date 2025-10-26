@@ -163,10 +163,10 @@ export const createPureNewSession = (title?: string) => {
   AIChatStore.activeSessionId = newSessionId;
 }
 
-export const createNewSession = (config: { promptText: string, mode?: "implement" | "solve", lib?: string, jump?: boolean, context?: string }) => {
+export const createNewSession = (config: { promptText: string, mode?: "implement" | "solve", lib?: string, jump?: boolean, context?: string, lang?: string }) => {
   // todo  埋点
   // 1. 创建一个新的会话
-  createPureNewSession();
+  createPureNewSession(config.promptText);
 
   // 2. 创建临时消息并存入 store
   AIChatStore.tempMessage = {
@@ -179,6 +179,6 @@ export const createNewSession = (config: { promptText: string, mode?: "implement
     context: config.context,
   };
   if (config.jump) {
-    history.push(`/zh/ai-playground/2`);
+    history.push(`/${config.lang ?? 'zh'}/ai-playground`);
   }
 }

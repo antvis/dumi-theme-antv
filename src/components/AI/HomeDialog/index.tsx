@@ -7,7 +7,7 @@ import { ModeSelector } from './ModeSelector';
 import { useLocalStorageState } from 'ahooks';
 import { AIMode, AIModeType } from '../constant';
 import classnames from 'classnames';
-import { useSiteData } from 'dumi';
+import { useSiteData, useLocale } from 'dumi';
 import {createNewSession} from '../../../model/AIChat';
 
 interface HomeDialogProps {
@@ -18,6 +18,7 @@ interface HomeDialogProps {
 }
 
 export function HomeDialog(props: HomeDialogProps) {
+  const locale = useLocale();
   const { themeConfig } = useSiteData();
   const [lib, setLib] = useState(!themeConfig.isAntVSite ? themeConfig.title : undefined);
   const [mode, setMode] = useLocalStorageState<AIModeType>(
@@ -55,6 +56,7 @@ export function HomeDialog(props: HomeDialogProps) {
           lib,
           jump: true,
           context: fileSummary,
+          lang: locale.id
         })
       }}
       style={props.promptTextareaStyle}
