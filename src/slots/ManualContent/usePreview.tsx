@@ -44,49 +44,71 @@ function blockOf() {
   return [];
 }
 
-export function usePreview(options = {}, select) {
+export function usePreview(_ = {}, select) {
   const key = select + ',' + blockOf().length;
 
   useEffect(() => {
-    const blocks = blockOf();
+    function processBlocks(blocks) {
+      // 过滤实际展示的 block
+      const I = Array.from({ length: blocks.length }, (_, i) => i);
+      const OI = I.filter((i) => {
+        const p = blocks[i].previousSibling;
+        const options = optionsOf(p);
+        const { only = false } = options;
+        return only === true;
+      });
+      const FI = OI.length === 0 ? I : OI;
 
-    // 过滤实际展示的 block
-    const I = Array.from({ length: blocks.length }, (_, i) => i);
-    const OI = I.filter((i) => {
-      const p = blocks[i].previousSibling;
-      const options = optionsOf(p);
-      const { only = false } = options;
-      return only === true;
-    });
-    const FI = OI.length === 0 ? I : OI;
+      // 将 p 标签替换成渲染后结果
+      const W = [];
+      const P = [];
+      for (const i of FI) {
+        const block = blocks[i];
+        const source = sourceOf(block);
+        const p = block.previousSibling as any;
 
-    // 将 p 标签替换成渲染后结果
-    const W = [];
-    const P = [];
-    for (const i of FI) {
-      const block = blocks[i];
-      const source = sourceOf(block);
-      const p = block.previousSibling as any;
+        // 渲染并且挂载代码运行结果
+        const wrapper = document.createElement('div');
+        const options = optionsOf(p);
+        const root = createRoot(wrapper);
+        root.render(<LiveExample source={source} {...options} />);
+        const container = block.parentElement!;
+        container.replaceWith(wrapper);
 
-      // 渲染并且挂载代码运行结果
-      const wrapper = document.createElement('div');
-      const options = optionsOf(p);
-      const root = createRoot(wrapper);
-      root.render(<LiveExample source={source} {...options} />);
-      const container = block.parentElement!;
-      container.replaceWith(wrapper);
+        W[i] = wrapper;
+        P[i] = p;
+      }
 
-      W[i] = wrapper;
-      P[i] = p;
+      return () => {
+        // 复原
+        for (const i of FI) {
+          const wrapper = W[i];
+          const p = P[i];
+          if (wrapper && p) {
+            wrapper.replaceWith(p);
+          }
+        }
+      };
     }
 
-    return () => {
-      // 复原
-      for (const i of FI) {
-        const wrapper = W[i];
-        const p = P[i];
-        wrapper.replaceWith(p);
+    // 添加延迟确保 DOM 完全加载
+    const timer = setTimeout(() => {
+      const blocks = blockOf();
+
+      // 如果没有找到块，再次尝试
+      if (blocks.length === 0) {
+        const retryTimer = setTimeout(() => {
+          const retryBlocks = blockOf();
+          if (retryBlocks.length > 0) {
+            processBlocks(retryBlocks);
+          }
+        }, 200);
+        return () => clearTimeout(retryTimer);
+      } else {
+        processBlocks(blocks);
       }
-    };
+    }, 50);
+
+    return () => clearTimeout(timer);
   }, [key]);
 }

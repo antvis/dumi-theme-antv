@@ -35,10 +35,7 @@ title: Codeblock
   span.textContent = 1;
   span.style.fontSize = '30px';
 
-  const timer = setInterval(
-    () => (span.textContent = +span.textContent + 1),
-    1000,
-  );
+  const timer = setInterval(() => (span.textContent = +span.textContent + 1), 1000);
 
   // 清空监听器
   span.clear = () => {
@@ -176,7 +173,7 @@ globalCard('world');
 
 ## G2 inject
 
-```js | ob { inject: true  }
+```js | ob { inject: true }
 import { Chart } from '@antv/g2';
 
 const chart = new Chart({
@@ -201,7 +198,7 @@ chart.render();
 
 ## G2 inject & unpin
 
-```js | ob { pin: false, inject: true  }
+```js | ob { pin: false, inject: true }
 import { Chart } from '@antv/g2';
 
 const chart = new Chart({
@@ -222,4 +219,82 @@ chart
   .encode('y', 'sold');
 
 chart.render();
+```
+
+## React Component
+
+```js | ob
+import React from 'react';
+
+export default () => {
+  return (
+    <div
+      style={{
+        padding: '20px',
+        backgroundColor: '#f0f8ff',
+        border: '2px solid #4169e1',
+        borderRadius: '8px',
+        textAlign: 'center',
+      }}
+    >
+      <h2 style={{ color: '#4169e1', margin: '0 0 10px 0' }}>🎉 React Component Works!</h2>
+      <p style={{ margin: 0, fontSize: '16px' }}>This is a simple React component rendered successfully.</p>
+    </div>
+  );
+};
+```
+
+## G2 React
+
+```js | ob
+import React, { useState, useEffect, useRef } from 'react';
+import { Chart } from '@antv/g2';
+
+// 渲染条形图
+function renderBarChart(container) {
+  const chart = new Chart({
+    container,
+  });
+
+  // 准备数据
+  const data = [
+    { genre: 'Sports', sold: 275 },
+    { genre: 'Strategy', sold: 115 },
+    { genre: 'Action', sold: 120 },
+    { genre: 'Shooter', sold: 350 },
+    { genre: 'Other', sold: 150 },
+  ];
+
+  // 声明可视化
+  chart
+    .interval() // 创建一个 Interval 标记
+    .data(data) // 绑定数据
+    .encode('x', 'genre') // 编码 x 通道
+    .encode('y', 'sold') // 编码 y 通道
+    .encode('key', 'genre') // 指定 key
+    .animate('update', { duration: 300 }); // 指定更新动画的时间
+
+  // 渲染可视化
+  chart.render();
+
+  return chart;
+}
+
+export default () => {
+  const container = useRef(null);
+  const chart = useRef(null);
+
+  useEffect(() => {
+    if (!chart.current) {
+      chart.current = renderBarChart(container.current);
+    }
+
+    return () => {
+      chart.current.destroy();
+      chart.current = null;
+    };
+  }, []);
+
+  return <div ref={container}></div>;
+};
 ```
