@@ -77,6 +77,7 @@ export default defineConfig({
           zh: '教程',
           en: 'Tutorials',
         },
+        sidebar: false,
         order: 2,
       },
       {
