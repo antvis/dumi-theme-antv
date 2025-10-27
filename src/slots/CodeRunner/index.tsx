@@ -22,6 +22,7 @@ type CodeRunnerProps = {
   size?: number;
   replaceId?: string;
   notFound?: React.ReactElement;
+  showAI?: boolean;
 };
 
 /**
@@ -36,6 +37,7 @@ const CodeRunner: React.FC<CodeRunnerProps> = ({
   replaceId,
   isPlayground,
   notFound = <NotFound />,
+  showAI = true,
 }) => {
   const demoInfo = getDemoInfo(exampleTopics, topic, example, demo);
 
@@ -74,6 +76,7 @@ const CodeRunner: React.FC<CodeRunnerProps> = ({
             onReady={noop}
             playground={playground}
             title={ic(title)}
+            showAI={showAI}
           />
         </ClientOnly>
       </SplitPane>

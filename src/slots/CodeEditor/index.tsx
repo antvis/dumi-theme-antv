@@ -80,6 +80,8 @@ export type CodeEditorProps = {
     };
     htmlCodeTemplate?: string;
   };
+
+  showAI?: boolean;
 };
 
 /**
@@ -97,6 +99,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   onDestroy = noop,
   onError = noop,
   onFullscreen = noop,
+  showAI = true,
 }) => {
   const locale = useLocale();
   const { themeConfig } = useSiteData();
@@ -117,7 +120,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   // 当前选中菜单栏
   const [currentEditorTab, setCurrentEditorTab] = useState(EDITOR_TABS.JAVASCRIPT);
 
-  const [showAI, setShowAI] = useState(false);
+  const [showAIDrawer, setShowAIDrawer] = useState(false);
 
   const containerId = `playgroundScriptContainer_${exampleId}`;
 
@@ -282,7 +285,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   // 用于更新当前 example 的 spec 和 data
   useEffect(() => {
     setCurrentEditorTab(EDITOR_TABS.JAVASCRIPT);
-    setShowAI(false);
+    setShowAIDrawer(false);
   }, [exampleId]);
 
   // hook 用户的数据
@@ -398,7 +401,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   };
 
   const onClickAI = () => {
-    setShowAI(true);
+    setShowAIDrawer(true);
   };
 
   const onReload = () => {
@@ -420,6 +423,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
         onEditorTabChange={onTabChange}
         onToggleFullscreen={onFullscreen}
         onClickAI={onClickAI}
+        showAI={showAI}
         onReload={onReload}
         slots={{
           Spec: (
@@ -462,9 +466,9 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
           <Drawer
             placement="right"
             closable={true}
-            open={showAI}
+            open={showAIDrawer}
             getContainer={false}
-            onClose={() => setShowAI(false)}
+            onClose={() => setShowAIDrawer(false)}
             rootClassName={styles.drawer}
             width={'90%'}
           >

@@ -4,8 +4,8 @@ import {ProductType} from "../slots/Header/Products/getProducts";
 export function getProducts(): Promise<ProductType[]> {
   // 如需要修改产品信息，请到 https://yuyan.antfin-inc.com/antv/site-data/sprints 修改区块内容
   return fetch(
-    'https://assets.antv.antgroup.com/antv/products.json', // 生产环境
-    // 'https://site-data-pre.alipay.com/antv/products.json', // 预发测试
+    // 'https://assets.antv.antgroup.com/antv/products.json', // 生产环境
+    'https://site-data-pre.alipay.com/antv/products.json', // 预发测试
   )
     .then((res) => res.json());
 }

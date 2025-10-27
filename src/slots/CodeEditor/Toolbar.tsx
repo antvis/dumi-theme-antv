@@ -85,6 +85,7 @@ type ToolbarProps = {
    * Tab 的附加内容
    */
   slots: Record<string, ReactElement>;
+  showAI?: boolean;
 };
 
 export const Toolbar: React.FC<ToolbarProps> = ({
@@ -101,7 +102,8 @@ export const Toolbar: React.FC<ToolbarProps> = ({
   onToggleFullscreen = null,
   onExecuteCode,
   onClickAI,
-  onReload
+  onReload,
+  showAI = true
 }) => {
   const locale = useLocale();
   const exampleTitle = (typeof title === 'object' ? title[locale.id as 'zh' | 'en'] : title) as string;
@@ -161,8 +163,9 @@ export const Toolbar: React.FC<ToolbarProps> = ({
           );
         })}
       </div>
-      <a className={styles.ai} onClick={onClickAI}><FormattedMessage id="ai.toolbar.assistant" /></a>
+      {showAI ? <><a className={styles.ai} onClick={onClickAI}><FormattedMessage id="ai.toolbar.assistant" /></a>
       <Tooltip title={<FormattedMessage id="ai.toolbar.restore" />}><span className={styles.ai} onClick={onReload}><ReloadOutlined /></span></Tooltip>
+      </> : null }
       {riddleVisible ? (
         <form action="//riddle.alibaba-inc.com/riddles/define" method="POST" target="_blank">
           <input type="hidden" name="data" value={JSON.stringify(riddlePrefillConfig)} />
