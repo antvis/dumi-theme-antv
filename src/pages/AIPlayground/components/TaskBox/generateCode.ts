@@ -74,7 +74,7 @@ export function wrap2VisionSnap (codeBlock: string = '') {
       '/package.json': {
         fpath: '/package.json',
         code: `{
-  "name": "AntV-master",
+  "name": "AntV-adapted-project",
   "version": "1.0.0",
   "main": "/src/index.jsx",
   "dependencies": ${JSON.stringify(generateDependencies(codeBlock), null, 2)}
@@ -82,6 +82,30 @@ export function wrap2VisionSnap (codeBlock: string = '') {
       },
       '/src/index.jsx': {
         fpath: '/src/index.jsx',
+        code: `
+// --- Adapter Script ---
+
+// 1. 找到编辑器环境提供的根节点 #root
+const rootElement = document.getElementById('root');
+
+if (rootElement) {
+  // 2. 在 #root 内部创建一个 div
+  const containerElement = document.createElement('div');
+
+  // 3. 将这个 div 的 id 设置为 'container'，以满足用户代码的需求
+  containerElement.id = 'container';
+
+  // 4. 将它添加到 #root 中
+  rootElement.appendChild(containerElement);
+
+  // 5. 现在 DOM 中已经存在 #container，安全地导入并执行用户的代码
+  import('./App.jsx');
+
+}
+      `
+      },
+      '/src/App.jsx': {
+        fpath: '/src/App.jsx',
         code: codeBlock
       }
     }

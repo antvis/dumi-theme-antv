@@ -4,7 +4,7 @@ import {a11yLight} from "react-syntax-highlighter/dist/cjs/styles/hljs";
 import { AIChatStore } from "../../../../model/AIChat";
 import {useCopyToClipboard} from "react-use";
 import {CheckOutlined, CopyOutlined, PlaySquareOutlined} from "@ant-design/icons";
-import {Space, Tooltip} from "antd";
+import {Button, Space, Tooltip} from "antd";
 import styles from "./MarkdownCodeBlock.module.less";
 import {isPreviewable} from "../../../../utils/code";
 import { useIntl } from 'dumi';
@@ -47,24 +47,26 @@ export const MarkdownCodeBlock: React.FC<CodeBlockProps> = ({ inline, className,
     <div style={{ position: 'relative', margin: '1em 0' }}>
       <Space className={styles.button}>
         <Tooltip title={intl.formatMessage({ id: 'ai.markdown.copy' })}>
-          <button
-            type="button"
+          <Button
+            variant="link"
+            size="small"
             onClick={() => copyToClipboard(codeString)}
             title={intl.formatMessage({ id: 'ai.markdown.copy' })}
           >
             {copyState.value === codeString ? <CheckOutlined /> : <CopyOutlined />}
-          </button>
+          </Button>
         </Tooltip>
         {/* 条件渲染"运行"按钮 */}
         {showRunButton && (
           <Tooltip title={intl.formatMessage({ id: 'ai.markdown.run' })}>
-            <button
-              type="button"
+            <Button
+              variant="link"
+              size="small"
               onClick={handleRunCode}
               title={intl.formatMessage({ id: 'ai.markdown.run' })}
             >
               <PlaySquareOutlined />
-            </button>
+            </Button>
           </Tooltip>
         )}
       </Space>

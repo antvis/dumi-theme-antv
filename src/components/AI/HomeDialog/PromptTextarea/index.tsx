@@ -142,24 +142,6 @@ function PromptTextarea(props: PromptTextareaProps) {
           {showAction && (
             <>
               <ChooseLib value={lib} onChange={onLibChange} size={size} />
-              {mode === AIMode.implement && (
-                <>
-                  {/* 使用我们新的DataUploader组件 */}
-                  <DataUploader
-                    onDataAnalyzed={handleDataAnalyzed}
-                    isCompact={isCompact}
-                    tooltipText={formatMessage({ id: 'ai.upload.tooltip' })}
-                  />
-                  {/* 图片上传保持原样或同样封装 */}
-                  <Tooltip title={isCompact ? formatMessage({ id: 'ai.upload.image' }) : undefined}>
-                    <Upload>
-                      <button type="button">
-                        <img src={FileIcons.IMAGE} /> {!isCompact && formatMessage({ id: 'ai.upload.image' })}
-                      </button>
-                    </Upload>
-                  </Tooltip>
-                </>
-              )}
             </>
           )}
         </div>

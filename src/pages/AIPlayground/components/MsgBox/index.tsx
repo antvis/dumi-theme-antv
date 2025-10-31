@@ -188,12 +188,6 @@ function MsgBox(props: MsgBoxProps) {
             footer={
               (msg.role === 'assistant' && index > 0) ? (
                 <Space size="small">
-                  <Tooltip title={formatMessage({ id: 'ai.msgbox.like' })}>
-                    <Button color="default" variant="text" size="small" icon={<LikeOutlined />} />
-                  </Tooltip>
-                  <Tooltip title={formatMessage({ id: 'ai.msgbox.dislike' })}>
-                    <Button color="default" variant="text" size="small" icon={<DislikeOutlined />} />
-                  </Tooltip>
                   {index === showMessages.length - 1 && <Tooltip title={formatMessage({ id: 'ai.msgbox.retry' })}>
                     <Button onClick={() => {
                       derivedState.activeSession.messages.pop();

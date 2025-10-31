@@ -1,13 +1,14 @@
-import { Sandpack } from '@codesandbox/sandpack-react';
 import { useSiteData } from 'dumi';
 import React, { useMemo } from 'react';
 import { useSnapshot } from 'valtio';
 import { AIChatStore } from '../../../../model/AIChat';
 import CodeRunner from '../../../../slots/CodeRunner';
-import { wrap2Sandpack } from './generateCode';
+import {wrap2VisionSnap} from './generateCode';
 import styles from './index.module.less';
-// import {code} from "../../demo";
-// import {requestProxy, useVisionsnapSdk} from "../../../../hooks/useVisionsnapSdk";
+import {requestProxy, useVisionsnapSdk} from "../../../../hooks/useVisionsnapSdk";
+import { ErrorBoundary } from 'react-error-boundary';
+import Loading from "../../../../slots/Loading";
+import {ErrorFallback} from "../../../../builtins/Playground";
 
 function TaskBox() {
   const snap = useSnapshot(AIChatStore);
@@ -43,51 +44,29 @@ function TaskBox() {
     [demoId, snap.activeSessionId, snap.anonymousUserId, snap.codeBlock],
   );
 
-  // const { sdk, loading } = useVisionsnapSdk('3.2.4');
-  //
-  // if (loading) {
-  //   return <div>Loading...</div>;
-  // }
-  //
-  // return (
-  //     <sdk.VisionPreview id="visionIframe"
-  //                        bizCode="vision-preview-demo"
-  //                        style={{ height: '100vh' }}
-  //                        userId="263347"
-  //                        displayMode="preview-only"
-  //                        editable={false}
-  //                        code={code}
-  //                        // requestProxy={requestProxy}
-  //                        isStreaming={false} />
-  // );
-  if (themeConfig.isAntVSite) {
+  const { sdk, loading } = useVisionsnapSdk('3.2.15');
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (themeConfig.isAntVSite || themeConfig.ai?.codeRunner === "VisionSnap" || !themeConfig.ai?.codeRunner) {
     return (
-      <Sandpack
-        template="vanilla" // 指定项目模板，Sandpack 会据此配置环境
-        files={wrap2Sandpack(snap.codeBlock)}
-        options={{
-          showLineNumbers: true, // 显示行号
-          showTabs: true,
-          closableTabs: false,
-          editorHeight: 'calc(100vh - 150px)',
-          rtl: true,
-          classes: {
-            'sp-layout': styles['antv-sp-layout'],
-          },
-        }}
-        theme="light" // 主题：dark, light, auto
-        customSetup={{
-          entry: '/index.tsx',
-          npmRegistries: [
-            {
-              limitToScopes: false, // 设为 false 使所有包都从自定义 registry 获取
-              registryUrl: 'https://registry.npmmirror.com', // 使用淘宝镜像
-              enabledScopes: [],
-              proxyEnabled: false,
-            },
-          ],
-        }}
-      />
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
+        <sdk.VisionPreview
+          id="visionIframe"
+          bizCode="vision-preview-demo"
+          style={{ height: '100vh' }}
+          userId="263347"
+          displayMode="code-and-preview"
+          initialView="preview"
+          theme="light"
+          editable={false}
+          code={wrap2VisionSnap(snap.codeBlock)}
+          requestProxy={requestProxy}
+          isStreaming={false}
+        />
+      </ErrorBoundary>
     );
   } else {
     return (
