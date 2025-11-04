@@ -87,7 +87,7 @@
   }
 
   pre[class*='language-'] {
-    background-color: rgba(0, 0, 0, 0.03);
+    background-color: rgba(0, 0, 0, 3%);
     width: 100%;
   }
 
@@ -95,7 +95,7 @@
     padding: 0.2em 0.4em;
     margin: 0;
     font-size: 85%;
-    background-color: rgba(175, 184, 193, 0.2);
+    background-color: rgba(175, 184, 193, 20%);
     border-radius: 6px;
   }
 
@@ -174,7 +174,7 @@
   table th {
     color: #5c6b77;
     font-weight: 500;
-    background: rgba(0, 0, 0, 0.02);
+    background: rgba(0, 0, 0, 2%);
   }
 
   table th,
@@ -193,7 +193,7 @@
     width: 20%;
     font-weight: 500;
     background: #fcfcfc;
-    color: rgba(0, 0, 0, 0.85);
+    color: rgba(0, 0, 0, 85%);
   }
 
   blockquote {
@@ -256,7 +256,6 @@
   background: #fff;
   max-height: 100vh;
   overflow: auto;
-
   position: sticky;
   top: 0;
 
@@ -281,8 +280,8 @@
   margin-bottom: 20px;
   font-weight: 500;
   font-size: 30px;
-  font-family: Avenir, -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, Hiragino Sans GB, Microsoft YaHei,
-    Helvetica Neue, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+  font-family: Avenir, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+    "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   line-height: 38px;
 }
 
@@ -358,7 +357,7 @@
     justify-content: center;
     align-items: center;
     background: #fff;
-    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 15%);
     border-radius: 0 4px 4px 0;
   }
 }
@@ -428,7 +427,7 @@
       &:hover > div {
         transform: translateY(-4px);
         border-color: transparent;
-        box-shadow: 0 6px 16px rgba(107, 147, 224, 0.14);
+        box-shadow: 0 6px 16px rgba(107, 147, 224, 14%);
       }
 
       h4 {
@@ -482,7 +481,7 @@
   :global {
     .SplitPane {
       overflow: auto;
-      left: 0px;
+      left: 0;
       height: calc(100vh - 64px) !important;
     }
 
@@ -623,10 +622,9 @@
 }
 
 .backTop {
-  transition: color 0.3s;
   color: #868484;
   background-color: #fff;
-  box-shadow: 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 3px 6px -4px rgba(0, 0, 0, 12%), 0 6px 16px 0 rgba(0, 0, 0, 8%), 0 9px 28px 8px rgba(0, 0, 0, 5%);
   transition: color 0.3s;
   width: 44px;
   height: 44px;
@@ -667,7 +665,7 @@
   justify-content: center;
   align-items: center;
   background: #fff;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 15%);
   border-radius: 0 4px 4px 0;
 }
 
@@ -677,9 +675,8 @@
 
 .readtime {
   color: #0d1a26;
-  line-height: 1.5715;
   list-style: none;
-  -webkit-font-feature-settings: 'tnum';
+  font-feature-settings: 'tnum';
   font-feature-settings: 'tnum';
   display: inline-block;
   height: auto;
@@ -694,6 +691,6 @@
   opacity: 1;
   transition: all 0.3s;
   background-color: #fff;
-  font-family: Avenir, -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, Hiragino Sans GB, Microsoft YaHei,
-    Helvetica Neue, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+  font-family: Avenir, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+    "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }

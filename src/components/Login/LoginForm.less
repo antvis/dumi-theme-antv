@@ -1,0 +1,417 @@
+@import '~antd/dist/antd.less';
+
+@primary-color: #873bf4;
+@yuque-color-text-caption: #8c8c8c;
+@yuque-color-border-primary: #d9d9d9;
+@yuque-color-text-body: #595959;
+@yuque-grey-5: #bfbfbf;
+@yuque-color-bg-primary-hover-light: #f5f5f5;
+@yuque-color-text-primary: #262626;
+@font-size-sm: 12px;
+@yuque-color-bg-primary: #ffffff;
+@yuque-color-function-warning: #faad14;
+@yuque-color-function-error: #ff4d4f;
+@white: #ffffff;
+@yuque-color-text-disable: #bfbfbf;
+@yuque-color-bg-tertiary: #fafafa;
+@yuque-color-text-link: #873bf4;
+@color-1: #bfbfbf;
+@color: #873bf4;
+
+.account-login {
+  margin-top: 32px;
+  padding-bottom: 40px;
+
+  &.form-pro .mobile-code-field {
+    input {
+      height: 40px;
+    }
+  }
+
+  // .ant-form-item {
+  //   margin-bottom: 20px;
+  // }
+
+
+  &.form-pro {
+    .ant-input,
+    .ant-cascader-picker,
+    .ant-select {
+      font-size: 14px;
+    }
+  }
+
+  // 桌面端内网打开外网登录时，会有返回按钮，页面需要上移
+  .login-from-desktop-inside {
+    margin-top: -16px;
+  }
+
+  .split {
+    color: @yuque-color-text-caption;
+    padding: 0 8px;
+  }
+
+  .forgot-link {
+    font-size: 14px;
+    border-left: 1px solid @yuque-color-border-primary;
+    padding-left: 12px;
+    padding-right: 5px;
+
+    a {
+      color: @yuque-color-text-caption;
+    }
+  }
+
+  .protocol-check {
+    margin-bottom: 16px;
+  }
+
+  &-bottom {
+    margin-top: 24px;
+
+    a {
+      display: inline-block;
+    }
+
+    span.icon-dingtalk {
+      width: 20px;
+      height: 20px;
+      background-image: url('https://gw.alipayobjects.com/zos/rmsportal/iSBYXPhvTkwhjYUQVMLG.png');
+      background-position: 0 -21px;
+      background-size: 100%;
+      margin-right: 8px;
+      float: left;
+    }
+  }
+
+  .noSwitch {
+    height: 16px;
+  }
+
+  .countrylist {
+    height: 250px;
+  }
+
+  .login-more-warp {
+    padding-top: 23px;
+    width: 329px;
+    position: absolute;
+    bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &-desktop {
+      bottom: 34px;
+    }
+
+    .login-more-warp-box {
+      display: flex;
+    }
+  }
+
+  .login-email-icon {
+    display: inline-block;
+    margin-right: 5px;
+
+    svg {
+      font-size: 28px;
+    }
+  }
+
+  .switch {
+    text-align: left;
+    color: @yuque-color-text-body;
+    cursor: pointer;
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+
+  .login-more-tips-warp {
+    position: absolute;
+    bottom: 90px;
+
+    &-desktop {
+      bottom: 114px;
+    }
+
+    .login-more-tips-warp-left {
+      display: inline-block;
+      height: 1px;
+      width: 100px;
+      background-image: linear-gradient(243deg, @yuque-grey-5 0%, rgba(216, 218, 217, 0%) 95%);
+      border-radius: 0.5px;
+      margin-right: 10px;
+      margin-bottom: 4px;
+    }
+
+    .login-more-tips-warp-right {
+      display: inline-block;
+      height: 1px;
+      width: 100px;
+      transform: scaleX(-1);
+      background-image: linear-gradient(243deg, @yuque-grey-5 0%, rgba(216, 218, 217, 0%) 95%);
+      border-radius: 0.5px;
+      margin-left: 10px;
+      margin-bottom: 4px;
+    }
+  }
+
+  input {
+    appearance: none;
+  }
+
+  .ant-select-single {
+    height: 40px;
+  }
+
+  .ant-select-selection-item-content {
+    margin-top: 4px;
+    height: 40px;
+    text-align: center;
+  }
+
+  .phone-number-input {
+    width: 70%;
+  }
+
+  .login-password-formitem {
+    :global(.ant-form-explain) {
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    :global(.ant-form-item:last-child) {
+      margin-bottom: 8px;
+    }
+  }
+
+  .login-foot {
+    margin-top: 28px;
+    text-align: center;
+  }
+
+  .login-foot-span {
+    display: inline-block;
+    width: 1px;
+    height: 14px;
+    vertical-align: middle;
+    margin: 0 8px 3px;
+    background-color: @yuque-color-bg-primary-hover-light;
+  }
+
+  .login-foot-register {
+    display: inline;
+  }
+
+  .proxy-setting {
+    color: @yuque-color-text-primary;
+    font-size: @font-size-sm;
+    cursor: pointer;
+    padding-left: 15px;
+    margin-left: 15px;
+    border-left: solid @yuque-color-border-primary 1px;
+    height: 23px;
+    line-height: 21px;
+    margin-top: 4px;
+  }
+
+  .lark-login-protocol {
+    margin-top: 16px;
+    text-align: left;
+
+    .ant-checkbox-inner,
+    .ant-checkbox:hover::after,
+    .ant-checkbox-wrapper:hover .ant-checkbox::after {
+      border-radius: 50%;
+    }
+  }
+
+  .lark-form-back {
+    max-width: 320px;
+    text-align: left;
+    margin-top: 6px;
+    height: 15px;
+    align-self: flex-start;
+
+    span {
+      color: @yuque-color-text-link;
+      cursor: pointer;
+    }
+
+    .icon {
+      font-size: @font-size-sm;
+      position: relative;
+      top: -1px;
+      margin-right: 4px;
+    }
+  }
+
+  .password-reset {
+    height: 22px;
+    font-weight: 400;
+    font-size: 14px;
+    color: @yuque-color-text-caption;
+    line-height: 22px;
+    display: flex;
+    margin: 7px 0;
+    margin-bottom: 22px;
+  }
+}
+
+.platform-dingtalk .lark-form-main .lark-form-content {
+  margin-top: 0;
+}
+
+.in-org .lark-form-warp {
+  span {
+    font-size: 30px;
+  }
+
+  img {
+    width: 52px !important;
+    height: 52px !important;
+    min-width: 52px !important;
+  }
+}
+
+.in-org .lark-form-main .account-slogon-subhead {
+  margin: 8px 0;
+}
+
+.platform-dingtalk,
+.platform-wechat {
+  .lark-form-warp {
+    margin-bottom: 10px;
+
+    .ant-dropdown-trigger {
+      // 无需切换功能
+      display: none;
+    }
+
+    span {
+      font-size: 24px;
+    }
+
+    img {
+      width: 40px !important;
+      height: 40px !important;
+      min-width: 40px !important;
+    }
+  }
+}
+
+.platform-dingtalk {
+  &.show-logo {
+    .switch-login-warp {
+      top: 45px;
+    }
+  }
+
+  .switch-login-warp {
+    position: relative;
+    bottom: 0;
+    text-align: center;
+    top: 60px;
+  }
+}
+
+
+.lark-form-main .account-login {
+  .proxy-board-warp {
+    position: absolute;
+    top: 0;
+    z-index: 2;
+    background: @yuque-color-bg-primary;
+    width: 100%;
+    left: 0;
+    height: 100%;
+
+    .ant-select-selector {
+      height: 32px;
+
+      .ant-select-selection-item {
+        line-height: 32px;
+      }
+    }
+
+    .ant-select-single {
+      height: 32px;
+    }
+
+    h2 {
+      height: 110px;
+      line-height: 150px;
+    }
+
+    .ant-btn-primary {
+      width: 304px;
+      margin-right: 48px;
+      margin-top: 20px;
+      height: 40px;
+    }
+
+    .ant-row {
+      width: 304px;
+      margin-left: 50px;
+      padding: 10px 0;
+    }
+  }
+}
+
+
+.hr-line {
+  border-top: 1px solid #4c4c4c;
+  height: 20px;
+  width: 100%;
+}
+
+[data-icon="github"] {
+  vertical-align: baseline;
+}
+
+.ant-btn-primary.btn-login {
+  background: #4c4c4c;
+  border-color: #4c4c4c;
+
+  &:hover {
+    background: #4c4c4c * 1.2;
+    border-color: #4c4c4c * 1.2;
+  }
+
+  &::after {
+    --antd-wave-shadow-color: #4c4c4c;
+  }
+}
+
+
+
+.proxy-board-warp {
+  .ant-col {
+    text-align: left;
+  }
+}
+
+@media only screen and (max-width: 420px) {
+  .account-login {
+    margin-top: 22px;
+
+    .login-foot {
+      margin-top: 8px;
+    }
+  }
+
+  .login-from-desktop.account-login {
+    .third-login {
+      padding-top: 0;
+    }
+  }
+}
+
+@media only screen and (max-height: 800px) {
+  .account-login {
+    .login-foot {
+      margin-top: 18px;
+    }
+  }
+}

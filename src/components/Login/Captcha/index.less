@@ -1,0 +1,93 @@
+@import '~antd/dist/antd.less';
+
+@primary-color: #873bf4;
+@yuque-color-bg-primary-hover-light: #f5f5f5;
+@yuque-color-bg-primary: #ffffff;
+@yuque-grey-5: #bfbfbf;
+@yuque-color-text-body: #595959;
+@white: #ffffff;
+@yuque-color-function-warning: #faad14;
+@yuque-color-function-error: #ff4d4f;
+
+.captcha {
+  margin-bottom: 16px;
+
+  .nc-lang-cnt {
+    color: #4c4c4c;
+  }
+
+  .nc-container {
+    border-radius: 4px;
+    overflow: hidden;
+
+    .nc_wrapper,
+    #nc_1_wrapper {
+      width: 100%;
+
+      .nc_scale {
+        height: 40px;
+        background: @yuque-color-bg-primary-hover-light;
+        width: auto;
+
+        .nc_bg {
+          width: 0;
+          background-color: @yuque-color-bg-primary;
+          border: 1px solid @yuque-grey-5;
+          border-right-width: 0;
+          border-radius: 4px 0 0 4px;
+        }
+
+        .scale_text {
+          color: @yuque-color-text-body;
+          font-size: 16px;
+        }
+
+        .scale_text2 {
+          color: @white;
+          font-size: 16px;
+        }
+
+        span {
+          border: none;
+          height: 40px;
+          line-height: 40px;
+          border-radius: 4px;
+          font-size: 14px;
+
+          &.btn_slide {
+            border: 1px solid @yuque-grey-5;
+          }
+
+          &.btn_ok {
+            border: 1px solid @yuque-grey-5;
+            border-radius: 0 4px 4px 0;
+            color: #4c4c4c;
+          }
+        }
+      }
+    }
+
+    .errloading {
+      width: 100%;
+      height: 40px;
+      line-height: 22px;
+      border-radius: 4px;
+      border: 1px solid @yuque-color-function-warning;
+
+      .nc_iconfont {
+        color: @yuque-color-function-error;
+      }
+
+      span {
+        color: @yuque-color-function-warning;
+        font-size: 14px;
+      }
+    }
+  }
+
+  .captcha-tip {
+    .ant-form-item-control-input {
+      min-height: auto;
+    }
+  }
+}

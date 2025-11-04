@@ -65,6 +65,7 @@ function TaskBox() {
           code={wrap2VisionSnap(snap.codeBlock)}
           requestProxy={requestProxy}
           isStreaming={false}
+          proxyOptions={{isWAN: true}}
         />
       </ErrorBoundary>
     );

@@ -77,7 +77,7 @@
   }
 
   pre[class*='language-'] {
-    background-color: rgba(0, 0, 0, 0.03);
+    background-color: rgba(0, 0, 0, 3%);
   }
 
   code[class*='language-'] {
@@ -155,7 +155,7 @@
   table th {
     color: #5c6b77;
     font-weight: 500;
-    background: rgba(0, 0, 0, 0.02);
+    background: rgba(0, 0, 0, 2%);
   }
 
   table th,
@@ -174,7 +174,7 @@
     width: 20%;
     font-weight: 500;
     background: #fcfcfc;
-    color: rgba(0, 0, 0, 0.85);
+    color: rgba(0, 0, 0, 85%);
   }
 
   blockquote {
@@ -197,15 +197,16 @@
 
 .layout {
   margin: 24px 0 32px;
+
   :global {
     .ant-layout-content {
-      background-color: #ffffff;
+      background-color: #fff;
     }
   }
 }
 
 .main {
-  background-color: #ffffff;
+  background-color: #fff;
   width: calc(100% - @toc-width);
   padding-left: 48px;
   padding-right: 24px;
@@ -248,7 +249,6 @@
   background: #fff;
   max-height: 100vh;
   overflow: hidden;
-
   position: sticky;
   top: 0;
   padding: 8px 0;
@@ -288,6 +288,7 @@
 
 .affix {
   background-color: #fff;
+
   & > div {
     height: 100%;
   }
@@ -325,7 +326,7 @@
     justify-content: center;
     align-items: center;
     background: #fff;
-    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 15%);
     border-radius: 0 4px 4px 0;
   }
 }
@@ -401,7 +402,7 @@
       &:hover > div {
         transform: translateY(-4px);
         border-color: transparent;
-        box-shadow: 0 6px 16px rgba(107, 147, 224, 0.14);
+        box-shadow: 0 6px 16px rgba(107, 147, 224, 14%);
       }
 
       h4 {
@@ -455,7 +456,7 @@
   :global {
     .SplitPane {
       overflow: auto;
-      left: 0px;
+      left: 0;
       height: calc(100vh - 64px) !important;
     }
 
@@ -603,10 +604,9 @@
 }
 
 .backTop {
-  transition: color 0.3s;
   color: #868484;
   background-color: #fff;
-  box-shadow: 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 3px 6px -4px rgba(0, 0, 0, 12%), 0 6px 16px 0 rgba(0, 0, 0, 8%), 0 9px 28px 8px rgba(0, 0, 0, 5%);
   transition: color 0.3s;
   width: 44px;
   height: 44px;

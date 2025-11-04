@@ -3,13 +3,14 @@
 .wrapper {
   min-height: 650px;
   max-height: 803px;
-  background: linear-gradient(225deg, #ffffff, #f0f5ff);
+  background: linear-gradient(225deg, #fff, #f0f5ff);
   height: calc(94vh);
   position: relative;
   overflow: hidden;
 
   .content {
     .container1440();
+
     height: 100%;
     position: relative;
   }
@@ -23,14 +24,14 @@
     .title {
       font-size: 3.4em; //2.875em;
       font-weight: 800;
-      color: rgba(0, 0, 0, 1);
+      color: rgba(0, 0, 0, 100%);
       position: relative;
     }
 
     .description {
       margin-top: 0.83%; //12px;
-      margin-bottom: 0px;
-      color: rgba(106, 123, 140, 1);
+      margin-bottom: 0;
+      color: rgba(106, 123, 140, 100%);
       font-size: 1.14em;
       font-weight: 200;
       position: relative;
@@ -162,6 +163,7 @@
           .gh-count {
             position: relative;
             display: none;
+
             /* hidden to start */
             margin-left: 52px;
             margin-top: 7px;
@@ -183,8 +185,8 @@
             color: #4183c4;
           }
 
-          .gh-count:before,
-          .gh-count:after {
+          .gh-count::before,
+          .gh-count::after {
             content: '';
             position: absolute;
             display: inline-block;
@@ -194,7 +196,7 @@
             border-style: solid;
           }
 
-          .gh-count:before {
+          .gh-count::before {
             top: 50%;
             left: -3px;
             margin-top: -5px;
@@ -202,7 +204,7 @@
             border-right-color: #fafafa;
           }
 
-          .gh-count:after {
+          .gh-count::after {
             top: 50%;
             border-width: 5px 5px 5px 0;
             border-right-color: #d4d4d4;
@@ -228,7 +230,6 @@
     display: flex;
     position: absolute;
     right: 0;
-    margin-top: -300px;
     width: 52%;
     max-width: 598px;
     height: 324px;

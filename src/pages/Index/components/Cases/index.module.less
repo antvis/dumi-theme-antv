@@ -6,7 +6,7 @@
   position: relative;
   padding: 0;
   overflow: hidden;
-  background: rgba(250, 251, 252, 1);
+  background: rgba(250, 251, 252, 100%);
 
   .slider {
     .container1440();
@@ -38,22 +38,22 @@
         .appTitle {
           font-size: 1.2857em;
           font-weight: 500;
-          margin: 48px 0 0 0;
+          margin: 48px 0 0;
           position: relative;
           height: min-content;
-          color: rgba(0, 0, 0, 1);
+          color: rgba(0, 0, 0, 100%);
           user-select: text;
         }
 
         .appDescription {
-          color: rgba(105, 123, 140, 0.6);
+          color: rgba(105, 123, 140, 60%);
           font-size: 1em;
-          margin: 16px 0 0 0;
+          margin: 16px 0 0;
           user-select: text;
         }
 
         .detailWrapper {
-          margin: 20px 0 0 0;
+          margin: 20px 0 0;
 
           .detail {
             color: var(--primary-color);
@@ -81,7 +81,7 @@
 
           &:hover {
             border: 1px solid #ced4d9;
-            fill: #000000;
+            fill: #000;
           }
 
           &:hover :only-child {
@@ -228,7 +228,7 @@
         bottom: 100px;
       }
 
-      .slick-dots li.slick-active button:before {
+      .slick-dots li.slick-active button::before {
         opacity: 1;
         color: #1890ff;
       }

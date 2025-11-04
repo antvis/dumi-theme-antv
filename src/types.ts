@@ -127,7 +127,7 @@ export type FullSidebarData = {
 };
 
 export interface Message {
-  id: string | number;
+  id: string;
   role: 'user' | 'assistant';
   content: string;
   createdAt: number;

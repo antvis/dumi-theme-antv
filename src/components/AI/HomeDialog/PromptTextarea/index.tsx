@@ -37,7 +37,7 @@ const PLACEHOLDER = {
   solve: 'ai.placeholder.solve',
 } as const;
 
-function PromptTextarea(props: PromptTextareaProps) {
+export const PromptTextarea = React.memo(function PromptTextareaInner(props: PromptTextareaProps) {
   const {
     value,
     size,
@@ -163,6 +163,4 @@ function PromptTextarea(props: PromptTextareaProps) {
       </div>
     </div>
   );
-}
-
-export { PromptTextarea };
+});

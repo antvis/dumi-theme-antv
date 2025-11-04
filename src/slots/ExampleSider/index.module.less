@@ -11,7 +11,7 @@
     z-index: 1;
     top: 0;
     height: 100%;
-    box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0);
+    box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0%);
     width: 1px;
     transition: all 0.3s;
   }
@@ -45,7 +45,7 @@
   user-select: none;
   background-color: #fff;
 
-  &:after {
+  &::after {
     transition: all 0.3s;
     background-color: transparent;
     border: 1px solid transparent;
@@ -60,7 +60,7 @@
   &:hover {
     border-color: var(--primary-color);
 
-    &:before {
+    &::before {
       transition: all 0.3s;
       content: '';
       position: absolute;
@@ -127,7 +127,6 @@
     display: inline-block;
     width: 100%;
     vertical-align: bottom;
-
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
