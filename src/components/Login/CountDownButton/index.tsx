@@ -1,7 +1,6 @@
 import React, {
   useState, useEffect, useCallback, useRef, forwardRef, useImperativeHandle,
 } from 'react';
-import PropTypes from 'prop-types';
 import { Button } from 'antd';
 import { useIntl } from 'dumi';
 import './index.less';
@@ -31,17 +30,6 @@ const CountDownButton = forwardRef(({
   const [hasSend, setHasSend] = useState(false);
   const countTimer = useRef<NodeJS.Timeout | null>(null);
 
-  useEffect(() => {
-    if (initialCounting) {
-      doCounting();
-    }
-    return () => {
-      if (countTimer.current) {
-        clearInterval(countTimer.current);
-      }
-    };
-  }, [initialCounting]);
-
   const reset = useCallback(() => {
     setCounting(false);
     setCountingTime(DEFAULT_COUNTING_TIME);
@@ -65,6 +53,17 @@ const CountDownButton = forwardRef(({
       });
     }, 1000);
   }, [reset]);
+
+  useEffect(() => {
+    if (initialCounting) {
+      doCounting();
+    }
+    return () => {
+      if (countTimer.current) {
+        clearInterval(countTimer.current);
+      }
+    };
+  }, [initialCounting]);
 
   const handleSendClick = () => {
     if (onSendClick) {
@@ -109,18 +108,5 @@ const CountDownButton = forwardRef(({
     </span>
   );
 });
-
-CountDownButton.propTypes = {
-  counting: PropTypes.bool,
-  sendText: PropTypes.string,
-  onSendClick: PropTypes.func,
-  buttonProps: PropTypes.object,
-  onCountDownEnd: PropTypes.func,
-};
-
-CountDownButton.defaultProps = {
-  counting: false,
-  sendText: formatMessage({ id: 'login.checkcode.get' }),
-};
 
 export default CountDownButton;

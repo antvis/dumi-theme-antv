@@ -69,6 +69,8 @@ export function generateDependencies(codeString) {
 }
 
 export function wrap2VisionSnap (codeBlock: string = '') {
+  const dependencies = generateDependencies(codeBlock);
+  const rootElementType = dependencies['@antv/f2'] ? 'canvas' : 'div';
   return {
     modules: {
       '/package.json': {
@@ -77,7 +79,7 @@ export function wrap2VisionSnap (codeBlock: string = '') {
   "name": "AntV-adapted-project",
   "version": "1.0.0",
   "main": "/src/index.jsx",
-  "dependencies": ${JSON.stringify(generateDependencies(codeBlock), null, 2)}
+  "dependencies": ${(JSON.stringify(dependencies, null, 2))}
 }`
       },
       '/src/index.jsx': {
@@ -89,8 +91,8 @@ export function wrap2VisionSnap (codeBlock: string = '') {
 const rootElement = document.getElementById('root');
 
 if (rootElement) {
-  // 2. 在 #root 内部创建一个 div
-  const containerElement = document.createElement('div');
+  // 2. 在 #root 内部创建一个 ${rootElementType}
+  const containerElement = document.createElement('${rootElementType}');
 
   // 3. 将这个 div 的 id 设置为 'container'，以满足用户代码的需求
   containerElement.id = 'container';

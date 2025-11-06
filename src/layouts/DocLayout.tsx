@@ -8,6 +8,7 @@ import ManualLayout from './ManualLayout';
 import GlobalStyles from '../common/GlobalStyles';
 import { defaultToken } from '../common/styles/theme';
 import '../static/style';
+import {LoginModal} from "../components/Login";
 /**
  * DocLayout 是 dumi2 的内置 layout 入口，在这里使用页面路径进行区分成自己不同的 Layout。
  */
@@ -107,6 +108,7 @@ export default () => {
         >
           <GlobalStyles />
           {content}
+          <LoginModal />
         </ConfigProvider>
       </StyleProvider>
     </>

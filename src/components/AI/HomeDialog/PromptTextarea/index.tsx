@@ -12,6 +12,8 @@ import { useSiteData, useIntl } from 'dumi';
 import { ic } from '../../../../slots/hooks';
 import {useTypewriter} from "../../../../hooks/useTypewriter";
 import { DataUploader, FileMeta, AnalyzedData } from './Uploader/DataUploader';
+import {authStore, showLoginModal} from "../../../../model/auth";
+import {useSnapshot} from "valtio";
 
 interface PromptTextareaProps {
   value: string;
@@ -51,7 +53,7 @@ export const PromptTextarea = React.memo(function PromptTextareaInner(props: Pro
     onLibChange,
     showAction = true,
   } = props;
-
+  const authSnap = useSnapshot(authStore);
   const { formatMessage } = useIntl();
 
   // 将fileMeta状态移到组件内部管理
@@ -96,6 +98,10 @@ export const PromptTextarea = React.memo(function PromptTextareaInner(props: Pro
   const promptTextValid = Boolean(value);
 
   const send = () => {
+    if (!authSnap.isAuthenticated) {
+      showLoginModal();
+      return;
+    }
     if (promptTextValid) {
       onConfirm?.();
     }

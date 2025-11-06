@@ -1,51 +1,23 @@
-import React, { useState } from 'react';
-import { useIntl } from 'dumi';
-import { relocate } from '@/util/location';
+import React from 'react';
 import LoginForm from './LoginForm';
-import styles from './index.module.less';
-import { CompleteUserInfoPageComp } from '../Account/CompleteUserInfo';
-import { STEP } from './types';
+import { Modal } from 'antd';
+import { useSnapshot } from 'valtio';
+import {authStore, hideLoginModal} from "../../model/auth";
 
-export default function Login() {
-  const [step, setStep] = useState<STEP>(STEP.Login);
-  const [stepContextData, setStepContextData] = useState<any>({});
-  const { locale } = useIntl();
-  const isEn = locale === 'en';
+export function LoginModal() {
+  const authSnap = useSnapshot(authStore);
 
-  if (step === STEP.Login) {
-    return (
-      <div className={styles.container}>
-        <div className={styles.card}>
-          <LoginForm
-            en={isEn}
-            setStep={setStep}
-            setStepContextData={setStepContextData}
-          />
-        </div>
-      </div>
-    );
-  }
-
-  if (
-    step === STEP.CompleteUserInfo
-    && (stepContextData.isEmailEmpty
-      || stepContextData.isDefaultNickname
-      || stepContextData.isMobileEmpty)
-  ) {
-    return (
-      <CompleteUserInfoPageComp
-        isNewUser={stepContextData.isNewUser}
-        isDefaultNickname={stepContextData.isDefaultNickname}
-        email={stepContextData.user.email}
-        confirmEmail={stepContextData.confirmEmail}
-        nickname={stepContextData.user.name}
-        mobile={stepContextData.user.mobile}
-        onSubmitSuccess={() => {
-          relocate(stepContextData.goto);
-        }}
-      />
-    );
-  }
-
-  return null;
+  return (
+    <Modal
+      width={400}
+      title="验证码登录"
+      open={authSnap.isModalOpen}
+      onCancel={() => hideLoginModal()} // 直接调用 store 的 action
+      footer={null}
+      maskClosable={false}
+      destroyOnHidden
+    >
+        <LoginForm />
+    </Modal>
+  );
 }

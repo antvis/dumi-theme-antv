@@ -49,7 +49,7 @@ export const clearEmptySession = () => {
 }
 
 // --- 初始化逻辑 ---
-export const initializeStore = async () => {
+export const initializeAIChat = async () => {
   // 1. 从 localForage 加载持久化的数据
   const persistedState = await localforage.getItem<Partial<AIChatState>>(STORAGE_KEY);
 

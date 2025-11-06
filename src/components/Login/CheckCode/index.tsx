@@ -3,18 +3,18 @@ import type { FormInstance } from 'antd';
 import { Form, Input, message } from 'antd';
 import CountDownButton, {
   ICountDownButtonRef,
-} from '@/component/CountDownButton';
+} from '../CountDownButton';
 import cls from 'classnames';
-import PropTypes from 'prop-types';
-import * as UserImp from '@/sdk/user/ValidationCodeController';
-import { NC_SCENE } from 'Isomorphic/constants/login';
-import { UIA_UA_RE } from 'Isomorphic/constants/uia';
-import { getLang } from '@/util/i18n';
+import { NC_SCENE } from '../utils';
+import { UIA_UA_RE } from '../utils';
 import Captcha from '../Captcha';
 import type { ICaptcha } from '../Captcha';
 import { useIntl } from 'dumi';
 
 import './index.less';
+import React from 'react';
+import {sendValidationCode} from "../../../model/auth";
+import {MessageOutlined} from "@ant-design/icons";
 
 interface CheckCodeProps {
   form: FormInstance;
@@ -41,12 +41,20 @@ function CheckCode({
   onSendCodeClick,
   disabeCaptcha,
 }: CheckCodeProps) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, locale } = useIntl();
   const [sending, setSending] = useState(false);
   const captchaRef = useRef<ICaptcha>(null);
-  const inputRef = useRef<typeof Input>(null);
+  const inputRef = useRef(null);
   const countDownRef = useRef<ICountDownButtonRef>(null);
   const countDownSendText = !en ? formatMessage({ id: 'login.checkcode.get' }) : formatMessage({ id: 'login.checkcode.get.en' });
+
+  function handleResetCountDown() {
+    countDownRef.current?.resetCountDown();
+  }
+
+  function handleResetCaptcha() {
+    captchaRef.current?.resetCaptcha();
+  }
 
   function onCountDownEnd() {
     setSending(false);
@@ -58,7 +66,7 @@ function CheckCode({
       if (handleSendCode) {
         await handleSendCode(target, captchaValues);
       } else {
-        await UserImp.sendValidationCode({
+        await sendValidationCode({
           target,
           ...captchaValues,
           captcha: captchaValues.captcha ? 1 : 0,
@@ -115,7 +123,7 @@ function CheckCode({
         return;
       }
 
-      const params = { ...captchaValues, lang: getLang() };
+      const params = { ...captchaValues, lang: locale };
       await sendCode(target, params);
       callback?.();
       onSendCodeClick?.();
@@ -128,14 +136,6 @@ function CheckCode({
         },
       ]);
     }
-  }
-
-  function handleResetCaptcha() {
-    captchaRef.current?.resetCaptcha();
-  }
-
-  function handleResetCountDown() {
-    countDownRef.current?.resetCountDown();
   }
 
   const { getFieldError } = form;
@@ -155,45 +155,37 @@ function CheckCode({
 
   return (
     <div className={cls('mobile-code', 'captcha-check-code')}>
-      {isUIA || disabeCaptcha ? null : (
-        <Captcha
-          form={form}
-          scene={scene}
-          ncName={ncName}
-          ref={captchaRef}
-          en={en}
-        />
-      )}
-      <Form.Item
-        className="mobile-code-showtip"
-        help={getFieldError('code') ? getFieldError('code') : renderHint()}
-      >
+      <Captcha form={form} scene={scene} ncName={ncName} ref={captchaRef} en={en} />
+      <Form.Item className="mobile-code-showtip" help={getFieldError('code') ? getFieldError('code') : renderHint()}>
         <div className="mobile-code-main">
           <div className="mobile-code-field">
             <Form.Item
               name="code"
               validateTrigger={['onSubmit', 'onBlur']}
-            rules={[
-              {
-                required: true,
-                message: !en
-                  ? formatMessage({ id: 'login.checkcode.required' })
-                  : formatMessage({ id: 'login.checkcode.required.en' }),
-              },
-              {
-                pattern: /^\d{6}$/,
-                message: !en
-                  ? formatMessage({ id: 'login.checkcode.invalid' })
-                  : formatMessage({ id: 'login.checkcode.invalid.en' }),
-              },
-            ]}
+              rules={[
+                {
+                  required: true,
+                  message: !en
+                    ? formatMessage({ id: 'login.checkcode.required' })
+                    : formatMessage({ id: 'login.checkcode.required.en' }),
+                },
+                {
+                  pattern: /^\d{6}$/,
+                  message: !en
+                    ? formatMessage({ id: 'login.checkcode.invalid' })
+                    : formatMessage({ id: 'login.checkcode.invalid.en' }),
+                },
+              ]}
             >
               <Input
                 type="text"
-                size="large"
                 autoComplete="off"
                 ref={inputRef}
-                placeholder={!en ? formatMessage({ id: 'login.checkcode.placeholder' }) : formatMessage({ id: 'login.checkcode.placeholder.en' })}
+                placeholder={
+                  !en
+                    ? formatMessage({ id: 'login.checkcode.placeholder' })
+                    : formatMessage({ id: 'login.checkcode.placeholder.en' })
+                }
                 maxLength={6}
               />
             </Form.Item>
@@ -216,19 +208,5 @@ function CheckCode({
     </div>
   );
 }
-
-CheckCode.propTypes = {
-  form: PropTypes.object.isRequired,
-  targetFieldName: PropTypes.string,
-  validateFailedMsg: PropTypes.string,
-  onSendCodeClick: PropTypes.func,
-};
-
-CheckCode.defaultProps = {
-  targetFieldName: 'login',
-  validateFailedMsg: 'Please enter your mobile number',
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  onSendCodeClick: () => {},
-};
 
 export default CheckCode;

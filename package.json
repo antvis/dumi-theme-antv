@@ -75,6 +75,7 @@
     "ai": "^5.0.86",
     "antd": "^5.24.5",
     "antd-style": "^3.7.1",
+    "axios": "^1.13.2",
     "babel-loader": "^10.0.0",
     "babel-plugin-import": "^1.13.8",
     "chalk": "^4.1.2",
