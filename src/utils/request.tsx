@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, InternalAxiosRequestConfig, AxiosResponse } from 'axios';
 import { message, Modal } from 'antd';
 import { getBaseURL } from './env';
-import { getToken, removeToken } from './auth'; // 假设的 Token 管理工具
+import { getToken, removeToken } from './auth';
 
 export interface ApiResponse<T = any> {
   code: number;
@@ -11,7 +11,7 @@ export interface ApiResponse<T = any> {
 
 const req: AxiosInstance = axios.create({
   baseURL: getBaseURL(),
-  timeout: 15000,
+  timeout: 60000,
 });
 
 // 请求拦截器

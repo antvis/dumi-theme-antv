@@ -35,11 +35,10 @@ function CheckCode({
   form,
   ncName,
   scene,
-  targetFieldName,
-  validateFailedMsg,
+  targetFieldName = 'login',
+  validateFailedMsg = 'Please enter your mobile number',
   handleSendCode,
-  onSendCodeClick,
-  disabeCaptcha,
+  onSendCodeClick =  () => {},
 }: CheckCodeProps) {
   const { formatMessage, locale } = useIntl();
   const [sending, setSending] = useState(false);

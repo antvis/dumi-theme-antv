@@ -4,7 +4,7 @@ import request from '../utils/request';
 // 1. 定义 State (只包含数据)
 export const authStore = proxy({
   isModalOpen: false,
-  isAuthenticated: true,
+  isAuthenticated: false,
   token: localStorage.getItem('authToken'),
 });
 

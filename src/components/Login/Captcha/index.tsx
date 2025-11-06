@@ -65,8 +65,8 @@ const Captcha = forwardRef(
       if (!ncInstance.current) {
         /* eslint no-undef:0 */
         /* eslint new-cap:0 */
-        // ncInstance.current = new noCaptcha();
-        // window[ncName] = ncInstance.current;
+        ncInstance.current = new window.noCaptcha();
+        window[ncName] = ncInstance.current;
       }
       const nc_appkey = 'FFFF000000000179A3AD';
       const nc_token = [nc_appkey, new Date().getTime(), Math.random()].join(':');
