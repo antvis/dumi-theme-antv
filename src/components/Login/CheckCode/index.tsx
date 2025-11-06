@@ -45,7 +45,7 @@ function CheckCode({
   const captchaRef = useRef<ICaptcha>(null);
   const inputRef = useRef(null);
   const countDownRef = useRef<ICountDownButtonRef>(null);
-  const countDownSendText = !en ? formatMessage({ id: 'login.checkcode.get' }) : formatMessage({ id: 'login.checkcode.get.en' });
+  const countDownSendText = formatMessage({ id: 'login.checkcode.get' });
 
   function handleResetCountDown() {
     countDownRef.current?.resetCountDown();
@@ -72,7 +72,7 @@ function CheckCode({
         });
       }
       message.success(
-        !en ? formatMessage({ id: 'login.checkcode.send.success' }) : formatMessage({ id: 'login.checkcode.send.success.en' }),
+        formatMessage({ id: 'login.checkcode.send.success' }),
       );
     } catch (error: any) {
       console.error(error);
@@ -90,17 +90,13 @@ function CheckCode({
     if (!captchaValues.captcha) {
       handleResetCountDown();
       message.error(
-        !en
-          ? formatMessage({ id: 'login.checkcode.error.incomplete' })
-          : formatMessage({ id: 'login.checkcode.error.incomplete.en' }),
+        formatMessage({ id: 'login.checkcode.error.incomplete' }),
       );
       form.setFields([
         {
           name: 'captcha',
           errors: [
-            !en
-              ? formatMessage({ id: 'login.checkcode.error.incomplete' })
-              : formatMessage({ id: 'login.checkcode.error.incomplete.en' }),
+            formatMessage({ id: 'login.checkcode.error.incomplete' }),
           ],
         },
       ]);
@@ -145,7 +141,7 @@ function CheckCode({
       return (
         <div className="mobile-code-hint">
           <span>
-            {!en ? formatMessage({ id: 'login.checkcode.sent' }) : formatMessage({ id: 'login.checkcode.sent.en' })}
+            {formatMessage({ id: 'login.checkcode.sent' })}
           </span>
         </div>
       );
@@ -164,15 +160,11 @@ function CheckCode({
               rules={[
                 {
                   required: true,
-                  message: !en
-                    ? formatMessage({ id: 'login.checkcode.required' })
-                    : formatMessage({ id: 'login.checkcode.required.en' }),
+                  message: formatMessage({ id: 'login.checkcode.required' }),
                 },
                 {
                   pattern: /^\d{6}$/,
-                  message: !en
-                    ? formatMessage({ id: 'login.checkcode.invalid' })
-                    : formatMessage({ id: 'login.checkcode.invalid.en' }),
+                  message: formatMessage({ id: 'login.checkcode.invalid' }),
                 },
               ]}
             >
@@ -181,9 +173,7 @@ function CheckCode({
                 autoComplete="off"
                 ref={inputRef}
                 placeholder={
-                  !en
-                    ? formatMessage({ id: 'login.checkcode.placeholder' })
-                    : formatMessage({ id: 'login.checkcode.placeholder.en' })
+                  formatMessage({ id: 'login.checkcode.placeholder' })
                 }
                 maxLength={6}
               />

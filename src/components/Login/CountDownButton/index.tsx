@@ -78,13 +78,13 @@ const CountDownButton = forwardRef(({
     if (counting) {
       return (
         <span className="code-count-text">
-          {en ? formatMessage({ id: 'login.countdown.resend.en' }, { time: countingTime }) : formatMessage({ id: 'login.countdown.resend' }, { time: countingTime })}
+          {formatMessage({ id: 'login.countdown.resend' }, { time: countingTime })}
         </span>
       );
     }
 
     if (hasSend) {
-      return en ? formatMessage({ id: 'login.countdown.resend.simple.en' }) : formatMessage({ id: 'login.countdown.resend.simple' });
+      return formatMessage({ id: 'login.countdown.resend.simple' });
     }
     return sendText;
   };

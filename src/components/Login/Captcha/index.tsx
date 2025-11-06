@@ -6,6 +6,13 @@ import cls from 'classnames';
 import {useIntl} from 'dumi';
 import './index.less';
 
+// 添加 window.noCaptcha 的类型声明
+declare global {
+  interface Window {
+    noCaptcha: any;
+  }
+}
+
 // 图形验证码资源文件
 const NC_CSS_SOURCE = 'https://g.alicdn.com/sd/ncpc/nc.css?t=1514534550478';
 const NC_SCRIPT_SOURCE = 'https://g.alicdn.com/sd/ncpc/nc.js?t=1514534550478';
@@ -16,7 +23,6 @@ interface CaptchaProps {
   form: FormInstance;
   onCallback?: () => void;
   className?: string;
-  en?: boolean;
 }
 
 const NC_NAME = 'NoCaptcha';
@@ -27,14 +33,13 @@ const Captcha = forwardRef(
       ncName = NC_NAME,
       scene = NC_SCENE.login,
       form,
-      en,
       // eslint-disable-next-line @typescript-eslint/no-empty-function
       onCallback = () => {},
       className,
     }: CaptchaProps,
     ref,
   ) => {
-    const { formatMessage } = useIntl();
+    const { formatMessage, locale } = useIntl();
     const ncInstance = useRef(null);
 
     function reset() {
@@ -77,7 +82,7 @@ const Captcha = forwardRef(
         appkey: nc_appkey,
         scene: nc_scene,
         token: nc_token,
-        language: en ? 'en' : 'cn',
+        language: locale ? 'en' : 'cn',
         customWidth: nc_customWidth,
         callback: (data) => {
           // 校验成功回调
@@ -95,33 +100,19 @@ const Captcha = forwardRef(
       };
       ncInstance.current?.init(nc_option);
       const lang = {
-        _startTEXT: en ? formatMessage({ id: 'login.captcha.drag.en' }) : formatMessage({ id: 'login.captcha.drag' }),
-        _yesTEXT: en
-          ? formatMessage({ id: 'login.captcha.success.en' })
-          : formatMessage({ id: 'login.captcha.success' }),
-        _Loading: en
-          ? formatMessage({ id: 'login.captcha.loading.en' })
-          : formatMessage({ id: 'login.captcha.loading' }),
-        _error300: en
-          ? formatMessage({ id: 'login.captcha.error.wrong.en' }) +
-            ' <a href="javascript:__nc.reset()">' +
-            formatMessage({ id: 'login.captcha.error.refresh.en' }) +
-            '</a>'
-          : formatMessage({ id: 'login.captcha.error.wrong' }) +
+        _startTEXT: formatMessage({ id: 'login.captcha.drag' }),
+        _yesTEXT: formatMessage({ id: 'login.captcha.success' }),
+        _Loading: formatMessage({ id: 'login.captcha.loading' }),
+        _error300: formatMessage({ id: 'login.captcha.error.wrong' }) +
             ' <a href="javascript:__nc.reset()">' +
             formatMessage({ id: 'login.captcha.error.refresh' }) +
             '</a>',
-        _errorNetwork: en
-          ? formatMessage({ id: 'login.captcha.error.network.en' }) +
-            ' <a href="javascript:__nc.reset()">' +
-            formatMessage({ id: 'login.captcha.error.refresh.en' }) +
-            '</a>'
-          : formatMessage({ id: 'login.captcha.error.network' }) +
+        _errorNetwork: formatMessage({ id: 'login.captcha.error.network' }) +
             ' <a href="javascript:__nc.reset()">' +
             formatMessage({ id: 'login.captcha.error.refresh' }) +
             '</a>',
       };
-      if (en) {
+      if (locale) {
         ncInstance.current?.upLang('en', lang);
       } else {
         ncInstance.current?.upLang('cn', lang);
@@ -184,9 +175,7 @@ const Captcha = forwardRef(
           rules={[
             {
               required: true,
-              message: en
-                ? formatMessage({ id: 'login.captcha.required.en' })
-                : formatMessage({ id: 'login.captcha.required' }),
+              message: formatMessage({ id: 'login.captcha.required' }),
             },
           ]}
           className="captcha-tip"
