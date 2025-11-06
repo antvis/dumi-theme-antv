@@ -26,6 +26,7 @@ import { getCodeFromMarkdown, isPreviewable } from '../../../../utils/code';
 import { MarkdownComponent } from '../MarkdownComponent';
 import styles from './index.module.less';
 import { useAutoScroll } from './useAutoScroll';
+import {getBaseURL} from "../../../../utils/env";
 
 const avatar = {
   icon: (
@@ -103,7 +104,7 @@ function MsgBox(props: MsgBoxProps) {
   // 核心：使用 useChat hook，配置 DefaultChatTransport
   const { messages, setMessages, sendMessage, regenerate, status, stop } = useChat({
     transport: new TextStreamChatTransport({
-      api: 'https://weavefox.alipay.net:8443/api/modules/antv/ai/chat',
+      api: getBaseURL() + '/api/modules/antv/ai/chat',
       credentials: 'include',
       headers: {
         // xxx

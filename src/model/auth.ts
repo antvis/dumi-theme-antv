@@ -1,6 +1,22 @@
 import { proxy } from 'valtio';
 import request from '../utils/request';
 
+/**
+ * 检查当前 URL 是否包含 'skipLogin=1' 参数
+ * @returns {boolean} 如果包含则返回 true, 否则返回 false
+ */
+function hasSkipLoginParam() {
+  // 1. 获取当前 URL 的查询字符串 (例如 "?foo=bar&skipLogin=1")
+  const queryString = window.location.search;
+
+  // 2. 创建一个 URLSearchParams 实例
+  const urlParams = new URLSearchParams(queryString);
+
+  // 3. 使用 .get() 方法获取 'skipLogin' 参数的值，并判断是否为 '1'
+  // 注意：URL参数的值总是字符串类型，所以我们用 '1' 而不是 1 进行比较。
+  return urlParams.get('skipLogin') === '1';
+}
+
 // 1. 定义 State (只包含数据)
 export const authStore = proxy({
   isModalOpen: false,
@@ -52,7 +68,7 @@ export function sendValidationCode(data: any): Promise<void> {
 }
 
 export const initializeAuth = () => {
-  if (authStore.token) {
+  if (authStore.token || hasSkipLoginParam()) {
     authStore.isAuthenticated = true;
   }
 };

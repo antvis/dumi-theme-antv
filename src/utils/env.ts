@@ -16,7 +16,7 @@ export const getBaseURL = (): string => {
   const hostname = window.location.hostname;
 
   // 生产环境
-  if (hostname === 'antv.antgroup.com') {
+  if (hostname.endsWith('antv.antgroup.com')) {
     return 'https://www.weavefox.cn';
   }
 
