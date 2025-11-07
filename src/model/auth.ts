@@ -20,7 +20,7 @@ function hasSkipLoginParam() {
 // 1. 定义 State (只包含数据)
 export const authStore = proxy({
   isModalOpen: false,
-  isAuthenticated: false,
+  isAuthenticated: true,
   token: localStorage.getItem('authToken'),
 });
 
@@ -67,8 +67,12 @@ export function sendValidationCode(data: any): Promise<void> {
   return request.post('/api/modules/user/api/validation_code/send', data);
 }
 
-export const initializeAuth = () => {
-  if (authStore.token || hasSkipLoginParam()) {
+export const initializeAuth = async () => {
+  try{
+    await request.get('/api/modules/user/api/accounts/get_company_info')
     authStore.isAuthenticated = true;
+  } catch (e) {
+    console.error('Initialize auth failed in store:', e)
+    authStore.isAuthenticated = false;
   }
 };
