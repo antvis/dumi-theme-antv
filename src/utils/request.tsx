@@ -1,11 +1,11 @@
 import axios, { AxiosInstance, InternalAxiosRequestConfig, AxiosResponse } from 'axios';
-import { message } from 'antd';
 import { getBaseURL } from './env';
 import { getToken } from './auth';
 
 const req: AxiosInstance = axios.create({
   baseURL: getBaseURL(),
   timeout: 60000,
+  withCredentials: true,
 });
 
 // 请求拦截器
@@ -27,11 +27,6 @@ req.interceptors.response.use(
   // @ts-ignore - Temporarily ignore type mismatch if it occurs with custom ApiResponse
   (response: AxiosResponse<any>) => {
     return response.data;
-  },
-  (error) => {
-    const errorMessage = error.message;
-    message.error(errorMessage);
-    return Promise.reject(error);
   }
 );
 
