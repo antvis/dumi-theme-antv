@@ -4,6 +4,7 @@ import localforage from 'localforage';
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
 import { AIChatState, ChatSession } from '../types';
 import {history} from "dumi";
+import {message} from "antd";
 
 // --- 配置 ---
 // 定义需要持久化的 state key
@@ -182,3 +183,36 @@ export const createNewSession = (config: { promptText: string, mode?: "implement
     history.push(`/${config.lang ?? 'zh'}/ai-playground`);
   }
 }
+
+
+/**
+ * 清空所有本地AI对话记录和相关状态。用户注销账户或手动请求清除数据时调用。
+ *
+ * 该函数会执行以下操作：
+ * 1. 从 localforage 中删除持久化的状态数据。
+ * 2. 将内存中的 AIChatStore 重置为初始状态。
+ *
+ */
+export const clearAllChatData = async (): Promise<void> => {
+  try {
+    // 步骤 1: 从本地存储中移除持久化的状态。
+    // 这是最关键的一步，可以防止下次加载应用时恢复旧数据。
+    await localforage.removeItem(STORAGE_KEY);
+    console.log(`[AIChat] Persistent state with key "${STORAGE_KEY}" has been removed.`);
+
+    // 步骤 2: 将内存中的 valtio store 重置为初始状态。
+    // 这会立即更新UI，让所有对话记录从界面上消失。
+    // 注意：我们不能直接做 AIChatStore = initialState，
+    // 因为 proxy 对象是不可替换的。我们必须逐个属性地重置。
+    const initialKeys = Object.keys(initialState) as Array<keyof AIChatState>;
+    for (const key of initialKeys) {
+      // @ts-ignore
+      AIChatStore[key] = initialState[key];
+    }
+    console.log('[AIChat] In-memory state has been reset to initial values.');
+
+  } catch (error) {
+    console.error('[AIChat] Failed to clear all chat data:', error);
+    message.error('清空对话记录失败，请刷新页面后重试。');
+  }
+};

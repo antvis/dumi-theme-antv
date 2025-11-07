@@ -20,7 +20,7 @@ function hasSkipLoginParam() {
 // 1. 定义 State (只包含数据)
 export const authStore = proxy({
   isModalOpen: false,
-  isAuthenticated: true,
+  isAuthenticated: false,
   token: localStorage.getItem('authToken'),
 });
 
@@ -51,9 +51,9 @@ export const loginOrRegister = async (params) => {
   }
 };
 
-export const logout = () => {
+export const logout = async () => {
   try {
-    request.delete<void>('/api/modules/user/api/accounts/logout')
+    await request.delete<void>('/api/modules/user/api/accounts/logout')
   } catch (e) {
     console.error('Logout failed in store:', e);
   }finally {

@@ -2,8 +2,8 @@ import {
   CaretDownFilled,
   DownOutlined,
   GithubOutlined,
-  LinkOutlined,
-  MenuOutlined,
+  LinkOutlined, LogoutOutlined,
+  MenuOutlined, UserDeleteOutlined, UserOutlined,
   WechatOutlined,
 } from '@ant-design/icons';
 import { Alert, Button, Dropdown, Menu, Modal, Popover } from 'antd';
@@ -26,6 +26,9 @@ import '@petercatai/assistant/style';
 import { useLocation } from 'react-router-dom';
 import { determineUserType } from '../../utils/user';
 import styles from './index.module.less';
+import {useSnapshot} from "valtio";
+import {authStore, logout} from "../../model/auth";
+import {clearAllChatData} from "../../model/AIChat";
 
 export type HeaderProps = {
   /** 网站 header 标题 */
@@ -167,7 +170,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
   announcement,
 }) => {
   const isAntVHome = isAntVSite && isHomePage; // 是否为AntV官网首页
-
+  const authSnap = useSnapshot(authStore);
   const [bannerVisible, setBannerVisible] = useState(false);
 
   const showChinaMirror: boolean = !!internalSite;
@@ -552,6 +555,34 @@ const HeaderComponent: React.FC<HeaderProps> = ({
           </li>
         )
       }
+
+      {authSnap.isAuthenticated && (
+        <li className={cx(styles.navIcon, styles.githubCorner)}>
+          <Dropdown menu={{ items: [
+              {
+                key: 'logout',
+                label: (
+                  <a onClick={() => logout()}>
+                    退出登录
+                  </a>
+                ),
+                icon: <LogoutOutlined />
+              },
+              {
+                key: 'deleteAccount',
+                label: (
+                  <a onClick={() => {logout(); clearAllChatData();}}>
+                    注销账号
+                  </a>
+                ),
+                icon: <UserDeleteOutlined />
+              }]}}>
+            <a>
+              <UserOutlined />
+            </a>
+          </Dropdown>
+        </li>
+      )}
     </ul>
   );
 
