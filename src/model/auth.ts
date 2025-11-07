@@ -69,7 +69,9 @@ export function sendValidationCode(data: any): Promise<void> {
 
 export const initializeAuth = async () => {
   try{
-    await request.get('/api/modules/user/api/accounts/get_company_info')
+    if (!hasSkipLoginParam()) {
+      await request.get('/api/modules/user/api/accounts/get_company_info')
+    }
     authStore.isAuthenticated = true;
   } catch (e) {
     console.error('Initialize auth failed in store:', e)
