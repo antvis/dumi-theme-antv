@@ -6,12 +6,14 @@ import { initializeAIChat } from '../../model/AIChat';
 import { initializeAuth } from '../../model/auth';
 
 const queryClient = new QueryClient();
-window.antd = antd;
 const GlobalLayout: FC = () => {
   const outlet = useOutlet();
   useEffect(() => {
     initializeAIChat();
     initializeAuth();
+    if (typeof window !== 'undefined') {
+      window.antd = antd;
+    }
   }, []);
   return outlet && <QueryClientProvider client={queryClient}>{outlet}</QueryClientProvider>;
 };

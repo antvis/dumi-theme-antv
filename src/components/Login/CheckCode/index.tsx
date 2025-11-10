@@ -28,8 +28,6 @@ interface CheckCodeProps {
   handleSendCode?: (target: string, captchaValues: any) => Promise<void>;
 }
 
-const isUIA = UIA_UA_RE.test(navigator.userAgent);
-
 function CheckCode({
   en,
   form,

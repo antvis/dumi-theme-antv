@@ -6,6 +6,9 @@ import request from '../utils/request';
  * @returns {boolean} 如果包含则返回 true, 否则返回 false
  */
 function hasSkipLoginParam() {
+  if (typeof window === 'undefined') {
+    return false;
+  }
   // 1. 获取当前 URL 的查询字符串 (例如 "?foo=bar&skipLogin=1")
   const queryString = window.location.search;
 
@@ -21,7 +24,6 @@ function hasSkipLoginParam() {
 export const authStore = proxy({
   isModalOpen: false,
   isAuthenticated: false,
-  token: localStorage.getItem('authToken'),
 });
 
 // 2. 定义 Actions (作为独立函数)
@@ -35,14 +37,8 @@ export const hideLoginModal = () => {
 
 export const loginOrRegister = async (params) => {
   try {
-    const result = await request.post('/api/modules/user/api/accounts/login_or_register', params);
-
-    authStore.token = result.token;
+    await request.post('/api/modules/user/api/accounts/login_or_register', params);
     authStore.isAuthenticated = true;
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('authToken', result.token);
-    }
-
     hideLoginModal();
     return true;
   } catch (error) {
@@ -57,9 +53,7 @@ export const logout = async () => {
   } catch (e) {
     console.error('Logout failed in store:', e);
   }finally {
-    authStore.token = null;
     authStore.isAuthenticated = false;
-    localStorage.removeItem('authToken');
   }
 };
 
