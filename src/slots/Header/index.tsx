@@ -18,7 +18,7 @@ import { INav, Navs } from './Navs';
 import { Products } from './Products';
 import { Search } from './Search';
 import { findVersion } from './utils';
-
+import { ReactComponent as UserIcon } from '../../static/user.svg';
 import type { IC } from '../../types';
 
 import { Assistant } from '@petercatai/assistant';
@@ -578,7 +578,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
                 icon: <UserDeleteOutlined />
               }]}}>
             <a>
-              <UserOutlined />
+              <UserIcon className={styles.userIcon}/>
             </a>
           </Dropdown>
         </li>
