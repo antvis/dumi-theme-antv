@@ -1,7 +1,7 @@
 import MonacoEditor, { loader } from '@monaco-editor/react';
 import {Drawer, Switch} from 'antd';
 import { autoType as d3AutoType, dsvFormat } from 'd3-dsv';
-import { useLocale, useSiteData, useIntl } from 'dumi';
+import {useLocale, useSiteData, useIntl, useLocation} from 'dumi';
 import { debounce, noop } from 'lodash-es';
 import { format } from 'prettier';
 import parserBabel from 'prettier/parser-babel';
@@ -101,6 +101,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   onFullscreen = noop,
   showAI = true,
 }) => {
+  const umiLocation = useLocation();
   const locale = useLocale();
   const { themeConfig } = useSiteData();
   const intl = useIntl();
@@ -470,9 +471,11 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
             getContainer={false}
             onClose={() => setShowAIDrawer(false)}
             rootClassName={styles.drawer}
-            width={'90%'}
+            width={'80%'}
+            key={`${umiLocation.hash}_${umiLocation.key}`}
           >
             <MsgBox
+              key={`${umiLocation.hash}_${umiLocation.key}`}
               simple
               messages={[
                 {

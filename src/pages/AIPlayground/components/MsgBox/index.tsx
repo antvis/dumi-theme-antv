@@ -2,13 +2,12 @@ import {
   CheckOutlined,
   CopyOutlined,
   PlusSquareOutlined,
-  SyncOutlined,
-  VerticalAlignBottomOutlined,
+  SyncOutlined
 } from '@ant-design/icons';
 import { Bubble } from '@ant-design/x';
 import { Button, Flex, Space, Tooltip } from 'antd';
 import { useChat } from '@ai-sdk/react';
-import { DefaultChatTransport, TextStreamChatTransport, type UIMessage } from 'ai';
+import { TextStreamChatTransport, type UIMessage } from 'ai';
 import { history, useIntl, useSiteData } from 'dumi';
 import { findLast } from 'lodash-es';
 import React, { useEffect, useState, useMemo, useRef } from 'react';
@@ -75,7 +74,7 @@ interface MsgBoxProps {
 }
 
 function MsgBox(props: MsgBoxProps) {
-  const { messages: initialMessages = [], simple = false, context = '', onCodegen, title } = props;
+  const { messages: initialMessages = [], simple = false, onCodegen, title } = props;
   const { themeConfig } = useSiteData();
   const { formatMessage } = useIntl();
   const [lib, setLib] = useState(!themeConfig.isAntVSite ? themeConfig.title : undefined);
@@ -84,10 +83,9 @@ function MsgBox(props: MsgBoxProps) {
   const snap = useSnapshot(AIChatStore);
   const derivedSnap = useSnapshot(derivedState);
   const [copyState, copyToClipboard] = useCopyToClipboard();
-
+  const latestUserMessage = findLast(derivedSnap.activeSession?.messages, (msg) => msg.role === 'user');
   // 使用 ref 存储动态值，避免重新创建 transport
   const anonymousUserIdRef = useRef(snap.anonymousUserId);
-  const contextRef = useRef(props.context);
   const activeSessionIdRef = useRef(derivedSnap.activeSession?.id);
 
   useEffect(() => {
@@ -114,8 +112,9 @@ function MsgBox(props: MsgBoxProps) {
         gptConversationId: activeSessionIdRef.current,
         anonymousUserId: anonymousUserIdRef.current,
         mountId: 'container',
-        antvContext: props.context,
-        library: lib,
+        antvContext: latestUserMessage?.context || props.context,
+        library: latestUserMessage?.lib || lib,
+        mode: latestUserMessage?.mode,
       }),
     }),
     messages: convertedInitialMessages,
@@ -221,7 +220,7 @@ function MsgBox(props: MsgBoxProps) {
   }, [snap.activeSessionId]);
 
   // 将 messages 数组作为依赖项。当它变化时，Hook 会运行。
-  const { containerRef, anchorRef, showScrollDownButton } = useAutoScroll(messages);
+  const { containerRef, anchorRef } = useAutoScroll(messages);
 
   return (
     <>
@@ -231,7 +230,7 @@ function MsgBox(props: MsgBoxProps) {
           return (
             <Bubble
               key={msg.id || index}
-              content={<MarkdownComponent content={textContent} />}
+              content={<MarkdownComponent content={textContent} showRunButton={!props.simple} />}
               avatar={msg.role === 'assistant' ? avatar : null}
               footer={
                 msg.role === 'assistant' &&

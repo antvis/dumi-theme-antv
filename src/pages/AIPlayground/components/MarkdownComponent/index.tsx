@@ -6,9 +6,10 @@ import { MarkdownCodeBlock } from './MarkdownCodeBlock'; // 引入我们创建�
 
 interface MarkdownComponentProps {
   content: string;
+  showRunButton?: boolean;
 }
 
-export const MarkdownComponent: React.FC<MarkdownComponentProps> = ({ content }) => {
+export const MarkdownComponent: React.FC<MarkdownComponentProps> = ({ content, showRunButton }) => {
   return (
     <Markdown
       remarkPlugins={[remarkGfm]}
@@ -22,7 +23,7 @@ export const MarkdownComponent: React.FC<MarkdownComponentProps> = ({ content })
 
         // 2. 【核心】重写 `code` 标签的渲染，使用我们自己的组件
         code(props) {
-          return <MarkdownCodeBlock {...props} />;
+          return <MarkdownCodeBlock showRunButton={showRunButton}  {...props} />;
         },
 
         // 3. 重写非标准 `description` 标签的渲染

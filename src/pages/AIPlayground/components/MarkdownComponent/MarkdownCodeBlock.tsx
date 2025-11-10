@@ -6,7 +6,6 @@ import {useCopyToClipboard} from "react-use";
 import {CheckOutlined, CopyOutlined, PlaySquareOutlined} from "@ant-design/icons";
 import {Button, Space, Tooltip} from "antd";
 import styles from "./MarkdownCodeBlock.module.less";
-import {isPreviewable} from "../../../../utils/code";
 import { useIntl } from 'dumi';
 
 // 定义 props 类型，它将接收 react-markdown 传递的所有属性
@@ -15,9 +14,11 @@ interface CodeBlockProps {
   inline?: boolean;
   className?: string;
   children?: React.ReactNode;
+  showRunButton?: boolean;
 }
 
-export const MarkdownCodeBlock: React.FC<CodeBlockProps> = ({ inline, className, children }) => {
+export const MarkdownCodeBlock: React.FC<CodeBlockProps> = ({ inline, className, children, showRunButton: showRunButtonProp = true }) => {
+  const intl = useIntl();
   const [copyState, copyToClipboard] = useCopyToClipboard();
   // 1. 处理行内代码：如果是行内代码，不做特殊处理，直接返回一个 <code> 标签
   if (inline || (typeof children === 'string' && !children.includes("\n"))) {
@@ -32,7 +33,7 @@ export const MarkdownCodeBlock: React.FC<CodeBlockProps> = ({ inline, className,
   const codeString = String(children).replace(/\n$/, '');
 
   // 4. 判断是否显示“运行”按钮
-  const showRunButton = /\bimport\b/.test(codeString);
+  const showRunButton = showRunButtonProp && /\bimport\b/.test(codeString);
 
   // 5. 定义运行代码的逻辑
   const handleRunCode = () => {
@@ -41,8 +42,6 @@ export const MarkdownCodeBlock: React.FC<CodeBlockProps> = ({ inline, className,
   };
 
   // 6. 返回最终的 JSX 结构
-  const intl = useIntl();
-
   return (
     <div style={{ position: 'relative', margin: '1em 0' }}>
       <Space className={styles.button}>
