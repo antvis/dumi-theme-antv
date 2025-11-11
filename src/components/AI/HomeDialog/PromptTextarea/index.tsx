@@ -3,7 +3,7 @@ import { useEventListener } from 'ahooks';
 import { message, Tooltip, Upload } from 'antd';
 import classnames from 'classnames';
 import _ from 'lodash';
-import React, { useState } from 'react';
+import React, {useRef, useState} from 'react';
 import styles from './index.module.less';
 import { SendButton } from './SendButton';
 import { AIMode, AIModeType, FileIcons } from '../../constant';
@@ -55,6 +55,7 @@ export const PromptTextarea = React.memo(function PromptTextareaInner(props: Pro
   } = props;
   const authSnap = useSnapshot(authStore);
   const { formatMessage } = useIntl();
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   // 将fileMeta状态移到组件内部管理
   const [fileMeta, setFileMeta] = useState<FileMeta | null>(null);
@@ -115,7 +116,7 @@ export const PromptTextarea = React.memo(function PromptTextareaInner(props: Pro
         send(); // 触发自定义事件
       }
     }
-  });
+  }, { target: textareaRef });
 
   return (
     <div
@@ -132,6 +133,7 @@ export const PromptTextarea = React.memo(function PromptTextareaInner(props: Pro
         onBlur={() => setFocus(false)}
         id="prompt-textarea"
         className={classnames(styles.promptTextarea)}
+        ref={textareaRef}
         placeholder={
           // (!isCompact && !themeConfig.isAntVSite && ic(themeConfig.metas.description)) ||
           (!isCompact && !themeConfig.isAntVSite) ? typedPlaceholder :
