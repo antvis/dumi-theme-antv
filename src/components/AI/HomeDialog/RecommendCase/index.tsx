@@ -6,7 +6,8 @@ import {ReloadOutlined} from "@ant-design/icons";
 import {ReplayCase} from "../../types";
 import RecommendJson from "./recommend.json";
 import classnames from "classnames";
-import { FormattedMessage } from 'dumi';
+import {FormattedMessage, useSiteData} from 'dumi';
+import {sampleSize} from "lodash-es";
 
 type RecommendCaseProps = {
   className?: string;
@@ -15,15 +16,21 @@ type RecommendCaseProps = {
 
 export const RecommendCase = (props: RecommendCaseProps) => {
   const [loading, setLoading] = useState(false);
-
+  const { themeConfig } = useSiteData();
   const [list, setList] = useState<ReplayCase[]>([]);
 
   const fetchList = useCallback(
     async () => {
       try {
         setLoading(true);
-        const data = RecommendJson as unknown as ReplayCase[];
-        setList(data.slice(0, 4));
+        let data: ReplayCase[] = [];
+        if (themeConfig?.recommend) {
+          data = await fetch(themeConfig.recommend)
+            .then((res) => res.json());
+        } else {
+          data = RecommendJson as unknown as ReplayCase[];
+        }
+        setList(sampleSize(data, 4));
       } catch (err) {
         console.log(err);
       } finally {
