@@ -8,7 +8,7 @@ import { Bubble } from '@ant-design/x';
 import { Button, Flex, Space, Tooltip } from 'antd';
 import { useChat } from '@ai-sdk/react';
 import { TextStreamChatTransport, type UIMessage } from 'ai';
-import { history, useIntl, useSiteData } from 'dumi';
+import { useIntl, useSiteData } from 'dumi';
 import { findLast } from 'lodash-es';
 import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { useCopyToClipboard } from 'react-use';
@@ -151,8 +151,11 @@ function MsgBox(props: MsgBoxProps) {
 
   // 处理用户提交
   const handleSubmit = () => {
-    if (!promptText.trim() || status === 'streaming' || status === 'submitted') return;
-
+    const trimmedPrompt = promptText.trim();
+    if (!trimmedPrompt || status === 'streaming' || status === 'submitted') return;
+    if (!derivedSnap.activeSession.messages?.length) {
+      derivedState.activeSession.title = trimmedPrompt;
+    }
     // 使用 sendMessage 函数发送新消息
     // 第二个参数传递每次请求特定的额外数据
     sendMessage(
@@ -183,6 +186,7 @@ function MsgBox(props: MsgBoxProps) {
     if (simple) {
       return;
     }
+
     setTimeout(() => {
       const sessionMessages = derivedSnap.activeSession?.messages;
       if (sessionMessages?.length > 0) {
@@ -192,6 +196,8 @@ function MsgBox(props: MsgBoxProps) {
           JSON.stringify(messages) !== JSON.stringify(converted)) {
           setMessages(converted);
         }
+      } else {
+        setMessages([]);
       }
     })
   }, [derivedSnap.activeSession?.id, derivedSnap.activeSession?.messages?.length]);
@@ -276,7 +282,7 @@ function MsgBox(props: MsgBoxProps) {
         {!props.simple && (
           <div className={styles.newButtonContainer}>
             <Space>
-              <button type="button" onClick={() => history.push('/')} className={styles.newButton}>
+              <button type="button" onClick={() => createPureNewSession()} className={styles.newButton}>
               <Space>
                 <PlusSquareOutlined />
                 {formatMessage({ id: 'ai.msgbox.start.new.chat' })}

@@ -12,10 +12,15 @@ import {Dropdown, Input, MenuProps, Modal} from 'antd';
 import { Menu } from 'antd';
 import styles from './index.module.less';
 import { useSnapshot } from 'valtio';
-import {AIChatStore, handleDeleteSession, handlePinSession, handleRenameSession} from "../../../../model/AIChat";
-import { history } from 'dumi';
+import {
+  AIChatStore,
+  createPureNewSession,
+  handleDeleteSession,
+  handlePinSession,
+  handleRenameSession
+} from "../../../../model/AIChat";
 import {useSetState} from "ahooks";
-import { useIntl, FormattedMessage } from 'dumi';
+import { useIntl } from 'dumi';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -47,7 +52,7 @@ export const ConversationsMenu: React.FC = () => {
       icon: !collapsed ? null : <MenuUnfoldOutlined />,
       title: collapsed ? formatMessage({ id: 'ai.conversations.expand' }) : formatMessage({ id: 'ai.conversations.collapse' }),
     },
-    { key: 'new', icon: <PlusSquareOutlined />, label: formatMessage({ id: 'ai.conversations.new' }), onClick: () => history.push('/') },
+    { key: 'new', icon: <PlusSquareOutlined />, label: formatMessage({ id: 'ai.conversations.new' }), onClick: () => createPureNewSession() },
     {
       key: 'history',
       label: formatMessage({ id: 'ai.conversations.history' }),

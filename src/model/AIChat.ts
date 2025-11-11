@@ -154,10 +154,14 @@ subscribeKey(AIChatStore, 'activeSessionId', () => {
 })
 
 export const createPureNewSession = (title?: string) => {
+  const newConversationName = 'New Conversation';
+  if (AIChatStore.sessions.some(s => s.title === newConversationName && s.messages.length === 0)) {
+    return;
+  }
   const newSessionId = crypto.randomUUID();
   AIChatStore.sessions.unshift({
     id: newSessionId,
-    title: title ?? 'New Conversation',
+    title: title ?? newConversationName,
     createdAt: Date.now(),
     messages: [],
   });
