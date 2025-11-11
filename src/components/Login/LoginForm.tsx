@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import { Button, Checkbox, Form, Input, Modal } from 'antd';
-import { parse } from 'query-string';
 import { chinaMobilePhoneRE, getFingerprint, SignupRegion } from './utils';
 import CheckCode from './CheckCode';
 import classNames from 'classnames';
 import './LoginForm.less';
 import { useIntl } from 'dumi';
 import {loginOrRegister} from "../../model/auth";
-import {MobileOutlined} from "@ant-design/icons";
 
 const userProtocolLink = 'https://render.alipay.com/p/c/180021120000001078/index.html?agreementId=AG01001502';
 
@@ -46,10 +44,7 @@ export default function LoginForm() {
       params.signupRegion = SignupRegion.possible_oversea;
     }
 
-    const res: any = await loginOrRegister(params);
-    const { goto: gotoFromServer } = res;
-    const { goto: gotoFromUrl } = parse(window.location.search);
-    window.location.href = gotoFromUrl || gotoFromServer || '/';
+    await loginOrRegister(params);
   }
 
   async function handleProtocolConfirmModal() {

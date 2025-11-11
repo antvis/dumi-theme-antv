@@ -98,14 +98,18 @@ export const PromptTextarea = React.memo(function PromptTextareaInner(props: Pro
 
   const promptTextValid = Boolean(value);
 
-  const send = () => {
-    if (!authSnap.isAuthenticated) {
-      showLoginModal();
-      return;
-    }
+  const pureSend = () => {
     if (promptTextValid) {
       onConfirm?.();
     }
+  };
+
+  const send = () => {
+    if (!authSnap.isAuthenticated) {
+      showLoginModal(pureSend);
+      return;
+    }
+    pureSend();
   };
 
   useEventListener('keydown', (event) => {

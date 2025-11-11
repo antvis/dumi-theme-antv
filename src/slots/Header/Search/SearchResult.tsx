@@ -40,6 +40,17 @@ export const SearchResult: React.FC<{ results: ISearchResult[], keywords: string
   const { themeConfig } = useSiteData();
   const intl = useIntl();
   const authSnap = useSnapshot(authStore);
+
+  function pureSearch() {
+    createNewSession({
+      promptText: keywords,
+      mode: 'solve',
+      lib: !themeConfig.isAntVSite ? themeConfig.title : undefined,
+      jump: true,
+      lang: intl.locale === 'zh' ? 'zh' : 'en',
+    });
+  }
+
   return (
     <div className={styles.searchResult}>
       <div className={styles.item}>
@@ -47,16 +58,10 @@ export const SearchResult: React.FC<{ results: ISearchResult[], keywords: string
         <div className={styles.br}/>
         <a className={styles.result} onClick={() => {
           if (!authSnap.isAuthenticated) {
-            showLoginModal();
+            showLoginModal(pureSearch);
             return;
           }
-          createNewSession({
-            promptText: keywords,
-            mode: "solve",
-            lib: !themeConfig.isAntVSite ? themeConfig.title : undefined,
-            jump: true,
-            lang: intl.locale === 'zh' ? 'zh' : 'en'
-          })
+          pureSearch();
         }}>
           <div className={classnames(styles.title, styles.highlighted)}>{keywords}</div>
           <div className={styles.description}>

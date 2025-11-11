@@ -24,11 +24,13 @@ function hasSkipLoginParam() {
 export const authStore = proxy({
   isModalOpen: false,
   isAuthenticated: false,
+  loginCallback: () => {},
 });
 
 // 2. 定义 Actions (作为独立函数)
-export const showLoginModal = () => {
+export const showLoginModal = (callback?: () => void) => {
   authStore.isModalOpen = true;
+  authStore.loginCallback = callback;
 };
 
 export const hideLoginModal = () => {
@@ -40,6 +42,7 @@ export const loginOrRegister = async (params) => {
     await request.post('/api/modules/user/api/accounts/login_or_register', params);
     authStore.isAuthenticated = true;
     hideLoginModal();
+    authStore.loginCallback?.();
     return true;
   } catch (error) {
     console.error('Login failed in store:', error);

@@ -14,13 +14,12 @@ import { useIntl } from 'dumi';
 import './index.less';
 import React from 'react';
 import {sendValidationCode} from "../../../model/auth";
-import {MessageOutlined} from "@ant-design/icons";
 
 interface CheckCodeProps {
   form: FormInstance;
   disabeCaptcha?: boolean;
-  targetFieldName: string;
-  validateFailedMsg: string;
+  targetFieldName?: string;
+  validateFailedMsg?: string;
   en?: boolean;
   ncName?: string;
   scene?: NC_SCENE;
