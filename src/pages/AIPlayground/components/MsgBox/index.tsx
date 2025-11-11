@@ -217,6 +217,7 @@ function MsgBox(props: MsgBoxProps) {
 
   useEffect(() => {
     chatScrollIntoView();
+    stop();
   }, [snap.activeSessionId]);
 
   // 将 messages 数组作为依赖项。当它变化时，Hook 会运行。
