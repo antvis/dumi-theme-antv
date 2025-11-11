@@ -6,10 +6,11 @@ import {ReloadOutlined} from "@ant-design/icons";
 import {ReplayCase} from "../../types";
 import RecommendJson from "./recommend.json";
 import classnames from "classnames";
-import { useIntl, FormattedMessage } from 'dumi';
+import { FormattedMessage } from 'dumi';
 
 type RecommendCaseProps = {
   className?: string;
+  onClick?: (item: ReplayCase) => void;
 };
 
 export const RecommendCase = (props: RecommendCaseProps) => {
@@ -54,7 +55,9 @@ export const RecommendCase = (props: RecommendCaseProps) => {
       <Spin spinning={loading} wrapperClassName={classnames(styles.listContainer, props.className)}>
         <div className={styles.list}>
           {list.map((item, index) => {
-            return <Card key={item.caseId} item={item} index={index}/>;
+            return <Card key={item.caseId} item={item} index={index} onClick={() => {
+              props.onClick?.(item);
+            }}/>;
           })}
         </div>
       </Spin>

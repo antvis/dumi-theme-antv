@@ -9,6 +9,7 @@ import { AIMode, AIModeType } from '../constant';
 import classnames from 'classnames';
 import { useSiteData, useLocale } from 'dumi';
 import {createNewSession} from '../../../model/AIChat';
+import {ReplayCase} from "../types";
 
 interface HomeDialogProps {
   className?: string;
@@ -62,6 +63,10 @@ export function HomeDialog(props: HomeDialogProps) {
       style={props.promptTextareaStyle}
       onDataSummaryChange={setFileSummary}
     />
-    <RecommendCase className={props.recommendCaseClassName}/>
+    <RecommendCase className={props.recommendCaseClassName} onClick={(val: ReplayCase) => {
+      if (val?.query) {
+        setPromptText(val.query);
+      }
+    }}/>
   </div>;
 }

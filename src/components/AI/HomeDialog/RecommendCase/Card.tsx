@@ -9,18 +9,16 @@ import { FormattedMessage } from 'dumi';
 interface ICardProps {
   item: ReplayCase;
   index: number;
+  onClick: () => void;
 }
 
-export const Card: React.FC<ICardProps> = ({ item, index }) => {
-  const { query, description, imageUrls = [], link, tag } = item;
+export const Card: React.FC<ICardProps> = ({ item, index, onClick }) => {
+  const { query, description, imageUrls = [], tag } = item;
   const style = COLORS[index];
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-
-    const urlObj = new URL(location.href);
-    urlObj.hash = ``;
-    window.open(urlObj.toString(), '_blank');
+    onClick?.();
   };
 
   const popoverContent = (
