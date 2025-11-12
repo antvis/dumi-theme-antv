@@ -19,7 +19,8 @@ const initialState: AIChatState = {
   sessions: [],
   activeSessionId: null,
   tempMessage: null,
-  codeBlock: null
+  codeBlock: null,
+  lib: null
 };
 
 

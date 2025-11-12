@@ -163,4 +163,5 @@ export interface AIChatState {
   activeSessionId: string | null;
   tempMessage: Message | null;
   codeBlock: string | null;
+  lib: string | null;
 }

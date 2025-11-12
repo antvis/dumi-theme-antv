@@ -21,6 +21,7 @@ import {
 } from "../../../../model/AIChat";
 import {useSetState} from "ahooks";
 import { useIntl } from 'dumi';
+import {isUUID} from "../../../../utils";
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -34,7 +35,9 @@ export const ConversationsMenu: React.FC = () => {
   const snap = useSnapshot(AIChatStore);
 
   const handleSelectSession = (sessionId: string) => {
-    AIChatStore.activeSessionId = sessionId;
+    if (isUUID(sessionId)) {
+      AIChatStore.activeSessionId = sessionId;
+    }
   };
 
   const toggleCollapsed = () => {

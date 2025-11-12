@@ -8,7 +8,7 @@ import { Bubble } from '@ant-design/x';
 import { Button, Flex, Space, Tooltip } from 'antd';
 import { useChat } from '@ai-sdk/react';
 import { TextStreamChatTransport, type UIMessage } from 'ai';
-import { useIntl, useSiteData } from 'dumi';
+import { useIntl } from 'dumi';
 import { findLast } from 'lodash-es';
 import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { useCopyToClipboard } from 'react-use';
@@ -16,7 +16,6 @@ import { useSnapshot } from 'valtio';
 import { PromptTextarea } from '../../../../components/AI/HomeDialog/PromptTextarea';
 import {
   AIChatStore,
-  clearEmptySession,
   createPureNewSession,
   derivedState,
 } from '../../../../model/AIChat';
@@ -75,9 +74,7 @@ interface MsgBoxProps {
 
 function MsgBox(props: MsgBoxProps) {
   const { messages: initialMessages = [], simple = false, onCodegen, title } = props;
-  const { themeConfig } = useSiteData();
   const { formatMessage } = useIntl();
-  const [lib, setLib] = useState(!themeConfig.isAntVSite ? themeConfig.title : undefined);
   const [promptText, setPromptText] = useState<string>('');
   const [fileSummary, setFileSummary] = useState('');
   const snap = useSnapshot(AIChatStore);
@@ -113,7 +110,7 @@ function MsgBox(props: MsgBoxProps) {
         anonymousUserId: anonymousUserIdRef.current,
         mountId: 'container',
         antvContext: latestUserMessage?.context || props.context,
-        library: latestUserMessage?.lib || lib,
+        library: snap.lib,
         mode: latestUserMessage?.mode,
       },
     }),
@@ -163,7 +160,7 @@ function MsgBox(props: MsgBoxProps) {
       {
         body: {
           context: fileSummary,
-          lib: lib,
+          lib: snap.lib,
           mode: 'implement',
         },
       }
@@ -176,7 +173,7 @@ function MsgBox(props: MsgBoxProps) {
       content: promptText,
       createdAt: Date.now(),
       context: fileSummary,
-      lib,
+      lib: snap.lib,
     });
     chatScrollIntoView();
   };
@@ -304,8 +301,6 @@ function MsgBox(props: MsgBoxProps) {
           showAction={!props.simple}
           style={{ marginBottom: 0 }}
           onConfirm={handleSubmit}
-          lib={lib}
-          onLibChange={setLib}
           onDataSummaryChange={setFileSummary}
         />
       </div>

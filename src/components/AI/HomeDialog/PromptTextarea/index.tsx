@@ -1,19 +1,19 @@
 import { DatasourceCard } from './DatasourceCard';
 import { useEventListener } from 'ahooks';
-import { message, Tooltip, Upload } from 'antd';
 import classnames from 'classnames';
 import _ from 'lodash';
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import styles from './index.module.less';
 import { SendButton } from './SendButton';
-import { AIMode, AIModeType, FileIcons } from '../../constant';
+import { AIModeType } from '../../constant';
 import { ChooseLib } from './ChooseLib';
 import { useSiteData, useIntl } from 'dumi';
 import { ic } from '../../../../slots/hooks';
 import {useTypewriter} from "../../../../hooks/useTypewriter";
-import { DataUploader, FileMeta, AnalyzedData } from './Uploader/DataUploader';
+import { FileMeta, AnalyzedData } from './Uploader/DataUploader';
 import {authStore, showLoginModal} from "../../../../model/auth";
 import {useSnapshot} from "valtio";
+import {AIChatStore} from "../../../../model/AIChat";
 
 interface PromptTextareaProps {
   value: string;
@@ -28,8 +28,6 @@ interface PromptTextareaProps {
   // fileMeta现在由组件内部管理
   // fileMeta?: FileMeta;
   mode: AIModeType;
-  lib?: string;
-  onLibChange?: (val: string) => void;
   style?: React.CSSProperties;
   showAction?: boolean;
 }
@@ -49,21 +47,24 @@ export const PromptTextarea = React.memo(function PromptTextareaInner(props: Pro
     onCancel,
     loading,
     mode,
-    lib,
-    onLibChange,
     showAction = true,
   } = props;
+  const snap = useSnapshot(AIChatStore);
   const authSnap = useSnapshot(authStore);
   const { formatMessage } = useIntl();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-
+  const { themeConfig } = useSiteData();
+  useEffect(() => {
+    if (!themeConfig.isAntVSite && !snap.lib) {
+      AIChatStore.lib = themeConfig.title;
+    }
+  }, [themeConfig.isAntVSite, themeConfig.title]);
   // 将fileMeta状态移到组件内部管理
   const [fileMeta, setFileMeta] = useState<FileMeta | null>(null);
 
   // ... 其他状态和hooks保持不变
   const [focus, setFocus] = useState(false);
   const isCompact = size === 'compact';
-  const { themeConfig } = useSiteData();
   const typedPlaceholder = useTypewriter({
     texts: [
       formatMessage({ id: 'ai.placeholder.whatis' }, { title: themeConfig.title }),
@@ -153,7 +154,7 @@ export const PromptTextarea = React.memo(function PromptTextareaInner(props: Pro
         <div className={styles.dataActions}>
           {showAction && (
             <>
-              <ChooseLib value={lib} onChange={onLibChange} size={size} />
+              <ChooseLib size={size} value={snap.lib} onChange={(s) => AIChatStore.lib = s} />
             </>
           )}
         </div>

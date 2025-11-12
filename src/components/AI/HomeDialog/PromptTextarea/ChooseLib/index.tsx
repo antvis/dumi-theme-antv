@@ -30,7 +30,6 @@ export function ChooseLib(props: ChooseLibProps) {
       onClick: () => onSelect(item.title)
   }));
 
-  const intl = useIntl();
 
   return (
     <Dropdown menu={{ items }}>

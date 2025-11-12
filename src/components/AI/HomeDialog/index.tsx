@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import styles from './index.module.less';
 import { AntVBanner } from './AntVBanner';
 import { PromptTextarea } from './PromptTextarea';
@@ -8,7 +8,7 @@ import { useLocalStorageState } from 'ahooks';
 import { AIMode, AIModeType } from '../constant';
 import classnames from 'classnames';
 import { useSiteData, useLocale } from 'dumi';
-import {createNewSession} from '../../../model/AIChat';
+import {AIChatStore, createNewSession} from '../../../model/AIChat';
 import {ReplayCase} from "../types";
 
 interface HomeDialogProps {
@@ -20,8 +20,6 @@ interface HomeDialogProps {
 
 export function HomeDialog(props: HomeDialogProps) {
   const locale = useLocale();
-  const { themeConfig } = useSiteData();
-  const [lib, setLib] = useState(!themeConfig.isAntVSite ? themeConfig.title : undefined);
   const [mode, setMode] = useLocalStorageState<AIModeType>(
     'use-local-storage-ai-mode-type',
     {
@@ -43,10 +41,6 @@ export function HomeDialog(props: HomeDialogProps) {
     <PromptTextarea
       mode={mode}
       value={promptText}
-      lib={lib}
-      onLibChange={(v) => {
-        setLib(v);
-      }}
       onChange={(val) => {
         setPromptText(val);
       }}
@@ -54,7 +48,6 @@ export function HomeDialog(props: HomeDialogProps) {
         createNewSession({
           promptText,
           mode,
-          lib,
           jump: true,
           context: fileSummary,
           lang: locale.id
