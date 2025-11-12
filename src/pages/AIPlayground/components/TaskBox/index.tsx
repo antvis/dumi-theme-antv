@@ -66,6 +66,7 @@ function TaskBox() {
           requestProxy={requestProxy}
           isStreaming={false}
           proxyOptions={{isWAN: true}}
+          src={`https://www.weavefox.cn/_visionsnap_render/index.html?version=3.2.15&enableInspector=1`}
         />
       </ErrorBoundary>
     );

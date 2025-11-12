@@ -153,7 +153,7 @@ function MsgBox(props: MsgBoxProps) {
   const handleSubmit = () => {
     const trimmedPrompt = promptText.trim();
     if (!trimmedPrompt || status === 'streaming' || status === 'submitted') return;
-    if (!derivedSnap.activeSession.messages?.length) {
+    if (derivedSnap.activeSession && derivedSnap.activeSession.messages?.length === 0) {
       derivedState.activeSession.title = trimmedPrompt;
     }
     // 使用 sendMessage 函数发送新消息
@@ -216,9 +216,6 @@ function MsgBox(props: MsgBoxProps) {
     if (simple) {
       createPureNewSession(title);
     }
-    return () => {
-      clearEmptySession();
-    };
   }, []);
 
   useEffect(() => {
