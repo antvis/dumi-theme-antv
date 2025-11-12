@@ -61,7 +61,6 @@ function TaskBox() {
           displayMode="code-and-preview"
           initialView="preview"
           theme="light"
-          editable
           code={wrap2VisionSnap(snap.codeBlock)}
           requestProxy={requestProxy}
           isStreaming={false}
