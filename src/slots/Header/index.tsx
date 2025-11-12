@@ -3,12 +3,12 @@ import {
   DownOutlined,
   GithubOutlined,
   LinkOutlined, LogoutOutlined,
-  MenuOutlined, UserDeleteOutlined, UserOutlined,
+  MenuOutlined, MessageOutlined, UserDeleteOutlined,
   WechatOutlined,
 } from '@ant-design/icons';
 import { Alert, Button, Dropdown, Menu, Modal, Popover } from 'antd';
 import cx from 'classnames';
-import { FormattedMessage, Link, useLocale, useSiteData } from 'dumi';
+import { FormattedMessage, Link, useLocale, useSiteData, history } from 'dumi';
 import { get, map, size } from 'lodash-es';
 import React, {useEffect, useMemo, useState} from 'react';
 import { useMedia } from 'react-use';
@@ -559,6 +559,15 @@ const HeaderComponent: React.FC<HeaderProps> = ({
       {authSnap.isAuthenticated && (
         <li className={cx(styles.navIcon, styles.githubCorner)}>
           <Dropdown menu={{ items: [
+              {
+                key: 'history',
+                label: (
+                  <a onClick={() => history.push(`/${lang || 'zh'}/ai-playground`)}>
+                    历史会话
+                  </a>
+                ),
+                icon: <MessageOutlined />
+              },
               {
                 key: 'logout',
                 label: (

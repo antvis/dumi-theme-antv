@@ -123,6 +123,8 @@ function MsgBox(props: MsgBoxProps) {
           const codeBlock = getCodeFromMarkdown(messageContent).code;
           AIChatStore.codeBlock = codeBlock;
           onCodegen?.(codeBlock);
+        } else {
+          AIChatStore.codeBlock = '';
         }
         derivedState.activeSession?.messages?.push({
           id: crypto.randomUUID(),
