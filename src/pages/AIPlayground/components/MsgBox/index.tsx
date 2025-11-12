@@ -244,7 +244,10 @@ function MsgBox(props: MsgBoxProps) {
                   <Space size="small">
                     <Tooltip title={formatMessage({ id: 'ai.msgbox.retry' })}>
                       <Button
-                        onClick={() => regenerate()}
+                        onClick={() => {
+                          regenerate();
+                          derivedState.activeSession.messages.pop();
+                        }}
                         color="default"
                         variant="text"
                         size="small"
