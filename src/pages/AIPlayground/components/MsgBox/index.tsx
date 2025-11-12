@@ -105,14 +105,14 @@ function MsgBox(props: MsgBoxProps) {
         // xxx
       },
       // body 可以是函数，用于获取最新的动态值
-      body: {
+      body: () => ({
         gptConversationId: activeSessionIdRef.current,
         anonymousUserId: anonymousUserIdRef.current,
         mountId: 'container',
         antvContext: latestUserMessage?.context || props.context,
-        library: snap.lib,
+        library: AIChatStore.lib,
         mode: latestUserMessage?.mode,
-      },
+      }),
     }),
     messages: convertedInitialMessages,
     // 当AI响应结束时触发
