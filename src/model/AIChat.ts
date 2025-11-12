@@ -48,6 +48,9 @@ subscribe(AIChatStore, () => {
 
 export const clearEmptySession = () => {
   AIChatStore.sessions = AIChatStore.sessions.filter(s => s.messages.length > 0);
+  if (AIChatStore.sessions.every(s => s.id !== AIChatStore.activeSessionId) && AIChatStore.sessions.length > 0) {
+    AIChatStore.activeSessionId = AIChatStore.sessions[0].id;
+  }
 }
 
 // --- 初始化逻辑 ---

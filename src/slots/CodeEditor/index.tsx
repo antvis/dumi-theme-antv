@@ -1,7 +1,7 @@
 import MonacoEditor, { loader } from '@monaco-editor/react';
-import {Drawer, Switch} from 'antd';
+import { Button, Drawer, Switch, Tooltip } from 'antd';
 import { autoType as d3AutoType, dsvFormat } from 'd3-dsv';
-import {useLocale, useSiteData, useIntl, useLocation} from 'dumi';
+import { useIntl, useLocale, useLocation, useSiteData } from 'dumi';
 import { debounce, noop } from 'lodash-es';
 import { format } from 'prettier';
 import parserBabel from 'prettier/parser-babel';
@@ -11,7 +11,8 @@ import Loading from '../Loading';
 import styles from './index.module.less';
 import { EDITOR_TABS, Toolbar } from './Toolbar';
 import { compile, execute, replaceInsertCss } from './utils';
-import MsgBox from "../../pages/AIPlayground/components/MsgBox";
+import MsgBox from '../../pages/AIPlayground/components/MsgBox';
+import { ClearOutlined } from '@ant-design/icons';
 
 loader.config({
   'vs/nls': {
@@ -110,7 +111,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   // 编辑器两个 tab，分别是代码和数据
   const [data, setData] = useState(null);
   const [spec, setSpec] = useState(null);
-  const [code, setCode] = useState(source)
+  const [code, setCode] = useState(source);
   const [full, setFull] = useState(false);
   // monaco instance
   const monacoRef = useRef<any>(null);
@@ -122,7 +123,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   const [currentEditorTab, setCurrentEditorTab] = useState(EDITOR_TABS.JAVASCRIPT);
 
   const [showAIDrawer, setShowAIDrawer] = useState(false);
-
+  const [msgBoxKey, setMsgBoxKey] = useState("_");
   const containerId = `playgroundScriptContainer_${exampleId}`;
 
   // 出发 auto resize
@@ -407,7 +408,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
 
   const onReload = () => {
     setCode(source);
-  }
+  };
 
   return (
     <div className={styles.editor}>
@@ -465,7 +466,6 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
             }}
           />
           <Drawer
-            placement="right"
             closable={true}
             open={showAIDrawer}
             getContainer={false}
@@ -473,9 +473,16 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
             rootClassName={styles.drawer}
             width={'80%'}
             key={`${umiLocation.hash}_${umiLocation.key}`}
+            extra={
+              <Tooltip title="清空对话">
+                <Button type="link" onClick={() => setMsgBoxKey(crypto.randomUUID())}>
+                  <ClearOutlined />
+                </Button>
+              </Tooltip>
+            }
           >
             <MsgBox
-              key={`${umiLocation.hash}_${umiLocation.key}`}
+              key={`${umiLocation.hash}_${umiLocation.key}_${msgBoxKey}`}
               simple
               messages={[
                 {

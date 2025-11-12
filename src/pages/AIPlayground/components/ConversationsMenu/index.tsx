@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   DeleteOutlined,
   EditOutlined,
@@ -13,7 +13,7 @@ import { Menu } from 'antd';
 import styles from './index.module.less';
 import { useSnapshot } from 'valtio';
 import {
-  AIChatStore,
+  AIChatStore, clearEmptySession,
   createPureNewSession,
   handleDeleteSession,
   handlePinSession,
@@ -33,6 +33,9 @@ export const ConversationsMenu: React.FC = () => {
   });
   const [collapsed, setCollapsed] = useState(false);
   const snap = useSnapshot(AIChatStore);
+  useEffect(() => {
+    clearEmptySession();
+  }, []);
 
   const handleSelectSession = (sessionId: string) => {
     if (isUUID(sessionId)) {
