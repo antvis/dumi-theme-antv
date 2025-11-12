@@ -24,8 +24,8 @@ export const RecommendCase = (props: RecommendCaseProps) => {
       try {
         setLoading(true);
         let data: ReplayCase[] = [];
-        if (themeConfig?.recommend) {
-          data = await fetch(themeConfig.recommend)
+        if (themeConfig?.ai?.recommend) {
+          data = await fetch(themeConfig.ai.recommend)
             .then((res) => res.json());
         } else {
           data = RecommendJson as unknown as ReplayCase[];

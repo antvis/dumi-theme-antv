@@ -8,7 +8,7 @@ import {
 } from '@ant-design/icons';
 import { Alert, Button, Dropdown, Menu, Modal, Popover } from 'antd';
 import cx from 'classnames';
-import { FormattedMessage, Link, useLocale, useSiteData, history } from 'dumi';
+import { FormattedMessage, Link, useLocale, useSiteData, useIntl, history } from 'dumi';
 import { get, map, size } from 'lodash-es';
 import React, {useEffect, useMemo, useState} from 'react';
 import { useMedia } from 'react-use';
@@ -172,6 +172,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
   const isAntVHome = isAntVSite && isHomePage; // 是否为AntV官网首页
   const authSnap = useSnapshot(authStore);
   const [bannerVisible, setBannerVisible] = useState(false);
+  const intl = useIntl();
 
   const showChinaMirror: boolean = !!internalSite;
   const chinaMirrorUrl: string = get(internalSite, 'url');
@@ -563,7 +564,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
                 key: 'history',
                 label: (
                   <a onClick={() => history.push(`/${lang || 'zh'}/ai-playground`)}>
-                    历史会话
+                    {intl.formatMessage({ id: 'header.user.history' })}
                   </a>
                 ),
                 icon: <MessageOutlined />
@@ -572,7 +573,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
                 key: 'logout',
                 label: (
                   <a onClick={() => logout()}>
-                    退出登录
+                    {intl.formatMessage({ id: 'header.user.logout' })}
                   </a>
                 ),
                 icon: <LogoutOutlined />
@@ -581,7 +582,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
                 key: 'deleteAccount',
                 label: (
                   <a onClick={() => {logout(); clearAllChatData();}}>
-                    注销账号
+                    {intl.formatMessage({ id: 'header.user.deleteAccount' })}
                   </a>
                 ),
                 icon: <UserDeleteOutlined />

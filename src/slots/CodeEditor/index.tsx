@@ -474,7 +474,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
             width={'80%'}
             key={`${umiLocation.hash}_${umiLocation.key}`}
             extra={
-              <Tooltip title="清空对话">
+              <Tooltip title={intl.formatMessage({ id: 'ai.toolbar.clear.conversation' })}>
                 <Button type="link" onClick={() => setMsgBoxKey(crypto.randomUUID())}>
                   <ClearOutlined />
                 </Button>
