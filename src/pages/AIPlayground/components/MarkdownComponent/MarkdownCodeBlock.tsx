@@ -1,12 +1,12 @@
 import React from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import {a11yLight} from "react-syntax-highlighter/dist/cjs/styles/hljs";
-import { AIChatStore } from "../../../../model/AIChat";
-import {useCopyToClipboard} from "react-use";
-import {CheckOutlined, CopyOutlined, PlaySquareOutlined} from "@ant-design/icons";
-import {Button, Space, Tooltip} from "antd";
-import styles from "./MarkdownCodeBlock.module.less";
-import { useIntl } from 'dumi';
+import { a11yLight } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
+import { AIChatStore } from '../../../../model/AIChat';
+import { useCopyToClipboard } from 'react-use';
+import { CheckOutlined, CopyOutlined, PlaySquareOutlined } from '@ant-design/icons';
+import { Button, Space, Tooltip } from 'antd';
+import styles from './MarkdownCodeBlock.module.less';
+import { useIntl } from 'dumi'; // 定义 props 类型，它将接收 react-markdown 传递的所有属性
 
 // 定义 props 类型，它将接收 react-markdown 传递的所有属性
 interface CodeBlockProps {
@@ -17,11 +17,16 @@ interface CodeBlockProps {
   showRunButton?: boolean;
 }
 
-export const MarkdownCodeBlock: React.FC<CodeBlockProps> = ({ inline, className, children, showRunButton: showRunButtonProp = true }) => {
+export const MarkdownCodeBlock: React.FC<CodeBlockProps> = ({
+  inline,
+  className,
+  children,
+  showRunButton: showRunButtonProp = true,
+}) => {
   const intl = useIntl();
   const [copyState, copyToClipboard] = useCopyToClipboard();
   // 1. 处理行内代码：如果是行内代码，不做特殊处理，直接返回一个 <code> 标签
-  if (inline || (typeof children === 'string' && !children.includes("\n"))) {
+  if (inline || (typeof children === 'string' && !children.includes('\n'))) {
     return <code className={className}>{children}</code>;
   }
 
@@ -75,6 +80,9 @@ export const MarkdownCodeBlock: React.FC<CodeBlockProps> = ({ inline, className,
         language={language}
         PreTag="div" // 使用 div 作为外层标签，避免 pre 标签的默认样式冲突
         showLineNumbers={false} // (可选) 显示行号
+        customStyle={{
+          paddingTop: '2em',
+        }}
       >
         {codeString}
       </SyntaxHighlighter>
