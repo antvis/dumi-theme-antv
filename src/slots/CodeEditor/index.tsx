@@ -83,6 +83,7 @@ export type CodeEditorProps = {
   };
 
   showAI?: boolean;
+  style?: React.CSSProperties;
 };
 
 /**
@@ -101,6 +102,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   onError = noop,
   onFullscreen = noop,
   showAI = true,
+  style,
 }) => {
   const umiLocation = useLocation();
   const locale = useLocale();
@@ -411,7 +413,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   };
 
   return (
-    <div className={styles.editor}>
+    <div className={styles.editor} style={style}>
       <Toolbar
         fileExtension={fileExtension}
         sourceCode={code}

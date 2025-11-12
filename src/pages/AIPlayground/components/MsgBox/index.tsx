@@ -15,7 +15,7 @@ import { useCopyToClipboard } from 'react-use';
 import { useSnapshot } from 'valtio';
 import { PromptTextarea } from '../../../../components/AI/HomeDialog/PromptTextarea';
 import {
-  AIChatStore,
+  AIChatStore, clearEmptySession,
   createPureNewSession,
   derivedState,
 } from '../../../../model/AIChat';
@@ -214,6 +214,11 @@ function MsgBox(props: MsgBoxProps) {
     chatScrollIntoView();
     if (simple) {
       createPureNewSession(title);
+    }
+    return () => {
+      if (simple) {
+        clearEmptySession();
+      }
     }
   }, []);
 

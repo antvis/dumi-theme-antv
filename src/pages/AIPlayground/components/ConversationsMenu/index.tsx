@@ -33,9 +33,6 @@ export const ConversationsMenu: React.FC = () => {
   });
   const [collapsed, setCollapsed] = useState(false);
   const snap = useSnapshot(AIChatStore);
-  useEffect(() => {
-    clearEmptySession();
-  }, []);
 
   const handleSelectSession = (sessionId: string) => {
     if (isUUID(sessionId)) {

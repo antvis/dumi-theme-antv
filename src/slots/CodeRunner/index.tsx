@@ -23,6 +23,7 @@ type CodeRunnerProps = {
   replaceId?: string;
   notFound?: React.ReactElement;
   showAI?: boolean;
+  showEditor?: boolean;
 };
 
 /**
@@ -38,6 +39,7 @@ const CodeRunner: React.FC<CodeRunnerProps> = ({
   isPlayground,
   notFound = <NotFound />,
   showAI = true,
+  showEditor = true,
 }) => {
   const demoInfo = getDemoInfo(exampleTopics, topic, example, demo);
 
@@ -56,30 +58,35 @@ const CodeRunner: React.FC<CodeRunnerProps> = ({
 
   const exampleId = `${topic}_${example}_${demo}`;
 
+  const codePreview = <CodePreview exampleId={exampleId} error={error} header={header} isPlayground={isPlayground} />;
+  const codeEditor =
+    <ClientOnly>
+      <CodeEditor
+        exampleId={exampleId}
+        source={source}
+        relativePath={relativePath}
+        replaceId={replaceId}
+        onError={setError}
+        onFullscreen={setFullscreen}
+        onDestroy={noop}
+        onReady={noop}
+        playground={playground}
+        title={ic(title)}
+        showAI={showAI}
+        style={{ display: showEditor ? 'block' : 'none' }}
+      />
+    </ClientOnly>;
+
   return (
     <InViewSuspense fallback={null}>
-      {/* @ts-ignore */}
-      <SplitPane split="vertical" defaultSize={`${(1 - size) * 100}%`} minSize={100}>
-        {/* 代码预览区域 */}
-        <CodePreview exampleId={exampleId} error={error} header={header} isPlayground={isPlayground} />
-
-        {/* 代码编辑区域 */}
-        <ClientOnly>
-          <CodeEditor
-            exampleId={exampleId}
-            source={source}
-            relativePath={relativePath}
-            replaceId={replaceId}
-            onError={setError}
-            onFullscreen={setFullscreen}
-            onDestroy={noop}
-            onReady={noop}
-            playground={playground}
-            title={ic(title)}
-            showAI={showAI}
-          />
-        </ClientOnly>
-      </SplitPane>
+      {
+        // @ts-ignore
+        showEditor ? <SplitPane split="vertical" defaultSize={`${(1 - size) * 100}%`} minSize={100}>
+          {codePreview}
+          {codeEditor}
+        </SplitPane> : <>{codePreview}
+          {codeEditor}</>
+      }
     </InViewSuspense>
   );
 };

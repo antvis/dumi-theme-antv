@@ -74,6 +74,7 @@ function TaskBox() {
       <CodeRunner
         isPlayground
         showAI={false}
+        showEditor={false}
         size={0.5}
         topic={snap.anonymousUserId}
         example={snap.activeSessionId}
