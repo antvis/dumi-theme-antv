@@ -72,7 +72,7 @@ export const ConversationsMenu: React.FC = () => {
                     { key: 'edit', label: formatMessage({ id: 'ai.conversations.rename' }), icon: <EditOutlined />,
                       onClick: ({ domEvent }) => {
                         domEvent.stopPropagation();
-                        setState({ open: true, session: session , rename: session.title})
+                        setState({ open: true, session: session , rename: session.title.slice(0, 20)})
                       }, },
                     {
                       key: 'top',

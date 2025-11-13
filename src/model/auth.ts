@@ -1,6 +1,7 @@
 import { proxy } from 'valtio';
 import request from '../utils/request';
 import { history } from 'dumi';
+import {message} from "antd";
 
 /**
  * 检查当前 URL 是否包含 'skipLogin=1' 参数
@@ -47,6 +48,10 @@ export const loginOrRegister = async (params) => {
     return true;
   } catch (error) {
     console.error('Login failed in store:', error);
+    const errorMessage = error?.response?.data?.message;
+    if (errorMessage) {
+      message.error(errorMessage);
+    }
     return false;
   }
 };
