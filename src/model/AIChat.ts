@@ -5,6 +5,7 @@ import FingerprintJS from '@fingerprintjs/fingerprintjs';
 import { AIChatState, ChatSession } from '../types';
 import {history} from "dumi";
 import {message} from "antd";
+import {AIMode} from "../components/AI/constant";
 
 // --- 配置 ---
 // 定义需要持久化的 state key
@@ -20,7 +21,8 @@ const initialState: AIChatState = {
   activeSessionId: null,
   tempMessage: null,
   codeBlock: null,
-  lib: null
+  lib: null,
+  mode: AIMode.implement,
 };
 
 

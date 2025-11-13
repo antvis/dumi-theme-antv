@@ -10,15 +10,17 @@ export type AIModeType = keyof typeof AIMode;
 
 export const AIModeMeta: Record<
   AIModeType,
-  { name: string; icon: ReactNode }
+  { name: string; icon: ReactNode, shortName: string }
 > = {
   implement: {
     name: 'ai.mode.implement',
     icon: <BarChartOutlined />,
+    shortName: '研发',
   },
   solve: {
     name: 'ai.mode.solve',
     icon: <QuestionCircleOutlined />,
+    shortName: '答疑',
   },
 };
 

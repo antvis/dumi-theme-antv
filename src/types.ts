@@ -1,3 +1,5 @@
+import {AIModeType} from "./components/AI/constant";
+
 export interface IThemeConfig {
   [key: string]: any;
 }
@@ -164,4 +166,5 @@ export interface AIChatState {
   tempMessage: Message | null;
   codeBlock: string | null;
   lib: string | null;
+  mode: AIModeType | null;
 }

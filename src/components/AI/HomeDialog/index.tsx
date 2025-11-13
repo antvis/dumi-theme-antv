@@ -1,15 +1,14 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import styles from './index.module.less';
 import { AntVBanner } from './AntVBanner';
 import { PromptTextarea } from './PromptTextarea';
 import { RecommendCase } from './RecommendCase';
 import { ModeSelector } from './ModeSelector';
-import { useLocalStorageState } from 'ahooks';
-import { AIMode, AIModeType } from '../constant';
 import classnames from 'classnames';
-import { useSiteData, useLocale } from 'dumi';
+import { useLocale } from 'dumi';
 import {AIChatStore, createNewSession} from '../../../model/AIChat';
 import {ReplayCase} from "../types";
+import {useSnapshot} from "valtio";
 
 interface HomeDialogProps {
   className?: string;
@@ -21,27 +20,19 @@ interface HomeDialogProps {
 export function HomeDialog(props: HomeDialogProps) {
   const locale = useLocale();
   const lang = locale.id === 'zh' ? 'zh' : 'en';
-  const [mode, setMode] = useLocalStorageState<AIModeType>(
-    'use-local-storage-ai-mode-type',
-    {
-      defaultValue: AIMode.implement
-    }
-  );
+  const snap = useSnapshot(AIChatStore);
   const [promptText, setPromptText] = useState<string>('');
   const [fileSummary, setFileSummary] = useState('');
-
 
   return <div className={classnames(styles.content, props.className)} style={props.style}>
     <AntVBanner/>
     <ModeSelector
       onChange={(v) => {
-        setMode(v);
-        // todo  埋点
+        AIChatStore.mode = v;
       }}
-      value={mode}
+      value={snap.mode}
     />
     <PromptTextarea
-      mode={mode}
       value={promptText}
       onChange={(val) => {
         setPromptText(val);
@@ -49,7 +40,7 @@ export function HomeDialog(props: HomeDialogProps) {
       onConfirm={() => {
         createNewSession({
           promptText,
-          mode,
+          mode: snap.mode,
           jump: true,
           context: fileSummary,
           lang: locale.id

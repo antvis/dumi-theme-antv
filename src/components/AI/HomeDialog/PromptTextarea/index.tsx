@@ -5,7 +5,6 @@ import _ from 'lodash';
 import React, {useEffect, useRef, useState} from 'react';
 import styles from './index.module.less';
 import { SendButton } from './SendButton';
-import { AIModeType } from '../../constant';
 import { ChooseLib } from './ChooseLib';
 import { useSiteData, useIntl } from 'dumi';
 import { ic } from '../../../../slots/hooks';
@@ -14,6 +13,7 @@ import { FileMeta, AnalyzedData } from './Uploader/DataUploader';
 import {authStore, showLoginModal} from "../../../../model/auth";
 import {useSnapshot} from "valtio";
 import {AIChatStore} from "../../../../model/AIChat";
+import {ModeSelectorDropdown} from "../ModeSelector/ModeSelectorDropdown";
 
 interface PromptTextareaProps {
   value: string;
@@ -27,9 +27,9 @@ interface PromptTextareaProps {
   size?: 'default' | 'compact';
   // fileMeta现在由组件内部管理
   // fileMeta?: FileMeta;
-  mode: AIModeType;
   style?: React.CSSProperties;
   showAction?: boolean;
+  showModeSelector?: boolean;
 }
 
 const PLACEHOLDER = {
@@ -46,8 +46,8 @@ export const PromptTextarea = React.memo(function PromptTextareaInner(props: Pro
     onConfirm,
     onCancel,
     loading,
-    mode,
     showAction = true,
+    showModeSelector = false
   } = props;
   const snap = useSnapshot(AIChatStore);
   const authSnap = useSnapshot(authStore);
@@ -142,7 +142,7 @@ export const PromptTextarea = React.memo(function PromptTextareaInner(props: Pro
         placeholder={
           // (!isCompact && !themeConfig.isAntVSite && ic(themeConfig.metas.description)) ||
           (!isCompact && !themeConfig.isAntVSite) ? typedPlaceholder :
-          formatMessage({ id: _.get(PLACEHOLDER, mode, 'ai.placeholder.implement') })
+          formatMessage({ id: _.get(PLACEHOLDER, snap.mode, 'ai.placeholder.implement') })
         }
         value={value}
         onChange={(evt) => {
@@ -155,6 +155,11 @@ export const PromptTextarea = React.memo(function PromptTextareaInner(props: Pro
           {showAction && (
             <>
               <ChooseLib size={size} value={snap.lib} onChange={(s) => AIChatStore.lib = s} />
+            </>
+          )}
+          {showModeSelector && (
+            <>
+              <ModeSelectorDropdown />
             </>
           )}
         </div>

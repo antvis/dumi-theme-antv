@@ -111,7 +111,7 @@ function MsgBox(props: MsgBoxProps) {
         mountId: 'container',
         antvContext: latestUserMessage?.context || props.context,
         library: AIChatStore.lib,
-        mode: latestUserMessage?.mode,
+        mode: AIChatStore.mode,
       }),
     }),
     messages: convertedInitialMessages,
@@ -163,7 +163,7 @@ function MsgBox(props: MsgBoxProps) {
         body: {
           context: fileSummary,
           lib: snap.lib,
-          mode: 'implement',
+          mode: snap.mode,
         },
       }
     );
@@ -300,7 +300,6 @@ function MsgBox(props: MsgBoxProps) {
         )}
         <PromptTextarea
           size="compact"
-          mode="implement"
           value={promptText}
           onChange={setPromptText}
           loading={status === 'streaming' || status === 'submitted'}
@@ -309,6 +308,7 @@ function MsgBox(props: MsgBoxProps) {
           style={{ marginBottom: 0 }}
           onConfirm={handleSubmit}
           onDataSummaryChange={setFileSummary}
+          showModeSelector={true}
         />
       </div>
     </>
