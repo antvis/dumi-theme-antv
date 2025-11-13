@@ -15,12 +15,12 @@ export const AIModeMeta: Record<
   implement: {
     name: 'ai.mode.implement',
     icon: <BarChartOutlined />,
-    shortName: '研发',
+    shortName: 'ai.mode.implement.short',
   },
   solve: {
     name: 'ai.mode.solve',
     icon: <QuestionCircleOutlined />,
-    shortName: '答疑',
+    shortName: 'ai.mode.solve.short',
   },
 };
 
