@@ -1,5 +1,6 @@
 import { proxy } from 'valtio';
 import request from '../utils/request';
+import { history } from 'dumi';
 
 /**
  * 检查当前 URL 是否包含 'skipLogin=1' 参数
@@ -57,6 +58,7 @@ export const logout = async () => {
     console.error('Logout failed in store:', e);
   }finally {
     authStore.isAuthenticated = false;
+    history.push('/');
   }
 };
 

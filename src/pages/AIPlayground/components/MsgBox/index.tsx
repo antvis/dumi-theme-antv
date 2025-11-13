@@ -8,7 +8,7 @@ import { Bubble } from '@ant-design/x';
 import { Button, Flex, Space, Tooltip } from 'antd';
 import { useChat } from '@ai-sdk/react';
 import { TextStreamChatTransport, type UIMessage } from 'ai';
-import { useIntl } from 'dumi';
+import {useIntl, useSiteData} from 'dumi';
 import { findLast } from 'lodash-es';
 import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { useCopyToClipboard } from 'react-use';
@@ -25,6 +25,7 @@ import { MarkdownComponent } from '../MarkdownComponent';
 import styles from './index.module.less';
 import { useAutoScroll } from './useAutoScroll';
 import {getBaseURL} from "../../../../utils/env";
+import {AIMode} from "../../../../components/AI/constant";
 
 const avatar = {
   icon: (
@@ -84,6 +85,7 @@ function MsgBox(props: MsgBoxProps) {
   // 使用 ref 存储动态值，避免重新创建 transport
   const anonymousUserIdRef = useRef(snap.anonymousUserId);
   const activeSessionIdRef = useRef(derivedSnap.activeSession?.id);
+  const { themeConfig } = useSiteData();
 
   useEffect(() => {
     anonymousUserIdRef.current = snap.anonymousUserId;
@@ -214,6 +216,10 @@ function MsgBox(props: MsgBoxProps) {
     chatScrollIntoView();
     if (simple) {
       createPureNewSession(title);
+      AIChatStore.mode = AIMode.implement;
+      if (!themeConfig.isAntVSite && themeConfig.title) {
+        AIChatStore.lib = themeConfig.title;
+      }
     }
     return () => {
       if (simple) {
