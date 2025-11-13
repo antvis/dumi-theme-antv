@@ -4,7 +4,7 @@ import styles from './card.module.less';
 import {ReplayCase} from "../../types";
 import {BarChartOutlined, QuestionCircleOutlined} from "@ant-design/icons";
 import {AIMode, AIModeMeta, COLORS} from "../../constant";
-import { FormattedMessage } from 'dumi';
+import {FormattedMessage, useLocale} from 'dumi';
 
 interface ICardProps {
   item: ReplayCase;
@@ -13,9 +13,10 @@ interface ICardProps {
 }
 
 export const Card: React.FC<ICardProps> = ({ item, index, onClick }) => {
-  const { query, description, imageUrls = [], tag } = item;
+  const { query = {}, description = {}, imageUrls = [], tag } = item;
   const style = COLORS[index];
-
+  const locale = useLocale();
+  const lang = locale.id === 'zh' ? 'zh' : 'en';
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     onClick?.();
@@ -27,13 +28,13 @@ export const Card: React.FC<ICardProps> = ({ item, index, onClick }) => {
         <div className={styles.popoverLabel}>
           <FormattedMessage id="ai.recommend.card.caseName" />
         </div>
-        <div className={styles.popoverValue}>{query}</div>
+        <div className={styles.popoverValue}>{typeof query === 'object' ? query[lang] : query}</div>
       </div>
       <div className={styles.popoverItem}>
         <div className={styles.popoverLabel}>
           <FormattedMessage id="ai.recommend.card.description" />
         </div>
-        <div className={styles.popoverValue}>{description}</div>
+        <div className={styles.popoverValue}>{typeof description === 'object' ? description[lang] : description}</div>
       </div>
         {/*<div className={styles.popoverItem}>*/}
           {/*<div className={styles.popoverLabel}>数据源</div>*/}
@@ -61,7 +62,7 @@ export const Card: React.FC<ICardProps> = ({ item, index, onClick }) => {
           <span className={styles.typeText}><FormattedMessage id={AIModeMeta[tag]?.name || tag} /></span>
         </div>
 
-        <div className={styles.title}>{query}</div>
+        <div className={styles.title}>{typeof query === 'object' ? query[lang] : query}</div>
 
         <div className={styles.imageContainer}>
           {imageUrls.slice(0, 2).map((item, idx) => {

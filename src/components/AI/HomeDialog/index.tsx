@@ -20,6 +20,7 @@ interface HomeDialogProps {
 
 export function HomeDialog(props: HomeDialogProps) {
   const locale = useLocale();
+  const lang = locale.id === 'zh' ? 'zh' : 'en';
   const [mode, setMode] = useLocalStorageState<AIModeType>(
     'use-local-storage-ai-mode-type',
     {
@@ -28,6 +29,7 @@ export function HomeDialog(props: HomeDialogProps) {
   );
   const [promptText, setPromptText] = useState<string>('');
   const [fileSummary, setFileSummary] = useState('');
+
 
   return <div className={classnames(styles.content, props.className)} style={props.style}>
     <AntVBanner/>
@@ -58,7 +60,7 @@ export function HomeDialog(props: HomeDialogProps) {
     />
     <RecommendCase className={props.recommendCaseClassName} onClick={(val: ReplayCase) => {
       if (val?.query) {
-        setPromptText(val.query);
+        setPromptText(val.query[lang]);
       }
     }}/>
   </div>;

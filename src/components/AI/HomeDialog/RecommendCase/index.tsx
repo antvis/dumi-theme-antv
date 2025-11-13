@@ -54,10 +54,10 @@ export const RecommendCase = (props: RecommendCaseProps) => {
         <span className={styles.quickStart}>
           <FormattedMessage id="ai.recommend.title" />
         </span>
-        <span className={styles.refresh} onClick={() => fetchList()}>
+        {list?.length > 4 ? <span className={styles.refresh} onClick={() => fetchList()}>
           <ReloadOutlined />
           <FormattedMessage id="ai.recommend.refresh" />
-        </span>
+        </span> : <></>}
       </div>
       <Spin spinning={loading} wrapperClassName={classnames(styles.listContainer, props.className)}>
         <div className={styles.list}>

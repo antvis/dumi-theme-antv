@@ -3,8 +3,14 @@
  */
 export type ReplayCase = {
   caseId: string;
-  query: string;
-  description: string;
+  query: {
+    zh: string;
+    en: string;
+  };
+  description: {
+    zh: string;
+    en: string;
+  };
   source: string;
   imageUrls: string[];
   link: string; // planId

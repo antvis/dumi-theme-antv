@@ -2,41 +2,65 @@
   {
     "caseId": "1",
     "tag": "implement",
-    "query": "一个城市过去五年来的年度降雨量分别是：2016年800毫米，2017年900毫米，2018年700毫米，2019年1000毫米，2020年1100毫米。使用折线图描绘这些数据。",
-    "description": "自然语言描述需求，生成可视化代码",
+    "query": {
+      "zh": "你有一份股票数据：data = [{date: '2024-01-01', open: 100, close: 105, high: 108, low: 99}, {date: '2024-01-02', open: 105, close: 102, high: 106, low: 101}, {date: '2024-01-03', open: 102, close: 110, high: 112, low: 102}, {date: '2024-01-04', open: 110, close: 108, high: 111, low: 107}, {date: '2024-01-05', open: 108, close: 115, high: 117, low: 108}]，\n请绘制一个K线图显示股价走势。",
+      "en": "You have stock data: data = [{date: '2024-01-01', open: 100, close: 105, high: 108, low: 99}, {date: '2024-01-02', open: 105, close: 102, high: 106, low: 101}, {date: '2024-01-03', open: 102, close: 110, high: 112, low: 102}, {date: '2024-01-04', open: 110, close: 108, high: 111, low: 107}, {date: '2024-01-05', open: 108, close: 115, high: 117, low: 108}]. Please draw a K-line chart to show the stock price trend."
+    },
+    "description": {
+      "zh": "自然语言描述需求，生成K线图",
+      "en": "Natural language description of requirements, generate K-line chart"
+    },
     "imageUrls": [
-      "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*K5iUTrYme5QAAAAAQpAAAAgAemJ7AQ/original",
-      "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*K5iUTrYme5QAAAAAQpAAAAgAemJ7AQ/original"
+      "https://mdn.alipayobjects.com/huamei_khb4xj/afts/img/A*Dvb5RZ_FvmsAAAAAQQAAAAgAeq2NAQ/original",
+      "https://mdn.alipayobjects.com/huamei_khb4xj/afts/img/A*Dvb5RZ_FvmsAAAAAQQAAAAgAeq2NAQ/original"
     ]
   },
   {
     "caseId": "2",
     "tag": "implement",
-    "query": "使用文件中的数据，生成柱状图",
-    "description": "多种数据源引入，专业图表生成，有数据就能生成图表。",
+    "query": {
+      "zh": "你有一份销售数据：data = [{month: '1月', value: 100}, {month: '2月', value: 120}, {month: '3月', value: 90}, {month: '4月', value: 110}]，\n  请绘制一个折线图，并在最后一个数据点上添加文本标注。",
+      "en": "You have sales data: data = [{month: 'January', value: 100}, {month: 'February', value: 120}, {month: 'March', value: 90}, {month: 'April', value: 110}]. Please draw a line chart and add text annotation on the last data point."
+    },
+    "description": {
+      "zh": "带标注的图表",
+      "en": "Chart with annotations"
+    },
     "imageUrls": [
-      "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*K5iUTrYme5QAAAAAQpAAAAgAemJ7AQ/original",
-      "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*K5iUTrYme5QAAAAAQpAAAAgAemJ7AQ/original"
+      "https://mdn.alipayobjects.com/huamei_khb4xj/afts/img/A*RNDnT6Dz40sAAAAAQWAAAAgAeq2NAQ/original",
+      "https://mdn.alipayobjects.com/huamei_khb4xj/afts/img/A*RNDnT6Dz40sAAAAAQWAAAAgAeq2NAQ/original"
     ]
   },
   {
     "caseId": "3",
-    "tag": "implement",
-    "query": "基于设计稿生成图表代码，还原视觉细节",
-    "description": "基于设计稿生成图表代码，还原视觉细节",
+    "tag": "solve",
+    "query": {
+      "zh": "[{ version: '5.0.21', rate: 1, type: 'iphone6' }, { version: '5.0.21', rate: 13, type: '仿真' }, { version: '5.0.21', rate: 11, type: 'iphone8' }, { version: '5.0.21', rate: 0, type: 'iphone x' }, { version: '5.0.29', rate: 1, type: 'iphone6' }, { version: '5.0.29', rate: 14, type: '仿真' }, { version: '5.0.29', rate: 10, type: 'iphone8' }, { version: '5.0.29', rate: 0, type: 'iphone x' }, { version: '5.0.30', rate: 1, type: 'iphone6' }, { version: '5.0.30', rate: 15, type: '仿真' }, { version: '5.0.30', rate: 13, type: 'iphone8' }, { version: '5.0.30', rate: 12, type: 'iphone x' }, { version: 'next', rate: 24, type: 'iphone x' } ]; \n使用插件@antv/g-plugin-rough-canvas-renderer 绘制柱状图",
+      "en": "[{ version: '5.0.21', rate: 1, type: 'iphone6' }, { version: '5.0.21', rate: 13, type: 'simulation' }, { version: '5.0.21', rate: 11, type: 'iphone8' }, { version: '5.0.21', rate: 0, type: 'iphone x' }, { version: '5.0.29', rate: 1, type: 'iphone6' }, { version: '5.0.29', rate: 14, type: 'simulation' }, { version: '5.0.29', rate: 10, type: 'iphone8' }, { version: '5.0.29', rate: 0, type: 'iphone x' }, { version: '5.0.30', rate: 1, type: 'iphone6' }, { version: '5.0.30', rate: 15, type: 'simulation' }, { version: '5.0.30', rate: 13, type: 'iphone8' }, { version: '5.0.30', rate: 12, type: 'iphone x' }, { version: 'next', rate: 24, type: 'iphone x' }]; Use the plugin @antv/g-plugin-rough-canvas-renderer to draw a bar chart."
+    },
+    "description": {
+      "zh": "插件使用",
+      "en": "Plugin usage"
+    },
     "imageUrls": [
-      "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*K5iUTrYme5QAAAAAQpAAAAgAemJ7AQ/original",
-      "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*K5iUTrYme5QAAAAAQpAAAAgAemJ7AQ/original"
+      "https://mdn.alipayobjects.com/huamei_khb4xj/afts/img/A*cjrAQYibSigAAAAARMAAAAgAeq2NAQ/original",
+      "https://mdn.alipayobjects.com/huamei_khb4xj/afts/img/A*cjrAQYibSigAAAAARMAAAAgAeq2NAQ/original"
     ]
   },
   {
     "caseId": "4",
     "tag": "solve",
-    "query": "怎么配置堆叠面积图的描边为不同的颜色",
-    "description": "精准定位并提供针对渲染异常、性能瓶颈及数据不匹配等问题的解决方案。",
+    "query": {
+      "zh": "你有一份销售数据：data = [{month: '1月', sales: 1000}, {month: '2月', sales: 1200}, {month: '3月', sales: 800}, {month: '4月', sales: 1500}, {month: '5月', sales: 1800}]，请绘制一个柱状图，并启用tooltip功能，鼠标悬停时显示具体数值。",
+      "en": "You have sales data: data = [{month: 'January', sales: 1000}, {month: 'February', sales: 1200}, {month: 'March', sales: 800}, {month: 'April', sales: 1500}, {month: 'May', sales: 1800}]. Please draw a bar chart and enable tooltip functionality to show specific values on mouse hover."
+    },
+    "description": {
+      "zh": "带交互图表",
+      "en": "Interactive chart"
+    },
     "imageUrls": [
-      "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*K5iUTrYme5QAAAAAQpAAAAgAemJ7AQ/original",
-      "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*K5iUTrYme5QAAAAAQpAAAAgAemJ7AQ/original"
+      "https://mdn.alipayobjects.com/huamei_khb4xj/afts/img/A*AuxDQ5bnXIwAAAAAYKAAAAgAeq2NAQ/original",
+      "https://mdn.alipayobjects.com/huamei_khb4xj/afts/img/A*AuxDQ5bnXIwAAAAAYKAAAAgAeq2NAQ/original"
     ]
   }
 ]
