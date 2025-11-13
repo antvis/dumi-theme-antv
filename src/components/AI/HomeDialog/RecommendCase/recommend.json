@@ -3,64 +3,64 @@
     "caseId": "1",
     "tag": "implement",
     "query": {
-      "zh": "你有一份股票数据：data = [{date: '2024-01-01', open: 100, close: 105, high: 108, low: 99}, {date: '2024-01-02', open: 105, close: 102, high: 106, low: 101}, {date: '2024-01-03', open: 102, close: 110, high: 112, low: 102}, {date: '2024-01-04', open: 110, close: 108, high: 111, low: 107}, {date: '2024-01-05', open: 108, close: 115, high: 117, low: 108}]，\n请绘制一个K线图显示股价走势。",
-      "en": "You have stock data: data = [{date: '2024-01-01', open: 100, close: 105, high: 108, low: 99}, {date: '2024-01-02', open: 105, close: 102, high: 106, low: 101}, {date: '2024-01-03', open: 102, close: 110, high: 112, low: 102}, {date: '2024-01-04', open: 110, close: 108, high: 111, low: 107}, {date: '2024-01-05', open: 108, close: 115, high: 117, low: 108}]. Please draw a K-line chart to show the stock price trend."
+      "zh": "你有一份公司多产品线销售数据：data = [ {month: '1月', productA: 12000, productB: 8500, productC: 15200}, {month: '2月', productA: 13500, productB: 9200, productC: 14800}, {month: '3月', productA: 15200, productB: 10800, productC: 16500}, {month: '4月', productA: 14800, productB: 11500, productC: 17200}, {month: '5月', productA: 16500, productB: 12200, productC: 18800}, {month: '6月', productA: 18200, productB: 13800, productC: 19500}, {month: '7月', productA: 19800, productB: 14500, productC: 20200}, {month: '8月', productA: 21500, productB: 15200, productC: 21800}, {month: '9月', productA: 20200, productB: 16800, productC: 22500}, {month: '10月', productA: 22800, productB: 17500, productC: 23200}, {month: '11月', productA: 24500, productB: 18200, productC: 24800}, {month: '12月', productA: 26200, productB: 19800, productC: 25500} ]， 请绘制一个多折线图展示三条产品线的销售趋势变化，通过不同线型和颜色清晰区分各产品表现。 同时在最高点进行数据标注。",
+      "en": "You have multi-product line sales data for a company: data = [ {month: 'January', productA: 12000, productB: 8500, productC: 15200}, {month: 'February', productA: 13500, productB: 9200, productC: 14800}, {month: 'March', productA: 15200, productB: 10800, productC: 16500}, {month: 'April', productA: 14800, productB: 11500, productC: 17200}, {month: 'May', productA: 16500, productB: 12200, productC: 18800}, {month: 'June', productA: 18200, productB: 13800, productC: 19500}, {month: 'July', productA: 19800, productB: 14500, productC: 20200}, {month: 'August', productA: 21500, productB: 15200, productC: 21800}, {month: 'September', productA: 20200, productB: 16800, productC: 22500}, {month: 'October', productA: 22800, productB: 17500, productC: 23200}, {month: 'November', productA: 24500, productB: 18200, productC: 24800}, {month: 'December', productA: 26200, productB: 19800, productC: 25500} ]. Please draw a multi-line chart to show the sales trend changes of the three product lines, clearly distinguishing each product's performance through different line styles and colors. Also add data annotations at the highest points."
     },
     "description": {
-      "zh": "自然语言描述需求，生成K线图",
-      "en": "Natural language description of requirements, generate K-line chart"
+      "zh": "自然语言描述需求，生成可视化代码",
+      "en": "Natural language description of requirements, generate visualization code"
     },
     "imageUrls": [
-      "https://mdn.alipayobjects.com/huamei_khb4xj/afts/img/A*Dvb5RZ_FvmsAAAAAQQAAAAgAeq2NAQ/original",
-      "https://mdn.alipayobjects.com/huamei_khb4xj/afts/img/A*Dvb5RZ_FvmsAAAAAQQAAAAgAeq2NAQ/original"
+      "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*zUKtR4U75fcAAAAAROAAAAgAemJ7AQ/original",
+      "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*zUKtR4U75fcAAAAAROAAAAgAemJ7AQ/original"
     ]
   },
   {
     "caseId": "2",
     "tag": "implement",
     "query": {
-      "zh": "你有一份销售数据：data = [{month: '1月', value: 100}, {month: '2月', value: 120}, {month: '3月', value: 90}, {month: '4月', value: 110}]，\n  请绘制一个折线图，并在最后一个数据点上添加文本标注。",
-      "en": "You have sales data: data = [{month: 'January', value: 100}, {month: 'February', value: 120}, {month: 'March', value: 90}, {month: 'April', value: 110}]. Please draw a line chart and add text annotation on the last data point."
+      "zh": "一家咖啡店的饮品销售比例为：咖啡 60%，茶 25%，果汁 15%。请用环图可视化这些饮品销售数据，并将色板调整为橙色系。",
+      "en": "A coffee shop's beverage sales ratio is: Coffee 60%, Tea 25%, Juice 15%. Please visualize these beverage sales data with a donut chart and adjust the color palette to orange tones."
     },
     "description": {
-      "zh": "带标注的图表",
-      "en": "Chart with annotations"
+      "zh": "自然语言描述需求，生成可视化代码",
+      "en": "Natural language description of requirements, generate visualization code"
     },
     "imageUrls": [
-      "https://mdn.alipayobjects.com/huamei_khb4xj/afts/img/A*RNDnT6Dz40sAAAAAQWAAAAgAeq2NAQ/original",
-      "https://mdn.alipayobjects.com/huamei_khb4xj/afts/img/A*RNDnT6Dz40sAAAAAQWAAAAgAeq2NAQ/original"
+      "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*oMezTK-Yf2EAAAAAQmAAAAgAemJ7AQ/original",
+      "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*oMezTK-Yf2EAAAAAQmAAAAgAemJ7AQ/original"
     ]
   },
   {
     "caseId": "3",
     "tag": "solve",
     "query": {
-      "zh": "[{ version: '5.0.21', rate: 1, type: 'iphone6' }, { version: '5.0.21', rate: 13, type: '仿真' }, { version: '5.0.21', rate: 11, type: 'iphone8' }, { version: '5.0.21', rate: 0, type: 'iphone x' }, { version: '5.0.29', rate: 1, type: 'iphone6' }, { version: '5.0.29', rate: 14, type: '仿真' }, { version: '5.0.29', rate: 10, type: 'iphone8' }, { version: '5.0.29', rate: 0, type: 'iphone x' }, { version: '5.0.30', rate: 1, type: 'iphone6' }, { version: '5.0.30', rate: 15, type: '仿真' }, { version: '5.0.30', rate: 13, type: 'iphone8' }, { version: '5.0.30', rate: 12, type: 'iphone x' }, { version: 'next', rate: 24, type: 'iphone x' } ]; \n使用插件@antv/g-plugin-rough-canvas-renderer 绘制柱状图",
-      "en": "[{ version: '5.0.21', rate: 1, type: 'iphone6' }, { version: '5.0.21', rate: 13, type: 'simulation' }, { version: '5.0.21', rate: 11, type: 'iphone8' }, { version: '5.0.21', rate: 0, type: 'iphone x' }, { version: '5.0.29', rate: 1, type: 'iphone6' }, { version: '5.0.29', rate: 14, type: 'simulation' }, { version: '5.0.29', rate: 10, type: 'iphone8' }, { version: '5.0.29', rate: 0, type: 'iphone x' }, { version: '5.0.30', rate: 1, type: 'iphone6' }, { version: '5.0.30', rate: 15, type: 'simulation' }, { version: '5.0.30', rate: 13, type: 'iphone8' }, { version: '5.0.30', rate: 12, type: 'iphone x' }, { version: 'next', rate: 24, type: 'iphone x' }]; Use the plugin @antv/g-plugin-rough-canvas-renderer to draw a bar chart."
+      "zh": "为什么配置了 state 没有生效？",
+      "en": "Why is the configured state not taking effect?"
     },
     "description": {
-      "zh": "插件使用",
-      "en": "Plugin usage"
+      "zh": "精准定位并提供针对渲染异常、性能瓶颈及数据不匹配等问题的解决方案。",
+      "en": "Precisely locate and provide solutions for rendering anomalies, performance bottlenecks, and data mismatches."
     },
     "imageUrls": [
-      "https://mdn.alipayobjects.com/huamei_khb4xj/afts/img/A*cjrAQYibSigAAAAARMAAAAgAeq2NAQ/original",
-      "https://mdn.alipayobjects.com/huamei_khb4xj/afts/img/A*cjrAQYibSigAAAAARMAAAAgAeq2NAQ/original"
+      "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*15mgQ4lA5CUAAAAASzAAAAgAemJ7AQ/original",
+      "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*15mgQ4lA5CUAAAAASzAAAAgAemJ7AQ/original"
     ]
   },
   {
     "caseId": "4",
     "tag": "solve",
     "query": {
-      "zh": "你有一份销售数据：data = [{month: '1月', sales: 1000}, {month: '2月', sales: 1200}, {month: '3月', sales: 800}, {month: '4月', sales: 1500}, {month: '5月', sales: 1800}]，请绘制一个柱状图，并启用tooltip功能，鼠标悬停时显示具体数值。",
-      "en": "You have sales data: data = [{month: 'January', sales: 1000}, {month: 'February', sales: 1200}, {month: 'March', sales: 800}, {month: 'April', sales: 1500}, {month: 'May', sales: 1800}]. Please draw a bar chart and enable tooltip functionality to show specific values on mouse hover."
+      "zh": "数据标签互相遮挡了怎么办？",
+      "en": "What to do when data labels overlap each other?"
     },
     "description": {
-      "zh": "带交互图表",
-      "en": "Interactive chart"
+      "zh": "精准定位并提供针对渲染异常、性能瓶颈及数据不匹配等问题的解决方案。",
+      "en": "Precisely locate and provide solutions for rendering anomalies, performance bottlenecks, and data mismatches."
     },
     "imageUrls": [
-      "https://mdn.alipayobjects.com/huamei_khb4xj/afts/img/A*AuxDQ5bnXIwAAAAAYKAAAAgAeq2NAQ/original",
-      "https://mdn.alipayobjects.com/huamei_khb4xj/afts/img/A*AuxDQ5bnXIwAAAAAYKAAAAgAeq2NAQ/original"
+      "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*thpQQIB3LG4AAAAASMAAAAgAemJ7AQ/original",
+      "https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*thpQQIB3LG4AAAAASMAAAAgAemJ7AQ/original"
     ]
   }
 ]

@@ -7,7 +7,11 @@ import {ReplayCase} from "../../types";
 import RecommendJson from "./recommend.json";
 import classnames from "classnames";
 import {FormattedMessage, useSiteData} from 'dumi';
-import {sampleSize} from "lodash-es";
+import {sample, sampleSize} from "lodash-es";
+import {AIChatStore} from "../../../../model/AIChat";
+import {AIModeType} from "../../constant";
+import {useLibrary} from "../../../../hooks/useProducts";
+import {getBaseSiteDataUrl} from "../../../../utils/env";
 
 type RecommendCaseProps = {
   className?: string;
@@ -17,15 +21,17 @@ type RecommendCaseProps = {
 export const RecommendCase = (props: RecommendCaseProps) => {
   const [loading, setLoading] = useState(false);
   const { themeConfig } = useSiteData();
-  const [list, setList] = useState<ReplayCase[]>([]);
+  const [list, setList] = useState<ReplayCase[]>(RecommendJson);
+  const { data: library = [] } = useLibrary();
 
   const fetchList = useCallback(
     async () => {
       try {
         setLoading(true);
         let data: ReplayCase[] = [];
-        if (themeConfig?.ai?.recommend) {
-          data = await fetch(themeConfig.ai.recommend)
+        const url = themeConfig.isAntVSite ? `${getBaseSiteDataUrl()}/${sample(library).toLowerCase()}/recommend.json` : (themeConfig?.ai?.recommend || `${getBaseSiteDataUrl()}/${themeConfig.title}/recommend.json`);
+        if (url) {
+          data = await fetch(url)
             .then((res) => res.json());
         } else {
           data = RecommendJson as unknown as ReplayCase[];
@@ -64,6 +70,9 @@ export const RecommendCase = (props: RecommendCaseProps) => {
           {list.map((item, index) => {
             return <Card key={item.caseId} item={item} index={index} onClick={() => {
               props.onClick?.(item);
+              if (item.tag) {
+                AIChatStore.mode = item.tag as AIModeType;
+              }
             }}/>;
           })}
         </div>

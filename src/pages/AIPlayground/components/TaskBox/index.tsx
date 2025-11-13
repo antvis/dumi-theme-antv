@@ -50,7 +50,7 @@ function TaskBox() {
     return <Loading />;
   }
 
-  if (themeConfig.isAntVSite || themeConfig.ai?.codeRunner === "VisionSnap" || !themeConfig.ai?.codeRunner) {
+  if (themeConfig.isAntVSite || themeConfig.ai?.codeRunner === "VisionSnap" || !themeConfig.ai?.codeRunner || snap.lib !== 'F2') {
     return (
       <ErrorBoundary FallbackComponent={ErrorFallback}>
         <sdk.VisionPreview

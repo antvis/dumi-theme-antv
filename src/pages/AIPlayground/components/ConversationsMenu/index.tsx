@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   DeleteOutlined,
   EditOutlined,
@@ -13,7 +13,7 @@ import { Menu } from 'antd';
 import styles from './index.module.less';
 import { useSnapshot } from 'valtio';
 import {
-  AIChatStore, clearEmptySession,
+  AIChatStore,
   createPureNewSession,
   handleDeleteSession,
   handlePinSession,
@@ -72,7 +72,7 @@ export const ConversationsMenu: React.FC = () => {
                     { key: 'edit', label: formatMessage({ id: 'ai.conversations.rename' }), icon: <EditOutlined />,
                       onClick: ({ domEvent }) => {
                         domEvent.stopPropagation();
-                        setState({ open: true, session: session , rename: session.title.slice(0, 20)})
+                        setState({ open: true, session: session , rename: session.title.slice(0, 100)})
                       }, },
                     {
                       key: 'top',
@@ -138,7 +138,7 @@ export const ConversationsMenu: React.FC = () => {
           disabled: !state.rename,
         }}
       >
-        <Input showCount maxLength={20} onChange={(e) => setState({rename: e.target.value})} value={state.rename} />
+        <Input showCount maxLength={100} onChange={(e) => setState({rename: e.target.value})} value={state.rename} />
       </Modal>
     </div>
   );

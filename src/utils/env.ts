@@ -9,38 +9,69 @@ export const safeWindow = <T>(fn: (win: Window) => T): T | undefined => {
 }
 
 /**
+ * 环境类型枚举
+ */
+export type EnvType = 'dev' | 'pre' | 'prod';
+
+/**
+ * 获取当前环境类型
+ * @returns {EnvType} 当前环境类型
+ */
+export const getEnv = (): EnvType => {
+  // 服务端环境默认返回生产环境
+  if (typeof window === 'undefined') {
+    return 'prod';
+  }
+
+  const hostname = window.location.hostname;
+
+  // 生产环境
+  if (hostname.endsWith('antv.antgroup.com')) {
+    return 'prod';
+  }
+
+  // 预发环境
+  if (hostname.endsWith('-pre.alipay.com')) {
+    return 'pre';
+  }
+
+  // 本地环境
+  if (hostname.endsWith('.alipay.net')) {
+    return 'dev';
+  }
+
+  // 默认返回生产环境
+  return 'prod';
+};
+
+/**
  * 根据当前环境动态获取 API 的 baseURL。
  * 在浏览器中，它会根据域名判断；在服务端，它会返回一个固定的生产环境地址。
  * @returns {string} API 的 baseURL
  */
 export const getBaseURL = (): string => {
-  // 关键：检查是否在浏览器环境
-  if (typeof window === 'undefined') {
-    // === 服务端环境 (SSR/Pre-render) ===
-    // 在服务端渲染时，我们无法知道用户最终会通过哪个域名访问。
-    // 通常，我们默认返回生产环境的 API 地址。
-    // 这样预渲染出的页面如果需要请求数据，会直接请求线上API。
-    return 'https://www.weavefox.cn';
+  const env = getEnv();
+
+  switch (env) {
+    case 'dev':
+      return 'https://weavefox.alipay.net:8443';
+    case 'pre':
+      return 'https://prepub.weavefox.cn';
+    case 'prod':
+    default:
+      return 'https://www.weavefox.cn';
   }
-
-  // === 浏览器环境 ===
-  const hostname = window.location.hostname;
-
-  // 生产环境
-  if (hostname.endsWith('antv.antgroup.com')) {
-    return 'https://www.weavefox.cn';
-  }
-
-  // 预发环境
-  if (hostname.endsWith('-pre.alipay.com')) {
-    return 'https://prepub.weavefox.cn';
-  }
-
-  // 本地环境
-  if (hostname.endsWith('.alipay.net')) {
-    return 'https://weavefox.alipay.net:8443';
-  }
-
-  // 默认返回生产环境地址，适用于其他未知域名（如 localhost）
-  return 'https://www.weavefox.cn';
 };
+
+export const getBaseSiteDataUrl = () => {
+  const env = getEnv();
+
+  switch (env) {
+    case 'dev':
+    case 'pre':
+      return 'https://site-data-pre.alipay.com';
+    case 'prod':
+    default:
+      return 'https://assets.antv.antgroup.com';
+  }
+}

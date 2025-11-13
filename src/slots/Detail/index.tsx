@@ -9,6 +9,7 @@ import { ic } from '../hooks';
 import type { IC } from '../../types';
 import styles from './index.module.less';
 import {HomeDialog} from "../../components/AI/HomeDialog";
+import {getBaseSiteDataUrl} from "../../utils/env";
 
 type DetailButtonProps = {
   text: IC;
@@ -56,7 +57,7 @@ export const Detail: React.FC<DetailProps> = ({
 
   useEffect(() => {
     fetch(
-      'https://assets.antv.antgroup.com/antv/banner-messages.json', // 生产环境
+      `${getBaseSiteDataUrl()}/antv/banner-messages.json`, // 生产环境
       // 'https://site-data-pre.alipay.com/antv/banner-messages.json', // 预发测试
     )
       .then((res) => res.json())

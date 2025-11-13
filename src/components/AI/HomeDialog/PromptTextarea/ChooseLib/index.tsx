@@ -1,7 +1,7 @@
 import React from 'react';
 import {Dropdown} from "antd";
-import {useProducts} from "../../../../../hooks/useProducts";
-import {useLocale, useIntl, FormattedMessage} from "dumi";
+import {useLibrary, useProducts} from "../../../../../hooks/useProducts";
+import {useLocale, FormattedMessage} from "dumi";
 import {FormProps} from "../../../types";
 import styles from './index.module.less';
 
@@ -15,13 +15,14 @@ export function ChooseLib(props: ChooseLibProps) {
   const locale = useLocale();
   const lang = locale.id === 'zh' ? 'zh' : 'en';
   const { data = [] } = useProducts();
+  const { data: library = [] } = useLibrary();
 
   const onSelect = (key: string) => {
     onChange?.(key);
   };
 
   const items = data
-    .filter(item => item.lang === lang && ["G2", "F2", "S2", "G6", "X6", "AVA"].includes(item.title))
+    .filter(item => item.lang === lang && library.map(l => l.toUpperCase()).includes(item.title))
     .map(item => ({
     key: item.title,
     label: item.title,
