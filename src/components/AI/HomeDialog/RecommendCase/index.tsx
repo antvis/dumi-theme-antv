@@ -21,7 +21,7 @@ type RecommendCaseProps = {
 export const RecommendCase = (props: RecommendCaseProps) => {
   const [loading, setLoading] = useState(false);
   const { themeConfig } = useSiteData();
-  const [list, setList] = useState<ReplayCase[]>(RecommendJson);
+  const [list, setList] = useState<ReplayCase[]>([]);
   const { data: library = [] } = useLibrary();
 
   const fetchList = useCallback(
@@ -38,6 +38,7 @@ export const RecommendCase = (props: RecommendCaseProps) => {
         }
         setList(sampleSize(data, 4));
       } catch (err) {
+        setList(RecommendJson)
         console.log(err);
       } finally {
         setLoading(false);
