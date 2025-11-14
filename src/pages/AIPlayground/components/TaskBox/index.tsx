@@ -4,7 +4,6 @@ import { useSnapshot } from 'valtio';
 import { AIChatStore } from '../../../../model/AIChat';
 import CodeRunner from '../../../../slots/CodeRunner';
 import {wrap2VisionSnap} from './generateCode';
-import styles from './index.module.less';
 import {requestProxy, useVisionsnapSdk} from "../../../../hooks/useVisionsnapSdk";
 import { ErrorBoundary } from 'react-error-boundary';
 import Loading from "../../../../slots/Loading";
@@ -50,7 +49,9 @@ function TaskBox() {
     return <Loading />;
   }
 
-  if (themeConfig.isAntVSite || themeConfig.ai?.codeRunner === "VisionSnap" || !themeConfig.ai?.codeRunner || snap.lib !== 'F2') {
+  const wrappedVisionSnapCode = wrap2VisionSnap(snap.codeBlock);
+
+  if (themeConfig.isAntVSite || themeConfig.ai?.codeRunner === "VisionSnap" || !themeConfig.ai?.codeRunner || !wrappedVisionSnapCode.modules["/package.json"].code.includes("@antv/f2")) {
     return (
       <ErrorBoundary FallbackComponent={ErrorFallback}>
         <sdk.VisionPreview
@@ -61,7 +62,7 @@ function TaskBox() {
           displayMode="code-and-preview"
           initialView="preview"
           theme="light"
-          code={wrap2VisionSnap(snap.codeBlock)}
+          code={wrappedVisionSnapCode}
           requestProxy={requestProxy}
           isStreaming={false}
           proxyOptions={{isWAN: true}}

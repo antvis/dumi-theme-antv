@@ -71,16 +71,17 @@ export function generateDependencies(codeString) {
 export function wrap2VisionSnap (codeBlock: string = '') {
   const dependencies = generateDependencies(codeBlock);
   const rootElementType = dependencies['@antv/f2'] ? 'canvas' : 'div';
+  const dependenciesJSON = {
+    "name": "AntV-adapted-project",
+    "version": "1.0.0",
+    "main": "/src/index.jsx",
+    "dependencies": dependencies
+};
   return {
     modules: {
       '/package.json': {
         fpath: '/package.json',
-        code: `{
-  "name": "AntV-adapted-project",
-  "version": "1.0.0",
-  "main": "/src/index.jsx",
-  "dependencies": ${(JSON.stringify(dependencies, null, 2))}
-}`
+        code: JSON.stringify(dependenciesJSON, null, 2)
       },
       '/src/index.jsx': {
         fpath: '/src/index.jsx',
