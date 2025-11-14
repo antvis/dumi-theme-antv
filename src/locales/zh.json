@@ -233,7 +233,6 @@
   "ai.search.visualization": "可视化答疑",
   "ai.assistant.editor.intro": "我是AntV AI助手。您可以随时向我提问，让我为您：\n\n1、解读当前图表的代码配置。\n2、通过自然语言对话，基于当前案例生成新代码以定制图表。",
   "ai.placeholder.whatis": "{title}是什么？",
-  "header.ai.code": "AI生码",
   "header.user.history": "历史会话",
   "header.user.logout": "退出登录",
   "header.user.deleteAccount": "注销账号",

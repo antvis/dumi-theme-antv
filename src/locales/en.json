@@ -234,7 +234,6 @@
   "ai.search.visualization": "Q&A",
   "ai.assistant.editor.intro": "I am AntV AI Assistant. You can ask me questions at any time to:\n1. Interpret the code configuration of the current chart.\n2. Generate new code based on the current case through natural language dialogue to customize the chart.",
   "ai.placeholder.whatis": "What is {title}?",
-  "header.ai.code": "AI Code Generation",
   "header.user.history": "History",
   "header.user.logout": "Logout",
   "header.user.deleteAccount": "Delete Account",

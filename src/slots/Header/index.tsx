@@ -10,7 +10,7 @@ import { Alert, Button, Dropdown, Menu, Modal, Popover } from 'antd';
 import cx from 'classnames';
 import { FormattedMessage, Link, useLocale, useSiteData, useIntl, history } from 'dumi';
 import { get, map, size } from 'lodash-es';
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { useMedia } from 'react-use';
 import { getPurePathname } from '../../utils/location';
 import { ic, icWithLocale } from '../hooks';
@@ -150,8 +150,6 @@ const HeaderComponent: React.FC<HeaderProps> = ({
   showGithubCorner = true,
   showAntVProductsCard = true,
   showLanguageSwitcher = true,
-  showWeavefox = {},
-  isInternalUser,
   logo,
   onLanguageChange,
   // 默认就使用 AntV 的公众号
@@ -239,7 +237,7 @@ const HeaderComponent: React.FC<HeaderProps> = ({
     setPopupMenuVisible(!popupMenuVisible);
   };
 
-  const { img, link } = {
+  const { img } = {
     img: (
       <img
         src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*A-lcQbVTpjwAAAAAAAAAAAAADmJ7AQ/original"
@@ -288,27 +286,6 @@ const HeaderComponent: React.FC<HeaderProps> = ({
     onLanguageChange?.(lang);
   };
 
-  const weavefox = useMemo(() => {
-    const configKey = isInternalUser ? 'internal' : 'public';
-    const configValue = showWeavefox[configKey];
-
-    if (!configValue) return <></>;
-
-    const defaultLink = isInternalUser
-      ? 'https://weavefox.antgroup-inc.cn/agent/@huiyu.zjt/AntV'
-      : 'https://weavefox.alipay.com/agent/@ufox-b8tydq-0758/202505AP7vfl00422922';
-
-    const href = typeof configValue === 'string' ? configValue : defaultLink;
-
-    return (
-      <li>
-        <a href={href} target="_blank" rel="noreferrer">
-          <FormattedMessage id="header.ai.code" />
-        </a>
-      </li>
-    );
-  }, [isInternalUser, showWeavefox]);
-
   const menu = (
     <ul
       className={cx(styles.menu, {
@@ -320,7 +297,6 @@ const HeaderComponent: React.FC<HeaderProps> = ({
         /** 最左侧的菜单，一般是 教程、API、示例，或者其他自定义，有配置文件中的 `navs` 决定 */
         size(navs) ? <Navs navs={navs} path={pathname} /> : null
       }
-      {weavefox}
       {
         /** 生态产品 */
         size(ecosystems) ? (
