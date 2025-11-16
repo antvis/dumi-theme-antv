@@ -2,7 +2,7 @@ import { proxy, subscribe, snapshot } from 'valtio';
 import { derive, subscribeKey } from 'valtio/utils';
 import localforage from 'localforage';
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
-import { AIChatState, ChatSession } from '../types';
+import {AIChatState, ChatSession} from '../types';
 import {history} from "dumi";
 import {message} from "antd";
 import {AIMode} from "../components/AI/constant";
@@ -232,4 +232,10 @@ export const clearAllChatData = async (): Promise<void> => {
 
 export function deleteMessage(msgId: string) {
   derivedState.activeSession.messages = derivedState.activeSession.messages.filter(m => m.id !== msgId);
+}
+
+export function branchMessage(index: number) {
+  const messages = derivedState.activeSession.messages.slice(0, index + 1);
+  createPureNewSession(messages[0].content);
+  AIChatStore.sessions[0].messages = messages;
 }

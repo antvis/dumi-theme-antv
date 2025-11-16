@@ -207,6 +207,7 @@
   "ai.msgbox.start.new.chat": "Start New Chat",
   "ai.msgbox.send.tip": "Please enter content before sending",
   "ai.msgbox.error.response": "Sorry, I couldn't successfully process your request, please try again later",
+  "ai.msgbox.continue.from.here": "Continue from here",
   "ai.recommend.title": "Featured Cases",
   "ai.recommend.refresh": "Refresh",
   "ai.recommend.card.caseName": "Case Name",

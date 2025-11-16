@@ -1,4 +1,5 @@
 import {
+  BranchesOutlined,
   CheckOutlined,
   CopyOutlined, DeleteOutlined,
   PlusSquareOutlined,
@@ -15,7 +16,7 @@ import { useCopyToClipboard } from 'react-use';
 import { useSnapshot } from 'valtio';
 import { PromptTextarea } from '../../../../components/AI/HomeDialog/PromptTextarea';
 import {
-  AIChatStore, clearEmptySession,
+  AIChatStore, branchMessage, clearEmptySession,
   createPureNewSession, deleteMessage,
   derivedState,
 } from '../../../../model/AIChat';
@@ -247,12 +248,9 @@ function MsgBox(props: MsgBoxProps) {
               content={<MarkdownComponent content={textContent} showRunButton={!props.simple} />}
               avatar={msg.role === 'assistant' ? avatar : null}
               footer={
-                msg.role === 'assistant' &&
-                  index > 0 &&
-                  index === messages.length - 1 &&
-                  status === 'ready' ? (
+                status === 'ready' &&
                   <Space size="small">
-                    <Tooltip title={formatMessage({ id: 'ai.msgbox.retry' })}>
+                    {msg.role === 'assistant' && index === messages.length - 1 && <Tooltip title={formatMessage({ id: 'ai.msgbox.retry' })}>
                       <Button
                         onClick={() => {
                           regenerate();
@@ -263,7 +261,7 @@ function MsgBox(props: MsgBoxProps) {
                         size="small"
                         icon={<SyncOutlined />}
                       />
-                    </Tooltip>
+                    </Tooltip> }
                     <Tooltip title={formatMessage({ id: 'ai.msgbox.copy' })}>
                       <Button
                         color="default"
@@ -273,7 +271,16 @@ function MsgBox(props: MsgBoxProps) {
                         icon={copyState.value === textContent ? <CheckOutlined /> : <CopyOutlined />}
                       />
                     </Tooltip>
-                    <Tooltip title={formatMessage({ id: 'ai.msgbox.delete' })}>
+                    <Tooltip title={formatMessage({ id: 'ai.msgbox.continue.from.here' })}>
+                      <Button
+                        color="default"
+                        variant="text"
+                        size="small"
+                        onClick={() => branchMessage(index)}
+                        icon={<BranchesOutlined />}
+                      />
+                    </Tooltip>
+                    {msg.role === 'assistant' && <Tooltip title={formatMessage({ id: 'ai.msgbox.delete' })}>
                       <Button
                         color="default"
                         variant="text"
@@ -281,9 +288,8 @@ function MsgBox(props: MsgBoxProps) {
                         onClick={() => deleteMessage(msg.id)}
                         icon={<DeleteOutlined />}
                       />
-                    </Tooltip>
+                    </Tooltip>}
                   </Space>
-                ) : null
               }
               placement={msg.role === 'user' ? 'end' : 'start'}
             />

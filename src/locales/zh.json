@@ -222,6 +222,7 @@
   "ai.toolbar.clear.conversation": "清空对话",
   "ai.conversations.expand": "展开",
   "ai.conversations.collapse": "收起",
+  "ai.msgbox.continue.from.here": "从这里继续",
   "ai.conversations.new": "开始新对话",
   "ai.conversations.history": "历史对话",
   "ai.conversations.rename": "重命名",
