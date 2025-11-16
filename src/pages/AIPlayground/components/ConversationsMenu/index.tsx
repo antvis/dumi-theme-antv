@@ -137,8 +137,8 @@ export const ConversationsMenu: React.FC = () => {
         okButtonProps={{
           disabled: !state.rename,
         }}
-        okText="确定"
-        cancelText="取消"
+        okText={formatMessage({ id: 'ai.conversations.ok' })}
+        cancelText={formatMessage({ id: 'ai.conversations.cancel' })}
       >
         <Input showCount maxLength={100} onChange={(e) => setState({rename: e.target.value})} value={state.rename} />
       </Modal>

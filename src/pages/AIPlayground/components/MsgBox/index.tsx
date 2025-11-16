@@ -273,7 +273,7 @@ function MsgBox(props: MsgBoxProps) {
                         icon={copyState.value === textContent ? <CheckOutlined /> : <CopyOutlined />}
                       />
                     </Tooltip>
-                    <Tooltip title="删除">
+                    <Tooltip title={formatMessage({ id: 'ai.msgbox.delete' })}>
                       <Button
                         color="default"
                         variant="text"
