@@ -2,7 +2,7 @@ import {useIntl, useSiteData} from 'dumi';
 import React from 'react';
 import styles from './SearchResult.module.less';
 import classnames from "classnames";
-import {createNewSession} from "../../../model/AIChat";
+import {AIChatStore, createNewSession} from "../../../model/AIChat";
 import {authStore, showLoginModal} from "../../../model/auth";
 import {useSnapshot} from "valtio";
 
@@ -42,6 +42,7 @@ export const SearchResult: React.FC<{ results: ISearchResult[], keywords: string
   const authSnap = useSnapshot(authStore);
 
   function pureSearch() {
+    AIChatStore.mode = 'solve';
     createNewSession({
       promptText: keywords,
       mode: 'solve',
