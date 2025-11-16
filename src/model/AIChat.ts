@@ -161,7 +161,9 @@ subscribeKey(AIChatStore, 'activeSessionId', () => {
 
 export const createPureNewSession = (title?: string) => {
   const newConversationName = 'New Conversation';
-  if (AIChatStore.sessions.some(s => s.title === newConversationName && s.messages.length === 0)) {
+  const existNewSession = AIChatStore.sessions.find(s => s.title === newConversationName && s.messages.length === 0);
+  if (existNewSession) {
+    AIChatStore.activeSessionId = existNewSession.id;
     return;
   }
   const newSessionId = crypto.randomUUID();
@@ -226,3 +228,8 @@ export const clearAllChatData = async (): Promise<void> => {
     message.error('清空对话记录失败，请刷新页面后重试。');
   }
 };
+
+
+export function deleteMessage(msgId: string) {
+  derivedState.activeSession.messages = derivedState.activeSession.messages.filter(m => m.id !== msgId);
+}

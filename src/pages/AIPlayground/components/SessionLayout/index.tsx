@@ -31,6 +31,7 @@ function SessionLayout(props: SessionLayoutProps) {
           style={{
             position: 'unset',
           }}
+          minSize={100}
         >
           <div className={classnames(styles.msgBox)}>{children[0]}</div>
           <div className={styles.taskBox}>{children[1]}</div>

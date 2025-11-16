@@ -1,6 +1,6 @@
 import {
   CheckOutlined,
-  CopyOutlined,
+  CopyOutlined, DeleteOutlined,
   PlusSquareOutlined,
   SyncOutlined
 } from '@ant-design/icons';
@@ -16,7 +16,7 @@ import { useSnapshot } from 'valtio';
 import { PromptTextarea } from '../../../../components/AI/HomeDialog/PromptTextarea';
 import {
   AIChatStore, clearEmptySession,
-  createPureNewSession,
+  createPureNewSession, deleteMessage,
   derivedState,
 } from '../../../../model/AIChat';
 import type { Message } from '../../../../types';
@@ -271,6 +271,15 @@ function MsgBox(props: MsgBoxProps) {
                         size="small"
                         onClick={() => copyToClipboard(textContent)}
                         icon={copyState.value === textContent ? <CheckOutlined /> : <CopyOutlined />}
+                      />
+                    </Tooltip>
+                    <Tooltip title="删除">
+                      <Button
+                        color="default"
+                        variant="text"
+                        size="small"
+                        onClick={() => deleteMessage(msg.id)}
+                        icon={<DeleteOutlined />}
                       />
                     </Tooltip>
                   </Space>
