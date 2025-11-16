@@ -1,5 +1,5 @@
 import { Spin } from 'antd';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card } from './Card';
 import styles from './index.module.less';
 import {ReloadOutlined} from "@ant-design/icons";
@@ -24,28 +24,25 @@ export const RecommendCase = (props: RecommendCaseProps) => {
   const [list, setList] = useState<ReplayCase[]>([]);
   const { data: library = [] } = useLibrary();
 
-  const fetchList = useCallback(
-    async () => {
-      try {
-        setLoading(true);
-        let data: ReplayCase[] = [];
-        const url = themeConfig.isAntVSite ? `${getBaseSiteDataUrl()}/${sample(library).toLowerCase()}/recommend.json` : (themeConfig?.ai?.recommend || `${getBaseSiteDataUrl()}/${themeConfig.title}/recommend.json`);
-        if (url) {
-          data = await fetch(url)
-            .then((res) => res.json());
-        } else {
-          data = RecommendJson as unknown as ReplayCase[];
-        }
-        setList(sampleSize(data, 4));
-      } catch (err) {
-        setList(RecommendJson)
-        console.log(err);
-      } finally {
-        setLoading(false);
+  const fetchList = async () => {
+    try {
+      setLoading(true);
+      let data: ReplayCase[] = [];
+      const url = (themeConfig.isAntVSite && library.length) ? `${getBaseSiteDataUrl()}/${sample(library).toLowerCase()}/recommend.json` : (themeConfig?.ai?.recommend || `${getBaseSiteDataUrl()}/${themeConfig.title}/recommend.json`);
+      if (url) {
+        data = await fetch(url)
+          .then((res) => res.json());
+      } else {
+        data = RecommendJson as unknown as ReplayCase[];
       }
-    },
-    [list],
-  );
+      setList(sampleSize(data, 4));
+    } catch (err) {
+      setList(RecommendJson)
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     fetchList();
