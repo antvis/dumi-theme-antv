@@ -167,4 +167,5 @@ export interface AIChatState {
   codeBlock: string | null;
   lib: string | null;
   mode: AIModeType | null;
+  errorMsg: string | null;
 }

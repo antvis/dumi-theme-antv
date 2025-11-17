@@ -51,6 +51,15 @@ function TaskBox() {
 
   const wrappedVisionSnapCode = wrap2VisionSnap(snap.codeBlock);
 
+  const handleEsmLoadFailed = (err: any) => {
+    // F2的异常没法修，VisionSnap的异常信息不准确
+    if (!wrappedVisionSnapCode.modules["/package.json"].code.includes("@antv/f2")) {
+      AIChatStore.errorMsg = err.data?.error?.split('\n')?.[1] ||
+        JSON.stringify(err) ||
+        err.message;
+    }
+  }
+
   if (themeConfig.isAntVSite || themeConfig.ai?.codeRunner === "VisionSnap" || !themeConfig.ai?.codeRunner || !wrappedVisionSnapCode.modules["/package.json"].code.includes("@antv/f2")) {
     return (
       <ErrorBoundary FallbackComponent={ErrorFallback}>
@@ -67,6 +76,7 @@ function TaskBox() {
           isStreaming={false}
           proxyOptions={{isWAN: true}}
           src={`https://www.weavefox.cn/_visionsnap_render/index.html?version=3.2.15&enableInspector=1`}
+          onEsmLoadFailed={handleEsmLoadFailed}
         />
       </ErrorBoundary>
     );

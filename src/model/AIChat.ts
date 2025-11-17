@@ -24,6 +24,7 @@ const initialState: AIChatState = {
   codeBlock: null,
   lib: null,
   mode: AIMode.implement,
+  errorMsg: null,
 };
 
 

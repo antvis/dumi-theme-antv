@@ -3,7 +3,7 @@ import {
   CheckOutlined,
   CopyOutlined, DeleteOutlined,
   PlusSquareOutlined,
-  SyncOutlined
+  SyncOutlined, ToolOutlined
 } from '@ant-design/icons';
 import { Bubble } from '@ant-design/x';
 import { Button, Flex, Space, Tooltip } from 'antd';
@@ -244,14 +244,37 @@ function MsgBox(props: MsgBoxProps) {
   useEffect(() => {
     chatScrollIntoView();
     stop();
+    AIChatStore.errorMsg = null;
   }, [snap.activeSessionId]);
 
   // 将 messages 数组作为依赖项。当它变化时，Hook 会运行。
   const { containerRef, anchorRef } = useAutoScroll(messages);
 
+  const autofix = () => {
+    const autoFixPromptText = `这个代码在执行时遇到了问题。下面是它抛出的确切错误信息。${snap.errorMsg}`;
+    sendMessage(
+      { text: autoFixPromptText },
+      {
+        body: {
+          antvContext: snap.codeBlock
+        },
+      }
+    );
+    AIChatStore.errorMsg = null;
+    derivedState.activeSession?.messages?.push({
+      id: crypto.randomUUID(),
+      role: 'user',
+      content: autoFixPromptText,
+      createdAt: Date.now(),
+      context: snap.codeBlock,
+      lib: snap.lib,
+    });
+    chatScrollIntoView();
+  }
+
   return (
     <>
-      <Flex gap="middle" vertical className={styles.chatContainer} ref={containerRef} >
+      <Flex gap="middle" vertical className={styles.chatContainer} ref={containerRef}>
         {messages.map((msg, index) => {
           const textContent = getTextContent(msg);
           return (
@@ -260,20 +283,22 @@ function MsgBox(props: MsgBoxProps) {
               content={<MarkdownComponent content={textContent} showRunButton={!props.simple} />}
               avatar={msg.role === 'assistant' ? avatar : null}
               footer={
-                status === 'ready' &&
+                status === 'ready' && (
                   <Space size="small">
-                    {msg.role === 'assistant' && index === messages.length - 1 && <Tooltip title={formatMessage({ id: 'ai.msgbox.retry' })}>
-                      <Button
-                        onClick={() => {
-                          regenerate();
-                          derivedState.activeSession.messages.pop();
-                        }}
-                        color="default"
-                        variant="text"
-                        size="small"
-                        icon={<SyncOutlined />}
-                      />
-                    </Tooltip> }
+                    {msg.role === 'assistant' && index === messages.length - 1 && (
+                      <Tooltip title={formatMessage({ id: 'ai.msgbox.retry' })}>
+                        <Button
+                          onClick={() => {
+                            regenerate();
+                            derivedState.activeSession.messages.pop();
+                          }}
+                          color="default"
+                          variant="text"
+                          size="small"
+                          icon={<SyncOutlined />}
+                        />
+                      </Tooltip>
+                    )}
                     <Tooltip title={formatMessage({ id: 'ai.msgbox.copy' })}>
                       <Button
                         color="default"
@@ -292,42 +317,46 @@ function MsgBox(props: MsgBoxProps) {
                         icon={<BranchesOutlined />}
                       />
                     </Tooltip>
-                    {msg.role === 'assistant' && <Tooltip title={formatMessage({ id: 'ai.msgbox.delete' })}>
-                      <Button
-                        color="default"
-                        variant="text"
-                        size="small"
-                        onClick={() => deleteMessage(msg.id)}
-                        icon={<DeleteOutlined />}
-                      />
-                    </Tooltip>}
+                    {msg.role === 'assistant' && (
+                      <Tooltip title={formatMessage({ id: 'ai.msgbox.delete' })}>
+                        <Button
+                          color="default"
+                          variant="text"
+                          size="small"
+                          onClick={() => deleteMessage(msg.id)}
+                          icon={<DeleteOutlined />}
+                        />
+                      </Tooltip>
+                    )}
                   </Space>
+                )
               }
               placement={msg.role === 'user' ? 'end' : 'start'}
             />
           );
         })}
         {/* 根据 status 状态显示加载中 */}
-        {(status === 'streaming' || status === 'submitted') &&
-          messages[messages.length - 1]?.role === 'user' && (
-            <Bubble placement="start" avatar={avatar} loading />
-          )}
+        {(status === 'streaming' || status === 'submitted') && messages[messages.length - 1]?.role === 'user' && (
+          <Bubble placement="start" avatar={avatar} loading />
+        )}
         {/* 这是我们的滚动锚点，它永远在列表的末尾 */}
-        <div ref={anchorRef} id="msgBoxAnchor"/>
+        <div ref={anchorRef} id="msgBoxAnchor" />
       </Flex>
       <div>
         {!props.simple && (
           <div className={styles.newButtonContainer}>
             <Space>
               <button type="button" onClick={() => createPureNewSession()} className={styles.newButton}>
-              <Space>
-                <PlusSquareOutlined />
-                {formatMessage({ id: 'ai.msgbox.start.new.chat' })}
-              </Space>
-            </button>
-            {/* {showScrollDownButton && <button type="button" onClick={chatScrollIntoView} className={styles.newButton}>
-              <VerticalAlignBottomOutlined />
-            </button>} */}
+                <Space>
+                  <PlusSquareOutlined />
+                  {formatMessage({ id: 'ai.msgbox.start.new.chat' })}
+                </Space>
+              </button>
+              {snap.errorMsg && status === 'ready' && (
+                <Button onClick={autofix} color="danger" variant="filled" icon={<ToolOutlined />}>
+                  自动修复
+                </Button>
+              )}
             </Space>
           </div>
         )}
