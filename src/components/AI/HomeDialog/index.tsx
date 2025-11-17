@@ -43,7 +43,8 @@ export function HomeDialog(props: HomeDialogProps) {
           mode: snap.mode,
           jump: true,
           context: fileSummary,
-          lang: locale.id
+          lang: locale.id,
+          entry_point: 'home',
         })
       }}
       style={props.promptTextareaStyle}

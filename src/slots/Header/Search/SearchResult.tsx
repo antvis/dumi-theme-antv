@@ -49,6 +49,7 @@ export const SearchResult: React.FC<{ results: ISearchResult[], keywords: string
       lib: !themeConfig.isAntVSite ? themeConfig.title : undefined,
       jump: true,
       lang: intl.locale === 'zh' ? 'zh' : 'en',
+      entry_point: 'SearchResult'
     });
   }
 

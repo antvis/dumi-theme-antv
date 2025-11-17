@@ -27,6 +27,7 @@ import styles from './index.module.less';
 import { useAutoScroll } from './useAutoScroll';
 import {getBaseURL} from "../../../../utils/env";
 import {AIMode} from "../../../../components/AI/constant";
+import {trackEvent} from "../../../../utils/analytics";
 
 const avatar = {
   icon: (
@@ -135,6 +136,7 @@ function MsgBox(props: MsgBoxProps) {
           content: messageContent,
           createdAt: Date.now(),
         });
+
       }
     },
     onError: (error) => {
@@ -164,9 +166,9 @@ function MsgBox(props: MsgBoxProps) {
       { text: promptText },
       {
         body: {
-          context: fileSummary,
-          lib: snap.lib,
-          mode: snap.mode,
+          // context: fileSummary,
+          // lib: snap.lib,
+          // mode: snap.mode,
         },
       }
     );
@@ -181,6 +183,16 @@ function MsgBox(props: MsgBoxProps) {
       lib: snap.lib,
     });
     chatScrollIntoView();
+    // 埋点
+    if (typeof window === 'object') {
+      trackEvent('start_ai_chat', {
+        entry_point: simple ? 'Drawer' : 'MsgBox',
+        mode: AIChatStore.mode,
+        lib: AIChatStore.lib,
+        page_title: document.title,
+        location: location.href
+      });
+    }
   };
 
   // 同步 Valtio store -> useChat state

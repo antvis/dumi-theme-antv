@@ -6,6 +6,7 @@ import {AIChatState, ChatSession} from '../types';
 import {history} from "dumi";
 import {message} from "antd";
 import {AIMode} from "../components/AI/constant";
+import {trackEvent} from "../utils/analytics";
 
 // --- 配置 ---
 // 定义需要持久化的 state key
@@ -176,8 +177,7 @@ export const createPureNewSession = (title?: string) => {
   AIChatStore.activeSessionId = newSessionId;
 }
 
-export const createNewSession = (config: { promptText: string, mode?: "implement" | "solve", lib?: string, jump?: boolean, context?: string, lang?: string }) => {
-  // todo  埋点
+export const createNewSession = (config: { promptText: string, mode?: "implement" | "solve", lib?: string, jump?: boolean, context?: string, lang?: string, entry_point?: string }) => {
   // 1. 创建一个新的会话
   createPureNewSession(config.promptText);
 
@@ -193,6 +193,16 @@ export const createNewSession = (config: { promptText: string, mode?: "implement
   };
   if (config.jump) {
     history.push(`/${config.lang ?? 'zh'}/ai-playground`);
+  }
+  // 埋点
+  if (typeof window === 'object') {
+    trackEvent('start_ai_chat', {
+      entry_point: config.entry_point,
+      mode: AIChatStore.mode,
+      lib: AIChatStore.lib,
+      page_title: document.title,
+      location: location.href
+    });
   }
 }
 
