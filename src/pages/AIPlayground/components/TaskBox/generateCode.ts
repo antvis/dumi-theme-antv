@@ -68,13 +68,86 @@ export function generateDependencies(codeString) {
   return dependencies;
 }
 
+
+/**
+ * 基于代码内容，启发式地判断其最合适的文件扩展名。
+ * @param {string} code - 要分析的前端代码字符串。
+ * @returns {'tsx' | 'jsx' | 'ts' | 'js'} - 推断出的文件扩展名（不含点）。
+ */
+export function getLanguageExtension(code) {
+  // --- 特征检测函数 ---
+
+  /**
+   * 检查代码是否包含 JSX 语法。
+   * 这是一个启发式检查，它查找类似HTML标签的模式。
+   * - 匹配 <div...>, <MyComponent...>, </tag>, <Component/>, <>
+   */
+  const containsJsx = (text) => {
+    // 1. 查找开/闭标签 <...> 或自闭合标签 <.../>
+    // 2. 忽略可能误判的比较操作，如 `i < j`
+    // 这个正则查找一个'<'符号，后面不能是'!' (注释)或'=' (小于等于)，
+    // 并且后面跟着一个合法的标签名（字母开头）或闭合标签'/'。
+    // 这比简单的 /<...>/ 更可靠。
+    const jsxRegex = /<(?![\s!=])([a-zA-Z][a-zA-Z0-9-]*|\/|)/;
+    return jsxRegex.test(text);
+  };
+
+  /**
+   * 检查代码是否包含 TypeScript 语法。
+   * 这是一个启发式检查，查找TS独有的关键字和语法模式。
+   */
+  const containsTypeScript = (text) => {
+    // 检查点 1: 类型/接口定义（非常明确的信号）
+    // 匹配 `type MyType = ...` 或 `interface MyInterface { ... }`
+    const typeDefinitionRegex = /\b(interface|type)\s+[A-Z][a-zA-Z0-9]*\b/;
+    if (typeDefinitionRegex.test(text)) {
+      return true;
+    }
+
+    // 检查点 2: 变量或参数的类型注解（强信号）
+    // 匹配 `: string`, `: number`, `: MyType` 等
+    // 这个正则查找一个冒号，后面跟着一个类型（通常大写字母开头或ts内置类型）
+    const typeAnnotationRegex = /:\s*([A-Z][a-zA-Z0-9<>.]*|string|number|boolean|any\[?\]?)/;
+    if (typeAnnotationRegex.test(text)) {
+      return true;
+    }
+
+    // 检查点 3: 其他TS关键字
+    // 匹配 `as someType`, `implements`, `private`, `public`, `protected` 等
+    const tsKeywordsRegex = /\b(as|implements|private|public|protected|readonly)\s+[a-zA-Z]/;
+    if (tsKeywordsRegex.test(text)) {
+      return true;
+    }
+
+    return false;
+  };
+
+  // --- 决策逻辑 ---
+
+  if (containsJsx(code)) {
+    if (containsTypeScript(code)) {
+      return 'tsx';
+    }
+    return 'jsx';
+  } else {
+    if (containsTypeScript(code)) {
+      return 'ts';
+    }
+    return 'js';
+  }
+}
+
+
 export function wrap2VisionSnap (codeBlock: string = '') {
+  const ext = getLanguageExtension(codeBlock);
+  const mainFile = `/src/index.${ext}`;
+  const appFile = `/src/App.${ext}`;
   const dependencies = generateDependencies(codeBlock);
   const rootElementType = dependencies['@antv/f2'] ? 'canvas' : 'div';
   const dependenciesJSON = {
     "name": "AntV-adapted-project",
     "version": "1.0.0",
-    "main": "/src/index.jsx",
+    "main": mainFile,
     "dependencies": dependencies
 };
   return {
@@ -83,8 +156,8 @@ export function wrap2VisionSnap (codeBlock: string = '') {
         fpath: '/package.json',
         code: JSON.stringify(dependenciesJSON, null, 2)
       },
-      '/src/index.jsx': {
-        fpath: '/src/index.jsx',
+      [mainFile]: {
+        fpath: mainFile,
         code: `
 // --- Adapter Script ---
 
@@ -102,13 +175,13 @@ if (rootElement) {
   rootElement.appendChild(containerElement);
 
   // 5. 现在 DOM 中已经存在 #container，安全地导入并执行用户的代码
-  import('./App.jsx');
+  import('./App.${ext}');
 
 }
       `
       },
-      '/src/App.jsx': {
-        fpath: '/src/App.jsx',
+      [appFile]: {
+        fpath: [appFile],
         code: codeBlock
       }
     }
