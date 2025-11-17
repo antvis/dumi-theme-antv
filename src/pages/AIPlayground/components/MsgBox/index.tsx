@@ -251,7 +251,7 @@ function MsgBox(props: MsgBoxProps) {
   const { containerRef, anchorRef } = useAutoScroll(messages);
 
   const autofix = () => {
-    const autoFixPromptText = `${formatMessage({ id: 'ai.msgbox.auto.fix.prompt' })}: [${snap.errorMsg}]`;
+    const autoFixPromptText = `${formatMessage({ id: 'ai.msgbox.auto.fix.prompt' })} [${snap.errorMsg}]`;
     sendMessage(
       { text: autoFixPromptText },
       {
