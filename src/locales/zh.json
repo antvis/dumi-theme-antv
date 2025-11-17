@@ -232,6 +232,8 @@
   "ai.conversations.ok": "确定",
   "ai.conversations.cancel": "取消",
   "ai.msgbox.delete": "删除",
+  "ai.msgbox.auto.fix": "自动修复",
+  "ai.msgbox.auto.fix.prompt": "这个代码在执行时遇到了问题。下面是它抛出的确切错误信息。",
   "ai.chooseLib.placeholder": "选择技术栈",
   "ai.search.try": "试试",
   "ai.search.visualization": "可视化答疑",

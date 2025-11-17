@@ -233,6 +233,8 @@
   "ai.conversations.ok": "OK",
   "ai.conversations.cancel": "Cancel",
   "ai.msgbox.delete": "Delete",
+  "ai.msgbox.auto.fix": "Auto Fix",
+  "ai.msgbox.auto.fix.prompt": "This code encountered a problem during execution. Here is the exact error message it threw.",
   "ai.chooseLib.placeholder": "Choose Technology Stack",
   "ai.search.try": "Try",
   "ai.search.visualization": "Q&A",

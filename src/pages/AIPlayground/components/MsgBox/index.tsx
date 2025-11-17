@@ -251,7 +251,7 @@ function MsgBox(props: MsgBoxProps) {
   const { containerRef, anchorRef } = useAutoScroll(messages);
 
   const autofix = () => {
-    const autoFixPromptText = `这个代码在执行时遇到了问题。下面是它抛出的确切错误信息。${snap.errorMsg}`;
+    const autoFixPromptText = `${formatMessage({ id: 'ai.msgbox.auto.fix.prompt' })}: [${snap.errorMsg}]`;
     sendMessage(
       { text: autoFixPromptText },
       {
@@ -354,7 +354,7 @@ function MsgBox(props: MsgBoxProps) {
               </button>
               {snap.errorMsg && status === 'ready' && (
                 <Button onClick={autofix} color="danger" variant="filled" icon={<ToolOutlined />}>
-                  自动修复
+                  {formatMessage({ id: 'ai.msgbox.auto.fix' })}
                 </Button>
               )}
             </Space>
