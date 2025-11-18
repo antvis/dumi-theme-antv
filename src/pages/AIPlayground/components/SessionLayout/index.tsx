@@ -37,7 +37,7 @@ function SessionLayout(props: SessionLayoutProps) {
           <div className={styles.taskBox}>{children[1]}</div>
         </SplitPane>
       ) : (
-        <div className={classnames(styles.msgBox, styles.msgBoxFull)}>{children[0]}</div>
+        <div className={classnames(styles.msgBox, styles.msgBoxFull)} key={snap.codeBlock}>{children[0]}</div>
       )}
       {/* 拖动时的全局覆盖层,避免拖动过程中，鼠标移动到了一个 iframe 或者一个插件渲染的 canvas/svg 上，导致 Split-Pane 组件赖以工作的 mousemove 和 mouseup 事件丢失了。 */}
       {isDragging && (
