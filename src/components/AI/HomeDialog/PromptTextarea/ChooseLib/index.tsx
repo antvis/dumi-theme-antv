@@ -1,6 +1,6 @@
 import React from 'react';
 import {Dropdown} from "antd";
-import {useLibrary, useProducts} from "../../../../../hooks/useProducts";
+import {useAntVConfig, useProducts} from "../../../../../hooks/useProducts";
 import {useLocale, FormattedMessage} from "dumi";
 import {FormProps} from "../../../types";
 import styles from './index.module.less';
@@ -15,7 +15,7 @@ export function ChooseLib(props: ChooseLibProps) {
   const locale = useLocale();
   const lang = locale.id === 'zh' ? 'zh' : 'en';
   const { data = [] } = useProducts();
-  const { data: library = [] } = useLibrary();
+  const { data: {library = []} = {library: []} } = useAntVConfig();
 
   const onSelect = (key: string) => {
     onChange?.(key);

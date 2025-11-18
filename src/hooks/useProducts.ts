@@ -21,10 +21,10 @@ export function useProducts() {
   });
 }
 
-export function getLibrary(): Promise<string[]> {
+export function getAntVConfig(): Promise<any> {
   // 如需要修改产品信息，请到 https://yuyan.antfin-inc.com/antv/site-data/sprints 修改区块内容
   return fetch(
-    `${getBaseSiteDataUrl()}/antv/library.json`, // 生产环境
+    `${getBaseSiteDataUrl()}/antv/config.json`, // 生产环境
     // 'https://site-data-pre.alipay.com/antv/products.json', // 预发测试
   )
     .then((res) => res.json());
@@ -32,10 +32,14 @@ export function getLibrary(): Promise<string[]> {
 
 
 // 封装了 queryKey 和 fetcher 的自定义 Hook
-export function useLibrary() {
+export function useAntVConfig() {
   return useQuery({
-    queryKey: ['antv-library'],
-    queryFn: getLibrary,
+    queryKey: ['antv-config'],
+    queryFn: getAntVConfig,
     staleTime: 24 * 60 * 60 * 1000, // 一天内数据不会被认为是 "stale"，不会触发后台刷新
+    initialData: {
+      "VisionSnapVersion": "3.4.6",
+      "library": ["G2", "F2", "G6"]
+    }
   });
 }

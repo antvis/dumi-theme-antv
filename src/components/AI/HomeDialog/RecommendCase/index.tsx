@@ -10,7 +10,7 @@ import {FormattedMessage, useSiteData} from 'dumi';
 import {sample, sampleSize} from "lodash-es";
 import {AIChatStore} from "../../../../model/AIChat";
 import {AIModeType} from "../../constant";
-import {useLibrary} from "../../../../hooks/useProducts";
+import {useAntVConfig} from "../../../../hooks/useProducts";
 import {getBaseSiteDataUrl} from "../../../../utils/env";
 
 type RecommendCaseProps = {
@@ -22,7 +22,7 @@ export const RecommendCase = (props: RecommendCaseProps) => {
   const [loading, setLoading] = useState(false);
   const { themeConfig } = useSiteData();
   const [list, setList] = useState<ReplayCase[]>([]);
-  const { data: library = [] } = useLibrary();
+  const { data: {library = []} = {library: []} } = useAntVConfig();
 
   const fetchList = async () => {
     try {
