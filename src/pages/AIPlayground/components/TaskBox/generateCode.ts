@@ -6,8 +6,7 @@
  */
 export function generateDependencies(codeString) {
   // 1. 初始化固定的依赖
-  const dependencies: Record<string, string> = {
-  };
+  const dependencies: Record<string, string> = {};
 
   // 2. 定义正则表达式来匹配 import 语句的来源
   // 这个正则表达式可以处理以下情况:
@@ -63,6 +62,12 @@ export function generateDependencies(codeString) {
     if (!Object.prototype.hasOwnProperty.call(dependencies, pkg)) {
       dependencies[pkg] = "latest";
     }
+  }
+
+  // f2的语法是jsx。VisionSnap限制只要是jsx就必须装React。
+  if (Object.prototype.hasOwnProperty.call(dependencies, "@antv/f2")) {
+    dependencies["react"] = "^18";
+    dependencies["react-dom"] = "^18";
   }
 
   return dependencies;

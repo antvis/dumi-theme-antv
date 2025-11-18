@@ -9,6 +9,8 @@ import { ErrorBoundary } from 'react-error-boundary';
 import Loading from "../../../../slots/Loading";
 import {ErrorFallback} from "../../../../builtins/Playground";
 
+const version = '3.4.6';
+
 function TaskBox() {
   const snap = useSnapshot(AIChatStore);
   const { themeConfig } = useSiteData();
@@ -43,7 +45,7 @@ function TaskBox() {
     [demoId, snap.activeSessionId, snap.anonymousUserId, snap.codeBlock],
   );
 
-  const { sdk, loading } = useVisionsnapSdk('3.2.15');
+  const { sdk, loading } = useVisionsnapSdk(version);
 
   if (loading) {
     return <Loading />;
@@ -52,12 +54,9 @@ function TaskBox() {
   const wrappedVisionSnapCode = wrap2VisionSnap(snap.codeBlock);
 
   const handleEsmLoadFailed = (err: any) => {
-    // F2的异常没法修，VisionSnap的异常信息不准确
-    if (!wrappedVisionSnapCode.modules["/package.json"].code.includes("@antv/f2")) {
-      AIChatStore.errorMsg = err.data?.error?.split('\n')?.[1] ||
+      AIChatStore.errorMsg = err.data?.error?.split('\n')?.[0] ||
         JSON.stringify(err) ||
         err.message;
-    }
   }
 
   if (themeConfig.isAntVSite || themeConfig.ai?.codeRunner === "VisionSnap" || !themeConfig.ai?.codeRunner || !wrappedVisionSnapCode.modules["/package.json"].code.includes("@antv/f2")) {
@@ -75,7 +74,7 @@ function TaskBox() {
           requestProxy={requestProxy}
           isStreaming={false}
           proxyOptions={{isWAN: true}}
-          src={`https://www.weavefox.cn/_visionsnap_render/index.html?version=3.2.15&enableInspector=1`}
+          src={`https://www.weavefox.cn/_visionsnap_render/index.html?version=${version}&enableInspector=1`}
           onEsmLoadFailed={handleEsmLoadFailed}
         />
       </ErrorBoundary>
