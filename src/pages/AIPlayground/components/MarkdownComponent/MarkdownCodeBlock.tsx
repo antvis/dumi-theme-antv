@@ -82,6 +82,7 @@ export const MarkdownCodeBlock: React.FC<CodeBlockProps> = ({
         showLineNumbers={false} // (可选) 显示行号
         customStyle={{
           paddingTop: '2em',
+          background: '#fafafa'
         }}
       >
         {codeString}

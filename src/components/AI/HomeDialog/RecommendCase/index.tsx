@@ -45,8 +45,10 @@ export const RecommendCase = (props: RecommendCaseProps) => {
   };
 
   useEffect(() => {
-    fetchList();
-  }, []);
+    if (library.length) {
+      fetchList();
+    }
+  }, [themeConfig.isAntVSite, library.length]);
 
   if (!list.length) {
     return null;
