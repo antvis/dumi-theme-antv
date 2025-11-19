@@ -98,7 +98,8 @@ export function getStackblitzConfig(
   return {
     title: title || '',
     description: '',
-    template: 'create-react-app' as any,
+    // https://developer.stackblitz.com/platform/api/javascript-sdk-options#projecttemplate
+    template: playground.template || 'typescript',
     dependencies: deps,
     files: {
       [`index.${fileExtension.startsWith('ts') ? 'ts' : 'js'}`]: sourceCode,
