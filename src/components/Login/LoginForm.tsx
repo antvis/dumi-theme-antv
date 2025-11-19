@@ -7,7 +7,7 @@ import './LoginForm.less';
 import { useIntl } from 'dumi';
 import {loginOrRegister} from "../../model/auth";
 
-const userProtocolLink = 'https://render.alipay.com/p/c/180021120000001078/index.html?agreementId=AG01001502';
+const userProtocolLink = 'https://render.alipay.com/p/c/180021120000001644/index.html?agreementId=AG01001591';
 
 const isInMainlandChina = () => {
   // 1. 检查时区（中国大陆为 UTC+8）
