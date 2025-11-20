@@ -64,9 +64,9 @@ function TaskBox() {
       <ErrorBoundary FallbackComponent={ErrorFallback}>
         <sdk.VisionPreview
           id="visionIframe"
-          bizCode="vision-preview-demo"
+          bizCode="antv"
           style={{ height: '100vh' }}
-          userId="263347"
+          userId="antv"
           displayMode="code-and-preview"
           initialView="preview"
           theme="light"
@@ -74,7 +74,7 @@ function TaskBox() {
           requestProxy={requestProxy}
           isStreaming={false}
           proxyOptions={{isWAN: true}}
-          src={`https://www.weavefox.cn/_visionsnap_render/index.html?version=${version}&enableInspector=1`}
+          src={`https://www.weavefox.cn/_visionsnap_render${wrappedVisionSnapCode.modules["/package.json"].code.includes("vue") ? '_vue' : ''}/index.html?version=${version}&enableInspector=1`}
           onEsmLoadFailed={handleEsmLoadFailed}
         />
       </ErrorBoundary>

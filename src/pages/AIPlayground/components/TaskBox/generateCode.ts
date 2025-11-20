@@ -4,9 +4,9 @@
  * @param {string} codeString 包含代码的字符串。
  * @returns {object} 一个符合 package.json dependencies 格式的对象。
  */
-export function generateDependencies(codeString) {
+export function generateDependencies(codeString = '', ext = 'js') {
   // 1. 初始化固定的依赖
-  const dependencies: Record<string, string> = {};
+  let dependencies: Record<string, string> = {};
 
   // 2. 定义正则表达式来匹配 import 语句的来源
   // 这个正则表达式可以处理以下情况:
@@ -64,10 +64,30 @@ export function generateDependencies(codeString) {
     }
   }
 
-  // f2的语法是jsx。VisionSnap限制只要是jsx就必须装React。
-  if (Object.prototype.hasOwnProperty.call(dependencies, "@antv/f2")) {
+  // VisionSnap限制只要是jsx就必须装React。
+  if (ext === 'jsx' || ext === 'tsx') {
     dependencies["react"] = "^18";
     dependencies["react-dom"] = "^18";
+  }
+
+  if (ext === 'vue') {
+    dependencies["vue"] = "^3";
+  }
+
+  if (dependencies['@antv/s2'] || dependencies['@antv/s2-react'] || dependencies['@antv/s2-react-components']) {
+    dependencies = {
+      ...dependencies,
+      "@ant-design/icons": "^6.1.0",
+      "@antv/s2": "^2.4.9",
+      "@antv/s2-react": "^2.2.3",
+      "@antv/s2-react-components": "^2.1.2",
+      "antd": "^5.27.6",
+      "insert-css": "^2.0.0",
+      "react": "^18.3.1",
+      "react-color": "^2.19.3",
+      "react-dom": "^18.3.1",
+      "@antv/g2": "^5.4.2"
+    }
   }
 
   return dependencies;
@@ -77,58 +97,72 @@ export function generateDependencies(codeString) {
 /**
  * 基于代码内容，启发式地判断其最合适的文件扩展名。
  * @param {string} code - 要分析的前端代码字符串。
- * @returns {'tsx' | 'jsx' | 'ts' | 'js'} - 推断出的文件扩展名（不含点）。
+ * @returns {'vue' | 'tsx' | 'jsx' | 'ts' | 'js'} - 推断出的文件扩展名（不含点）。
  */
 export function getLanguageExtension(code) {
   // --- 特征检测函数 ---
 
   /**
-   * 检查代码是否包含 JSX 语法。
-   * 这是一个启发式检查，它查找类似HTML标签的模式。
-   * - 匹配 <div...>, <MyComponent...>, </tag>, <Component/>, <>
+   * 检查代码是否包含 Vue 单文件组件 (SFC) 的特征。
+   * 这是最优先的检查，因为Vue的SFC结构非常独特。
    */
-  const containsJsx = (text) => {
-    // 1. 查找开/闭标签 <...> 或自闭合标签 <.../>
-    // 2. 忽略可能误判的比较操作，如 `i < j`
-    // 这个正则查找一个'<'符号，后面不能是'!' (注释)或'=' (小于等于)，
-    // 并且后面跟着一个合法的标签名（字母开头）或闭合标签'/'。
-    // 这比简单的 /<...>/ 更可靠。
-    const jsxRegex = /<(?![\s!=])([a-zA-Z][a-zA-Z0-9-]*|\/|)/;
-    return jsxRegex.test(text);
-  };
-
-  /**
-   * 检查代码是否包含 TypeScript 语法。
-   * 这是一个启发式检查，查找TS独有的关键字和语法模式。
-   */
-  const containsTypeScript = (text) => {
-    // 检查点 1: 类型/接口定义（非常明确的信号）
-    // 匹配 `type MyType = ...` 或 `interface MyInterface { ... }`
-    const typeDefinitionRegex = /\b(interface|type)\s+[A-Z][a-zA-Z0-9]*\b/;
-    if (typeDefinitionRegex.test(text)) {
+  const containsVue = (text) => {
+    // 检查点 1: Vue 3 <script setup> 语法（最强信号）
+    // 匹配 <script setup> 或 <script lang="ts" setup>
+    const scriptSetupRegex = /<script\s+(?:lang="ts"\s+)?setup>/;
+    if (scriptSetupRegex.test(text)) {
       return true;
     }
 
-    // 检查点 2: 变量或参数的类型注解（强信号）
-    // 匹配 `: string`, `: number`, `: MyType` 等
-    // 这个正则查找一个冒号，后面跟着一个类型（通常大写字母开头或ts内置类型）
-    const typeAnnotationRegex = /:\s*([A-Z][a-zA-Z0-9<>.]*|string|number|boolean|any\[?\]?)/;
-    if (typeAnnotationRegex.test(text)) {
+    // 检查点 2: 顶层 <template> 块（非常强的信号）
+    // 使用 'm' (multiline) 标志，'^' 匹配每行的开头。
+    const templateRegex = /^\s*<template.*>/m;
+    if (templateRegex.test(text)) {
       return true;
     }
 
-    // 检查点 3: 其他TS关键字
-    // 匹配 `as someType`, `implements`, `private`, `public`, `protected` 等
-    const tsKeywordsRegex = /\b(as|implements|private|public|protected|readonly)\s+[a-zA-Z]/;
-    if (tsKeywordsRegex.test(text)) {
+    // 检查点 3: 导入 Vue 核心库（通用信号）
+    // 匹配 import ... from 'vue'
+    const vueImportRegex = /import\s+.*?\s+from\s*['"]vue['"]/;
+    if (vueImportRegex.test(text)) {
+      return true;
+    }
+
+    // 检查点 4: Vue 2 Options API 特征（辅助信号）
+    // 匹配 export default { ... data|methods|computed ... } 结构
+    const optionsApiRegex = /\bexport\s+default\s*{[\s\S]*?\b(data|methods|computed|watch)\b/;
+    if (optionsApiRegex.test(text)) {
       return true;
     }
 
     return false;
   };
 
-  // --- 决策逻辑 ---
+  const containsJsx = (text) => {
+    const jsxRegex = /<(?![\s!=])([a-zA-Z][a-zA-Z0-9-]*|\/|)/;
+    return jsxRegex.test(text);
+  };
 
+  const containsTypeScript = (text) => {
+    const typeDefinitionRegex = /\b(interface|type)\s+[A-Z][a-zA-Z0-9]*\b/;
+    if (typeDefinitionRegex.test(text)) return true;
+
+    const typeAnnotationRegex = /:\s*([A-Z][a-zA-Z0-9<>.]*|string|number|boolean|any\[?\]?)/;
+    if (typeAnnotationRegex.test(text)) return true;
+
+    const tsKeywordsRegex = /\b(as|implements|private|public|protected|readonly)\s+[a-zA-Z]/;
+    if (tsKeywordsRegex.test(text)) return true;
+
+    return false;
+  };
+
+  // --- 决策逻辑（Vue优先） ---
+
+  if (containsVue(code)) {
+    return 'vue';
+  }
+
+  // 如果不是Vue，则回退到原有的React/JS逻辑
   if (containsJsx(code)) {
     if (containsTypeScript(code)) {
       return 'tsx';
@@ -143,11 +177,12 @@ export function getLanguageExtension(code) {
 }
 
 
+
 export function wrap2VisionSnap (codeBlock: string = '') {
   const ext = getLanguageExtension(codeBlock);
-  const mainFile = `/src/index.${ext}`;
+  const mainFile = ext === 'vue' ? `/src/index.js` : `/src/index.${ext}`;
   const appFile = `/src/App.${ext}`;
-  const dependencies = generateDependencies(codeBlock);
+  const dependencies = generateDependencies(codeBlock, ext);
   const rootElementType = dependencies['@antv/f2'] ? 'canvas' : 'div';
   const dependenciesJSON = {
     "name": "AntV-adapted-project",
@@ -155,15 +190,12 @@ export function wrap2VisionSnap (codeBlock: string = '') {
     "main": mainFile,
     "dependencies": dependencies
 };
-  return {
-    modules: {
-      '/package.json': {
-        fpath: '/package.json',
-        code: JSON.stringify(dependenciesJSON, null, 2)
-      },
-      [mainFile]: {
-        fpath: mainFile,
-        code: `
+  const mainFileCode = ext === 'vue' ? `import { createApp } from 'vue';
+import App from './App.vue';
+
+const app = createApp(App);
+app.mount('#app');
+` : `
 // --- Adapter Script ---
 
 // 1. 找到编辑器环境提供的根节点 #root
@@ -183,10 +215,19 @@ if (rootElement) {
   import('./App.${ext}');
 
 }
-      `
+      `;
+  return {
+    modules: {
+      '/package.json': {
+        fpath: '/package.json',
+        code: JSON.stringify(dependenciesJSON, null, 2)
+      },
+      [mainFile]: {
+        fpath: mainFile,
+        code: mainFileCode
       },
       [appFile]: {
-        fpath: [appFile],
+        fpath: appFile,
         code: codeBlock
       }
     }
