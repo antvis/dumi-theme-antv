@@ -1,6 +1,6 @@
 import React from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { a11yLight } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
+import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { AIChatStore } from '../../../../model/AIChat';
 import { useCopyToClipboard } from 'react-use';
 import { CheckOutlined, CopyOutlined, PlaySquareOutlined } from '@ant-design/icons';
@@ -76,8 +76,8 @@ export const MarkdownCodeBlock: React.FC<CodeBlockProps> = ({
       </Space>
       {/* 使用 react-syntax-highlighter 进行代码高亮 */}
       <SyntaxHighlighter
-        style={a11yLight}
-        language={language}
+        style={oneLight}
+        language={language === 'vue' ? 'html': language}
         PreTag="div" // 使用 div 作为外层标签，避免 pre 标签的默认样式冲突
         showLineNumbers={false} // (可选) 显示行号
         customStyle={{
