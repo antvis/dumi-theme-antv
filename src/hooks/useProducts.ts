@@ -36,9 +36,8 @@ export function useAntVConfig() {
   return useQuery({
     queryKey: ['antv-config'],
     queryFn: getAntVConfig,
-    staleTime: 24 * 60 * 60 * 1000, // 一天内数据不会被认为是 "stale"，不会触发后台刷新
     initialData: {
-      "VisionSnapVersion": "3.4.6",
+      "VisionSnapVersion": "3.4.11",
       "library": ["G2", "F2", "G6"]
     }
   });

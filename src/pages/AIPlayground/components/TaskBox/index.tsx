@@ -11,7 +11,7 @@ import {ErrorFallback} from "../../../../builtins/Playground";
 import {useAntVConfig} from "../../../../hooks/useProducts";
 
 function TaskBox() {
-  const { data: {VisionSnapVersion: version} = {VisionSnapVersion: '3.4.6'}} = useAntVConfig();
+  const { data: {VisionSnapVersion: version} = {VisionSnapVersion: '3.4.11'}} = useAntVConfig();
   const snap = useSnapshot(AIChatStore);
   const { themeConfig } = useSiteData();
   const demoId = useMemo(() => crypto.randomUUID(), [snap.codeBlock]);
