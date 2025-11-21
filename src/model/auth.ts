@@ -2,6 +2,8 @@ import { proxy } from 'valtio';
 import request from '../utils/request';
 import { history } from 'dumi';
 import {message} from "antd";
+import {subscribeKey} from "valtio/utils";
+import {trackEvent} from "../utils/analytics";
 
 /**
  * 检查当前 URL 是否包含 'skipLogin=1' 参数
@@ -28,6 +30,12 @@ export const authStore = proxy({
   isAuthenticated: false,
   loginCallback: () => {},
 });
+
+subscribeKey(authStore, 'isModalOpen', (open) => {
+  if (open) {
+    trackEvent('login_modal_open');
+  }
+})
 
 // 2. 定义 Actions (作为独立函数)
 export const showLoginModal = (callback?: () => void) => {
