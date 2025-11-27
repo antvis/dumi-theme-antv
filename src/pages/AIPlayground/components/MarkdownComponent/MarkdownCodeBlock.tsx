@@ -17,7 +17,7 @@ interface CodeBlockProps {
   showRunButton?: boolean;
 }
 
-export const MarkdownCodeBlock: React.FC<CodeBlockProps> = ({
+export const MarkdownCodeBlock: React.FC<CodeBlockProps> = React.memo(({
   inline,
   className,
   children,
@@ -89,4 +89,4 @@ export const MarkdownCodeBlock: React.FC<CodeBlockProps> = ({
       </SyntaxHighlighter>
     </div>
   );
-};
+});

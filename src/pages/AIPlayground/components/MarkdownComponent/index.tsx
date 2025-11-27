@@ -9,7 +9,7 @@ interface MarkdownComponentProps {
   showRunButton?: boolean;
 }
 
-export const MarkdownComponent: React.FC<MarkdownComponentProps> = ({ content, showRunButton }) => {
+export const MarkdownComponent: React.FC<MarkdownComponentProps> = React.memo(({ content, showRunButton }) => {
   return (
     <Markdown
       remarkPlugins={[remarkGfm]}
@@ -40,4 +40,4 @@ export const MarkdownComponent: React.FC<MarkdownComponentProps> = ({ content, s
       {content}
     </Markdown>
   );
-};
+});
