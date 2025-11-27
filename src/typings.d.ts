@@ -27,3 +27,9 @@ declare module '*.svg' {
   const content: any;
   export default content;
 }
+
+/**
+ * 由构建工具注入的包版本号。
+ * @see fatherrc.ts
+ */
+declare const __PACKAGE_VERSION__: string;
