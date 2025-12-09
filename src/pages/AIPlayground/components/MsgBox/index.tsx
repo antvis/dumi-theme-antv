@@ -151,6 +151,7 @@ function MsgBox(props: MsgBoxProps) {
         // lib,
       });
     },
+    experimental_throttle: 500
   });
 
   // 处理用户提交
