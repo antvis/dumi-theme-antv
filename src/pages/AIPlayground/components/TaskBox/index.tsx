@@ -11,7 +11,7 @@ import {ErrorFallback} from "../../../../builtins/Playground";
 import {useAntVConfig} from "../../../../hooks/useProducts";
 
 function TaskBox() {
-  const { data: {VisionSnapVersion: version} = {VisionSnapVersion: '3.4.11'}} = useAntVConfig();
+  const { data: {VisionSnapVersion: version} = {VisionSnapVersion: '3.5.12'}} = useAntVConfig();
   const snap = useSnapshot(AIChatStore);
   const { themeConfig } = useSiteData();
   const demoId = useMemo(() => crypto.randomUUID(), [snap.codeBlock]);
@@ -76,6 +76,9 @@ function TaskBox() {
           proxyOptions={{isWAN: true}}
           src={`https://www.weavefox.cn/_visionsnap_render${wrappedVisionSnapCode.modules["/package.json"].code.includes("vue") ? '_vue' : ''}/index.html?version=${version}&enableInspector=1`}
           onEsmLoadFailed={handleEsmLoadFailed}
+          previewZoomConfig={{
+            defaultZoomMode: 100
+          }}
         />
       </ErrorBoundary>
     );

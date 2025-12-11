@@ -37,7 +37,7 @@ export function useAntVConfig() {
     queryKey: ['antv-config'],
     queryFn: getAntVConfig,
     initialData: {
-      "VisionSnapVersion": "3.4.11",
+      "VisionSnapVersion": "3.5.12",
       "library": ["G2", "F2", "G6"]
     }
   });
