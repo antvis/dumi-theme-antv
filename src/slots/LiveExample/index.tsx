@@ -107,6 +107,10 @@ export default function LiveExample(props: LiveExampleProps) {
       const modifiedCode = compiledCode.replace(/'container'|"container"/g, `'${containerId}'`);
 
       script.textContent = `
+      // Can only have one anonymous define call per script file
+      // 和 monaco loader 加载冲突
+      var __runnerDefine = window['define'];
+      window['define'] = null;
       try {
         ${modifiedCode}
         const successElement = document.createElement('div');
@@ -127,6 +131,8 @@ export default function LiveExample(props: LiveExampleProps) {
             errorContainer.innerHTML = '<div style="color: #fb1716; padding: 8px; border-left: 3px solid #ff0000; padding-left: 12px;">Runtime Error: ' + error.message + '</div>';
           }
         }
+      } finally {
+        window['define'] = __runnerDefine;
       }
     `;
 
