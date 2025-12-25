@@ -1,11 +1,9 @@
 name: Release & Publish
 
 on:
-  # 触发条件1：当你推送 v 开头的 tag 时 (如 v0.8.0, v0.8.1-alpha.0)
   push:
     tags:
       - 'v*'
-  # 触发条件2：允许在 Actions 页面手动点击运行
   workflow_dispatch:
 
 permissions:
@@ -28,8 +26,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          # 设置 registry，但不配置 token，走 provenance
-          registry-url: 'https://registry.npmjs.org'
 
       - name: Install Dependencies
         run: pnpm install
@@ -37,7 +33,6 @@ jobs:
       - name: Build
         run: pnpm run build
 
-      # 核心逻辑：解析 Tag 名称并决定发布类型
       - name: Parse Version and Tag
         id: meta
         run: |
@@ -62,7 +57,6 @@ jobs:
             echo "npm_tag=latest" >> $GITHUB_OUTPUT
           fi
 
-      # 步骤 2：在 GitHub 右侧创建 Release
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
@@ -72,18 +66,7 @@ jobs:
           draft: false
           prerelease: ${{ contains(github.ref_name, '-') }} # 如果带横杠，自动标记为 Pre-release
 
-      # 步骤 1 & 3 & 4 & 5：发布到 npm
       - name: Publish to npm
         run: |
-          # 确保 package.json 的版本号与 git tag 一致 (防止忘记改文件)
           npm version ${{ steps.meta.outputs.clean_version }} --no-git-tag-version
-
-          # 使用 pnpm 发布
-          # --provenance: 启用可信发布 (无需 token)
-          # --no-git-checks: 因为是 CI 环境，跳过 git 检查
-          # --tag: 使用上面计算出的 tag (latest 或 alpha/beta 等)
-          pnpm publish --provenance --access public --no-git-checks --tag ${{ steps.meta.outputs.npm_tag }}
-        env:
-          # 注意：使用 Provenance 模式发布时，通常不需要 NODE_AUTH_TOKEN
-          # 但为了兼容性，如果 setup-node 生成了 .npmrc 引用该变量，保持其为空或利用 OIDC 机制
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} # 这里即使为空也没关系，因为我们要用 provenance
+          pnpm publish --provenance --no-git-checks --tag ${{ steps.meta.outputs.npm_tag }}
