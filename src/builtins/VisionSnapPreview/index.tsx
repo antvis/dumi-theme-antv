@@ -31,7 +31,14 @@ const VisionSnapPreview: React.FC<VisionSnapPreviewProps> = ({ path, rid, height
         const match = path.match(/([\w-]+)\/([\w-]+)\/demo\/([\w-]+)/i);
         if (!match) return null;
         const [_, topic, example, demo] = match;
-        return getDemoInfo(exampleTopics, topic, example, demo);
+
+        // Try exact match first (e.g. "adaptive")
+        const info = getDemoInfo(exampleTopics, topic, example, demo);
+        if (info) return info;
+
+        // Try with .vue extension if not found (e.g. "adaptive.vue")
+        // dumi might not strip .vue extension from the ID
+        return getDemoInfo(exampleTopics, topic, example, `${demo}.vue`);
     }, [path, exampleTopics]);
 
     const { data: { VisionSnapVersion: version } = { VisionSnapVersion: '3.5.12' } } = useAntVConfig();
