@@ -35,6 +35,9 @@ export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
         forceSubMenuRender
       >
         {exampleTopics.map((topic) => {
+          if (topic.hidden) {
+            return null;
+          }
           return (
             <Menu.SubMenu
               key={topic.id}
@@ -46,6 +49,9 @@ export const LeftMenu: React.FC<LeftMenuProps> = (props) => {
               }
             >
               {topic.examples.map((example) => {
+                if (example.hidden) {
+                  return null;
+                }
                 return (
                   <Menu.Item key={example.id}>
                     <Anchor.Link
