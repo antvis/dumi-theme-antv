@@ -74,7 +74,17 @@ export function generateDependencies(codeString = '', ext = 'js') {
     dependencies["vue"] = "^3";
   }
 
-  if (dependencies['@antv/s2'] || dependencies['@antv/s2-react'] || dependencies['@antv/s2-react-components'] || dependencies['@antv/s2-vue']) {
+  if (dependencies['@antv/s2-vue']) {
+    dependencies = {
+      ...dependencies,
+      "@antv/s2": "^2.4.9",
+      "@antv/s2-vue": "^2.1.0",
+      "ant-design-vue": "^4.2.6",
+      "vue": "^3.5.13",
+      "insert-css": "^2.0.0",
+      "@antv/g2": "^5.4.2"
+    }
+  } else if (dependencies['@antv/s2'] || dependencies['@antv/s2-react'] || dependencies['@antv/s2-react-components']) {
     dependencies = {
       ...dependencies,
       "@ant-design/icons": "^6.1.0",
