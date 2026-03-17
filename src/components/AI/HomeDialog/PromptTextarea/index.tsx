@@ -30,6 +30,8 @@ interface PromptTextareaProps {
   style?: React.CSSProperties;
   showAction?: boolean;
   showModeSelector?: boolean;
+  skipLoginCheck?: boolean; // 是否跳过登录检查
+  sendButtonTip?: string; // 发送按钮的悬浮提示
 }
 
 const PLACEHOLDER = {
@@ -47,7 +49,9 @@ export const PromptTextarea = React.memo(function PromptTextareaInner(props: Pro
     onCancel,
     loading,
     showAction = true,
-    showModeSelector = false
+    showModeSelector = false,
+    skipLoginCheck = false,
+    sendButtonTip
   } = props;
   const snap = useSnapshot(AIChatStore);
   const authSnap = useSnapshot(authStore);
@@ -106,6 +110,12 @@ export const PromptTextarea = React.memo(function PromptTextareaInner(props: Pro
   };
 
   const send = () => {
+    // 如果跳过登录检查，直接发送
+    if (skipLoginCheck) {
+      pureSend();
+      return;
+    }
+    // 否则检查登录状态
     if (!authSnap.isAuthenticated) {
       showLoginModal(pureSend);
       return;
@@ -174,7 +184,7 @@ export const PromptTextarea = React.memo(function PromptTextareaInner(props: Pro
             <SendButton
               onClick={send}
               disabled={!promptTextValid}
-              tip={!promptTextValid ? formatMessage({ id: 'ai.msgbox.send.tip' }) : undefined}
+              tip={!promptTextValid ? formatMessage({ id: 'ai.msgbox.send.tip' }) : sendButtonTip}
             />
           )}
         </div>
