@@ -14,7 +14,7 @@ function SendButton(props: SendButtonProps) {
   const { onClick, disabled, tip } = props;
 
   return (
-    <Tooltip title={disabled ? tip : null}>
+    <Tooltip title={tip}>
       <img
         className={classnames(styles.actionBtn, {
           [styles.disabled]: disabled,
