@@ -92,7 +92,7 @@ export const Detail: React.FC<DetailProps> = ({
             </div>
           </div>
         </div>
-        <HomeDialog style={{margin: "140px auto"}}/>
+        <HomeDialog className={styles.homeDialog}/>
         {/** 新闻公告 */}
         <div className={cx(styles.news, 'news')}>
           {(news || remoteNews).slice(0, 3).map((n, i) => (
@@ -102,7 +102,7 @@ export const Detail: React.FC<DetailProps> = ({
         {/** image */}
         <div className={cx(styles.teaser, 'teaser')}>
           <div className={cx(styles.teaserimg, 'teaser-img')}>
-            <img width="100%" style={{ marginLeft: '100px', marginTop: '40px', ...imageStyle }} src={image} />
+            <img className={styles.teaserImage} width="100%" style={imageStyle} src={image} />
           </div>
         </div>
         <img
