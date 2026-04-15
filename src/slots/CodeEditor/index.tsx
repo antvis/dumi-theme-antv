@@ -1,7 +1,7 @@
 import MonacoEditor, { loader } from '@monaco-editor/react';
-import { Button, Drawer, Switch, Tooltip } from 'antd';
+import { Switch } from 'antd';
 import { autoType as d3AutoType, dsvFormat } from 'd3-dsv';
-import { useIntl, useLocale, useLocation, useSiteData } from 'dumi';
+import { useLocale, useSiteData } from 'dumi';
 import { debounce, noop } from 'lodash-es';
 import { format } from 'prettier';
 import parserBabel from 'prettier/parser-babel';
@@ -11,8 +11,6 @@ import Loading from '../Loading';
 import styles from './index.module.less';
 import { EDITOR_TABS, Toolbar } from './Toolbar';
 import { compile, execute, replaceInsertCss } from './utils';
-import MsgBox from '../../pages/AIPlayground/components/MsgBox';
-import { ClearOutlined } from '@ant-design/icons';
 
 loader.config({
   'vs/nls': {
@@ -104,12 +102,10 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   showAI = true,
   style,
 }) => {
-  const umiLocation = useLocation();
   const locale = useLocale();
   const { themeConfig } = useSiteData();
-  const intl = useIntl();
   const { es5 = true, showSpecTab = false } = themeConfig;
-  const { extraLib = '', playgroundBeforeExecute = '' } = themeConfig.playground;
+  const {  playgroundBeforeExecute = '' } = themeConfig.playground;
   // 编辑器两个 tab，分别是代码和数据
   const [data, setData] = useState(null);
   const [spec, setSpec] = useState(null);
@@ -124,8 +120,6 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   // 当前选中菜单栏
   const [currentEditorTab, setCurrentEditorTab] = useState(EDITOR_TABS.JAVASCRIPT);
 
-  const [showAIDrawer, setShowAIDrawer] = useState(false);
-  const [msgBoxKey, setMsgBoxKey] = useState("_");
   const containerId = `playgroundScriptContainer_${exampleId}`;
 
   // 出发 auto resize
@@ -289,7 +283,6 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   // 用于更新当前 example 的 spec 和 data
   useEffect(() => {
     setCurrentEditorTab(EDITOR_TABS.JAVASCRIPT);
-    setShowAIDrawer(false);
   }, [exampleId]);
 
   // hook 用户的数据
@@ -405,7 +398,8 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   };
 
   const onClickAI = () => {
-    setShowAIDrawer(true);
+    const aiUrl = themeConfig?.ai?.url || 'https://sive.antv.antgroup.com/qa';
+    window.open(aiUrl);
   };
 
   const onReload = () => {
@@ -467,40 +461,6 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
               monacoRef.current = editor;
             }}
           />
-          <Drawer
-            closable={true}
-            open={showAIDrawer}
-            getContainer={false}
-            onClose={() => setShowAIDrawer(false)}
-            rootClassName={styles.drawer}
-            width={'80%'}
-            key={`${umiLocation.hash}_${umiLocation.key}`}
-            extra={
-              <Tooltip title={intl.formatMessage({ id: 'ai.toolbar.clear.conversation' })}>
-                <Button type="link" onClick={() => setMsgBoxKey(crypto.randomUUID())}>
-                  <ClearOutlined />
-                </Button>
-              </Tooltip>
-            }
-          >
-            <MsgBox
-              key={`${umiLocation.hash}_${umiLocation.key}_${msgBoxKey}`}
-              simple
-              messages={[
-                {
-                  id: crypto.randomUUID(),
-                  role: 'assistant',
-                  content: intl.formatMessage({ id: 'ai.assistant.editor.intro' }),
-                  createdAt: Date.now(),
-                },
-              ]}
-              context={valueOf(tab)}
-              onCodegen={(codeBlock) => {
-                setCode(codeBlock);
-              }}
-              title={title}
-            />
-          </Drawer>
         </div>
       ))}
     </div>
