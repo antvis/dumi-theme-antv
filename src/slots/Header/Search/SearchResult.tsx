@@ -1,10 +1,5 @@
-import {useIntl, useSiteData} from 'dumi';
 import React from 'react';
 import styles from './SearchResult.module.less';
-import classnames from "classnames";
-import {AIChatStore, createNewSession} from "../../../model/AIChat";
-import {authStore, showLoginModal} from "../../../model/auth";
-import {useSnapshot} from "valtio";
 
 
 export type ITextSegment = {
@@ -37,42 +32,8 @@ const getHighlightInfo = (textSegments: ITextSegment[]) => {
  * @returns
  */
 export const SearchResult: React.FC<{ results: ISearchResult[], keywords: string }> = ({ results, keywords }) => {
-  const { themeConfig } = useSiteData();
-  const intl = useIntl();
-  const authSnap = useSnapshot(authStore);
-
-  function pureSearch() {
-    AIChatStore.mode = 'solve';
-    createNewSession({
-      promptText: keywords,
-      mode: 'solve',
-      lib: !themeConfig.isAntVSite ? themeConfig.title : undefined,
-      jump: true,
-      lang: intl.locale === 'zh' ? 'zh' : 'en',
-      entry_point: 'SearchResult'
-    });
-  }
-
   return (
     <div className={styles.searchResult}>
-      <div className={styles.item}>
-        <div className={styles.subject}><img src="https://mdn.alipayobjects.com/huamei_qa8qxu/afts/img/A*7svFR6wkPMoAAAAAAAAAAAAADmJ7AQ/original" alt="AntV"/></div>
-        <div className={styles.br}/>
-        <a className={styles.result} onClick={() => {
-          if (!authSnap.isAuthenticated) {
-            showLoginModal(pureSearch);
-            return;
-          }
-          pureSearch();
-        }}>
-          <div className={classnames(styles.title, styles.highlighted)}>{keywords}</div>
-          <div className={styles.description}>
-            {intl.formatMessage({ id: 'ai.search.try' })}
-            &nbsp;<span className={styles.highlighted}>AI</span>&nbsp;
-            {intl.formatMessage({ id: 'ai.search.visualization' })}
-          </div>
-        </a>
-      </div>
       {results?.length ? (
         results.map((r, index) => {
           return (

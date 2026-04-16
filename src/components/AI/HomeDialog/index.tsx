@@ -25,8 +25,9 @@ export function HomeDialog(props: HomeDialogProps) {
   const [_fileSummary, setFileSummary] = useState('');
 
   const handleConfirm = () => {
-    // 在新标签页打开新站点，携带问题参数
-    const encodedMessage = encodeURIComponent(promptText);
+    // 在新标签页打开新站点，携带问题参数，并将选择的技术栈拼接在消息前面
+    const libPrefix = snap.lib ? (lang === 'zh' ? `使用${snap.lib}时，` : `When using ${snap.lib}, `) : '';
+    const encodedMessage = encodeURIComponent(`${libPrefix}${promptText}`);
     const targetUrl = `https://sive.antv.antgroup.com/qa?message=${encodedMessage}`;
     window.open(targetUrl, '_blank', 'noopener,noreferrer');
   };
