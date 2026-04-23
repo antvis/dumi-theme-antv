@@ -21,8 +21,6 @@ import { findVersion } from './utils';
 import { ReactComponent as UserIcon } from '../../static/user.svg';
 import type { IC } from '../../types';
 
-import { Assistant } from '@petercatai/assistant';
-import '@petercatai/assistant/style';
 import { useLocation } from 'react-router-dom';
 import { determineUserType } from '../../utils/user';
 import styles from './index.module.less';
@@ -111,11 +109,6 @@ export type HeaderProps = {
   };
   /** 是否开启用户反馈功能 */
   feedback?: boolean;
-  /** petercat 配置 */
-  petercat?: {
-    token: string;
-    show: boolean;
-  };
   /** 是否显示 links 研发小蜜 */
   links?: boolean;
   /** 页面头部公告 */
@@ -645,7 +638,6 @@ const Header: React.FC<Partial<HeaderProps>> = (props) => {
     navs,
     docsearchOptions,
     announcement,
-    petercat,
     links,
     showWeavefox,
   } = themeConfig;
@@ -680,11 +672,9 @@ const Header: React.FC<Partial<HeaderProps>> = (props) => {
     isHomePage,
     transparent: isHomePage && isAntVSite,
     announcement,
-    petercat,
     showWeavefox,
     isInternalUser,
   };
-  const isPetercatShow = petercat?.show;
 
   useEffect(() => {
     const checkUserType = async () => {
@@ -713,12 +703,7 @@ const Header: React.FC<Partial<HeaderProps>> = (props) => {
   }, [isInternalUser]);
 
   return (
-    <>
-      <HeaderComponent {...Object.assign({}, headerProps, props)} />
-      {isPetercatShow && isInternalUser === false && (
-        <Assistant token={petercat?.token} apiDomain="https://api.petercat.ai" />
-      )}
-    </>
+    <HeaderComponent {...Object.assign({}, headerProps, props)} />
   );
 };
 
