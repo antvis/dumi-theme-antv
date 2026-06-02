@@ -2,17 +2,17 @@ import { PlayCircleOutlined, ReloadOutlined, ThunderboltOutlined} from '@ant-des
 import stackblitzSdk from '@stackblitz/sdk';
 import { Tooltip, Typography } from 'antd';
 import { FormattedMessage, useLocale } from 'dumi';
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ping } from '../utils';
-import { extractImportDeps, getCodeSandboxConfig, getRiddleConfig, getStackblitzConfig } from './utils';
+import { extractImportDeps, getRiddleConfig, getStackblitzConfig } from './utils';
 
 import styles from './Toolbar.module.less';
 
 const { Paragraph } = Typography;
 
 export enum EDITOR_TABS {
-  JAVASCRIPT = 'JavaScript',
   SPEC = 'Spec',
+  API = 'API',
   DATA = 'Data',
 }
 
@@ -34,7 +34,6 @@ type ToolbarProps = {
         en?: string;
       }
     | string;
-  location?: Location;
   /**
    * playground 的一些配置项
    */
@@ -54,10 +53,6 @@ type ToolbarProps = {
     };
   };
   /**
-   * 全屏状态，用于显示不同的 icon
-   */
-  isFullScreen?: boolean;
-  /**
    * Tabs 数据
    */
   editorTabs: EDITOR_TABS[];
@@ -70,20 +65,12 @@ type ToolbarProps = {
    */
   onEditorTabChange: (tab: EDITOR_TABS) => void;
   /**
-   * 进入/退出全屏
-   */
-  onToggleFullscreen?: null | (() => void);
-  /**
    * 执行代码
    */
   onExecuteCode: () => void;
 
   onClickAI: () => void;
   onReload: () => void;
-  /**
-   * Tab 的附加内容
-   */
-  slots: Record<string, ReactElement>;
   showAI?: boolean;
 };
 
@@ -91,14 +78,10 @@ export const Toolbar: React.FC<ToolbarProps> = ({
   sourceCode,
   fileExtension,
   playground = {},
-  location,
   title = '',
-  isFullScreen = false,
   editorTabs,
-  slots,
   currentEditorTab,
   onEditorTabChange,
-  onToggleFullscreen = null,
   onExecuteCode,
   onClickAI,
   onReload,
@@ -114,14 +97,6 @@ export const Toolbar: React.FC<ToolbarProps> = ({
   };
   const devDependencies = playground.devDependencies || {};
 
-  const codeSandboxConfig = getCodeSandboxConfig(
-    exampleTitle,
-    sourceCode,
-    fileExtension,
-    dependencies,
-    devDependencies,
-    playground,
-  );
   const riddlePrefillConfig = getRiddleConfig(
     exampleTitle,
     sourceCode,
@@ -138,7 +113,6 @@ export const Toolbar: React.FC<ToolbarProps> = ({
     devDependencies,
     playground,
   );
-  // const htmlCode = getHtmlCodeTemplate(exampleTitle, sourceCode, fileExtension, dependencies, devDependencies, playground);
 
   const [riddleVisible, updateRiddleVisible] = useState(false);
   useEffect(() => {
@@ -150,14 +124,13 @@ export const Toolbar: React.FC<ToolbarProps> = ({
     <div className={styles.toolbar}>
       <div className={styles.editortabs}>
         {editorTabs.map((tab, index) => {
-          const slot = slots[tab];
           return (
             <span
               key={index}
               className={tab === currentEditorTab ? styles.current : ''}
               onClick={() => onEditorTabChange(tab)}
             >
-              {tab} {slot && slot}
+              {tab}
             </span>
           );
         })}
@@ -181,31 +154,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
           }}
         />
       </Tooltip>
-      {/* <Tooltip title={<FormattedMessage id="ai.toolbar.open.codesandbox" />}>
-        <form action="https://codesandbox.io/api/v1/sandboxes/define" method="POST" target="_blank">
-          <input type="hidden" name="parameters" value={getParameters(codeSandboxConfig)} />
-          <button type="submit" className={styles.codesandbox}>
-            <CodeSandboxOutlined style={{ marginLeft: 8 }} />
-          </button>
-        </form>
-      </Tooltip> */}
       <Paragraph copyable={{ text: sourceCode }} style={{ marginLeft: 6 }} />
-      {/** 暂时去掉全屏，当前空间已经非常大了 */}
-      {/* {onToggleFullscreen ? (
-        <Tooltip title={isFullScreen ? <FormattedMessage id="离开全屏" /> :<FormattedMessage id="进入全屏" />}>
-          {isFullScreen ? (
-            <FullscreenExitOutlined
-              onClick={onToggleFullscreen}
-              style={{ marginLeft: 12 }}
-            />
-          ) : (
-            <FullscreenOutlined
-              onClick={onToggleFullscreen}
-              style={{ marginLeft: 12 }}
-            />
-          )}
-        </Tooltip>
-      ) : null} */}
       <Tooltip title={<FormattedMessage id="ai.toolbar.execute" />}>
         <PlayCircleOutlined onClick={onExecuteCode} style={{ marginLeft: 12 }} />
       </Tooltip>
