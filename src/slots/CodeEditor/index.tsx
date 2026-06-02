@@ -1,10 +1,10 @@
 import MonacoEditor, { loader } from '@monaco-editor/react';
-import { Switch } from 'antd';
 import { autoType as d3AutoType, dsvFormat } from 'd3-dsv';
 import { useLocale, useSiteData } from 'dumi';
 import { debounce, noop } from 'lodash-es';
 import { format } from 'prettier';
 import parserBabel from 'prettier/parser-babel';
+import { useMemoizedFn } from 'ahooks';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { bind, clear } from 'size-sensor';
 import Loading from '../Loading';
@@ -23,69 +23,75 @@ loader.config({
   },
 });
 
+// ---- 纯工具函数，不依赖组件状态，提取到组件外部避免重复创建 ----
+
+/** 将 JSON 中的 <func>...</func> 标记还原为真实函数代码 */
+function parseFunction(str: string): string {
+  return str.replace(/"<func>(.*?)<\/func>"/g, (_, code) =>
+    code.replace(/\\n/g, '\n').replace(/\\"/g, '"'),
+  );
+}
+
+/** JSON.stringify replacer：将 function 值标记为 <func>...</func> 以便后续还原 */
+function withFunction(_: string, value: any): any {
+  if (typeof value !== 'function') return value;
+  return `<func>${value.toString()}</func>`;
+}
+
+/** 将 spec 配置对象转换为完整可执行的 JS 代码字符串 */
+function specToCode(specObj: any): string {
+  const specStr = parseFunction(JSON.stringify(specObj, withFunction));
+  const fullCode = `import { Chart } from '@antv/g2';
+
+const chart = new Chart({ container: 'container' });
+
+chart.options(${specStr});
+
+chart.render();
+`;
+  return format(fullCode, { plugins: [parserBabel] });
+}
+
+// ---- 组件类型定义 ----
+
 export type CodeEditorProps = {
-  /**
-   * 标题
-   */
+  /** 标题 */
   title?: string;
-  /**
-   * 示例的 id
-   */
+  /** 示例的 id */
   exampleId: string;
-  /**
-   * 输入的源码
-   */
+  /** 输入的源码 */
   source: string;
-  /**
-   * 相对地址
-   */
+  /** 相对地址 */
   relativePath?: string;
-  /**
-   * 是否全屏状态
-   */
-  isFullscreen?: boolean;
-  /**
-   * 在一个文档中有多个 DEMO 的时候，需要有不同的 dom id
-   */
+  /** 在一个文档中有多个 DEMO 的时候，需要有不同的 dom id */
   replaceId?: string;
-  /**
-   * 点击全屏按钮
-   */
-  onFullscreen: (isFullScreen: boolean) => void;
-  /**
-   * 初始化
-   */
+  /** 初始化 */
   onReady: () => void;
-  /**
-   * 销毁
-   */
+  /** 销毁 */
   onDestroy: () => void;
-  /**
-   * 执行出错的时候，回调，方便上层做显示
-   */
+  /** 执行出错的时候，回调，方便上层做显示 */
   onError: (e: any) => void;
-  /**
-   * playground 的一些配置
-   */
+  /** playground 的一些配置 */
   playground: {
     container?: string;
     playgroundDidMount?: string;
     playgroundWillUnmount?: string;
-    dependencies?: {
-      [key: string]: string;
-    };
-    devDependencies?: {
-      [key: string]: string;
-    };
+    dependencies?: { [key: string]: string };
+    devDependencies?: { [key: string]: string };
     htmlCodeTemplate?: string;
   };
-
   showAI?: boolean;
   style?: React.CSSProperties;
 };
 
 /**
  * 代码编辑器
+ * showSpecTab=true 时为 Spec first 模式：
+ *   - Spec tab（可编辑）：spec 风格代码，选中时用此代码执行
+ *   - API tab（可编辑）：原始 JS 代码，选中时用此代码执行
+ *   - 两个 tab 各自独立维护代码状态
+ * showSpecTab=false 时为传统模式：
+ *   - 只有 Spec tab，直接编辑和执行 source 代码
  */
 const CodeEditor: React.FC<CodeEditorProps> = ({
   title = '',
@@ -93,24 +99,23 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   relativePath = '',
   playground,
   replaceId = 'container',
-  isFullscreen,
   exampleId,
   onReady = noop,
   onDestroy = noop,
   onError = noop,
-  onFullscreen = noop,
   showAI = true,
   style,
 }) => {
   const locale = useLocale();
   const { themeConfig } = useSiteData();
   const { es5 = true, showSpecTab = false } = themeConfig;
-  const {  playgroundBeforeExecute = '' } = themeConfig.playground;
-  // 编辑器两个 tab，分别是代码和数据
+  const { playgroundBeforeExecute = '' } = themeConfig.playground;
+
   const [data, setData] = useState(null);
-  const [spec, setSpec] = useState(null);
-  const [code, setCode] = useState(source);
-  const [full, setFull] = useState(false);
+  // Spec tab 的代码（仅 showSpecTab=true 时使用，由 spec 事件初始化）
+  const [specCode, setSpecCode] = useState<string | null>(null);
+  // API tab 的代码（传统模式下也作为唯一代码源）
+  const [apiCode, setApiCode] = useState(source);
   // monaco instance
   const monacoRef = useRef<any>(null);
   // 文件后缀
@@ -118,11 +123,10 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   // 菜单栏
   const [editorTabs, setEditorTabs] = useState<EDITOR_TABS[]>([]);
   // 当前选中菜单栏
-  const [currentEditorTab, setCurrentEditorTab] = useState(EDITOR_TABS.JAVASCRIPT);
+  const [currentEditorTab, setCurrentEditorTab] = useState(EDITOR_TABS.SPEC);
 
   const containerId = `playgroundScriptContainer_${exampleId}`;
 
-  // 出发 auto resize
   const dispatchResizeEvent = () => {
     const e = new Event('resize');
     window.dispatchEvent(e);
@@ -132,20 +136,17 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
     if (e) {
       console.log(e);
       onError(e);
-      e.preventDefault && e.preventDefault();
+      if (e.preventDefault) e.preventDefault();
     } else {
       onError(null);
     }
   }, []);
 
+  // 注册全局错误捕获
   useEffect(() => {
-    // 用于上报错误信息，使用 script 执行代码
     if (typeof window !== 'undefined') {
-      // Cath error of code.
       (window as any).__reportErrorInPlayground = reportError;
-      // Catch error of timeout/raf.
       window.onerror = reportError;
-      // Catch error of  promise.
       window.addEventListener('unhandledrejection', reportError);
     }
     return () => {
@@ -157,78 +158,122 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
     };
   }, []);
 
-  const executeCode = useCallback(
-    debounce((v: string) => {
-      try {
-        const playgroundBeforeExecuteFunction = new Function('containerId', playgroundBeforeExecute);
-        playgroundBeforeExecuteFunction(containerId);
-      } catch (e) {
-        reportError(e);
-        // 执行出错，不影响后面流程
-      }
+  // 编译并执行代码的核心逻辑，通过 useMemoizedFn 保证始终引用最新的 containerId
+  const executeCodeFn = useMemoizedFn((v: string) => {
+    try {
+      const playgroundBeforeExecuteFunction = new Function('containerId', playgroundBeforeExecute);
+      playgroundBeforeExecuteFunction(containerId);
+    } catch (e) {
+      reportError(e);
+    }
 
-      if (currentEditorTab !== EDITOR_TABS.JAVASCRIPT) return;
-      if (!v) return;
+    if (!v) return;
 
-      // 1. 先编译代码
-      let compiled;
-      try {
-        compiled = compile(replaceInsertCss(v, locale.id), relativePath, es5);
-      } catch (e) {
-        reportError(e);
-        // 执行出错，后面的步骤不用做了！
-        return;
-      }
+    let compiled;
+    try {
+      compiled = compile(replaceInsertCss(v, locale.id), relativePath, es5);
+    } catch (e) {
+      reportError(e);
+      return;
+    }
 
-      // 2. 执行代码，try catch 在内部已经做了
-      execute(compiled, containerId, playground?.container as string, replaceId);
-    }, 300),
-    [exampleId, currentEditorTab],
-  );
+    execute(compiled, containerId, playground?.container as string, replaceId);
+  });
+
+  // debounce 实例只创建一次，内部通过 executeCodeFn 间接调用，避免闭包过期
+  const executeCode = useRef(debounce((v: string) => executeCodeFn(v), 300)).current;
+
+  // 切例子时取消 pending，避免上一案例的代码渲染到新容器
+  useEffect(() => {
+    executeCode.cancel();
+  }, [exampleId]);
+  useEffect(() => () => executeCode.cancel(), []);
+
+  /** 根据指定 tab 获取对应的可执行代码 */
+  const getCodeForTab = useCallback((tab: EDITOR_TABS): string => {
+    if (tab === EDITOR_TABS.DATA) return '';
+    if (tab === EDITOR_TABS.API) return apiCode;
+    // SPEC tab：传统模式用 apiCode，Spec 模式用 specCode
+    return showSpecTab ? (specCode || '') : apiCode;
+  }, [specCode, apiCode, showSpecTab]);
 
   const updateData = (data) => {
     if (!data) return;
     const tabs = showSpecTab
-      ? [EDITOR_TABS.JAVASCRIPT, EDITOR_TABS.SPEC, EDITOR_TABS.DATA]
-      : [EDITOR_TABS.JAVASCRIPT, EDITOR_TABS.DATA];
+      ? [EDITOR_TABS.SPEC, EDITOR_TABS.API, EDITOR_TABS.DATA]
+      : [EDITOR_TABS.SPEC, EDITOR_TABS.DATA];
     setEditorTabs(tabs);
     setData(data);
   };
 
-  // 找到 spec 里面的 online data 并且更新它
+  // fetch 多份远程数据，多份时合并为 { url: data } 映射
+  const fetchData = async (urls) => {
+    const parseCSV = (response) => {
+      return response.text().then((text) => {
+        return dsvFormat(',').parse(text, d3AutoType);
+      });
+    };
+    const parseJSON = (response) => response.json();
+    const dataList = await Promise.all(
+      urls.map((url) =>
+        fetch(url).then((response) => {
+          const fmt = url.split('.').pop();
+          if (fmt === 'csv') return parseCSV(response);
+          return parseJSON(response);
+        }),
+      ),
+    );
+    if (dataList.length <= 1) return dataList[0];
+    return Object.fromEntries(urls.map((url, index) => [url, dataList[index]]));
+  };
+
+  // 从 spec 对象中提取远程数据 URL 并 fetch
   const updateDataFromSpec = (options) => {
     if (!options) return;
-    const discoverd = [options];
+    const discovered = [options];
     const dataList = [];
-    while (discoverd.length) {
-      const node = discoverd.pop();
+    while (discovered.length) {
+      const node = discovered.pop();
       const { data } = node;
       if (typeof data === 'object' && data.type === 'fetch') {
         dataList.push(data);
       }
-      discoverd.push(...(node.children || []));
+      discovered.push(...(node.children || []));
     }
     fetchData(dataList.map((d) => d.value)).then(updateData);
   };
 
-  // 案例变化的时候，修改代码
+  // 案例变化时：重置所有状态 + 重置 tab + 解析数据 + 执行初始代码
+  // 合并为单一 effect，消除多个 [exampleId] effect 的隐式顺序依赖
   useEffect(() => {
-    setCode(source);
-
-    // 清空 data 和 spec
-    // 放在该案例运行错误，返回之前案例的 data 和 spec
+    // 重置状态
+    setApiCode(source);
+    setSpecCode(null);
     setData(null);
-    if (showSpecTab) {
-      setSpec(null);
-      setFull(false);
+    setCurrentEditorTab(EDITOR_TABS.SPEC);
+
+    // 防止快速切换示例时，旧请求的结果覆盖新示例的数据
+    let active = true;
+
+    // 解析 source 中的 fetch URL，加载远程数据
+    const match = source.matchAll(/fetch\(\s*["|'](.*)["|'],*\s*\)/g);
+    const dataFileMatch = Array.from(match);
+    if (dataFileMatch && dataFileMatch.length > 0) {
+      fetchData(dataFileMatch.map((d) => d[1].trim())).then((data) => {
+        if (active) updateData(data);
+      });
+    } else {
+      const tabs = showSpecTab ? [EDITOR_TABS.SPEC, EDITOR_TABS.API] : [EDITOR_TABS.SPEC];
+      setEditorTabs(tabs);
     }
+
+    // 执行初始代码
+    executeCode(source);
+
+    return () => { active = false; };
   }, [exampleId]);
 
-  // 代码变化的时候，运行代码
-  useEffect(() => {
-    executeCode(code);
-  }, [code]);
-
+  // 绑定容器 resize 监听
   useEffect(() => {
     const dom = document.getElementById(containerId);
     if (dom) {
@@ -240,7 +285,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
       );
     }
     return () => {
-      dom && clear(dom);
+      if (dom) clear(dom);
     };
   }, []);
 
@@ -258,101 +303,64 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
     };
   }, []);
 
-  // fetch 多份远程数据，如果有多份合并成一份。
-  const fetchData = async (urls) => {
-    const parseCSV = (response) => {
-      return response.text().then((text) => {
-        return dsvFormat(',').parse(text, d3AutoType);
-      });
-    };
-    const parseJSON = (response) => response.json();
-    const dataList = await Promise.all(
-      urls.map((url) =>
-        fetch(url).then((response) => {
-          const format = url.split('.').pop();
-          if (format === 'csv') return parseCSV(response);
-          return parseJSON(response);
-        }),
-      ),
-    );
-    if (dataList.length <= 1) return dataList[0];
-    return Object.fromEntries(urls.map((url, index) => [url, dataList[index]]));
-  };
+  // 监听 spec 事件（由代码执行后 dispatch），首次收到时初始化 specCode
+  // 使用 ref 避免闭包过期问题，同时保持 [] 依赖数组只注册一次
+  const specCodeRef = useRef(specCode);
+  specCodeRef.current = specCode;
 
-  // 切换 example 的时候，切换到代码编辑页面
-  // 用于更新当前 example 的 spec 和 data
-  useEffect(() => {
-    setCurrentEditorTab(EDITOR_TABS.JAVASCRIPT);
-  }, [exampleId]);
-
-  // hook 用户的数据
-  useEffect(() => {
-    // 需要匹配首位的换行符，以及 ' 和 "
-    const match = source.matchAll(/fetch\(\s*["|'](.*)["|'],*\s*\)/g);
-    const dataFileMatch = Array.from(match);
-    if (dataFileMatch && dataFileMatch.length > 0) {
-      fetchData(dataFileMatch.map((d) => d[1].trim())).then((data) => {
-        updateData(data);
-      });
-    } else {
-      const tabs = showSpecTab ? [EDITOR_TABS.JAVASCRIPT, EDITOR_TABS.SPEC] : [EDITOR_TABS.JAVASCRIPT];
-      setEditorTabs(tabs);
-    }
-  }, [exampleId]);
-
-  // 监听更新 spec 的事件，这是一个定义事件，需要在 .dumi/global.ts 里面 dispatch
   useEffect(() => {
     const update = (e) => {
       const { options } = e.detail as any;
-      setSpec(options);
+      if (!options) return;
       updateDataFromSpec(options);
+      // 仅在 specCode 未初始化时设置（首次从 source 执行产生）
+      if (specCodeRef.current === null) {
+        setSpecCode(specToCode(options));
+      }
     };
     window.addEventListener('spec', update);
     return () => {
       window.removeEventListener('spec', update);
     };
-  });
+  }, []);
 
-  // 切换 tab
+  // 切换 tab 时，用目标 tab 对应的代码重新执行渲染
   const onTabChange = useCallback(
-    (tab) => {
+    (tab: EDITOR_TABS) => {
       setCurrentEditorTab(tab);
+      const code = getCodeForTab(tab);
+      if (code) executeCode(code);
     },
-    [exampleId],
+    [getCodeForTab],
   );
 
-  // useEffect(() => {
-  //   if (monacoRef.current) {
-  //     const v = currentEditorTab === EDITOR_TABS.JAVASCRIPT ? code : JSON.stringify(data, null, 2);
-  //     monacoRef.current.setValue(v);
-  //   }
-  // }, [currentEditorTab]);
-
+  /**
+   * 编辑时更新对应 tab 的代码并执行
+   * 统一数据源：传统模式下 Spec tab 写入 apiCode
+   */
   const onCodeChange = useCallback(
     (value: string, event) => {
-      if (!event.isFlush && currentEditorTab === EDITOR_TABS.JAVASCRIPT) {
-        setCode(value);
+      if (event.isFlush) return;
+      if (currentEditorTab === EDITOR_TABS.SPEC) {
+        if (showSpecTab) {
+          setSpecCode(value);
+        } else {
+          // 传统模式：Spec tab 就是唯一的代码 tab，写入 apiCode
+          setApiCode(value);
+        }
+        executeCode(value);
+      } else if (currentEditorTab === EDITOR_TABS.API) {
+        setApiCode(value);
+        executeCode(value);
       }
     },
-    [currentEditorTab],
+    [currentEditorTab, showSpecTab],
   );
 
-  const parseFunction = (string) => {
-    return string.replace(/"\<func\>(.*?)\<\/func\>"/g, (_, code) => code.replace(/\\n/g, '\n').replace(/\\"/g, '"'));
-  };
-
-  // 序列化 JavaScript 对象的时候对 function 进行特殊的标注，
-  // 使得解析该字符串的时候能方便的提取 function 对应的字符串。
-  // { add: (x, y) => x + y } => '{ add: <func>(x, y) => x + y</func> }'
-  const withFunction = (_: string, value: any) => {
-    if (typeof value !== 'function') return value;
-    return `<func>${value.toString()}</func>`;
-  };
-
-  const languageOf = (tab) => {
+  const languageOf = (tab: EDITOR_TABS) => {
     switch (tab) {
-      case EDITOR_TABS.JAVASCRIPT:
       case EDITOR_TABS.SPEC:
+      case EDITOR_TABS.API:
         return 'javascript';
       case EDITOR_TABS.DATA:
         return 'json';
@@ -361,37 +369,16 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
     }
   };
 
-  const valueOf = (tab) => {
+  /** 获取 tab 对应的编辑器显示内容（统一数据源） */
+  const valueOf = (tab: EDITOR_TABS) => {
     switch (tab) {
-      case EDITOR_TABS.JAVASCRIPT:
-        return code;
-      case EDITOR_TABS.SPEC: {
-        const code = (spec) => {
-          if (!full) return `(${spec})`;
-          return `import { Chart } from '@antv/g2';
-
-          const chart = new Chart({container:'container'});
-
-          chart.options(${spec});
-
-          chart.render();
-          `;
-        };
-        return format(parseFunction(code(JSON.stringify(spec, withFunction))), {
-          plugins: [parserBabel],
-        });
-      }
+      case EDITOR_TABS.SPEC:
+        // 传统模式用 apiCode，Spec 模式用 specCode
+        return showSpecTab ? (specCode || '') : apiCode;
+      case EDITOR_TABS.API:
+        return apiCode;
       case EDITOR_TABS.DATA:
         return JSON.stringify(data, null, 2);
-      default:
-        return null;
-    }
-  };
-
-  const defaultOf = (tab) => {
-    switch (tab) {
-      case EDITOR_TABS.JAVASCRIPT:
-        return code;
       default:
         return null;
     }
@@ -403,33 +390,26 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   };
 
   const onReload = () => {
-    setCode(source);
+    setApiCode(source);
+    setSpecCode(null);
+    // 重新执行 source 以重新生成 spec
+    executeCode(source);
   };
 
   return (
     <div className={styles.editor} style={style}>
       <Toolbar
         fileExtension={fileExtension}
-        sourceCode={code}
+        sourceCode={getCodeForTab(currentEditorTab)}
         playground={playground}
-        location={location}
         title={title}
-        isFullScreen={isFullscreen}
         editorTabs={editorTabs}
         currentEditorTab={currentEditorTab}
-        onExecuteCode={() => executeCode(code)}
+        onExecuteCode={() => executeCode(getCodeForTab(currentEditorTab))}
         onEditorTabChange={onTabChange}
-        onToggleFullscreen={onFullscreen}
         onClickAI={onClickAI}
         showAI={showAI}
         onReload={onReload}
-        slots={{
-          Spec: (
-            <span style={{ paddingLeft: '0.25em', paddingRight: 0 }}>
-              <Switch style={{ width: 30 }} size="small" onChange={(checked) => setFull(checked)} checked={full} />
-            </span>
-          ),
-        }}
       />
       {editorTabs.map((tab) => (
         <div
@@ -443,11 +423,10 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
           <MonacoEditor
             language={languageOf(tab)}
             value={valueOf(tab)}
-            defaultValue={defaultOf(tab)}
             path={`${tab}_${relativePath || exampleId}`}
             loading={<Loading style={{ height: 'calc(100vh - 128px)' }} />}
             options={{
-              readOnly: tab === EDITOR_TABS.DATA || tab === EDITOR_TABS.SPEC,
+              readOnly: tab === EDITOR_TABS.DATA,
               automaticLayout: true,
               minimap: { enabled: false },
               scrollBeyondLastLine: false,

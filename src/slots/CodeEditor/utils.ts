@@ -158,6 +158,8 @@ insertCss(`;
  */
 export function execute(code: string, playgroundScriptContainer: string, container: string, replaceId = 'container') {
   const node = document.getElementById(playgroundScriptContainer);
+  if (!node) return;
+
   const script = document.createElement('script');
   // replace container id in case of multi demos in document
   const newCode = code.replace(/'container'|"container"/, `'${replaceId}'`);
@@ -180,7 +182,7 @@ try {
   // 追加图表容器
   node.innerHTML = container || `<div id=${replaceId} class="playgroundCodeContainer" />`;
   // 运行 script
-  node!.appendChild(script);
+  node.appendChild(script);
 }
 
 /**
