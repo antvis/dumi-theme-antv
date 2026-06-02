@@ -51,7 +51,6 @@ const CodeRunner: React.FC<CodeRunnerProps> = ({
   const { themeConfig } = useSiteData();
   const { githubUrl, playground } = themeConfig;
   const [error, setError] = useState<Error>();
-  const [isFullScreen, setFullscreen] = useState<boolean>(false);
   const locale = useLocale();
 
   const header = <CodeHeader title={ic(title)} relativePath={relativePath} githubUrl={githubUrl} />;
@@ -67,7 +66,6 @@ const CodeRunner: React.FC<CodeRunnerProps> = ({
         relativePath={relativePath}
         replaceId={replaceId}
         onError={setError}
-        onFullscreen={setFullscreen}
         onDestroy={noop}
         onReady={noop}
         playground={playground}

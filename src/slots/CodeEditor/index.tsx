@@ -27,7 +27,7 @@ loader.config({
 
 /** 将 JSON 中的 <func>...</func> 标记还原为真实函数代码 */
 function parseFunction(str: string): string {
-  return str.replace(/"\<func\>(.*?)\<\/func\>"/g, (_, code) =>
+  return str.replace(/"<func>(.*?)<\/func>"/g, (_, code) =>
     code.replace(/\\n/g, '\n').replace(/\\"/g, '"'),
   );
 }
@@ -63,12 +63,8 @@ export type CodeEditorProps = {
   source: string;
   /** 相对地址 */
   relativePath?: string;
-  /** 是否全屏状态 */
-  isFullscreen?: boolean;
   /** 在一个文档中有多个 DEMO 的时候，需要有不同的 dom id */
   replaceId?: string;
-  /** 点击全屏按钮 */
-  onFullscreen: (isFullScreen: boolean) => void;
   /** 初始化 */
   onReady: () => void;
   /** 销毁 */
@@ -103,12 +99,10 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   relativePath = '',
   playground,
   replaceId = 'container',
-  isFullscreen,
   exampleId,
   onReady = noop,
   onDestroy = noop,
   onError = noop,
-  onFullscreen = noop,
   showAI = true,
   style,
 }) => {
@@ -142,7 +136,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
     if (e) {
       console.log(e);
       onError(e);
-      e.preventDefault && e.preventDefault();
+      if (e.preventDefault) e.preventDefault();
     } else {
       onError(null);
     }
@@ -212,22 +206,6 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
     setData(data);
   };
 
-  // 从 spec 对象中提取远程数据 URL 并 fetch
-  const updateDataFromSpec = (options) => {
-    if (!options) return;
-    const discovered = [options];
-    const dataList = [];
-    while (discovered.length) {
-      const node = discovered.pop();
-      const { data } = node;
-      if (typeof data === 'object' && data.type === 'fetch') {
-        dataList.push(data);
-      }
-      discovered.push(...(node.children || []));
-    }
-    fetchData(dataList.map((d) => d.value)).then(updateData);
-  };
-
   // fetch 多份远程数据，多份时合并为 { url: data } 映射
   const fetchData = async (urls) => {
     const parseCSV = (response) => {
@@ -249,6 +227,22 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
     return Object.fromEntries(urls.map((url, index) => [url, dataList[index]]));
   };
 
+  // 从 spec 对象中提取远程数据 URL 并 fetch
+  const updateDataFromSpec = (options) => {
+    if (!options) return;
+    const discovered = [options];
+    const dataList = [];
+    while (discovered.length) {
+      const node = discovered.pop();
+      const { data } = node;
+      if (typeof data === 'object' && data.type === 'fetch') {
+        dataList.push(data);
+      }
+      discovered.push(...(node.children || []));
+    }
+    fetchData(dataList.map((d) => d.value)).then(updateData);
+  };
+
   // 案例变化时：重置所有状态 + 重置 tab + 解析数据 + 执行初始代码
   // 合并为单一 effect，消除多个 [exampleId] effect 的隐式顺序依赖
   useEffect(() => {
@@ -258,12 +252,15 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
     setData(null);
     setCurrentEditorTab(EDITOR_TABS.SPEC);
 
+    // 防止快速切换示例时，旧请求的结果覆盖新示例的数据
+    let active = true;
+
     // 解析 source 中的 fetch URL，加载远程数据
     const match = source.matchAll(/fetch\(\s*["|'](.*)["|'],*\s*\)/g);
     const dataFileMatch = Array.from(match);
     if (dataFileMatch && dataFileMatch.length > 0) {
       fetchData(dataFileMatch.map((d) => d[1].trim())).then((data) => {
-        updateData(data);
+        if (active) updateData(data);
       });
     } else {
       const tabs = showSpecTab ? [EDITOR_TABS.SPEC, EDITOR_TABS.API] : [EDITOR_TABS.SPEC];
@@ -272,6 +269,8 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
 
     // 执行初始代码
     executeCode(source);
+
+    return () => { active = false; };
   }, [exampleId]);
 
   // 绑定容器 resize 监听
@@ -286,7 +285,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
       );
     }
     return () => {
-      dom && clear(dom);
+      if (dom) clear(dom);
     };
   }, []);
 
