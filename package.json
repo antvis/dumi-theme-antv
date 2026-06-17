@@ -67,7 +67,6 @@
     "@emotion/server": "^11.11.0",
     "@fingerprintjs/fingerprintjs": "^4.6.2",
     "@monaco-editor/react": "4.7.0",
-    "@petercatai/assistant": "^2.0.24",
     "@stackblitz/sdk": "^1.11.0",
     "@tanstack/react-query": "^5.90.2",
     "ahooks": "^3.9.5",
