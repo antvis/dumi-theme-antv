@@ -7,7 +7,6 @@ import { AntVReactTechStack } from './antVReactTechStack';
 import deadLinkCheckerPlugin from './deadLinkChecker';
 import { getExamplePaths, getExamplesPageTopics } from './examples';
 import rehypeObservable from './rehypeObservable';
-import remarkFeedback from './remarkFeedback';
 import generateSitemap from './sitemapGenerator';
 
 const PAGES_DIR = winPath(path.join(__dirname, '../pages'));
@@ -59,13 +58,6 @@ export default (api: IApi) => {
 
     // observable demo
     memo.extraRehypePlugins = [rehypeObservable];
-
-    return memo;
-  });
-
-  api.modifyConfig((memo) => {
-    // 配置额外的 remark 插件，用于处理 Markdown 语法树的编译
-    memo.extraRemarkPlugins = memo.themeConfig.feedback ? [remarkFeedback] : [];
 
     return memo;
   });
