@@ -1,4 +1,4 @@
-import {AIModeType} from "./components/AI/constant";
+import { AIModeType } from "./components/AI/constant";
 
 export interface IThemeConfig {
   [key: string]: any;
@@ -12,9 +12,9 @@ export type Status = 'responded' | 'error' | 'timeout';
 export type IC =
   | string
   | {
-      zh: string;
-      en: string;
-    };
+    zh: string;
+    en: string;
+  };
 
 export interface TreeNode {
   /**
@@ -105,6 +105,10 @@ export interface ExampleTopic extends TreeNode {
    * 所有案例
    */
   examples: Example[];
+  /**
+   * Whether to hide this topic from the menu
+   */
+  hidden?: boolean;
 }
 
 export type MenuItem = {

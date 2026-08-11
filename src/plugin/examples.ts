@@ -87,7 +87,7 @@ const getTopicExamples = (topicPath: string, showAPIDoc: boolean) => {
  * @author YuZhanglong <loveyzl1123@gmail.com>
  */
 export const getExamplesPageTopics = (exampleTopics: ExampleTopic[], showAPIDoc: boolean) => {
-  return exampleTopics.map(({ id, slug, title, icon }: ExampleTopic) => {
+  return exampleTopics.map(({ id, slug, title, icon, examples: _examples, ...rest }: ExampleTopic) => {
     const nid = (id || slug) as string;
     let examples: Example[] = [];
 
@@ -101,6 +101,7 @@ export const getExamplesPageTopics = (exampleTopics: ExampleTopic[], showAPIDoc:
       title,
       icon,
       examples,
+      hidden: !!(rest as any).hidden,
       childrenKey: 'examples',
     };
   });

@@ -74,7 +74,17 @@ export function generateDependencies(codeString = '', ext = 'js') {
     dependencies["vue"] = "^3";
   }
 
-  if (dependencies['@antv/s2'] || dependencies['@antv/s2-react'] || dependencies['@antv/s2-react-components']) {
+  if (dependencies['@antv/s2-vue']) {
+    dependencies = {
+      ...dependencies,
+      "@antv/s2": "^2.4.9",
+      "@antv/s2-vue": "^2.1.0",
+      "ant-design-vue": "^4.2.6",
+      "vue": "^3.5.13",
+      "insert-css": "^2.0.0",
+      "@antv/g2": "^5.4.2"
+    }
+  } else if (dependencies['@antv/s2'] || dependencies['@antv/s2-react'] || dependencies['@antv/s2-react-components']) {
     dependencies = {
       ...dependencies,
       "@ant-design/icons": "^6.1.0",
@@ -178,7 +188,7 @@ export function getLanguageExtension(code) {
 
 
 
-export function wrap2VisionSnap (codeBlock: string = '') {
+export function wrap2VisionSnap(codeBlock: string = '') {
   const ext = getLanguageExtension(codeBlock);
   const mainFile = ext === 'vue' ? `/src/index.js` : `/src/index.${ext}`;
   const appFile = `/src/App.${ext}`;
@@ -189,7 +199,7 @@ export function wrap2VisionSnap (codeBlock: string = '') {
     "version": "1.0.0",
     "main": mainFile,
     "dependencies": dependencies
-};
+  };
   const mainFileCode = ext === 'vue' ? `import { createApp } from 'vue';
 import App from './App.vue';
 
@@ -234,24 +244,24 @@ if (rootElement) {
   }
 }
 
-  export function wrap2Sandpack(codeBlock: string = '') {
-    // const regex = /^```[\w-]*\n([\s\S]*?)\n?```$/m;
-    // const match = codeBlock.match(regex);
-    // if (match) {
-    return {
-      "/package.json": {
-        code: `{
+export function wrap2Sandpack(codeBlock: string = '') {
+  // const regex = /^```[\w-]*\n([\s\S]*?)\n?```$/m;
+  // const match = codeBlock.match(regex);
+  // if (match) {
+  return {
+    "/package.json": {
+      code: `{
       "name": "AntV-AI-Code",
       "version": "1.0.0",
       "main": "/index.tsx",
       "dependencies": ${JSON.stringify(generateDependencies(codeBlock), null, 2)}
     }`
-      },
-      "/index.tsx": {
-        code: codeBlock
-      },
-      "/index.html": {
-        code: `<!DOCTYPE html>
+    },
+    "/index.tsx": {
+      code: codeBlock
+    },
+    "/index.html": {
+      code: `<!DOCTYPE html>
 <html>
 <head>
   <title>Vanilla JS Example</title>
@@ -262,7 +272,7 @@ if (rootElement) {
   <script src="index.tsx"></script>
 </body>
 </html>`
-      },
-    };
-  }
+    },
+  };
+}
 

@@ -115,10 +115,9 @@ const ExampleSider: React.FC<ExampleSiderProps> = (props) => {
         <div
           className={classNames(styles.screenshot)}
           style={{
-            backgroundImage: `url(${
-              demo.screenshot ||
+            backgroundImage: `url(${demo.screenshot ||
               'https://gw.alipayobjects.com/os/s/prod/antv/assets/image/screenshot-placeholder-b8e70.png'
-            })`,
+              })`,
           }}
           title={demo.title[locale.id]}
         />
@@ -128,6 +127,9 @@ const ExampleSider: React.FC<ExampleSiderProps> = (props) => {
 
   const renderSubMenu = () => {
     return getCurrentTopics().map((topic) => {
+      if (topic.hidden) {
+        return null;
+      }
       return (
         <Menu.SubMenu
           key={`TOPIC-${topic.id}`}
@@ -141,6 +143,9 @@ const ExampleSider: React.FC<ExampleSiderProps> = (props) => {
           }
         >
           {topic.examples.map((example) => {
+            if (example.hidden) {
+              return null;
+            }
             return (
               <Menu.SubMenu key={`EXAMPLE-${topic.id}-${example.id}`} title={example.title[locale.id]}>
                 {example.demos.map((demo) => {
